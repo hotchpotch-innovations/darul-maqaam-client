@@ -8,7 +8,13 @@ import SidebarItem from "./SidebarItem";
 
 const SideBar = () => {
   return (
-    <Box>
+    <Box
+      sx={{
+        borderRight: "2px solid lightgray",
+        minHeight: "100vh",
+        bgcolor: "lightgray",
+      }}
+    >
       <Stack
         justifyContent={"center"}
         alignItems={"center"}
@@ -30,7 +36,7 @@ const SideBar = () => {
         </Typography>
       </Stack>
       <List>
-        {drawerItems("employee" as TUserRole).map((item, index) => (
+        {drawerItems("dev-super-admin" as TUserRole).map((item, index) => (
           <SidebarItem key={index} item={item} />
         ))}
       </List>

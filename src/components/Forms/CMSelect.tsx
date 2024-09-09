@@ -37,7 +37,7 @@ const CMSelect = ({
         <FormControl fullWidth error={!!error}>
           <InputLabel id={`${name}-select-label`}>{label}</InputLabel>
           <Select
-            className="w-full"
+            className="w-full border-1 border"
             {...field}
             labelId={`${name}-select-label`}
             id={`${name}-select`}

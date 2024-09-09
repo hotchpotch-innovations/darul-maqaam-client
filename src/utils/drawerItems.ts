@@ -27,8 +27,64 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         },
         {
           title: "Admin",
-          path: `${role}/admin`,
+          path: ``,
           icon: DashboardIcon,
+          child: [
+            {
+              title: "Create Super Admin",
+              parentPath: "admin",
+              path: `${role}/admin/create-super-admin`,
+            },
+            {
+              title: "Create  Admin",
+              parentPath: "admin",
+              path: `${role}/admin/create-super-admin`,
+            },
+            {
+              title: "Create Super employee",
+              parentPath: "admin",
+              path: `${role}/admin/create-super-admin`,
+            },
+          ],
+        },
+        {
+          title: "All people",
+          path: ``,
+          icon: GroupIcon,
+          child: [
+            {
+              title: "option 1",
+              parentPath: "admin",
+              path: `${role}/admin/create-super-admin`,
+            },
+            {
+              title: "option 2",
+              parentPath: "admin",
+              path: `${role}/admin/create-super-admin`,
+            },
+            {
+              title: "option 3",
+              parentPath: "admin",
+              path: ``,
+              child: [
+                {
+                  title: " Admin",
+                  parentPath: "admin",
+                  path: `${role}/admin/create-super-admin`,
+                },
+                {
+                  title: "Create  Admin",
+                  parentPath: "admin",
+                  path: `${role}/admin/create-super-admin`,
+                },
+                {
+                  title: "employee",
+                  parentPath: "admin",
+                  path: `${role}/admin/last-item`,
+                },
+              ],
+            },
+          ],
         }
       );
       break;
@@ -44,6 +100,38 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           title: "Specialties",
           path: `${role}/specialties`,
           icon: TryIcon,
+          child: [
+            {
+              title: "admin1",
+              path: "",
+            },
+            {
+              title: "admin2",
+              path: "",
+            },
+            {
+              title: "admin3",
+              path: "",
+              child: [
+                {
+                  title: "three",
+                  path: "",
+                },
+                {
+                  title: "three1",
+                  path: "",
+                },
+                {
+                  title: "three2",
+                  path: "",
+                },
+                {
+                  title: "three3",
+                  path: "",
+                },
+              ],
+            },
+          ],
         },
         {
           title: "Doctors",

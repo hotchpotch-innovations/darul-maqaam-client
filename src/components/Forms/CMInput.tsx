@@ -26,7 +26,11 @@ const CMInput = ({
       render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
-          sx={{ ...sx }}
+          sx={{
+            ...sx,
+            border: "1px solid lightgray",
+            borderRadius: "3px",
+          }}
           label={label}
           type={type}
           variant="outlined"

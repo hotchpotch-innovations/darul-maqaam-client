@@ -32,8 +32,6 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Remove this const when copying and pasting into your project.
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />

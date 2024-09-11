@@ -2,13 +2,8 @@ import { TableFooter, TablePagination, TableRow } from "@mui/material";
 import React from "react";
 import TablePaginationActions from "./CMTablePagination";
 
-export type TTableDataProps = {
-  pagination?: boolean;
-  rows: Record<string, any>[];
-};
-
 type TTableFooterProps = {
-  rows: TTableDataProps[] | [];
+  rows: Record<string, any>[] | [];
   setPage: React.Dispatch<React.SetStateAction<number>>;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
   page: number;

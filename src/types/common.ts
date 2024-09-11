@@ -21,5 +21,3 @@ export type TablePaginationActionsProps = {
     newPage: number
   ) => void;
 };
-
-// Record<string, any>[] | Record<string, any>[] | [];

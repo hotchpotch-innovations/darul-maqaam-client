@@ -1,29 +1,18 @@
+"use client";
+
 import CMTable from "@/components/Dashboard/CMTable/CMTable";
-import { rows } from "@/constants/tableData";
+import SelectFilter from "@/components/Dashboard/DashboardFilter/SclectFilter";
+import { rows, select_items, userTHead } from "@/constants/tableData";
 import { Box, Typography } from "@mui/material";
+import { useState } from "react";
 
 const AllUserPage = () => {
-  const userTHead = [
-    {
-      _id: "KA01",
-      title: "ID",
-    },
-    {
-      _id: "KA02",
-      title: "Name",
-    },
-    {
-      _id: "KA03",
-      title: "Address",
-    },
-    {
-      _id: "KA04",
-      title: "Phone",
-    },
-  ];
+  const [value, setValue] = useState("");
+  console.log(value);
   return (
     <Box>
       <Typography>This is All Users Page</Typography>
+      <SelectFilter options={select_items} value={value} setValue={setValue} />
       <Box
         sx={{
           m: "30px 60px",

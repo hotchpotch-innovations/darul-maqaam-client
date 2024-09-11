@@ -50,7 +50,7 @@ const CMTable = ({ pagination, rows, table_title }: TTableDataProps) => {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row: any, index: number) => (
-            <TableRow key={row.name}>
+            <TableRow key={index}>
               <TableCell component="th" scope="row">
                 {row._id}
               </TableCell>

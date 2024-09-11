@@ -47,12 +47,8 @@ const CMSelect = ({
             required={required}
             error={!!error?.message}
           >
-            {items?.map((item) => (
-              <MenuItem
-                className="w-full"
-                key={item?.value}
-                value={item?.value}
-              >
+            {items?.map((item, index) => (
+              <MenuItem className="w-full" key={index} value={item?.value}>
                 {item?.label}
               </MenuItem>
             ))}

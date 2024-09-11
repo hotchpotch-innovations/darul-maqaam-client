@@ -11,7 +11,7 @@ const AllUserPage = () => {
           m: "30px 60px",
         }}
       >
-        <CMTable pagination={false} rows={rows || []} />
+        <CMTable pagination={true} rows={rows || []} />
       </Box>
     </Box>
   );

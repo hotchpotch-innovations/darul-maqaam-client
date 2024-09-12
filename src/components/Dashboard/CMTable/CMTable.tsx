@@ -19,7 +19,11 @@ export type TTableDataProps = {
   table_title: TTHead[];
 };
 
-const CMTable = ({ pagination, rows, table_title }: TTableDataProps) => {
+const CM_AllUsersTable = ({
+  pagination,
+  rows,
+  table_title,
+}: TTableDataProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -33,13 +37,17 @@ const CMTable = ({ pagination, rows, table_title }: TTableDataProps) => {
         aria-label="custom pagination table"
       >
         <TableBody>
-          <TableRow sx={{ bgcolor: "primary.main" }}>
-            {table_title.map((row) => (
+          <TableRow sx={{ bgcolor: "secondary.main" }}>
+            {table_title.map((row, index) => (
               <TableCell
                 key={row._id}
-                style={{ width: `${100 / table_title?.length}` }}
+                style={{
+                  width: `${100 / table_title?.length}`,
+                  fontSize: "18px",
+                }}
                 component="th"
                 scope="row"
+                align={`${index > 1 ? "right" : "left"}`}
               >
                 {row?.title}
               </TableCell>
@@ -47,10 +55,15 @@ const CMTable = ({ pagination, rows, table_title }: TTableDataProps) => {
           </TableRow>
 
           {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            ? rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row: any, index: number) => (
-            <TableRow key={index}>
+            <TableRow
+              key={index}
+              sx={{
+                background: `${index % 2 === 0 ? "" : "lightgray"}`,
+              }}
+            >
               <TableCell component="th" scope="row">
                 {row._id}
               </TableCell>
@@ -62,13 +75,13 @@ const CMTable = ({ pagination, rows, table_title }: TTableDataProps) => {
               </TableCell>
               <TableCell
                 style={{ width: `${100 / table_title?.length}%` }}
-                align="justify"
+                align="right"
               >
                 {row.district}
               </TableCell>
               <TableCell
                 style={{ width: `${100 / table_title?.length}%` }}
-                align="justify"
+                align="right"
               >
                 {row.phone}
               </TableCell>
@@ -80,7 +93,15 @@ const CMTable = ({ pagination, rows, table_title }: TTableDataProps) => {
             </TableRow>
           )}
         </TableBody>
-        {pagination && (
+
+        {/* 
+        ======================================================================
+        This is Table Footer, When Pagination is ture and rows length gatter 
+        then 10 then show table footer otherwise footer will be hidden
+        ======================================================================
+        */}
+
+        {pagination && rows?.length > 10 && (
           <CMTableFooter
             rows={rows}
             setRowsPerPage={setRowsPerPage}
@@ -94,4 +115,4 @@ const CMTable = ({ pagination, rows, table_title }: TTableDataProps) => {
   );
 };
 
-export default CMTable;
+export default CM_AllUsersTable;

@@ -37,7 +37,7 @@ const CM_AllUsersTable = ({
         aria-label="custom pagination table"
       >
         <TableBody>
-          <TableRow sx={{ bgcolor: "secondary.main" }}>
+          <TableRow sx={{ bgcolor: "primary.main" }}>
             {table_title.map((row, index) => (
               <TableCell
                 key={row._id}
@@ -61,7 +61,11 @@ const CM_AllUsersTable = ({
             <TableRow
               key={index}
               sx={{
-                background: `${index % 2 === 0 ? "" : "lightgray"}`,
+                // background: `${index % 2 === 0 ? "" : "lightgray"}`,
+                "&:hover": {
+                  bgcolor: "lightgray",
+                  transitionDuration: "300ms",
+                },
               }}
             >
               <TableCell component="th" scope="row">

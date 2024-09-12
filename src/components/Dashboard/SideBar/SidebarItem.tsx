@@ -23,8 +23,15 @@ type TItemProps = {
 const SidebarItem = ({ item }: TItemProps) => {
   const [isChildOpen, setIsChildOpen] = useState(false);
   const [isSecondChildOpen, setIsSecondChildOpen] = useState(false);
+  const [linkPath, setLinkPath] = useState("");
 
-  const linkPath = `/dashboard/${item?.path}`;
+  if (item?.child) {
+    console.log("Pathname", item.child);
+  }
+
+  // const linkPath = `/dashboard/${item?.path}`;
+
+  console.log(linkPath);
   const pathName = usePathname();
 
   return (
@@ -33,7 +40,6 @@ const SidebarItem = ({ item }: TItemProps) => {
         disablePadding
         sx={{
           display: "block",
-          bgcolor: linkPath === pathName ? "#e3f2fd" : "transparent",
           borderBottom: "1px solid #ddd",
         }}
       >
@@ -41,18 +47,14 @@ const SidebarItem = ({ item }: TItemProps) => {
           onClick={() => setIsChildOpen(!isChildOpen)}
           sx={{
             ...(linkPath === pathName
-              ? { borderRight: "3px solid #1586FD" }
+              ? {
+                  borderRight: "3px solid #1586FD",
+                }
               : {}),
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            px: 1,
-            py: 1,
-            borderRadius: 1,
-            "&:hover": {
-              bgcolor: "#f0f0f0",
-            },
           }}
         >
           <Stack direction="row" alignItems="start" spacing={0} width="100%">
@@ -74,17 +76,9 @@ const SidebarItem = ({ item }: TItemProps) => {
             top: "10px",
           }}
         >
-          <Stack
-            width="100%"
-            direction="column"
-            gap={1}
-            sx={{
-              pl: 1, // Indent child items
-              pb: 1, // Padding at the bottom
-            }}
-          >
+          <Stack width="100%" direction="column" gap={1}>
             {item?.child?.map((childItem, index) => (
-              <Link key={index} href={childItem.path}>
+              <Link key={index} href={`dashboard/${childItem?.path}`}>
                 <ListItem sx={{ display: "block" }} disablePadding>
                   <ListItemButton
                     onClick={() => setIsSecondChildOpen(!isSecondChildOpen)}

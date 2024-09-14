@@ -6,7 +6,7 @@ export type TUserRole = keyof typeof USER_ROLE;
 
 export interface IDrawerItems {
   title: string;
-  path: string;
+  path?: string;
   parentPath?: string;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string };
   child?: IDrawerItems[];

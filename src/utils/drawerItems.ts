@@ -22,70 +22,50 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         },
         {
           title: "All Users",
-          path: `${role}`,
-          // path: `${role}/users/all-users`,
+          path: `${role}/users/all-users`,
           icon: GroupIcon,
         },
         {
           title: "Admin",
-          path: ``,
           icon: DashboardIcon,
           child: [
             {
               title: "Create Super Admin",
-              parentPath: "admin",
-              path: `${role}/users/admin/create-super-admin`,
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "create-super-admin",
             },
             {
-              title: "Create  Admin",
-              parentPath: "admin",
-              path: `${role}`,
+              title: "Create Admin",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "create-admin",
             },
             {
               title: "Manage",
-              parentPath: "admin",
-              path: `${role}`,
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "manage",
             },
           ],
         },
         {
-          title: "All people",
-          path: ``,
+          title: "Employee",
           icon: GroupIcon,
           child: [
             {
-              title: "option 1",
-              parentPath: "admin",
-              path: `${role}`,
+              title: "Create Employee",
+              parentPath: `dashboard/${role}/users/employee`,
+              path: "create-employee",
             },
             {
-              title: "option 2",
-              parentPath: "admin",
-              path: `${role}`,
-            },
-            {
-              title: "option 3",
-              parentPath: "admin",
-              path: ``,
-              child: [
-                {
-                  title: " Admin",
-                  parentPath: "admin",
-                  path: `${role}`,
-                },
-                {
-                  title: "Create  Admin",
-                  parentPath: "admin",
-                  path: `${role}`,
-                },
-                {
-                  title: "employee",
-                  parentPath: "admin",
-                  path: `${role}`,
-                },
-              ],
+              title: "Manage",
+              parentPath: `dashboard/${role}/users/employee`,
+              path: "manage-employee",
             },
           ],
+        },
+        {
+          title: "Client",
+          path: `${role}/users/all-users`,
+          icon: GroupIcon,
         }
       );
       break;
@@ -94,7 +74,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
       roleMenus.push(
         {
           title: "Dashboard",
-          path: `${role}`,
+          path: `${role}/dashboard`,
           icon: DashboardIcon,
         },
         {
@@ -102,34 +82,14 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           path: `${role}/specialties`,
           icon: TryIcon,
           child: [
+            { title: "Admin 1", path: "admin1" },
+            { title: "Admin 2", path: "admin2" },
             {
-              title: "admin1",
-              path: "",
-            },
-            {
-              title: "admin2",
-              path: "",
-            },
-            {
-              title: "admin3",
-              path: "",
+              title: "Admin 3",
+              path: "admin3",
               child: [
-                {
-                  title: "three",
-                  path: "",
-                },
-                {
-                  title: "three1",
-                  path: "",
-                },
-                {
-                  title: "three2",
-                  path: "",
-                },
-                {
-                  title: "three3",
-                  path: "",
-                },
+                { title: "Three 2", path: "three2" },
+                { title: "Three 3", path: "three3" },
               ],
             },
           ],
@@ -141,17 +101,17 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         },
         {
           title: "Schedules",
-          path: `${role}`,
+          path: `${role}/schedules`,
           icon: CalendarMonthIcon,
         },
         {
           title: "Appointments",
-          path: `${role}`,
+          path: `${role}/appointments`,
           icon: BookOnlineIcon,
         },
         {
           title: "Reviews",
-          path: `${role}`,
+          path: `${role}/reviews`,
           icon: ReviewsIcon,
         }
       );
@@ -161,17 +121,17 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
       roleMenus.push(
         {
           title: "Dashboard",
-          path: `${role}`,
+          path: `${role}/dashboard`,
           icon: DashboardIcon,
         },
         {
           title: "Schedules",
-          path: `${role}`,
+          path: `${role}/schedules`,
           icon: CalendarMonthIcon,
         },
         {
           title: "Appointments",
-          path: `${role}`,
+          path: `${role}/appointments`,
           icon: BookOnlineIcon,
         }
       );
@@ -196,6 +156,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         }
       );
       break;
+
     default:
       break;
   }

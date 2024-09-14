@@ -66,6 +66,48 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           title: "Client",
           path: `${role}/users/all-users`,
           icon: GroupIcon,
+        },
+        {
+          title: "Settings",
+          icon: DashboardIcon,
+          child: [
+            {
+              title: "Address",
+              icon: DashboardIcon,
+              child: [
+                {
+                  title: "Country",
+                  parentPath: `dashboard/${role}/users/settings/address`,
+                  path: "country",
+                },
+                {
+                  title: "Divisition",
+                  parentPath: `dashboard/${role}/users/admin`,
+                  path: "divisition",
+                },
+                {
+                  title: "District",
+                  parentPath: `dashboard/${role}/users/admin`,
+                  path: "district",
+                },
+              ],
+            },
+            {
+              title: "department",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "Department",
+            },
+            {
+              title: "Designation",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "designation",
+            },
+            {
+              title: "Clinet Type",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "client-type",
+            },
+          ],
         }
       );
       break;

@@ -236,11 +236,20 @@ const SidebarItem = ({ item }: TItemProps) => {
         unmountOnExit
         // sx={{ top: "10px" }}
       >
+        {/**
+         * ================================================================
+         *                    Second Children List
+         * ================================================================
+         */}
         <Stack width="100%" direction="column" gap={1}>
           {item?.child?.map((childItem, index) => (
             <Link
               key={index}
-              href={`/${childItem?.parentPath || ""}/${childItem?.path || ""}`}
+              href={
+                childItem?.child
+                  ? ""
+                  : `/${childItem?.parentPath || ""}/${childItem?.path || ""}`
+              }
             >
               <ListItem sx={{ display: "block" }} disablePadding>
                 <ListItemButton
@@ -289,7 +298,18 @@ const SidebarItem = ({ item }: TItemProps) => {
                           }`}
                         >
                           <ListItem disablePadding>
-                            <ListItemButton sx={{ pl: 8 }}>
+                            <ListItemButton
+                              sx={{
+                                ...(lastPart === grandChildItem?.path
+                                  ? {
+                                      borderRight: "3px solid #1586FD",
+                                    }
+                                  : {}),
+                                width: "100%",
+                                textAlign: "end",
+                                pr: "50px",
+                              }}
+                            >
                               <ListItemText primary={grandChildItem?.title} />
                             </ListItemButton>
                           </ListItem>

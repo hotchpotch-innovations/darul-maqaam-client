@@ -1,9 +1,9 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const page = () => {
   return (
     <Box>
-      <h1>This is Create Admin page</h1>
+      <Typography variant="h1">This is Create Admin page</Typography>
     </Box>
   );
 };

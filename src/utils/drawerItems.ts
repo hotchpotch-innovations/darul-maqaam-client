@@ -11,6 +11,8 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 export const drawerItems = (role: TUserRole): IDrawerItems[] => {
+  const management = "users";
+
   const roleMenus: IDrawerItems[] = [];
   switch (role) {
     case USER_ROLE.DEV_SUPER_ADMIN:
@@ -21,8 +23,13 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           icon: DashboardIcon,
         },
         {
+          title: "User Management",
+          is_parent: true,
+        },
+        {
           title: "All Users",
-          path: `${role}/users/all-users`,
+          management: "users",
+          path: `${role}/${management}/all-users`,
           icon: GroupIcon,
         },
         {
@@ -64,8 +71,54 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         },
         {
           title: "Client",
-          path: `${role}/users/all-users`,
+          path: `${role}/users/client`,
           icon: GroupIcon,
+        },
+        {
+          title: "Settings",
+          icon: DashboardIcon,
+          child: [
+            {
+              title: "Address",
+              icon: DashboardIcon,
+              child: [
+                {
+                  title: "Country",
+                  parentPath: `dashboard/${role}/users/settings/address`,
+                  path: "country",
+                },
+                {
+                  title: "Divisition",
+                  parentPath: `dashboard/${role}/users/admin`,
+                  path: "divisition",
+                },
+                {
+                  title: "District",
+                  parentPath: `dashboard/${role}/users/admin`,
+                  path: "district",
+                },
+              ],
+            },
+            {
+              title: "department",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "Department",
+            },
+            {
+              title: "Designation",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "designation",
+            },
+            {
+              title: "Clinet Type",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "client-type",
+            },
+          ],
+        },
+        {
+          title: "Contant Management",
+          is_parent: true,
         },
         {
           title: "Settings",

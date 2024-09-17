@@ -5,17 +5,16 @@ import SelectFilter from "@/components/Dashboard/DashboardFilter/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilter/SearchFiled";
 import TitleDashboard from "@/components/Dashboard/TitleDashboard";
 import { rows, select_items, userTHead } from "@/constants/tableData";
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 
-const AllUserPage = () => {
+const ClientDevSuperPage = () => {
   const [value, setValue] = useState("");
-  const [searchText, setSearchText] = useState("");
-  console.log(searchText);
-
+  const [searchText, setSearchText] = useState(" ");
+  console.log(searchText, value);
   return (
     <Box>
-      <TitleDashboard title="Users List" />
+      <TitleDashboard title={"client list"} />
 
       <Box
         sx={{
@@ -53,4 +52,4 @@ const AllUserPage = () => {
   );
 };
 
-export default AllUserPage;
+export default ClientDevSuperPage;

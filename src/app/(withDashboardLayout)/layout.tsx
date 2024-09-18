@@ -9,7 +9,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         sx={{
           width: "90%",
           mx: "auto",
-          bgcolor: "lightgreen",
         }}
       >
         {children}

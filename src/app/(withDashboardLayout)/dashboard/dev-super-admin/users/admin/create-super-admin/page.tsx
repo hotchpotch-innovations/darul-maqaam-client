@@ -1,12 +1,13 @@
 "use client";
 
+import TitleDashboard from "@/components/Dashboard/TitleDashboard";
 import CMForm from "@/components/Forms/CMForm";
 import CMInput from "@/components/Forms/CMInput";
 import CMSelect from "@/components/Forms/CMSelect";
 import { gender_options } from "@/constants/options";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
 
@@ -17,16 +18,17 @@ export const validationSchema = z.object({
   phone: z.string().regex(/^\d{11}$/, "enter a valid phone number"),
 });
 
-const page = () => {
-  const handleCreateDevSuperAdmin = (values: FieldValues) => {
+const CreateSuperAdminPage = () => {
+  const handleCreateSuperAdmin = (values: FieldValues) => {
     console.log("first");
     const data = modifyPayload(values);
     console.log(values);
   };
   return (
     <Box>
+      <TitleDashboard title="Create Super Admin" />
       <CMForm
-        onSubmit={handleCreateDevSuperAdmin}
+        onSubmit={handleCreateSuperAdmin}
         resolver={zodResolver(validationSchema)}
         defaultValues={{
           department: "",
@@ -37,7 +39,19 @@ const page = () => {
       >
         <Stack direction={"row"} gap={4}>
           {/* 1st Pera */}
-          <Grid item xs={3} md={6} container bgcolor={"red"} p={4}>
+          <Grid
+            item
+            xs={3}
+            md={6}
+            container
+            gap={2}
+            sx={{
+              border: "1px solid lightgray",
+              boxShadow: 1,
+            }}
+            p={4}
+          >
+            <Typography variant="h5">Departmental Information</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
                 name="department"
@@ -74,7 +88,19 @@ const page = () => {
             </Grid>
           </Grid>
           {/* 2nd Pera */}
-          <Grid item xs={3} md={6} container bgcolor={"red"} p={4}>
+          <Grid
+            item
+            xs={3}
+            md={6}
+            container
+            gap={2}
+            sx={{
+              border: "1px solid lightgray",
+              boxShadow: 1,
+            }}
+            p={4}
+          >
+            <Typography variant="h5">Basic Information</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
                 name="department"
@@ -118,7 +144,19 @@ const page = () => {
            *              Third pera
            * ========================================================
            */}
-          <Grid item xs={3} md={4} container bgcolor={"red"} p={2}>
+          <Grid
+            item
+            xs={3}
+            md={4}
+            container
+            gap={2}
+            sx={{
+              border: "1px solid lightgray",
+              boxShadow: 1,
+            }}
+            p={2}
+          >
+            <Typography variant="h5">Present Address</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
                 name="department"
@@ -159,7 +197,19 @@ const page = () => {
            *              Four pera
            * ========================================================
            */}
-          <Grid item xs={3} md={4} container bgcolor={"red"} p={2}>
+          <Grid
+            item
+            xs={3}
+            md={4}
+            container
+            gap={2}
+            sx={{
+              border: "1px solid lightgray",
+              boxShadow: 1,
+            }}
+            p={2}
+          >
+            <Typography variant="h5">Permanent Information</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
                 name="department"
@@ -200,7 +250,19 @@ const page = () => {
            *              Fiveth pera
            * ========================================================
            */}
-          <Grid item xs={3} md={4} container bgcolor={"red"} p={2}>
+          <Grid
+            item
+            xs={3}
+            md={4}
+            container
+            gap={2}
+            sx={{
+              border: "1px solid lightgray",
+              boxShadow: 1,
+            }}
+            p={2}
+          >
+            <Typography variant="h5">Social Links</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
                 name="department"
@@ -251,4 +313,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreateSuperAdminPage;

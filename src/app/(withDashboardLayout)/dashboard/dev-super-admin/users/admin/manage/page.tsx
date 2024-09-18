@@ -5,7 +5,7 @@ import SelectFilter from "@/components/Dashboard/DashboardFilter/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilter/SearchFiled";
 import TitleDashboard from "@/components/Dashboard/TitleDashboard";
 import { rows, select_items, userTHead } from "@/constants/tableData";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useState } from "react";
 
 const ManagePage = () => {

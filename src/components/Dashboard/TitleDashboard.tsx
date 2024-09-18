@@ -14,6 +14,8 @@ const TitleDashboard = ({ title }: TTileDashboardProps) => {
       mx={"auto"}
       sx={{
         textTransform: "capitalize",
+        pt: "10px",
+        mb: "30px",
       }}
     >
       {title}

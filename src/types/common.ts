@@ -23,3 +23,9 @@ export type TablePaginationActionsProps = {
     newPage: number
   ) => void;
 };
+
+export type TMeta = {
+  page: number;
+  limit: number;
+  total: number;
+};

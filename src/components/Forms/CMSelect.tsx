@@ -5,6 +5,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+
 import { Controller, useFormContext } from "react-hook-form";
 type TItems = {
   value: string;
@@ -18,6 +19,7 @@ type TSelectProps = {
   fullWidth?: boolean;
   items?: TItems[];
   required?: boolean;
+  setAccountType?: React.Dispatch<React.SetStateAction<string>> | any;
 };
 
 const CMSelect = ({
@@ -27,8 +29,10 @@ const CMSelect = ({
   fullWidth,
   items,
   required,
+  setAccountType,
 }: TSelectProps) => {
   const { control } = useFormContext();
+
   return (
     <Controller
       control={control}
@@ -48,7 +52,12 @@ const CMSelect = ({
             error={!!error?.message}
           >
             {items?.map((item, index) => (
-              <MenuItem className="w-full" key={index} value={item?.value}>
+              <MenuItem
+                onClick={() => setAccountType(item?.value)}
+                className="w-full"
+                key={index}
+                value={item?.value}
+              >
                 {item?.label}
               </MenuItem>
             ))}

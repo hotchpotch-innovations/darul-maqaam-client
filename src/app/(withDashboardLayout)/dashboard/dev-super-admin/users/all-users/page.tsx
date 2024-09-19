@@ -5,6 +5,7 @@ import SelectFilter from "@/components/Dashboard/DashboardFilter/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilter/SearchFiled";
 import TitleDashboard from "@/components/Dashboard/TitleDashboard";
 import { rows, select_items, userTHead } from "@/constants/tableData";
+import { useGetAllUsersQuery } from "@/redux/api/devSuperAdminApi";
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
@@ -13,9 +14,12 @@ const AllUserPage = () => {
   const [searchText, setSearchText] = useState("");
   console.log(searchText);
 
+  const { data, isLoading } = useGetAllUsersQuery({});
+  console.log(data, isLoading);
+
   return (
     <Box>
-      <TitleDashboard title="Users List" />
+      <TitleDashboard title="All Users List" />
 
       <Box
         sx={{

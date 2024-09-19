@@ -11,6 +11,7 @@ import CMSelect from "@/components/Forms/CMSelect";
 import { gender_options } from "../../constants/options";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 
 export const clientValidationSchema = z.object({
   name: z.string().min(1, "please enter your name"),
@@ -25,6 +26,9 @@ export const validationSchema = z.object({
 });
 
 const RegisterPage = () => {
+  const [accountType, setAccountType] = useState("");
+  console.log(accountType);
+
   const handleRegister = (values: FieldValues) => {
     const data = modifyPayload(values);
     console.log(values);
@@ -118,6 +122,7 @@ const RegisterPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <CMSelect
+                      setAccountType={setAccountType}
                       name="client.gender"
                       fullWidth={true}
                       label="Gender *"

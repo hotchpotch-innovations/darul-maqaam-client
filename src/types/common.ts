@@ -29,3 +29,19 @@ export type TMeta = {
   limit: number;
   total: number;
 };
+
+export type TResponseSuccessType = {
+  data: any;
+  meta?: TMeta;
+};
+
+export type TGenericErrorResponse = {
+  statusCode: number;
+  message: string;
+  errorMessage: TGenericErrorMessage;
+};
+
+export type TGenericErrorMessage = {
+  path: string | number;
+  message: string;
+};

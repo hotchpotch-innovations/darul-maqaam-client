@@ -34,7 +34,6 @@ const CMForm = ({
   const { handleSubmit } = methods;
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data);
-    console.log(data);
   };
   return (
     <FormProvider {...methods}>

@@ -4,7 +4,7 @@ const devSuperAdminApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getAllUsers: build.query({
       query: () => ({
-        url: "/posts",
+        url: "/system/client-type",
         method: "GET",
       }),
     }),

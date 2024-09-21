@@ -7,17 +7,23 @@ import { modifyPayload } from "@/utils/modifyPayload";
 import CMForm from "@/components/Forms/CMForm";
 import Link from "next/link";
 import CMInput from "@/components/Forms/CMInput";
-import CMSelect from "@/components/Forms/CMSelect";
-import { gender_options } from "../../constants/options";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import CMSelect from "@/components/Forms/CMSelect";
+import { registerClient } from "@/services/actions/registerUser";
+import { gender_options } from "@/constants/options";
+import { useClientTypeOption } from "../../../hooks/useClientTypeOptions";
+import CMSelectWithWatch from "@/components/Forms/CMSelectWithWatch";
+import { useGetSingleClientTypesQuery } from "@/redux/api/user/clientTypeApi";
 
 export const clientValidationSchema = z.object({
-  name: z.string().min(1, "please enter your name"),
+  owner_name: z.string().min(1, "please enter your name"),
   email: z.string().email("please enter a valid email"),
   gender: z.string().nonempty("Gender is required"),
   phone: z.string().regex(/^\d{11}$/, "enter a valid phone number"),
+  clientTypeId: z.string().nonempty("pleace Select Account Type"),
+  name_of_entity: z.string({ required_error: "Pleace entity name" }).optional(),
 });
 
 export const validationSchema = z.object({
@@ -26,13 +32,41 @@ export const validationSchema = z.object({
 });
 
 const RegisterPage = () => {
-  const [accountType, setAccountType] = useState("");
-  console.log(accountType);
+  const [clientType, setClientType] = useState("");
 
-  const handleRegister = (values: FieldValues) => {
-    const data = modifyPayload(values);
+  const handleRegister = async (values: FieldValues) => {
+    const { name_of_entity, ...data } = values;
     console.log(values);
+    if (name_of_entity === "") {
+      console.log("entity_name paice");
+    } else {
+      console.log("Entity name pai nai");
+    }
+    const payload = modifyPayload(data);
+
+    try {
+      const res = await registerClient(payload);
+      console.log(res);
+    } catch (err: any) {
+      console.error(err.message);
+    }
   };
+
+  const {
+    options: client_type_options,
+
+    isLoading,
+  } = useClientTypeOption();
+
+  const { data } = useGetSingleClientTypesQuery(clientType, {
+    refetchOnFocus: !!clientType,
+  });
+
+  const isCompany = data?.data?.identifier;
+
+  if (isLoading) {
+    return <Typography>Loading</Typography>;
+  }
 
   return (
     <Container>
@@ -77,17 +111,38 @@ const RegisterPage = () => {
                 defaultValues={{
                   password: "",
                   client: {
-                    name: "",
+                    owner_name: "",
                     email: "",
                     phone: "",
                     gender: "",
+                    clientTypeId: "",
                   },
                 }}
               >
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={12}>
+                    <CMSelectWithWatch
+                      setState={setClientType}
+                      name="client.clientTypeId"
+                      label="Account Type *"
+                      options={client_type_options}
+                    />
+                  </Grid>
+
+                  {isCompany === "company" && (
+                    <Grid item xs={12} md={12}>
+                      <CMInput
+                        name="client.name_of_entity"
+                        label="Comapny Name *"
+                        // {...register("client.owner_name")}
+                        fullWidth={true}
+                      />
+                    </Grid>
+                  )}
+
+                  <Grid item xs={12} md={12}>
                     <CMInput
-                      name="client.name"
+                      name="client.owner_name"
                       label="Name *"
                       // {...register("client.owner_name")}
                       fullWidth={true}
@@ -122,7 +177,6 @@ const RegisterPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <CMSelect
-                      setAccountType={setAccountType}
                       name="client.gender"
                       fullWidth={true}
                       label="Gender *"

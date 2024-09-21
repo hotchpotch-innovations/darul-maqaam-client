@@ -11,7 +11,6 @@ import { useState } from "react";
 const ClientDevSuperPage = () => {
   const [value, setValue] = useState("");
   const [searchText, setSearchText] = useState(" ");
-  console.log(searchText, value);
   return (
     <Box>
       <TitleDashboard title={"client list"} />

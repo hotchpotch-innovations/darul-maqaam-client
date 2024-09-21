@@ -19,7 +19,6 @@ export const validationSchema = z.object({
 const LoginPage = () => {
   const handleLogin = (values: FieldValues) => {
     const data = modifyPayload(values);
-    console.log(values);
   };
 
   return (

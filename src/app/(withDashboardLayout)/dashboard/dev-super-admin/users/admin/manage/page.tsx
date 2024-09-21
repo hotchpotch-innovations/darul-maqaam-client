@@ -11,7 +11,6 @@ import { useState } from "react";
 const ManagePage = () => {
   const [value, setValue] = useState("");
   const [searchText, setSearchText] = useState("");
-  console.log(searchText);
 
   return (
     <Box>

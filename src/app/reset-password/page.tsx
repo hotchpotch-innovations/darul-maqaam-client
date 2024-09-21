@@ -14,9 +14,7 @@ export const validationSchema = z.object({
 });
 
 const ResetPassword = () => {
-  const handleReset = (values: FieldValues) => {
-    console.log(values);
-  };
+  const handleReset = (values: FieldValues) => {};
   return (
     <Container>
       <title>CM | Forgot Password</title>

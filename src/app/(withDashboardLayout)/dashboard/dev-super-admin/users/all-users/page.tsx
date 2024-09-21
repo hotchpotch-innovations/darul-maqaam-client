@@ -15,7 +15,6 @@ const AllUserPage = () => {
   console.log(searchText);
 
   const { data, isLoading } = useGetAllUsersQuery({});
-  console.log(data, isLoading);
 
   return (
     <Box>

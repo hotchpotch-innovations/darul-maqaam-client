@@ -1,3 +1,4 @@
+import { tagTypes } from "@/redux/tag-types";
 import { baseApi } from "../baseApi";
 
 const clientTypeApi = baseApi.injectEndpoints({
@@ -14,6 +15,7 @@ const clientTypeApi = baseApi.injectEndpoints({
         url: `/system/client-type/${id}`,
         method: "GET",
       }),
+      providesTags: [tagTypes.client_type],
     }),
   }),
   overrideExisting: false,

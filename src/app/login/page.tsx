@@ -3,22 +3,41 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import loginImage from "../../../public/images/login-blue-logo.png";
-import { FieldValues } from "react-hook-form";
-import { modifyPayload } from "@/utils/modifyPayload";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import CMForm from "@/components/Forms/CMForm";
 import Link from "next/link";
 import CMInput from "@/components/Forms/CMInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { userLogin } from "@/services/actions/userLogin";
+import { storeUserInfo } from "@/services/auth.services";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
   password: z.string().min(6, "passrword must be at least 6 character"),
 });
 
+export type TFormValues = {
+  email: string;
+  password: string;
+};
+
 const LoginPage = () => {
-  const handleLogin = (values: FieldValues) => {
-    const data = modifyPayload(values);
+  const router = useRouter();
+  const handleLogin = async (values: FieldValues) => {
+    try {
+      const res = await userLogin(values);
+      if (res?.data?.accessToken) {
+        toast.success(res?.message);
+        storeUserInfo({ accessToken: res?.data?.accessToken });
+        router.push("/dashboard");
+      }
+      console.log(res);
+    } catch (err: any) {
+      console.log(err?.message);
+    }
   };
 
   return (

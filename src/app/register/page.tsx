@@ -16,6 +16,10 @@ import { gender_options } from "@/constants/options";
 import { useClientTypeOption } from "../../../hooks/useClientTypeOptions";
 import CMSelectWithWatch from "@/components/Forms/CMSelectWithWatch";
 import { useGetSingleClientTypesQuery } from "@/redux/api/user/clientTypeApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { userLogin } from "@/services/actions/userLogin";
+import { storeUserInfo } from "@/services/auth.services";
 
 export const clientValidationSchema = z.object({
   owner_name: z.string().min(1, "please enter your name"),
@@ -32,6 +36,7 @@ export const validationSchema = z.object({
 });
 
 const RegisterPage = () => {
+  const router = useRouter();
   const [clientType, setClientType] = useState("");
 
   const handleRegister = async (values: FieldValues) => {
@@ -46,6 +51,17 @@ const RegisterPage = () => {
 
     try {
       const res = await registerClient(payload);
+      if (res?.data?.id) {
+        toast.success(res?.message);
+        const result = await userLogin({
+          password: values?.password,
+          email: values?.client?.email,
+        });
+        if (result?.data?.accessToken) {
+          storeUserInfo({ accessToken: result?.data?.accessToken });
+          router.push("/dashboard");
+        }
+      }
       console.log(res);
     } catch (err: any) {
       console.error(err.message);

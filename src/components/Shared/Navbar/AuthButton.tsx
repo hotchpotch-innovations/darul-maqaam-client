@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 const AuthButton = () => {
   const router = useRouter();
+  const userInfo = getUserInfo();
   const isLoggedUser = isLoggedIn();
   const handleLoutOut = () => {
     removeUser();

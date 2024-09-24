@@ -9,16 +9,23 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import SideBar from "../SideBar/SideBar";
 import { Avatar, Badge, Stack } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import AccountMenu from "../AccountMenu/AccountMenu";
+
+import dynamic from "next/dynamic";
+import AccountMenu from "../shared/accountMenu/AccountMenu";
+import Sidebar from "../Sidebar/SideBar";
 
 const drawerWidth = 240;
 
 const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+
+  const UserEmail = dynamic(
+    () => import("@/components/dashboard/shared/UserEmail"),
+    { ssr: false }
+  );
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -74,7 +81,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                 component="div"
                 sx={{ color: "rgba(11, 17, 52, 0.6)" }}
               >
-                Hi, {"Momenur Islam"},
+                Hi, hello,
               </Typography>
               <Typography
                 variant="h6"
@@ -84,6 +91,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
               >
                 Welcome to PH Health Care!
               </Typography>
+              <UserEmail />
             </Box>
             <Stack direction="row" gap={3}>
               <Badge badgeContent={1} color="primary">
@@ -121,7 +129,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
             },
           }}
         >
-          <SideBar />
+          <Sidebar />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -134,7 +142,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
           }}
           open
         >
-          <SideBar />
+          <Sidebar />
         </Drawer>
       </Box>
       <Box

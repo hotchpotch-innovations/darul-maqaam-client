@@ -1,18 +1,16 @@
 "use client";
 
-import CMForm from "@/components/Forms/CMForm";
-import CMInput from "@/components/Forms/CMInput";
+import CMForm from "@/components/forms/CMForm";
+import CMInput from "@/components/forms/CMInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
-import Image from "next/image";
 import { z } from "zod";
-import authImage from "../../../public/images/login-blue-logo.png";
 import { FieldValues } from "react-hook-form";
 import { useChangePasswordMutation } from "@/redux/api/auth/authApi"; // Import the mutation hook
 import { toast } from "sonner";
-import { removeUser } from "@/services/auth.services";
 import { useRouter } from "next/navigation";
 import KeyIcon from "@mui/icons-material/Key";
+import { logoutUser } from "@/services/auth.services";
 
 // Validation schema using Zod
 export const validationSchema = z.object({
@@ -28,9 +26,10 @@ const ChangePasswordPage = () => {
     console.log(values);
     try {
       const res = await changePassword(values).unwrap();
+      console.log(res);
       toast.success(res?.message);
-      removeUser();
-      router.push("/login");
+      // logoutUser();
+      router.push("/");
     } catch (err: any) {
       toast.error(err?.message);
       console.error("Failed to change password:", err);

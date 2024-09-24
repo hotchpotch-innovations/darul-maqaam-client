@@ -1,9 +1,9 @@
 "use client";
 
-import TitleDashboard from "@/components/Dashboard/TitleDashboard";
-import CMForm from "@/components/Forms/CMForm";
-import CMInput from "@/components/Forms/CMInput";
-import CMSelect from "@/components/Forms/CMSelect";
+import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import CMForm from "@/components/forms/CMForm";
+import CMInput from "@/components/forms/CMInput";
+import CMSelect from "@/components/forms/CMSelect";
 import { gender_options } from "@/constants/options";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";

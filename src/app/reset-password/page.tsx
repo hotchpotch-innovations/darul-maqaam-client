@@ -3,8 +3,8 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import authImage from "../../../public/images/login-blue-logo.png";
-import CMForm from "@/components/Forms/CMForm";
-import CMInput from "@/components/Forms/CMInput";
+import CMForm from "@/components/forms/CMForm";
+import CMInput from "@/components/forms/CMInput";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

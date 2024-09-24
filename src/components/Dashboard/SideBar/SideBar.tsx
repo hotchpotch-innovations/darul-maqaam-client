@@ -6,7 +6,7 @@ import { drawerItems } from "@/utils/drawerItems";
 import { TUserRole } from "@/types/common";
 import SidebarItem from "./SidebarItem";
 
-const SideBar = () => {
+const Sidebar = () => {
   return (
     <Box
       sx={{
@@ -44,4 +44,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default Sidebar;

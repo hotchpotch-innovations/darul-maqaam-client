@@ -1,9 +1,9 @@
 "use client";
 
-import CM_AllUsersTable from "@/components/Dashboard/CMTable/CMTable";
-import SelectFilter from "@/components/Dashboard/DashboardFilter/SclectFilter";
-import SearchFiled from "@/components/Dashboard/DashboardFilter/SearchFiled";
-import TitleDashboard from "@/components/Dashboard/TitleDashboard";
+import CM_AllUsersTable from "@/components/dashboard/CMTable/CMTable";
+import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
+import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
+import TitleDashboard from "@/components/dashboard/TitleDashboard";
 import { rows, select_items, userTHead } from "@/constants/tableData";
 import { useGetAllUsersQuery } from "@/redux/api/devSuperAdminApi";
 import { Box, Stack, TextField, Typography } from "@mui/material";

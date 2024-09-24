@@ -29,7 +29,7 @@ export const isLoggedIn = () => {
   }
 };
 
-export const removeUser = () => {
+export const logoutUser = () => {
   return removeFromLocalStorage(authkey);
 };
 

@@ -2,23 +2,28 @@
 
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { FieldValues } from "react-hook-form";
-import CMForm from "@/components/Forms/CMForm";
-import CMInput from "@/components/Forms/CMInput";
+import CMForm from "@/components/forms/CMForm";
+import CMInput from "@/components/forms/CMInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LockIcon from "@mui/icons-material/Lock";
 import { useForgotPasswordMutation } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
 });
 
 const ForgotPassword = () => {
+  const [checkGamil, setCheckGmail] = useState(false);
+  const [isGamil, setIsGmail] = useState("");
   const [forgtPassword] = useForgotPasswordMutation();
   const handleForgot = async (values: FieldValues) => {
     try {
       const res = await forgtPassword(values).unwrap();
+      setCheckGmail(true);
+      setIsGmail(values.email);
       toast.success(res?.message);
     } catch (err: any) {
       toast.error(err?.message);
@@ -65,34 +70,54 @@ const ForgotPassword = () => {
                 padding: "10px 20px",
               }}
             >
-              <CMForm
-                onSubmit={handleForgot}
-                resolver={zodResolver(validationSchema)}
-                defaultValues={{
-                  email: "",
-                }}
-              >
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={12}>
-                    <CMInput
-                      label="Email"
-                      type="email"
-                      fullWidth={true}
-                      name="email"
-                    />
-                  </Grid>
-                </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  sx={{
-                    mt: "20px",
-                    mb: "10px",
+              {!checkGamil ? (
+                <CMForm
+                  onSubmit={handleForgot}
+                  resolver={zodResolver(validationSchema)}
+                  defaultValues={{
+                    email: "",
                   }}
                 >
-                  Submit
-                </Button>
-              </CMForm>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={12}>
+                      <CMInput
+                        label="Email"
+                        type="email"
+                        fullWidth={true}
+                        name="email"
+                      />
+                    </Grid>
+                  </Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    sx={{
+                      mt: "20px",
+                      mb: "10px",
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </CMForm>
+              ) : (
+                <Box>
+                  {" "}
+                  <Typography
+                    color="green"
+                    fontSize={20}
+                    fontWeight={550}
+                    py={1}
+                  >
+                    Please Check Your Gmail...
+                  </Typography>
+                  <Typography color="secondary.main" py={1}>
+                    Email Address: {isGamil} example@gmail.com
+                  </Typography>
+                  <Typography color="secondary.main" py={1}>
+                    Experied in: <samp className="text-red-500">10 minute</samp>
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Stack>
         </Box>

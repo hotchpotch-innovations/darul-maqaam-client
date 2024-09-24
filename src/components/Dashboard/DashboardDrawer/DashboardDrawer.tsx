@@ -10,6 +10,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import SideBar from "../SideBar/SideBar";
+import { Avatar, Badge, Stack } from "@mui/material";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import AccountMenu from "../AccountMenu/AccountMenu";
 
 const drawerWidth = 240;
 
@@ -41,8 +44,9 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
           background: "#F4F7FE",
-          boxShadow: "0",
-          borderBottom: "1px solid lightgray",
+          boxShadow: 0,
+          borderBottom: "1px solid #ddd",
+          py: 1,
         }}
       >
         <Toolbar>
@@ -51,22 +55,48 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ color: "primary.main", mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: "primary.main" }} />
           </IconButton>
-          <Box>
-            <Typography variant="body2" noWrap component="div" color="gray">
-              Hi, Iam Hotchpotch
-            </Typography>
-            <Typography
-              variant="body2"
-              noWrap
-              component="div"
-              color="primary.main"
-            >
-              Welcome to C-Project
-            </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <Typography
+                variant="body2"
+                noWrap
+                component="div"
+                sx={{ color: "rgba(11, 17, 52, 0.6)" }}
+              >
+                Hi, {"Momenur Islam"},
+              </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ color: "primary.main" }}
+              >
+                Welcome to PH Health Care!
+              </Typography>
+            </Box>
+            <Stack direction="row" gap={3}>
+              <Badge badgeContent={1} color="primary">
+                <IconButton sx={{ background: "#ffffff" }}>
+                  <NotificationsNoneIcon color="action" />
+                </IconButton>
+              </Badge>
+              <Avatar
+                alt={"name"}
+                src={"https://avatars.githubusercontent.com/u/179119302?v=4"}
+              />
+              <AccountMenu />
+            </Stack>
           </Box>
         </Toolbar>
       </AppBar>

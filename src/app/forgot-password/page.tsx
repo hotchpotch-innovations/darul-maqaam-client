@@ -1,21 +1,29 @@
 "use client";
 
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
-import Image from "next/image";
-import loginImage from "../../../public/images/login-blue-logo.png";
 import { FieldValues } from "react-hook-form";
 import CMForm from "@/components/Forms/CMForm";
 import CMInput from "@/components/Forms/CMInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import LockIcon from "@mui/icons-material/Lock";
+import { useForgotPasswordMutation } from "@/redux/api/auth/authApi";
+import { toast } from "sonner";
 
 export const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
 });
 
 const ForgotPassword = () => {
-  const handleForgot = (values: FieldValues) => {
-    const data = console.log(values);
+  const [forgtPassword] = useForgotPasswordMutation();
+  const handleForgot = async (values: FieldValues) => {
+    try {
+      const res = await forgtPassword(values).unwrap();
+      toast.success(res?.message);
+    } catch (err: any) {
+      toast.error(err?.message);
+      console.error("Failed to forgot password:", err);
+    }
   };
   return (
     <Container>
@@ -36,12 +44,16 @@ const ForgotPassword = () => {
               width: "100%",
             }}
           >
-            <Image
-              src={loginImage}
-              alt="Login Logo Image "
-              height={60}
-              width={60}
-            />
+            <Box
+              sx={{
+                "& svg": {
+                  width: 90,
+                  height: 90,
+                },
+              }}
+            >
+              <LockIcon sx={{ color: "primary.main" }} />
+            </Box>
             <Typography variant="h5" pt={2} pb={1}>
               {" "}
               Forgot Password

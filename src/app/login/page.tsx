@@ -27,6 +27,7 @@ export type TFormValues = {
 const LoginPage = () => {
   const router = useRouter();
   const handleLogin = async (values: FieldValues) => {
+    console.log(values);
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
@@ -34,9 +35,9 @@ const LoginPage = () => {
         storeUserInfo({ accessToken: res?.data?.accessToken });
         router.push("/dashboard");
       }
-      console.log(res);
     } catch (err: any) {
-      console.log(err?.message);
+      console.log("err?.message");
+      toast.error("kjfksdj");
     }
   };
 
@@ -104,7 +105,7 @@ const LoginPage = () => {
                     />
                   </Grid>
                   <Typography textAlign={"end"} py={1} width={"100%"}>
-                    <Link href={"/register"}>
+                    <Link href={"/forgot-password"}>
                       <span className="text-blue-500 text-end">
                         forgot password
                       </span>
@@ -118,7 +119,7 @@ const LoginPage = () => {
                     mt: "10px",
                   }}
                 >
-                  Register
+                  Login
                 </Button>
 
                 <Typography textAlign={"center"} py={2}>

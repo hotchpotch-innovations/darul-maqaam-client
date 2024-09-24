@@ -8,6 +8,7 @@ const clientTypeApi = baseApi.injectEndpoints({
         url: "/system/client-type",
         method: "GET",
       }),
+      providesTags: [tagTypes.client_type],
     }),
 
     getSingleClientTypes: build.query({

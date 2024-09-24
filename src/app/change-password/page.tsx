@@ -2,28 +2,44 @@
 
 import CMForm from "@/components/Forms/CMForm";
 import CMInput from "@/components/Forms/CMInput";
-import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { z } from "zod";
 import authImage from "../../../public/images/login-blue-logo.png";
 import { FieldValues } from "react-hook-form";
+import { useChangePasswordMutation } from "@/redux/api/auth/authApi"; // Import the mutation hook
+import { toast } from "sonner";
+import { removeUser } from "@/services/auth.services";
+import { useRouter } from "next/navigation";
+import KeyIcon from "@mui/icons-material/Key";
 
+// Validation schema using Zod
 export const validationSchema = z.object({
-  old_password: z.string().min(6, "please enter valied password"),
-  new_password: z.string().min(6, "passrword must be at least 6 character"),
+  oldPassword: z.string().min(6, "Please enter a valid password"),
+  newPassword: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 const ChangePasswordPage = () => {
-  const handleChangePassword = (values: FieldValues) => {
-    const data = modifyPayload(values);
+  const router = useRouter();
+  const [changePassword] = useChangePasswordMutation();
+
+  const handleChangePassword = async (values: FieldValues) => {
     console.log(values);
+    try {
+      const res = await changePassword(values).unwrap();
+      toast.success(res?.message);
+      removeUser();
+      router.push("/login");
+    } catch (err: any) {
+      toast.error(err?.message);
+      console.error("Failed to change password:", err);
+    }
   };
 
   return (
     <Container>
-      <title>CM | User Login</title>
+      <title>CM | Change Password</title>
       <Stack
         gap={1}
         sx={{
@@ -40,12 +56,16 @@ const ChangePasswordPage = () => {
               width: "100%",
             }}
           >
-            <Image
-              src={authImage}
-              alt="Login Logo Image "
-              height={60}
-              width={60}
-            />
+            <Box
+              sx={{
+                "& svg": {
+                  width: 100,
+                  height: 100,
+                },
+              }}
+            >
+              <KeyIcon sx={{ color: "primary.main" }} />
+            </Box>
             <Typography variant="h5" pt={2} pb={1}>
               Change Password
             </Typography>
@@ -60,8 +80,8 @@ const ChangePasswordPage = () => {
                 onSubmit={handleChangePassword}
                 resolver={zodResolver(validationSchema)}
                 defaultValues={{
-                  old_password: "",
-                  new_password: "",
+                  oldPassword: "",
+                  newPassword: "",
                 }}
               >
                 <Grid container spacing={2}>
@@ -69,12 +89,13 @@ const ChangePasswordPage = () => {
                     <CMInput
                       label="Old Password"
                       fullWidth={true}
-                      name="old_password"
+                      name="oldPassword"
+                      type="password"
                     />
                   </Grid>
                   <Grid item xs={12} md={12}>
                     <CMInput
-                      name="new_password"
+                      name="newPassword"
                       type="password"
                       label="New Password"
                       fullWidth={true}
@@ -88,6 +109,7 @@ const ChangePasswordPage = () => {
                     mt: "20px",
                     mb: "10px",
                   }}
+                  // Disable button if mutation is in progress
                 >
                   Change Password
                 </Button>

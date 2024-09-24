@@ -40,15 +40,8 @@ const RegisterPage = () => {
   const [clientType, setClientType] = useState("");
 
   const handleRegister = async (values: FieldValues) => {
-    const { name_of_entity, ...data } = values;
-    console.log(values);
-    if (name_of_entity === "") {
-      console.log("entity_name paice");
-    } else {
-      console.log("Entity name pai nai");
-    }
-    const payload = modifyPayload(data);
-
+    const payload = modifyPayload(values);
+    console.log({ values }, { payload });
     try {
       const res = await registerClient(payload);
       if (res?.data?.id) {
@@ -68,11 +61,7 @@ const RegisterPage = () => {
     }
   };
 
-  const {
-    options: client_type_options,
-
-    isLoading,
-  } = useClientTypeOption();
+  const { options: client_type_options, isLoading } = useClientTypeOption();
 
   const { data } = useGetSingleClientTypesQuery(clientType, {
     refetchOnFocus: !!clientType,

@@ -1,4 +1,9 @@
-import { TGenericErrorResponse, TResponseSuccessType } from "@/types";
+import { authkey } from "@/constants/authkey";
+import setAccessToken from "@/services/actions/setAccessToken";
+import { getNewAccessToken } from "@/services/auth.services";
+import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
+import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
+
 import axios from "axios";
 
 const instance = axios.create();
@@ -9,11 +14,13 @@ instance.defaults.timeout = 60000;
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
+    const accessToken = getFromLocalStorage(authkey);
+    if (accessToken) {
+      config.headers.Authorization = accessToken;
+    }
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
@@ -22,28 +29,38 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   //@ts-ignore
   function (response) {
+    console.log(response);
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    const responseObject: TResponseSuccessType = {
+    const responseObject: ResponseSuccessType = {
       data: response?.data,
-      meta: response?.data?.meta,
     };
     return responseObject;
   },
-  function (error) {
+  async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    const responseObject: TGenericErrorResponse = {
-      statusCode: error?.response?.data?.statusCode || 500,
-      message: error?.response?.data?.message || "Something went wrong",
-      errorMessage: error?.response?.data?.message,
-    };
-    // return Promise.reject(error);
-    return responseObject;
+    // console.log(error);
+    const config = error.config;
+
+    if (error?.response?.status === 500 && !config.sent) {
+      config.sent = true;
+      const response = await getNewAccessToken();
+      const accessToken = response?.data?.accessToken;
+      config.headers["Authorization"] = accessToken;
+      setToLocalStorage(authkey, accessToken);
+      setAccessToken(accessToken);
+      return instance(config);
+    } else {
+      const responseObject: IGenericErrorResponse = {
+        statusCode: error?.response?.data?.statusCode || 500,
+        message: error?.response?.data?.message || "Something went wrong!!!",
+        errorMessages: error?.response?.data?.message,
+      };
+      // return Promise.reject(error);
+      return responseObject;
+    }
   }
 );
 
 export { instance };
-
-// Public :  postgresql://postgres:iPQBqHDPFASGLCCbEdTNPoOqQTVSGrrD@autorack.proxy.rlwy.net:35768/railway
-// local :   postgresql://postgres:iPQBqHDPFASGLCCbEdTNPoOqQTVSGrrD@postgres.railway.internal:5432/railway

@@ -22,7 +22,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={""}>
           <AppRouterCacheProvider>
-            <Toaster position="top-right" />
+            <Toaster richColors position="top-right" />
 
             {children}
           </AppRouterCacheProvider>

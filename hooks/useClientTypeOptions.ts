@@ -3,7 +3,7 @@
 import { useGetAllAccountTypesQuery } from "@/redux/api/user/clientTypeApi";
 
 export const useClientTypeOption = () => {
-  const { data: client_types_data, isLoading } = useGetAllAccountTypesQuery("");
+  const { data: client_types_data, isLoading } = useGetAllAccountTypesQuery({});
   const data = client_types_data?.data || null;
   let client_type_option = [];
 

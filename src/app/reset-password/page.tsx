@@ -8,6 +8,7 @@ import CMInput from "@/components/Forms/CMInput";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 export const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),
@@ -34,12 +35,16 @@ const ResetPassword = () => {
               width: "100%",
             }}
           >
-            <Image
-              src={authImage}
-              alt="Login Logo Image "
-              height={60}
-              width={60}
-            />
+            <Box
+              sx={{
+                "& svg": {
+                  width: 90,
+                  height: 90,
+                },
+              }}
+            >
+              <LockOpenIcon sx={{ color: "primary.main" }} />
+            </Box>
             <Typography variant="h5" pt={2} pb={1}>
               {" "}
               Reset Password

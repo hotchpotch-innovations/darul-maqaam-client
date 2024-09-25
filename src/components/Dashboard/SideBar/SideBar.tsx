@@ -5,8 +5,21 @@ import Link from "next/link";
 import { drawerItems } from "@/utils/drawerItems";
 import { TUserRole } from "@/types/common";
 import SidebarItem from "./SidebarItem";
+import { useEffect, useState } from "react";
+import { getUserInfo } from "@/services/auth.services";
 
 const Sidebar = () => {
+  const [userRole, setUserRole] = useState("");
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const { role } = getUserInfo() as any;
+    setUserRole(role);
+    setLoading(false);
+  }, []);
+  console.log(userRole);
+  if (loading) {
+    return <Typography> Loading...</Typography>;
+  }
   return (
     <Box
       sx={{
@@ -36,7 +49,7 @@ const Sidebar = () => {
         </Typography>
       </Stack>
       <List>
-        {drawerItems("dev-super-admin" as TUserRole).map((item, index) => (
+        {drawerItems(userRole as TUserRole).map((item, index) => (
           <SidebarItem key={index} item={item} />
         ))}
       </List>

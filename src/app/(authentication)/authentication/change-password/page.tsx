@@ -23,10 +23,8 @@ const ChangePasswordPage = () => {
   const [changePassword] = useChangePasswordMutation();
 
   const handleChangePassword = async (values: FieldValues) => {
-    console.log(values);
     try {
       const res = await changePassword(values).unwrap();
-      console.log(res);
       toast.success(res?.message);
       // logoutUser();
       router.push("/");

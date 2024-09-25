@@ -41,7 +41,6 @@ const RegisterPage = () => {
 
   const handleRegister = async (values: FieldValues) => {
     const payload = modifyPayload(values);
-    console.log({ values }, { payload });
     try {
       const res = await registerClient(payload);
       if (res?.data?.id) {
@@ -55,7 +54,6 @@ const RegisterPage = () => {
           router.push("/dashboard");
         }
       }
-      console.log(res);
     } catch (err: any) {
       console.error(err.message);
     }

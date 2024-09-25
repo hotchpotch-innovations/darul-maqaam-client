@@ -27,17 +27,19 @@ export type TFormValues = {
 const LoginPage = () => {
   const router = useRouter();
   const handleLogin = async (values: FieldValues) => {
-    console.log(values);
+    const toastId = toast.loading("Pleace wait...");
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
-        toast.success(res?.message);
+        toast.success(res?.message, { id: toastId, duration: 5000 });
         storeUserInfo({ accessToken: res?.data?.accessToken });
         router.push("/dashboard");
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 5000 });
       }
     } catch (err: any) {
+      toast.error(err?.message);
       console.log("err?.message");
-      toast.error("kjfksdj");
     }
   };
 
@@ -105,7 +107,7 @@ const LoginPage = () => {
                     />
                   </Grid>
                   <Typography textAlign={"end"} py={1} width={"100%"}>
-                    <Link href={"/forgot-password"}>
+                    <Link href={"authentication/forgot-password"}>
                       <span className="text-blue-500 text-end">
                         forgot password
                       </span>

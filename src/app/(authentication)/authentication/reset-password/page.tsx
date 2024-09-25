@@ -1,21 +1,57 @@
 "use client";
 
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
-import Image from "next/image";
-import authImage from "../../../public/images/login-blue-logo.png";
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useResetPasswordMutation } from "@/redux/api/auth/authApi";
+import { toast } from "sonner";
+import { useEffect } from "react";
+import { resetKey } from "@/constants/authkey";
+import {
+  removeFromLocalStorage,
+  setToLocalStorage,
+} from "@/utils/local-starage";
 
 export const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),
 });
 
 const ResetPassword = () => {
-  const handleReset = (values: FieldValues) => {};
+  const router = useRouter();
+  const [resetPasswordRequest, { error }] = useResetPasswordMutation();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("userId");
+  const token = searchParams.get("token");
+
+  console.log({ id, token });
+  useEffect(() => {
+    if (token) {
+      setToLocalStorage(resetKey, token);
+    }
+  }, [token]);
+  const handleReset = async (values: FieldValues) => {
+    const toastId = toast.loading("please wait...");
+    const payload = {
+      id,
+      token,
+      ...values,
+    };
+    try {
+      const res = await resetPasswordRequest(payload);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message, { id: toastId, duration: 5000 });
+        removeFromLocalStorage(resetKey);
+        router.push("/login");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Container>
       <title>CM | Forgot Password</title>

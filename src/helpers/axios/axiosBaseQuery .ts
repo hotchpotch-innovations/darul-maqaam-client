@@ -14,13 +14,14 @@ export const axiosBaseQuery =
       params?: AxiosRequestConfig["params"];
       headers?: AxiosRequestConfig["headers"];
       meta?: TMeta;
+      token?: string;
       contentType?: string;
     },
     unknown,
     unknown
   > =>
-  async ({ url, method, data, params, headers, contentType }) => {
-    console.log({ data });
+  async ({ url, method, data, params, token, headers, contentType }) => {
+    console.log({ data, token });
     try {
       const result = await axiosInstance({
         url: baseUrl + url,

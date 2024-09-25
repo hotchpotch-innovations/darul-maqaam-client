@@ -7,8 +7,17 @@ import {
   setToLocalStorage,
 } from "@/utils/local-starage";
 
-export const storeUserInfo = ({ accessToken }: { accessToken: string }) => {
-  return setToLocalStorage(authkey, accessToken);
+type TStoreUserInfo = {
+  accessToken: string;
+  resetToken?: string;
+};
+
+export const storeUserInfo = ({ accessToken, resetToken }: TStoreUserInfo) => {
+  if (resetToken) {
+    return setToLocalStorage(resetToken, accessToken);
+  } else {
+    return setToLocalStorage(authkey, accessToken);
+  }
 };
 
 export const getUserInfo = () => {

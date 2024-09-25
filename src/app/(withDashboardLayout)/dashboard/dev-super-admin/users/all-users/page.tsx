@@ -12,7 +12,6 @@ import { useState } from "react";
 const AllUserPage = () => {
   const [value, setValue] = useState("");
   const [searchText, setSearchText] = useState("");
-  console.log(searchText);
 
   const { data, isLoading } = useGetAllUsersQuery({});
 

@@ -20,9 +20,7 @@ export const validationSchema = z.object({
 
 const CreateSuperAdminPage = () => {
   const handleCreateSuperAdmin = (values: FieldValues) => {
-    console.log("first");
     const data = modifyPayload(values);
-    console.log(values);
   };
   return (
     <Box>

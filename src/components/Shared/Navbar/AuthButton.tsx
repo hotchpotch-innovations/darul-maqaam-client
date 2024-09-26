@@ -1,3 +1,6 @@
+import { authkey } from "@/constants/authkey";
+import { deleteCookie } from "@/services/actions/deleteCookie";
+import { logOutUser } from "@/services/actions/logoutUser";
 import { getUserInfo, isLoggedIn, logoutUser } from "@/services/auth.services";
 import { Button } from "@mui/material";
 import Link from "next/link";
@@ -8,8 +11,7 @@ const AuthButton = () => {
   const userInfo = getUserInfo();
   const isLoggedUser = isLoggedIn();
   const handleLoutOut = () => {
-    logoutUser();
-    router.refresh();
+    logOutUser(router);
   };
   return (
     <>

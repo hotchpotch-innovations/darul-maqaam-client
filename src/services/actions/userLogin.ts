@@ -1,6 +1,8 @@
 // "use server";
 
 import { FieldValues } from "react-hook-form";
+import { setAccessTokenCookie } from "./setAccessTokenCookie";
+import { redirect } from "next/navigation";
 
 export const userLogin = async (data: FieldValues) => {
   const res = await fetch(
@@ -17,5 +19,11 @@ export const userLogin = async (data: FieldValues) => {
     }
   );
   const userInfo = await res.json();
+  const token = userInfo?.data?.accessToken;
+  if (userInfo?.data?.accessToken) {
+    setAccessTokenCookie(token, {
+      redirect: "/dasboard",
+    });
+  }
   return userInfo;
 };

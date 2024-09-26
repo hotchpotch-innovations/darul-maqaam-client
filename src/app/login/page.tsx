@@ -10,7 +10,7 @@ import CMInput from "@/components/forms/CMInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userLogin } from "@/services/actions/userLogin";
-import { storeUserInfo } from "@/services/auth.services";
+import { getUserInfo, storeUserInfo } from "@/services/auth.services";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -33,7 +33,12 @@ const LoginPage = () => {
       if (res?.data?.accessToken) {
         toast.success(res?.message, { id: toastId, duration: 5000 });
         storeUserInfo({ accessToken: res?.data?.accessToken });
-        router.push("/dashboard");
+        const userIfno = getUserInfo();
+        if (userIfno?.role != "client" && res?.data?.needPasswordChange) {
+          router.push("/authentication/change-password");
+        } else {
+          router.push(`/dashboard/${userIfno?.role}`);
+        }
       } else {
         toast.error(res?.message, { id: toastId, duration: 5000 });
       }

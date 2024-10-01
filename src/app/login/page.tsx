@@ -13,6 +13,7 @@ import { userLogin } from "@/services/actions/userLogin";
 import { getUserInfo, storeUserInfo } from "@/services/auth.services";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { setAccessTokenCookie } from "@/services/actions/setAccessTokenCookie";
 
 export const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
@@ -30,10 +31,14 @@ const LoginPage = () => {
     const toastId = toast.loading("Pleace wait...");
     try {
       const res = await userLogin(values);
+
       if (res?.data?.accessToken) {
+        setAccessTokenCookie(res?.data?.accessToken);
         toast.success(res?.message, { id: toastId, duration: 5000 });
         storeUserInfo({ accessToken: res?.data?.accessToken });
+
         const userIfno = getUserInfo();
+
         if (userIfno?.role != "client" && res?.data?.needPasswordChange) {
           router.push("/authentication/change-password");
         } else {

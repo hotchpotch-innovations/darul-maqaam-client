@@ -16,7 +16,7 @@ const Sidebar = () => {
     setUserRole(role);
     setLoading(false);
   }, []);
-  console.log(userRole);
+
   if (loading) {
     return <Typography> Loading...</Typography>;
   }

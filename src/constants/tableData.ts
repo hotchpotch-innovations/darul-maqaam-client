@@ -127,22 +127,3 @@ export const userTHead = [
     title: "Phone",
   },
 ];
-
-export const select_items = [
-  {
-    value: 10,
-    title: "Ten",
-  },
-  {
-    value: 20,
-    title: "Twenty",
-  },
-  {
-    value: 30,
-    title: "Therty",
-  },
-  {
-    value: 40,
-    title: "Fourty",
-  },
-];

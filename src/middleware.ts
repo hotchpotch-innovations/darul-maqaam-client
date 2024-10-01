@@ -1,10 +1,12 @@
+"use server";
+
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { authkey } from "./constants/authkey";
 import { jwtDecode } from "jwt-decode";
 
-type TRole = keyof typeof roleBasedPrivateRoutes;
+type Role = keyof typeof roleBasedPrivateRoutes;
 const authRoute = ["/login", "/register"];
 const roleBasedPrivateRoutes = {
   DEV_SUPER_ADMIN: [/^\/dashboard\/dev_super_admin/],
@@ -14,9 +16,10 @@ const roleBasedPrivateRoutes = {
 };
 
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const accessToken = cookies().get(authkey)?.value;
+
+  const accessToken = await cookies().get(authkey)?.value;
 
   if (!accessToken) {
     if (authRoute.includes(pathname)) {
@@ -30,10 +33,12 @@ export function middleware(request: NextRequest) {
   if (accessToken) {
     decoedData = jwtDecode(accessToken) as any;
   }
+
   const role = decoedData?.role;
-  if (role && roleBasedPrivateRoutes[role as TRole]) {
-    const routes = roleBasedPrivateRoutes[role as TRole];
-    if (routes?.some((route) => pathname?.match(route))) {
+
+  if (role && roleBasedPrivateRoutes[role as Role]) {
+    const routes = roleBasedPrivateRoutes[role as Role];
+    if (routes.some((route) => pathname.match(route))) {
       return NextResponse.next();
     }
   }
@@ -42,5 +47,5 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/dashboard/:page*", "/login", "/register"],
+  matcher: ["/login", "/register", "/dashboard/:page*"],
 };

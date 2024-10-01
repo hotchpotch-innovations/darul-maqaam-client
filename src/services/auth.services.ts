@@ -1,11 +1,8 @@
 import { authkey } from "@/constants/authkey";
 import { instance as axiosInstance } from "@/helpers/axios/axiosInstance";
 import { decodedToken } from "@/utils/jwt";
-import {
-  getFromLocalStorage,
-  removeFromLocalStorage,
-  setToLocalStorage,
-} from "@/utils/local-starage";
+import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
+import { cookies } from "next/headers";
 
 type TStoreUserInfo = {
   accessToken: string;
@@ -31,15 +28,14 @@ export const getUserInfo = () => {
   }
 };
 
-export const isLoggedIn = () => {
-  const authToken = getFromLocalStorage(authkey);
+export const isLoggedIn = (): boolean => {
+  const authToken = getFromLocalStorage("authkey");
+
   if (authToken) {
     return !!authToken;
   }
-};
 
-export const logoutUser = () => {
-  return removeFromLocalStorage(authkey);
+  return false;
 };
 
 export const getNewAccessToken = async () => {

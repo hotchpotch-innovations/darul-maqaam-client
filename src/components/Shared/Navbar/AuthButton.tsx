@@ -1,21 +1,25 @@
+"use client";
+
+import useUserInfo from "@/app/hooks/useUserInfo";
 import { authkey } from "@/constants/authkey";
-import { deleteCookie } from "@/services/actions/deleteCookie";
 import { logOutUser } from "@/services/actions/logoutUser";
-import { getUserInfo, isLoggedIn, logoutUser } from "@/services/auth.services";
+import { getUserInfo, isLoggedIn } from "@/services/auth.services";
 import { Button } from "@mui/material";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const AuthButton = () => {
   const router = useRouter();
-  const userInfo = getUserInfo();
+  const userInfo = useUserInfo();
+
   const isLoggedUser = isLoggedIn();
   const handleLoutOut = () => {
     logOutUser(router);
   };
   return (
     <>
-      {isLoggedUser ? (
+      {userInfo?.role ? (
         <Button
           onClick={handleLoutOut}
           variant="text"

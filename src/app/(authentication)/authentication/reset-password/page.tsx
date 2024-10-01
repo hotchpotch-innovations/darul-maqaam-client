@@ -28,7 +28,6 @@ const ResetPassword = () => {
   const id = searchParams.get("userId");
   const token = searchParams.get("token");
 
-  console.log({ id, token });
   useEffect(() => {
     if (token) {
       setToLocalStorage(resetKey, token);

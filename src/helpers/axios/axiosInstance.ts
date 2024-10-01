@@ -14,9 +14,8 @@ instance.defaults.timeout = 60000;
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
-    console.log(config);
     const resetToken = getFromLocalStorage(resetKey);
-    console.log(resetToken);
+
     const accessToken = getFromLocalStorage(authkey);
     if (!!resetToken) {
       config.headers.Authorization = resetToken;
@@ -34,7 +33,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   //@ts-ignore
   function (response) {
-    console.log(response);
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     const responseObject: ResponseSuccessType = {

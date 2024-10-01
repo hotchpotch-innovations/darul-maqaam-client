@@ -6,16 +6,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Box, Stack, Typography } from "@mui/material";
-
-type TItems = {
-  value: number;
-  title: string;
-};
+import { AccountTypeOption } from "@/constants/options";
 
 type TSelectFilterProps = {
   setValue: React.Dispatch<React.SetStateAction<string>>;
   value: string;
-  options: TItems[];
+  options: AccountTypeOption[];
   filter_title?: string;
 };
 
@@ -49,7 +45,7 @@ const SelectFilter = ({
           >
             {options?.map((item) => (
               <MenuItem key={item?.value} value={item?.value}>
-                {item?.title}
+                {item?.label}
               </MenuItem>
             ))}
           </Select>

@@ -40,11 +40,12 @@ const RegisterPage = () => {
   const [clientType, setClientType] = useState("");
 
   const handleRegister = async (values: FieldValues) => {
+    const toastId = toast.loading("Pleace wait...");
     const payload = modifyPayload(values);
     try {
       const res = await registerClient(payload);
       if (res?.data?.id) {
-        toast.success(res?.message);
+        toast.success(res?.message, { id: toastId, duration: 5000 });
         const result = await userLogin({
           password: values?.password,
           email: values?.client?.email,

@@ -19,8 +19,22 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.user],
     }),
+
+    createSuperAdmin: build.mutation({
+      query: (data) => ({
+        url: "/user/create-super-admin",
+        method: "POST",
+        contentType: "multipart/form-data",
+        data,
+      }),
+      invalidatesTags: [tagTypes?.user, tagTypes.admin],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllUsersQuery, useChangeUserStatusMutation } = userApi;
+export const {
+  useGetAllUsersQuery,
+  useChangeUserStatusMutation,
+  useCreateSuperAdminMutation,
+} = userApi;

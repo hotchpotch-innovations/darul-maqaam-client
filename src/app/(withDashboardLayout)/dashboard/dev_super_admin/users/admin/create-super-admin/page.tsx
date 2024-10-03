@@ -1,26 +1,114 @@
 "use client";
 
 import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import CMDynamicSelect from "@/components/forms/CMDynamicSelect";
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import CMSelect from "@/components/forms/CMSelect";
 import { gender_options } from "@/constants/options";
+import {
+  useGetAllDepartmentQuery,
+  useGetAllDesignationQuery,
+} from "@/redux/api/user/clientTypeApi";
+import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
 
-export const validationSchema = z.object({
-  department: z.string().nonempty("Department"),
-  email: z.string().email("please enter a valid email"),
+export const adminValidationSchema = z.object({
+  department: z.string().nonempty("Department is required"),
+  web_mail: z.string().email("please enter a valid email"),
   designation: z.string().nonempty("Degination is required"),
   phone: z.string().regex(/^\d{11}$/, "enter a valid phone number"),
 });
+export const validationSchema = z.object({
+  admin: adminValidationSchema,
+});
 
 const CreateSuperAdminPage = () => {
+  const router = useRouter();
+
+  const [departmentId, setDepartmentId] = useState<string | null>(null);
+  const [designationId, setDesignationId] = useState<string | null>(null);
+  const [presentCountryId, setPresentCountryId] = useState<string | null>(null);
+  const [presentDivisionId, setPresentDivisionId] = useState<string | null>(
+    null
+  );
+  const [presentDistrictId, setPresentDistrictId] = useState<string | null>(
+    null
+  );
+  const [permanentCountryId, setPermanentCountryId] = useState<string | null>(
+    null
+  );
+  const [permanentDivisionId, setPermanentDivisionId] = useState<string | null>(
+    null
+  );
+  const [permanentDistrictId, setPermanentDistrictId] = useState<string | null>(
+    null
+  );
+
+  // if (departmentId) {
+  //   designationQueryObj.departmentId = departmentId;
+  // }
+
+  // if (presentCountryId) {
+  //   presentDivisionObj.countryId = presentCountryId;
+  // }
+
+  // if (presentDivisionId) {
+  //   presentDistrictObj.divisionId = presentDivisionId;
+  // }
+
+  // if (permanentCountryId) {
+  //   permanentDivisionObj.countryId = permanentCountryId;
+  // }
+
+  // if (permanentDivisionId) {
+  //   permanentDistrictObj.divisionId = permanentDivisionId;
+  // }
+
+  const [createSuperAdmin] = useCreateSuperAdminMutation();
+
+  // // Create department options
+  // const { options: department_options } = useDepartmentOption(departmentQueryObj);
+
+  // // Create designation options
+  // const { options: designation_options } = useDesignationOption(designationQueryObj, { skip: !departmentId });
+
+  // // Create present country options
+  // const { options: present_country_options } = useCountryOption(presentCountryObj);
+
+  // // Create present division options
+  // const { options: present_division_options } = useDivisionOption(presentDivisionObj, { skip: !presentCountryId });
+
+  // // Create present district options
+  // const { options: present_district_options } = useDistrictOption(presentDistrictObj, { skip: !presentDivisionId });
+
+  // // Create permanent country options
+  // const { options: permanent_country_options } = useCountryOption(permanentCountryObj);
+
+  // // Create permanent division options
+  // const { options: permanent_division_options } = useDivisionOption(permanentDivisionObj, { skip: !permanentCountryId });
+
+  // // Create permanent district options
+  // const { options: permanent_district_options } = useDistrictOption(permanentDistrictObj, { skip: !permanentDivisionId });
+
+  const { data, isLoading } = useGetAllDepartmentQuery({});
+  const { data: desination, isLoading: desinationIsLoading } =
+    useGetAllDesignationQuery({});
+  console.log(desination);
+
+  const departmentData = data?.data?.data;
+  // console.log(departmentData);
+  console.log(departmentId);
   const handleCreateSuperAdmin = (values: FieldValues) => {
+    console.log("first");
     const data = modifyPayload(values);
+    console.log(values);
   };
   return (
     <Box>
@@ -29,10 +117,12 @@ const CreateSuperAdminPage = () => {
         onSubmit={handleCreateSuperAdmin}
         resolver={zodResolver(validationSchema)}
         defaultValues={{
-          department: "",
-          email: "",
-          phone: "",
-          designation: "",
+          admin: {
+            department: "",
+            web_mail: "",
+            phone: "",
+            designation: "",
+          },
         }}
       >
         <Stack direction={"row"} gap={4}>
@@ -51,16 +141,18 @@ const CreateSuperAdminPage = () => {
           >
             <Typography variant="h5">Departmental Information</Typography>
             <Grid item xs={12} md={12}>
-              <CMSelect
-                name="department"
+              <CMDynamicSelect
+                name="admin.department"
                 fullWidth={true}
                 label="Department *"
-                items={gender_options}
+                options={departmentData ? departmentData : []}
+                setIdValue={setDepartmentId}
+                idValue={departmentId}
               />
             </Grid>
             <Grid item xs={12} md={12}>
               <CMSelect
-                name="designation"
+                name="admin.designation"
                 fullWidth={true}
                 label="Designation *"
                 items={gender_options}
@@ -68,7 +160,7 @@ const CreateSuperAdminPage = () => {
             </Grid>
             <Grid item xs={12} md={12}>
               <CMInput
-                name="email"
+                name="admin.web_mail"
                 label="Gmail*"
                 type="email"
                 size="small"
@@ -77,7 +169,7 @@ const CreateSuperAdminPage = () => {
             </Grid>{" "}
             <Grid item xs={12} md={12}>
               <CMInput
-                name="phone"
+                name="admin.phone"
                 label="Phone *"
                 type="text"
                 size="small"
@@ -85,8 +177,9 @@ const CreateSuperAdminPage = () => {
               />
             </Grid>
           </Grid>
+
           {/* 2nd Pera */}
-          <Grid
+          {/* <Grid
             item
             xs={3}
             md={6}
@@ -101,18 +194,19 @@ const CreateSuperAdminPage = () => {
             <Typography variant="h5">Basic Information</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
-                name="department"
+                name="gender"
                 fullWidth={true}
-                label="Department *"
+                label="Gender *"
                 items={gender_options}
               />
             </Grid>
+
             <Grid item xs={12} md={12}>
-              <CMSelect
-                name="designation"
+              <CMInput
+                name="name"
+                label="Name *"
+                size="small"
                 fullWidth={true}
-                label="Designation *"
-                items={gender_options}
               />
             </Grid>
             <Grid item xs={12} md={12}>
@@ -123,26 +217,21 @@ const CreateSuperAdminPage = () => {
                 size="small"
                 fullWidth={true}
               />
-            </Grid>{" "}
+            </Grid>
             <Grid item xs={12} md={12}>
               <CMInput
-                name="phone"
-                label="Phone *"
-                type="text"
+                name="password"
+                label="Password *"
+                type="password"
                 size="small"
                 fullWidth={true}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
         </Stack>
 
         <Stack direction={"row"} gap={4} mt={4}>
-          {/**
-           * ======================================================
-           *              Third pera
-           * ========================================================
-           */}
-          <Grid
+          {/* <Grid
             item
             xs={3}
             md={4}
@@ -189,13 +278,13 @@ const CreateSuperAdminPage = () => {
                 fullWidth={true}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
           {/**
            * ======================================================
            *              Four pera
            * ========================================================
            */}
-          <Grid
+          {/* <Grid
             item
             xs={3}
             md={4}
@@ -242,13 +331,13 @@ const CreateSuperAdminPage = () => {
                 fullWidth={true}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
           {/**
            * ======================================================
            *              Fiveth pera
            * ========================================================
            */}
-          <Grid
+          {/* <Grid
             item
             xs={3}
             md={4}
@@ -295,7 +384,7 @@ const CreateSuperAdminPage = () => {
                 fullWidth={true}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
         </Stack>
         <Button
           type="submit"

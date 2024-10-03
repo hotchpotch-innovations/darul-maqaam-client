@@ -5,11 +5,18 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { Dispatch } from "@reduxjs/toolkit";
+import { SetStateAction } from "react";
 
 import { Controller, useFormContext } from "react-hook-form";
-type TItems = {
-  value: string;
-  label: string;
+
+type TOptions = {
+  id: string;
+  createdAt: string;
+  identifier: string;
+  isDeleted: string;
+  title: string;
+  updatedAt: string;
 };
 
 type TSelectProps = {
@@ -17,20 +24,24 @@ type TSelectProps = {
   label?: string;
   size?: "small" | "medium";
   fullWidth?: boolean;
-  items?: TItems[];
+  options?: TOptions[];
   required?: boolean;
+  isLoading?: boolean;
+  setIdValue?: Dispatch<SetStateAction<string | null>>;
+  idValue?: string;
 };
 
-const CMSelect = ({
+const CMDynamicSelect = ({
   name,
   label,
   size = "small",
   fullWidth,
-  items,
+  options,
   required,
+  setIdValue,
+  idValue,
 }: TSelectProps) => {
   const { control } = useFormContext();
-
   return (
     <Controller
       control={control}
@@ -47,9 +58,13 @@ const CMSelect = ({
             fullWidth={fullWidth}
             required={required}
           >
-            {items?.map((item, index) => (
-              <MenuItem key={index} value={item?.value}>
-                {item?.label}
+            {options?.map((item, index) => (
+              <MenuItem
+                key={index}
+                value={item?.identifier}
+                onClick={() => setDepartmentId(item?.id)}
+              >
+                {item?.title}
               </MenuItem>
             ))}
           </Select>
@@ -60,4 +75,4 @@ const CMSelect = ({
   );
 };
 
-export default CMSelect;
+export default CMDynamicSelect;

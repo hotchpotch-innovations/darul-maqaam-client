@@ -18,9 +18,29 @@ const clientTypeApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.client_type],
     }),
+
+    getAllDepartment: build.query({
+      query: () => ({
+        url: "/system/department",
+        method: "GET",
+      }),
+      providesTags: [tagTypes.department],
+    }),
+
+    getAllDesignation: build.query({
+      query: () => ({
+        url: "/system/designation",
+        method: "GET",
+      }),
+      providesTags: [tagTypes.designation],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllAccountTypesQuery, useGetSingleClientTypesQuery } =
-  clientTypeApi;
+export const {
+  useGetAllAccountTypesQuery,
+  useGetSingleClientTypesQuery,
+  useGetAllDepartmentQuery,
+  useGetAllDesignationQuery,
+} = clientTypeApi;

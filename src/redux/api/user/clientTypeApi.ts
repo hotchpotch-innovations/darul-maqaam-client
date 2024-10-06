@@ -2,7 +2,7 @@ import { tagTypes } from "@/redux/tag-types";
 import { baseApi } from "../baseApi";
 
 const clientTypeApi = baseApi.injectEndpoints({
-  endpoints: (build) => ({
+  endpoints: (build: any) => ({
     getAllAccountTypes: build.query({
       query: () => ({
         url: "/system/client-type",
@@ -12,7 +12,7 @@ const clientTypeApi = baseApi.injectEndpoints({
     }),
 
     getSingleClientTypes: build.query({
-      query: (id) => ({
+      query: (id: string) => ({
         url: `/system/client-type/${id}`,
         method: "GET",
       }),
@@ -28,9 +28,37 @@ const clientTypeApi = baseApi.injectEndpoints({
     }),
 
     getAllDesignation: build.query({
-      query: () => ({
+      query: (paramObj: any) => ({
         url: "/system/designation",
         method: "GET",
+        params: paramObj,
+      }),
+      providesTags: [tagTypes.designation],
+    }),
+
+    getAllcountrys: build.query({
+      query: (paramObj: any) => ({
+        url: "/system/address/country",
+        method: "GET",
+        params: paramObj,
+      }),
+      providesTags: [tagTypes.designation],
+    }),
+
+    getAllDivision: build.query({
+      query: (paramObj: any) => ({
+        url: "/system/address/division",
+        method: "GET",
+        params: paramObj,
+      }),
+      providesTags: [tagTypes.designation],
+    }),
+
+    getAllDistrict: build.query({
+      query: (paramObj: any) => ({
+        url: "/system/address/district",
+        method: "GET",
+        params: paramObj,
       }),
       providesTags: [tagTypes.designation],
     }),
@@ -43,4 +71,7 @@ export const {
   useGetSingleClientTypesQuery,
   useGetAllDepartmentQuery,
   useGetAllDesignationQuery,
+  useGetAllcountrysQuery,
+  useGetAllDivisionQuery,
+  useGetAllDistrictQuery,
 } = clientTypeApi;

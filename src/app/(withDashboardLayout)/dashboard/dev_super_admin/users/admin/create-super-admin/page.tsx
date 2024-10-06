@@ -7,34 +7,74 @@ import CMInput from "@/components/forms/CMInput";
 import CMSelect from "@/components/forms/CMSelect";
 import { gender_options } from "@/constants/options";
 import {
+  useGetAllcountrysQuery,
   useGetAllDepartmentQuery,
   useGetAllDesignationQuery,
+  useGetAllDistrictQuery,
+  useGetAllDivisionQuery,
 } from "@/redux/api/user/clientTypeApi";
 import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export const adminValidationSchema = z.object({
-  department: z.string().nonempty("Department is required"),
-  web_mail: z.string().email("please enter a valid email"),
-  designation: z.string().nonempty("Degination is required"),
+  departmentId: z.string().nonempty("Department is required"),
+  web_mail: z
+    .string()
+    .email("Please enter a valid email")
+    .optional()
+    .or(z.literal("")),
+  designationId: z.string().nonempty("Degination is required"),
   phone: z.string().regex(/^\d{11}$/, "enter a valid phone number"),
+  name: z.string().min(1, "please enter name"),
+  email: z.string().email("please enter a valid email"),
+  gender: z.string().nonempty("gender is required"),
 });
+
+export const present_addressValidationSchema = z.object({
+  countryId: z.string().nonempty("Department is required"),
+  divisionId: z.string().nonempty("Department is required"),
+  districtId: z.string().nonempty("Department is required"),
+  address_line: z.string().min(1, "please enter name"),
+});
+
+export const social_linksValidationSchema = z.object({
+  facebook: z.string().url().min(1, "Please give Facebook ID URL"), // required
+  twitter: z.string().optional(), // optional
+  linkedIn: z.string().optional(), // optional
+  instagram: z.string().optional(), // optional
+});
+
 export const validationSchema = z.object({
+  password: z.string().min(6, "passrword must be at least 6 character"),
   admin: adminValidationSchema,
+  present_address: present_addressValidationSchema,
+  permanent_address: present_addressValidationSchema,
+  social_links: social_linksValidationSchema,
 });
+
+type TQueryObj = {
+  departmentId?: string | null;
+  countryId?: string;
+  divisionId?: string;
+};
 
 const CreateSuperAdminPage = () => {
-  const router = useRouter();
+  const queryObj: TQueryObj = {};
+  const divisionObj: TQueryObj = {};
+  const districtObj: TQueryObj = {};
 
   const [departmentId, setDepartmentId] = useState<string | null>(null);
+
   const [designationId, setDesignationId] = useState<string | null>(null);
   const [presentCountryId, setPresentCountryId] = useState<string | null>(null);
+
   const [presentDivisionId, setPresentDivisionId] = useState<string | null>(
     null
   );
@@ -51,21 +91,21 @@ const CreateSuperAdminPage = () => {
     null
   );
 
-  // if (departmentId) {
-  //   designationQueryObj.departmentId = departmentId;
-  // }
+  if (departmentId) {
+    queryObj["departmentId"] = departmentId;
+  }
 
   // if (presentCountryId) {
   //   presentDivisionObj.countryId = presentCountryId;
   // }
 
-  // if (presentDivisionId) {
-  //   presentDistrictObj.divisionId = presentDivisionId;
-  // }
+  if (presentDivisionId) {
+    districtObj["divisionId"] = presentDivisionId;
+  }
 
-  // if (permanentCountryId) {
-  //   permanentDivisionObj.countryId = permanentCountryId;
-  // }
+  if (permanentCountryId) {
+    divisionObj["countryId"] = permanentCountryId;
+  }
 
   // if (permanentDivisionId) {
   //   permanentDistrictObj.divisionId = permanentDivisionId;
@@ -98,17 +138,31 @@ const CreateSuperAdminPage = () => {
   // const { options: permanent_district_options } = useDistrictOption(permanentDistrictObj, { skip: !permanentDivisionId });
 
   const { data, isLoading } = useGetAllDepartmentQuery({});
-  const { data: desination, isLoading: desinationIsLoading } =
-    useGetAllDesignationQuery({});
-  console.log(desination);
+  const { data: designations, isLoading: designationsLoading } =
+    useGetAllDesignationQuery({ ...queryObj });
+  const { data: countries, isLoading: countriesLoading } =
+    useGetAllcountrysQuery({});
+  const { data: divisions, isLoading: divisionsLoading } =
+    useGetAllDivisionQuery({ ...divisionObj });
+  const { data: districts, isLoading: districtsLoading } =
+    useGetAllDistrictQuery({ ...districtObj });
 
   const departmentData = data?.data?.data;
-  // console.log(departmentData);
-  console.log(departmentId);
-  const handleCreateSuperAdmin = (values: FieldValues) => {
-    console.log("first");
+  const designationsData = designations?.data?.data;
+  const countriesData = countries?.data?.data;
+  const divisionsData = divisions?.data?.data;
+  const districtsData = districts?.data?.data;
+  console.log(districtsData);
+
+  const handleCreateSuperAdmin = async (values: FieldValues) => {
+    const toastId = toast.loading("Pleace wait...");
     const data = modifyPayload(values);
-    console.log(values);
+    try {
+      const res = await createSuperAdmin(data);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Box>
@@ -117,11 +171,33 @@ const CreateSuperAdminPage = () => {
         onSubmit={handleCreateSuperAdmin}
         resolver={zodResolver(validationSchema)}
         defaultValues={{
+          password: "",
           admin: {
-            department: "",
+            departmentId: "",
             web_mail: "",
             phone: "",
-            designation: "",
+            designationId: "",
+            name: "",
+            email: "",
+            gender: "",
+          },
+          present_address: {
+            countryId: "",
+            divisionId: "",
+            districtId: "",
+            address_line: "",
+          },
+          permanent_address: {
+            countryId: "",
+            divisionId: "",
+            districtId: "",
+            address_line: "",
+          },
+          social_links: {
+            facebook: "",
+            twitter: "",
+            linkedIn: "",
+            instagram: "",
           },
         }}
       >
@@ -142,27 +218,28 @@ const CreateSuperAdminPage = () => {
             <Typography variant="h5">Departmental Information</Typography>
             <Grid item xs={12} md={12}>
               <CMDynamicSelect
-                name="admin.department"
+                name="admin.departmentId"
                 fullWidth={true}
                 label="Department *"
                 options={departmentData ? departmentData : []}
                 setIdValue={setDepartmentId}
-                idValue={departmentId}
+                // idValue={departmentId}
               />
             </Grid>
             <Grid item xs={12} md={12}>
               <CMSelect
-                name="admin.designation"
+                name="admin.designationId"
                 fullWidth={true}
                 label="Designation *"
-                items={gender_options}
+                items={designationsData ? designationsData : []}
+                isDisabled={departmentId ? false : true}
+                setIdValue={setDesignationId}
               />
             </Grid>
             <Grid item xs={12} md={12}>
               <CMInput
                 name="admin.web_mail"
-                label="Gmail*"
-                type="email"
+                label="Web Gmail"
                 size="small"
                 fullWidth={true}
               />
@@ -179,7 +256,7 @@ const CreateSuperAdminPage = () => {
           </Grid>
 
           {/* 2nd Pera */}
-          {/* <Grid
+          <Grid
             item
             xs={3}
             md={6}
@@ -194,7 +271,7 @@ const CreateSuperAdminPage = () => {
             <Typography variant="h5">Basic Information</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
-                name="gender"
+                name="admin.gender"
                 fullWidth={true}
                 label="Gender *"
                 items={gender_options}
@@ -203,7 +280,7 @@ const CreateSuperAdminPage = () => {
 
             <Grid item xs={12} md={12}>
               <CMInput
-                name="name"
+                name="admin.name"
                 label="Name *"
                 size="small"
                 fullWidth={true}
@@ -211,8 +288,8 @@ const CreateSuperAdminPage = () => {
             </Grid>
             <Grid item xs={12} md={12}>
               <CMInput
-                name="email"
-                label="Gmail*"
+                name="admin.email"
+                label="Gmail *"
                 type="email"
                 size="small"
                 fullWidth={true}
@@ -227,11 +304,11 @@ const CreateSuperAdminPage = () => {
                 fullWidth={true}
               />
             </Grid>
-          </Grid> */}
+          </Grid>
         </Stack>
 
         <Stack direction={"row"} gap={4} mt={4}>
-          {/* <Grid
+          <Grid
             item
             xs={3}
             md={4}
@@ -246,45 +323,44 @@ const CreateSuperAdminPage = () => {
             <Typography variant="h5">Present Address</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
-                name="department"
+                name="present_address.countryId"
                 fullWidth={true}
-                label="Department *"
-                items={gender_options}
+                label="Country *"
+                items={countriesData ? countriesData : []}
+                setIdValue={setPresentCountryId}
               />
             </Grid>
             <Grid item xs={12} md={12}>
               <CMSelect
-                name="designation"
+                name="present_address.divisionId"
                 fullWidth={true}
-                label="Designation *"
-                items={gender_options}
+                label="Division *"
+                setIdValue={setPresentDivisionId}
+                items={divisionsData ? divisionsData : []}
+                isDisabled={presentCountryId ? false : true}
               />
             </Grid>
             <Grid item xs={12} md={12}>
-              <CMInput
-                name="email"
-                label="Gmail*"
-                type="email"
-                size="small"
+              <CMSelect
+                name="present_address.districtId"
                 fullWidth={true}
+                label="District *"
+                items={districtsData ? districtsData : []}
+                isDisabled={presentDivisionId ? false : true}
+                setIdValue={setPresentDistrictId}
               />
-            </Grid>{" "}
+            </Grid>
+
             <Grid item xs={12} md={12}>
               <CMInput
-                name="phone"
-                label="Phone *"
-                type="text"
+                name="present_address.address_line"
+                label="Address Line *"
                 size="small"
                 fullWidth={true}
               />
             </Grid>
-          </Grid> */}
-          {/**
-           * ======================================================
-           *              Four pera
-           * ========================================================
-           */}
-          {/* <Grid
+          </Grid>
+          <Grid
             item
             xs={3}
             md={4}
@@ -296,48 +372,52 @@ const CreateSuperAdminPage = () => {
             }}
             p={2}
           >
-            <Typography variant="h5">Permanent Information</Typography>
+            <Typography variant="h5">Permanent Address</Typography>
             <Grid item xs={12} md={12}>
               <CMSelect
-                name="department"
+                name="permanent_address.countryId"
                 fullWidth={true}
-                label="Department *"
-                items={gender_options}
+                label="Country *"
+                items={countriesData ? countriesData : []}
+                setIdValue={setPermanentCountryId}
               />
             </Grid>
             <Grid item xs={12} md={12}>
               <CMSelect
-                name="designation"
+                name="permanent_address.divisionId"
                 fullWidth={true}
-                label="Designation *"
-                items={gender_options}
+                label="Division *"
+                setIdValue={setPermanentDivisionId}
+                items={divisionsData ? divisionsData : []}
+                isDisabled={presentCountryId ? false : true}
               />
             </Grid>
+            <Grid item xs={12} md={12}>
+              <CMSelect
+                name="permanent_address.districtId"
+                fullWidth={true}
+                label="District *"
+                items={districtsData ? districtsData : []}
+                isDisabled={presentDivisionId ? false : true}
+                setIdValue={setPermanentDistrictId}
+              />
+            </Grid>
+
             <Grid item xs={12} md={12}>
               <CMInput
-                name="email"
-                label="Gmail*"
-                type="email"
+                name="permanent_address.address_line"
+                label="Address Line *"
                 size="small"
                 fullWidth={true}
               />
-            </Grid>{" "}
-            <Grid item xs={12} md={12}>
-              <CMInput
-                name="phone"
-                label="Phone *"
-                type="text"
-                size="small"
-                fullWidth={true}
-              />
             </Grid>
-          </Grid> */}
+          </Grid>
           {/**
            * ======================================================
-           *              Fiveth pera
+           *              Four pera
            * ========================================================
            */}
-          {/* <Grid
+          <Grid
             item
             xs={3}
             md={4}
@@ -351,40 +431,38 @@ const CreateSuperAdminPage = () => {
           >
             <Typography variant="h5">Social Links</Typography>
             <Grid item xs={12} md={12}>
-              <CMSelect
-                name="department"
-                fullWidth={true}
-                label="Department *"
-                items={gender_options}
-              />
-            </Grid>
-            <Grid item xs={12} md={12}>
-              <CMSelect
-                name="designation"
-                fullWidth={true}
-                label="Designation *"
-                items={gender_options}
-              />
-            </Grid>
-            <Grid item xs={12} md={12}>
               <CMInput
-                name="email"
-                label="Gmail*"
-                type="email"
+                name="social_links.facebook"
+                label="Facebook *"
                 size="small"
                 fullWidth={true}
               />
             </Grid>{" "}
             <Grid item xs={12} md={12}>
               <CMInput
-                name="phone"
-                label="Phone *"
-                type="text"
+                name="social_links.twitter"
+                label="Twitter"
+                size="small"
+                fullWidth={true}
+              />
+            </Grid>{" "}
+            <Grid item xs={12} md={12}>
+              <CMInput
+                name="social_links.linkedIn"
+                label="LinkedIn"
+                size="small"
+                fullWidth={true}
+              />
+            </Grid>{" "}
+            <Grid item xs={12} md={12}>
+              <CMInput
+                name="social_links.instagram"
+                label="Instagram"
                 size="small"
                 fullWidth={true}
               />
             </Grid>
-          </Grid> */}
+          </Grid>
         </Stack>
         <Button
           type="submit"

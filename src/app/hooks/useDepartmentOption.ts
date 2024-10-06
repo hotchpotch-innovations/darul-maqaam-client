@@ -1,5 +1,3 @@
-import { useGetAllDepartmentQuery } from "@/redux/api/user/departmentApi";
-
 export const useDepartmentOption = (paramObj) => {
   const { data, isLoading } = useGetAllDepartmentQuery({
     ...paramObj,
@@ -10,7 +8,7 @@ export const useDepartmentOption = (paramObj) => {
   let department_options = [];
 
   if (!!department_data) {
-    department_options = department_data?.map((item) => {
+    department_options = department_data?.map((item: any) => {
       return {
         label: item?.title,
         value: item?.id,

@@ -27,7 +27,7 @@ type TSelectProps = {
   options?: TOptions[];
   required?: boolean;
   isLoading?: boolean;
-  setIdValue?: Dispatch<SetStateAction<string | null>>;
+  setIdValue: React.Dispatch<React.SetStateAction<string | null>>;
   idValue?: string;
 };
 
@@ -61,8 +61,8 @@ const CMDynamicSelect = ({
             {options?.map((item, index) => (
               <MenuItem
                 key={index}
-                value={item?.identifier}
-                onClick={() => setDepartmentId(item?.id)}
+                value={item?.id}
+                onClick={() => setIdValue(item?.id)}
               >
                 {item?.title}
               </MenuItem>

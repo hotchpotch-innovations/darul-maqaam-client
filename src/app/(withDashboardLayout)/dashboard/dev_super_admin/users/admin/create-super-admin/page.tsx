@@ -1,18 +1,24 @@
 "use client";
 
 import TitleDashboard from "@/components/dashboard/TitleDashboard";
-import CMDynamicSelect from "@/components/forms/CMDynamicSelect";
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import CMSelect from "@/components/forms/CMSelect";
 import { gender_options } from "@/constants/options";
+import { default_values } from "@/constants/values";
 import {
-  useGetAllcountrysQuery,
-  useGetAllDepartmentQuery,
-  useGetAllDesignationQuery,
-  useGetAllDistrictQuery,
-  useGetAllDivisionQuery,
-} from "@/redux/api/user/clientTypeApi";
+  adminValidationSchema,
+  present_addressValidationSchema,
+  social_linksValidationSchema,
+} from "@/constants/zodvalidation";
+import { useCountryOptions } from "@/hooks/useCountryOptions";
+import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
+import { useDesignationOptions } from "@/hooks/useDesignationOptions";
+import { useDivisionOptions } from "@/hooks/useDivisionOptions";
+import { usePermanentCountryOptions } from "@/hooks/usePermanentCountryOptions";
+import { usePermanentDistrictOptions } from "@/hooks/usePermanentDistrictOptions";
+import { usePermanentDivisionOptions } from "@/hooks/usePermanentDivisionOptions";
+import { usePresentDistrictOptions } from "@/hooks/usePresentDistrictOptions";
 import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,34 +29,6 @@ import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-export const adminValidationSchema = z.object({
-  departmentId: z.string().nonempty("Department is required"),
-  web_mail: z
-    .string()
-    .email("Please enter a valid email")
-    .optional()
-    .or(z.literal("")),
-  designationId: z.string().nonempty("Degination is required"),
-  phone: z.string().regex(/^\d{11}$/, "enter a valid phone number"),
-  name: z.string().min(1, "please enter name"),
-  email: z.string().email("please enter a valid email"),
-  gender: z.string().nonempty("gender is required"),
-});
-
-export const present_addressValidationSchema = z.object({
-  countryId: z.string().nonempty("Department is required"),
-  divisionId: z.string().nonempty("Department is required"),
-  districtId: z.string().nonempty("Department is required"),
-  address_line: z.string().min(1, "please enter name"),
-});
-
-export const social_linksValidationSchema = z.object({
-  facebook: z.string().url().min(1, "Please give Facebook ID URL"), // required
-  twitter: z.string().optional(), // optional
-  linkedIn: z.string().optional(), // optional
-  instagram: z.string().optional(), // optional
-});
-
 export const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),
   admin: adminValidationSchema,
@@ -59,107 +37,60 @@ export const validationSchema = z.object({
   social_links: social_linksValidationSchema,
 });
 
-type TQueryObj = {
-  departmentId?: string | null;
-  countryId?: string;
-  divisionId?: string;
-};
-
 const CreateSuperAdminPage = () => {
-  const queryObj: TQueryObj = {};
-  const divisionObj: TQueryObj = {};
-  const districtObj: TQueryObj = {};
-
   const [departmentId, setDepartmentId] = useState<string | null>(null);
-
-  const [designationId, setDesignationId] = useState<string | null>(null);
   const [presentCountryId, setPresentCountryId] = useState<string | null>(null);
 
   const [presentDivisionId, setPresentDivisionId] = useState<string | null>(
     null
   );
-  const [presentDistrictId, setPresentDistrictId] = useState<string | null>(
-    null
-  );
+  console.log(presentDivisionId);
+
   const [permanentCountryId, setPermanentCountryId] = useState<string | null>(
     null
   );
   const [permanentDivisionId, setPermanentDivisionId] = useState<string | null>(
     null
   );
-  const [permanentDistrictId, setPermanentDistrictId] = useState<string | null>(
-    null
-  );
-
-  if (departmentId) {
-    queryObj["departmentId"] = departmentId;
-  }
-
-  // if (presentCountryId) {
-  //   presentDivisionObj.countryId = presentCountryId;
-  // }
-
-  if (presentDivisionId) {
-    districtObj["divisionId"] = presentDivisionId;
-  }
-
-  if (permanentCountryId) {
-    divisionObj["countryId"] = permanentCountryId;
-  }
-
-  // if (permanentDivisionId) {
-  //   permanentDistrictObj.divisionId = permanentDivisionId;
-  // }
 
   const [createSuperAdmin] = useCreateSuperAdminMutation();
 
-  // // Create department options
-  // const { options: department_options } = useDepartmentOption(departmentQueryObj);
+  const { options: department_options } = useDepartmentOptions();
+  const { options: designation_options } = useDesignationOptions(departmentId);
+  const {
+    options: present_country_options,
+    isLoading: present_country_isLoading,
+  } = useCountryOptions();
 
-  // // Create designation options
-  // const { options: designation_options } = useDesignationOption(designationQueryObj, { skip: !departmentId });
+  const {
+    options: present_division_options,
+    isLoading: present_division_isLoading,
+  } = useDivisionOptions(presentCountryId);
 
-  // // Create present country options
-  // const { options: present_country_options } = useCountryOption(presentCountryObj);
+  const { options: present_district_options } =
+    usePresentDistrictOptions(presentDivisionId);
 
-  // // Create present division options
-  // const { options: present_division_options } = useDivisionOption(presentDivisionObj, { skip: !presentCountryId });
+  const {
+    options: permanent_country_options,
+    isLoading: permanent_country_isLoading,
+  } = usePermanentCountryOptions();
+  const {
+    options: permanent_division_options,
+    isLoading: permanent_division_isLoading,
+  } = usePermanentDivisionOptions(permanentCountryId);
+  const { options: permanent_district_options } =
+    usePermanentDistrictOptions(permanentDivisionId);
 
-  // // Create present district options
-  // const { options: present_district_options } = useDistrictOption(presentDistrictObj, { skip: !presentDivisionId });
-
-  // // Create permanent country options
-  // const { options: permanent_country_options } = useCountryOption(permanentCountryObj);
-
-  // // Create permanent division options
-  // const { options: permanent_division_options } = useDivisionOption(permanentDivisionObj, { skip: !permanentCountryId });
-
-  // // Create permanent district options
-  // const { options: permanent_district_options } = useDistrictOption(permanentDistrictObj, { skip: !permanentDivisionId });
-
-  const { data, isLoading } = useGetAllDepartmentQuery({});
-  const { data: designations, isLoading: designationsLoading } =
-    useGetAllDesignationQuery({ ...queryObj });
-  const { data: countries, isLoading: countriesLoading } =
-    useGetAllcountrysQuery({});
-  const { data: divisions, isLoading: divisionsLoading } =
-    useGetAllDivisionQuery({ ...divisionObj });
-  const { data: districts, isLoading: districtsLoading } =
-    useGetAllDistrictQuery({ ...districtObj });
-
-  const departmentData = data?.data?.data;
-  const designationsData = designations?.data?.data;
-  const countriesData = countries?.data?.data;
-  const divisionsData = divisions?.data?.data;
-  const districtsData = districts?.data?.data;
-  console.log(districtsData);
-
-  const handleCreateSuperAdmin = async (values: FieldValues) => {
+  const handleCreateSuperAdmin: any = async (values: FieldValues) => {
+    console.log(values);
     const toastId = toast.loading("Pleace wait...");
     const data = modifyPayload(values);
     try {
       const res = await createSuperAdmin(data);
-      console.log(res);
+      console.log(res.data.success);
+      if (res.data.success) {
+        toast.success(res?.data?.message, { id: toastId, duration: 3000 });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -170,36 +101,7 @@ const CreateSuperAdminPage = () => {
       <CMForm
         onSubmit={handleCreateSuperAdmin}
         resolver={zodResolver(validationSchema)}
-        defaultValues={{
-          password: "",
-          admin: {
-            departmentId: "",
-            web_mail: "",
-            phone: "",
-            designationId: "",
-            name: "",
-            email: "",
-            gender: "",
-          },
-          present_address: {
-            countryId: "",
-            divisionId: "",
-            districtId: "",
-            address_line: "",
-          },
-          permanent_address: {
-            countryId: "",
-            divisionId: "",
-            districtId: "",
-            address_line: "",
-          },
-          social_links: {
-            facebook: "",
-            twitter: "",
-            linkedIn: "",
-            instagram: "",
-          },
-        }}
+        defaultValues={default_values}
       >
         <Stack direction={"row"} gap={4}>
           {/* 1st Pera */}
@@ -217,11 +119,11 @@ const CreateSuperAdminPage = () => {
           >
             <Typography variant="h5">Departmental Information</Typography>
             <Grid item xs={12} md={12}>
-              <CMDynamicSelect
+              <CMSelect
                 name="admin.departmentId"
                 fullWidth={true}
                 label="Department *"
-                options={departmentData ? departmentData : []}
+                items={department_options ? department_options : []}
                 setIdValue={setDepartmentId}
                 // idValue={departmentId}
               />
@@ -231,9 +133,8 @@ const CreateSuperAdminPage = () => {
                 name="admin.designationId"
                 fullWidth={true}
                 label="Designation *"
-                items={designationsData ? designationsData : []}
+                items={designation_options ? designation_options : []}
                 isDisabled={departmentId ? false : true}
-                setIdValue={setDesignationId}
               />
             </Grid>
             <Grid item xs={12} md={12}>
@@ -326,7 +227,7 @@ const CreateSuperAdminPage = () => {
                 name="present_address.countryId"
                 fullWidth={true}
                 label="Country *"
-                items={countriesData ? countriesData : []}
+                items={present_country_options ? present_country_options : []}
                 setIdValue={setPresentCountryId}
               />
             </Grid>
@@ -336,8 +237,10 @@ const CreateSuperAdminPage = () => {
                 fullWidth={true}
                 label="Division *"
                 setIdValue={setPresentDivisionId}
-                items={divisionsData ? divisionsData : []}
-                isDisabled={presentCountryId ? false : true}
+                items={present_division_options ? present_division_options : []}
+                isDisabled={
+                  presentCountryId || present_country_isLoading ? false : true
+                }
               />
             </Grid>
             <Grid item xs={12} md={12}>
@@ -345,9 +248,10 @@ const CreateSuperAdminPage = () => {
                 name="present_address.districtId"
                 fullWidth={true}
                 label="District *"
-                items={districtsData ? districtsData : []}
-                isDisabled={presentDivisionId ? false : true}
-                setIdValue={setPresentDistrictId}
+                items={present_district_options ? present_district_options : []}
+                isDisabled={
+                  presentDivisionId || present_division_isLoading ? false : true
+                }
               />
             </Grid>
 
@@ -378,7 +282,9 @@ const CreateSuperAdminPage = () => {
                 name="permanent_address.countryId"
                 fullWidth={true}
                 label="Country *"
-                items={countriesData ? countriesData : []}
+                items={
+                  permanent_country_options ? permanent_country_options : []
+                }
                 setIdValue={setPermanentCountryId}
               />
             </Grid>
@@ -388,8 +294,14 @@ const CreateSuperAdminPage = () => {
                 fullWidth={true}
                 label="Division *"
                 setIdValue={setPermanentDivisionId}
-                items={divisionsData ? divisionsData : []}
-                isDisabled={presentCountryId ? false : true}
+                items={
+                  permanent_division_options ? permanent_division_options : []
+                }
+                isDisabled={
+                  permanentCountryId || permanent_country_isLoading
+                    ? false
+                    : true
+                }
               />
             </Grid>
             <Grid item xs={12} md={12}>
@@ -397,9 +309,14 @@ const CreateSuperAdminPage = () => {
                 name="permanent_address.districtId"
                 fullWidth={true}
                 label="District *"
-                items={districtsData ? districtsData : []}
-                isDisabled={presentDivisionId ? false : true}
-                setIdValue={setPermanentDistrictId}
+                items={
+                  permanent_district_options ? permanent_district_options : []
+                }
+                isDisabled={
+                  permanentDivisionId || permanent_division_isLoading
+                    ? false
+                    : true
+                }
               />
             </Grid>
 
@@ -471,7 +388,7 @@ const CreateSuperAdminPage = () => {
             mt: "30px",
           }}
         >
-          Register
+          Create Super Admin
         </Button>
       </CMForm>
     </Box>

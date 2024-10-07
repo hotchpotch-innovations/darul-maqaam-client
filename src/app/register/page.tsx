@@ -13,13 +13,14 @@ import { useState } from "react";
 import CMSelect from "@/components/forms/CMSelect";
 import { registerClient } from "@/services/actions/registerUser";
 import { gender_options } from "@/constants/options";
-import { useClientTypeOption } from "../../../hooks/useClientTypeOptions";
+import { useClientTypeOption } from "../../hooks/useClientTypeOptions";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import { useGetSingleClientTypesQuery } from "@/redux/api/user/clientTypeApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
+import { TResponseDataObj } from "@/types";
 
 export const clientValidationSchema = z.object({
   owner_name: z.string().min(1, "please enter your name"),
@@ -66,7 +67,9 @@ const RegisterPage = () => {
     refetchOnFocus: !!clientType,
   });
 
-  const isCompany = data?.data?.identifier;
+  const is_company = data as TResponseDataObj;
+
+  const isCompany = is_company?.data?.identifier;
 
   if (isLoading) {
     return <Typography>Loading</Typography>;

@@ -60,3 +60,9 @@ export type IGenericErrorMessage = {
   path: string | number;
   message: string;
 };
+
+export type TResponseDataObj = {
+  data: Record<string, any>;
+  message: string;
+  success: boolean;
+};

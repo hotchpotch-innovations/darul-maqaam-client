@@ -6,7 +6,7 @@ import {
 } from "@/redux/api/user/userApi";
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Tooltip, Typography } from "@mui/material";
 import TitleDashboard from "@/components/dashboard/TitleDashboard";
 import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
 import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
@@ -72,7 +72,6 @@ const AllUserPage = () => {
       index: (currentPage - 1) * limit + (index + 1),
     })) || [];
 
-  // Define table columns
   const columns: GridColDef[] = [
     { field: "index", headerName: "SERIAL", width: 100 },
     { field: "gu_id", headerName: "USER ID", flex: 1 },
@@ -93,15 +92,17 @@ const AllUserPage = () => {
               justifyContent: "center",
             }}
           >
-            <Typography
-              sx={{
-                color: row?.status === "ACTIVATED" ? "red" : "green",
-                cursor: "pointer",
-              }}
-              onClick={() => handleStatus(row?.gu_id)}
-            >
-              {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
-            </Typography>
+            <Tooltip title={row?.status === "ACTIVATED" ? "Active" : "Block"}>
+              <Typography
+                sx={{
+                  color: row?.status === "ACTIVATED" ? "red" : "green",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleStatus(row?.gu_id)}
+              >
+                {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
+              </Typography>
+            </Tooltip>
           </Box>
         );
       },

@@ -10,9 +10,10 @@ import { AccountTypeOption } from "@/constants/options";
 
 type TSelectFilterProps = {
   setValue: React.Dispatch<React.SetStateAction<string>>;
-  value: string;
+  value: string | undefined;
   options: AccountTypeOption[];
-  filter_title?: string;
+  filter_title?: string | null;
+  isDisable?: boolean;
 };
 
 const SelectFilter = ({
@@ -20,11 +21,14 @@ const SelectFilter = ({
   value,
   options,
   filter_title,
+  isDisable,
 }: TSelectFilterProps) => {
   const handleChange = (event: SelectChangeEvent) => {
     const newValue = event.target.value;
     setValue(newValue);
   };
+
+  const modifyOptions = [{ value: "", label: "All" }, ...options];
 
   return (
     <Box>
@@ -41,9 +45,10 @@ const SelectFilter = ({
             id="demo-select-small"
             value={value}
             label="Select One"
+            disabled={isDisable}
             onChange={handleChange}
           >
-            {options?.map((item) => (
+            {modifyOptions?.map((item) => (
               <MenuItem key={item?.value} value={item?.value}>
                 {item?.label}
               </MenuItem>

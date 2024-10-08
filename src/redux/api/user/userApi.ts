@@ -12,6 +12,15 @@ const userApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.user],
     }),
 
+    getAllAdmin: build.query({
+      query: (paramObj) => ({
+        url: "/admin",
+        method: "GET",
+        params: paramObj,
+      }),
+      providesTags: [tagTypes.admin],
+    }),
+
     changeUserStatus: build.mutation({
       query: (id) => ({
         url: `/user/status/${id}`,
@@ -29,6 +38,24 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes?.user, tagTypes.admin],
     }),
+
+    createAdmin: build.mutation({
+      query: (data) => ({
+        url: "/user/create-admin",
+        method: "POST",
+        contentType: "multipart/form-data",
+        data,
+      }),
+      invalidatesTags: [tagTypes?.user, tagTypes.admin],
+    }),
+
+    deleteAdmin: build.mutation({
+      query: (id) => ({
+        url: `/admin/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes?.user, tagTypes.admin],
+    }),
   }),
   overrideExisting: false,
 });
@@ -37,4 +64,7 @@ export const {
   useGetAllUsersQuery,
   useChangeUserStatusMutation,
   useCreateSuperAdminMutation,
+  useCreateAdminMutation,
+  useGetAllAdminQuery,
+  useDeleteAdminMutation,
 } = userApi;

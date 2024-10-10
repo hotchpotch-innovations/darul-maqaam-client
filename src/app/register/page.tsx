@@ -41,24 +41,25 @@ const RegisterPage = () => {
   const [clientType, setClientType] = useState("");
 
   const handleRegister = async (values: FieldValues) => {
+    console.log(values);
     const toastId = toast.loading("Pleace wait...");
     const payload = modifyPayload(values);
-    try {
-      const res = await registerClient(payload);
-      if (res?.data?.id) {
-        toast.success(res?.message, { id: toastId, duration: 5000 });
-        const result = await userLogin({
-          password: values?.password,
-          email: values?.client?.email,
-        });
-        if (result?.data?.accessToken) {
-          storeUserInfo({ accessToken: result?.data?.accessToken });
-          router.push("/dashboard");
-        }
-      }
-    } catch (err: any) {
-      console.error(err.message);
-    }
+    // try {
+    //   const res = await registerClient(payload);
+    //   if (res?.data?.id) {
+    //     toast.success(res?.message, { id: toastId, duration: 5000 });
+    //     const result = await userLogin({
+    //       password: values?.password,
+    //       email: values?.client?.email,
+    //     });
+    //     if (result?.data?.accessToken) {
+    //       storeUserInfo({ accessToken: result?.data?.accessToken });
+    //       router.push("/dashboard");
+    //     }
+    //   }
+    // } catch (err: any) {
+    //   console.error(err.message);
+    // }
   };
 
   const { options: client_type_options, isLoading } = useClientTypeOption();

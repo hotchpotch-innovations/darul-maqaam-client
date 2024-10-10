@@ -28,17 +28,17 @@ import Image from "next/image";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import Loading from "@/components/ui/LoadingBar";
+import Link from "next/link";
 
 const ManagePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  console.log({ loading });
+
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
   const [departmentId, setDepartment] = useState("");
   const [designationId, setDesignation] = useState("");
 
-  console.log(searchTerm);
+  const path = "/dashboard/dev_super_admin/users/admin/manage";
 
   // Debounced search term to avoid too many API requests
   const debouncedTerm: any = useDebounced({
@@ -70,7 +70,6 @@ const ManagePage = () => {
     useDesignationOptions(departmentId);
   // Fetch Admin data using API hook
   const { data, isLoading } = useGetAllAdminQuery({ ...queryObj });
-  console.log({ isLoading });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
@@ -144,7 +143,8 @@ const ManagePage = () => {
                 color: "primary.main",
                 cursor: "pointer",
               }}
-              onClick={() => handleUpdate(row?.id)}
+              component={Link}
+              href={`${path}/${row?.id}`}
             >
               <EditIcon />
             </Typography>
@@ -180,18 +180,6 @@ const ManagePage = () => {
       toast.error(err?.message);
     }
   };
-  const handleUpdate = async (id: string) => {
-    console.log({ id });
-    // const toastId = toast.loading("Please wait...");
-    // try {
-    //   const res = await changeUserStatus(id);
-    //   if (res?.data?.success) {
-    //     toast.success(res?.data?.message, { id: toastId, duration: 5000 });
-    //   }
-    // } catch (err: any) {
-    //   toast.error(err?.message);
-    // }
-  };
 
   // Pagination handler
   const handlePaginationChange = (newPaginationModel: any) => {
@@ -201,7 +189,7 @@ const ManagePage = () => {
 
   return (
     <Box>
-      <TitleDashboard title="All Users List" />
+      <TitleDashboard title="Admins List" />
       <Box sx={{ m: "30px 60px" }}>
         <Stack direction="row" justifyContent="space-between" mb={2}>
           <Box

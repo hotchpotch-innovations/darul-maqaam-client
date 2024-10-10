@@ -1,4 +1,4 @@
-export const default_values = {
+export const create_admin_default_values = {
   password: "",
   admin: {
     departmentId: "",

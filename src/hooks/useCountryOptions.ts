@@ -9,8 +9,6 @@ export const useCountryOptions = () => {
 
   const country_data = countryDataObj?.data?.data || [];
 
-  console.log(country_data);
-
   // const data = countryData?.data?.data || null;
   let country_options = [];
   if (!!country_data) {

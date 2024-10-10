@@ -22,6 +22,7 @@ type TSelectProps = {
   required?: boolean;
   isDisabled?: boolean;
   setIdValue?: any;
+  defaultValue?: string;
 };
 
 const CMSelect = ({
@@ -33,6 +34,7 @@ const CMSelect = ({
   required,
   isDisabled,
   setIdValue,
+  defaultValue,
 }: TSelectProps) => {
   const { control } = useFormContext();
 
@@ -40,6 +42,7 @@ const CMSelect = ({
     <Controller
       control={control}
       name={name} // Ensure this is a unique field name
+      // defaultValue={defaultValue}
       render={({ field, fieldState: { error } }) => (
         <FormControl fullWidth error={!!error}>
           <InputLabel id={`${name}-select-label`}>{label}</InputLabel>
@@ -52,6 +55,7 @@ const CMSelect = ({
             fullWidth={fullWidth}
             required={required}
             disabled={isDisabled}
+            value={field?.value || defaultValue}
           >
             {items?.map((item, index) => (
               <MenuItem

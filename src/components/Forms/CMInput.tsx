@@ -36,6 +36,7 @@ const CMInput = ({
           variant="outlined"
           size={size}
           fullWidth={fullWidth}
+          placeholder={label}
           error={!!error?.message}
           helperText={error?.message}
         />

@@ -103,24 +103,6 @@ const ManagePage = () => {
       field: "isDeleted",
       headerName: "is_Deleted",
       flex: 0.5,
-      // renderCell: ({ row }) => (
-      //   <Box
-      //     sx={{
-      //       display: "flex",
-      //       alignItems: "center",
-      //       justifyContent: "center",
-      //     }}
-      //   >
-      //     <Typography
-      //       sx={{
-      //         color: row?.role === true ? "red" : "secondary.main",
-      //         cursor: "pointer",
-      //       }}
-      //     >
-      //       {row?.role === true ? "YES" : "NO"}
-      //     </Typography>
-      //   </Box>
-      // ),
     },
     {
       field: "Action",

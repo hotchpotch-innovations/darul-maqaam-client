@@ -49,6 +49,16 @@ const userApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes?.user, tagTypes.admin],
     }),
 
+    createEmployee: build.mutation({
+      query: (data) => ({
+        url: "/user/create-employee",
+        method: "POST",
+        contentType: "multipart/form-data",
+        data,
+      }),
+      invalidatesTags: [tagTypes?.user, tagTypes.admin],
+    }),
+
     deleteAdmin: build.mutation({
       query: (id) => ({
         url: `/admin/${id}`,
@@ -67,4 +77,5 @@ export const {
   useCreateAdminMutation,
   useGetAllAdminQuery,
   useDeleteAdminMutation,
+  useCreateEmployeeMutation,
 } = userApi;

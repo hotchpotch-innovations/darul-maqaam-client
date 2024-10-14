@@ -1,0 +1,387 @@
+"use client";
+
+import CMForm from "@/components/forms/CMForm";
+import CMInput from "@/components/forms/CMInput";
+import CMSelect from "@/components/forms/CMSelect";
+import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
+import { gender_options } from "@/constants/options";
+import { useCountryOptions } from "@/hooks/useCountryOptions";
+import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
+import { useDesignationOptions } from "@/hooks/useDesignationOptions";
+import { useDivisionOptions } from "@/hooks/useDivisionOptions";
+import { usePermanentCountryOptions } from "@/hooks/usePermanentCountryOptions";
+import { usePermanentDistrictOptions } from "@/hooks/usePermanentDistrictOptions";
+import { usePermanentDivisionOptions } from "@/hooks/usePermanentDivisionOptions";
+import { usePresentDistrictOptions } from "@/hooks/usePresentDistrictOptions";
+
+import {
+  useGetSingleEmployeeQuery,
+  useUpdateEmployeeMutation,
+} from "@/redux/api/user/employeeApi";
+import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
+import { removeNullValues } from "@/utils/removeNullValues";
+import { Button, Grid, Stack, Typography } from "@mui/material";
+
+import { useEffect, useState } from "react";
+import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
+
+type TProps = {
+  employee_id: string;
+};
+
+const UpdateEmployeeForm = ({ employee_id }: TProps) => {
+  const [departmentId, setDepartmentId] = useState(null);
+  const [presentCountryId, setPresentCountryId] = useState(null);
+
+  const [presentDivisionId, setPresentDivisionId] = useState(null);
+  console.log({ presentDivisionId });
+  const [presentDistrictId, setPresentDistrictId] = useState(null);
+
+  const [permanentCountryId, setPermanentCountryId] = useState(null);
+  const [permanentDivisionId, setPermanentDivisionId] = useState(null);
+
+  const [createSuperAdmin] = useCreateSuperAdminMutation();
+
+  const { options: department_options } = useDepartmentOptions();
+
+  const { options: designation_options } = useDesignationOptions(departmentId);
+  const {
+    options: present_country_options,
+    isLoading: present_country_isLoading,
+  } = useCountryOptions();
+
+  const {
+    options: present_division_options,
+    isLoading: present_division_isLoading,
+  } = useDivisionOptions(presentCountryId);
+
+  const { options: present_district_options } =
+    usePresentDistrictOptions(presentDivisionId);
+
+  const {
+    options: permanent_country_options,
+    isLoading: permanent_country_isLoading,
+  } = usePermanentCountryOptions();
+
+  const {
+    options: permanent_division_options,
+    isLoading: permanent_division_isLoading,
+  } = usePermanentDivisionOptions(permanentCountryId);
+
+  const { options: permanent_district_options } =
+    usePermanentDistrictOptions(permanentDivisionId);
+
+  // update api mutation
+  const [updateEmployee] = useUpdateEmployeeMutation();
+
+  // update handler
+  const handleUpdateEmployee = async (values: FieldValues) => {
+    const updatedEmployeeData = removeNullValues(values);
+    console.log({ updatedEmployeeData });
+    const toastId = toast.loading("Pleace wait...");
+
+    try {
+      const res = await updateEmployee({ id: employee_id, ...values });
+      console.log(res);
+      if (res.data.success) {
+        toast.success(res?.data?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!", { id: toastId, duration: 3000 });
+    }
+  };
+
+  const { data: prev_employee_info, isLoading } =
+    useGetSingleEmployeeQuery(employee_id);
+  const employee_data = prev_employee_info?.data;
+
+  useEffect(() => {
+    if (employee_data) {
+      setPresentDivisionId(employee_data?.presentAddress?.division?.id);
+      setPermanentDivisionId(employee_data?.permanentAddress?.division?.id);
+    }
+  }, [employee_data]);
+
+  if (isLoading) {
+    return <p className="text-center my-8">Loading...</p>;
+  }
+
+  const default_values = {
+    departmentId: employee_data?.department?.id,
+    web_mail: employee_data?.web_mail,
+    phone: employee_data?.phone,
+    designationId: employee_data?.designation?.id,
+    name: employee_data?.name,
+    gender: employee_data?.gender,
+
+    present_address: {
+      countryId: employee_data?.presentAddress?.country?.id,
+      divisionId: employee_data?.presentAddress?.division?.id,
+      districtId: employee_data?.presentAddress?.district?.id,
+      address_line: employee_data?.presentAddress?.address_line,
+    },
+
+    permanent_address: {
+      countryId: employee_data?.permanentAddress?.country?.id,
+      divisionId: employee_data?.permanentAddress?.division?.id,
+      districtId: employee_data?.permanentAddress?.district?.id,
+      address_line: employee_data?.permanentAddress?.address_line,
+    },
+
+    social_links: {
+      facebook: employee_data?.socialLink?.facebook,
+      twitter: employee_data?.socialLink?.twitter,
+      linkedIn: employee_data?.socialLink?.linkedIn,
+      instagram: employee_data?.socialLink?.instagram,
+    },
+  };
+
+  return (
+    <CMForm onSubmit={handleUpdateEmployee} defaultValues={default_values}>
+      <Stack direction={"row"} gap={4}>
+        {/* 1st Pera */}
+        <Grid
+          item
+          xs={3}
+          md={6}
+          container
+          gap={2}
+          sx={{
+            border: "1px solid lightgray",
+            boxShadow: 1,
+          }}
+          p={4}
+        >
+          <Typography variant="h5">Departmental Information</Typography>
+          <Grid item xs={12} md={12}>
+            <CMSelectWithWatch
+              name="departmentId"
+              label="Department *"
+              options={department_options}
+              setState={setDepartmentId}
+            />
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <CMSelect
+              name={"designationId"}
+              fullWidth={true}
+              label="Designation *"
+              items={designation_options}
+            />
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="web_mail"
+              label={"Web-Mail *"}
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>{" "}
+        </Grid>
+
+        {/* 2nd Pera */}
+        <Grid
+          item
+          xs={3}
+          md={6}
+          container
+          gap={2}
+          sx={{
+            border: "1px solid lightgray",
+            boxShadow: 1,
+          }}
+          p={4}
+        >
+          <Typography variant="h5">Basic Information</Typography>
+          <Grid item xs={12} md={12}>
+            <CMSelect
+              name="gender"
+              fullWidth={true}
+              label={"Gender *"}
+              items={gender_options}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="name"
+              label={"Name *"}
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="phone"
+              label={"phone *"}
+              type="text"
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>
+        </Grid>
+      </Stack>
+
+      <Stack direction={"row"} gap={4} mt={4}>
+        <Grid
+          item
+          xs={3}
+          md={4}
+          container
+          gap={2}
+          sx={{
+            border: "1px solid lightgray",
+            boxShadow: 1,
+          }}
+          p={2}
+        >
+          <Typography variant="h5">Present Address</Typography>
+          <Grid item xs={12} md={12}>
+            <CMSelectWithWatch
+              name="present_address.countryId"
+              label={"Country *"}
+              options={present_country_options}
+              setState={setPresentCountryId}
+            />
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <CMSelectWithWatch
+              name="present_address.divisionId"
+              label={"Division *"}
+              setState={setPresentDivisionId}
+              options={present_division_options}
+            />
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <CMSelectWithWatch
+              name="present_address.districtId"
+              label={"District *"}
+              setState={setPresentDistrictId}
+              options={present_district_options}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="present_address.address_line"
+              label={"Address Line *"}
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          xs={3}
+          md={4}
+          container
+          gap={2}
+          sx={{
+            border: "1px solid lightgray",
+            boxShadow: 1,
+          }}
+          p={2}
+        >
+          <Typography variant="h5">Permanent Address</Typography>
+          <Grid item xs={12} md={12}>
+            <CMSelectWithWatch
+              name="permanent_address.countryId"
+              label={"Country *"}
+              options={permanent_country_options}
+              setState={setPermanentCountryId}
+            />
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <CMSelectWithWatch
+              name="permanent_address.divisionId"
+              label={"Division *"}
+              setState={setPermanentDivisionId}
+              options={permanent_division_options}
+            />
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <CMSelect
+              name="permanent_address.districtId"
+              label={"District *"}
+              items={permanent_district_options}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="permanent_address.address_line"
+              label={"Address Line *"}
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>
+        </Grid>
+        {/**
+         * ======================================================
+         *              Four pera
+         * ========================================================
+         */}
+        <Grid
+          item
+          xs={3}
+          md={4}
+          container
+          gap={2}
+          sx={{
+            border: "1px solid lightgray",
+            boxShadow: 1,
+          }}
+          p={2}
+        >
+          <Typography variant="h5">Social Links</Typography>
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="social_links.facebook"
+              label={"Facebook *"}
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>{" "}
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="social_links.twitter"
+              label={"Twitter"}
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>{" "}
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="social_links.linkedIn"
+              label={"LinkedIn"}
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>{" "}
+          <Grid item xs={12} md={12}>
+            <CMInput
+              name="social_links.instagram"
+              label={"Instagram"}
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>
+        </Grid>
+      </Stack>
+      <Button
+        type="submit"
+        fullWidth
+        sx={{
+          mt: "30px",
+        }}
+      >
+        Update
+      </Button>
+    </CMForm>
+  );
+};
+
+export default UpdateEmployeeForm;

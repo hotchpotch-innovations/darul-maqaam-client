@@ -17,11 +17,13 @@ export const validationSchema = z.object({
   newPassword: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+type FormValues = z.infer<typeof validationSchema>;
+
 const ChangePasswordPage = () => {
   const router = useRouter();
   const [changePassword] = useChangePasswordMutation();
 
-  const handleChangePassword = async (values: FieldValues) => {
+  const handleChangePassword = async (values: FieldValues | FormValues) => {
     const toastId = toast.loading("Pleace wait...");
     try {
       const res = await changePassword(values).unwrap();

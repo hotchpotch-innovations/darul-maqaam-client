@@ -28,7 +28,7 @@ const SelectFilter = ({
     setValue(newValue);
   };
 
-  const modifyOptions = [{ value: "", label: "All" }, ...options];
+  const modifyOptions = [...options];
 
   return (
     <Box>

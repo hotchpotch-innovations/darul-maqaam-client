@@ -1,4 +1,5 @@
 "use client";
+
 import {
   FormControl,
   FormHelperText,
@@ -20,7 +21,10 @@ type TSelectProps = {
   size?: "small" | "medium";
   options?: TItems[] | null;
   required?: boolean;
-  setState?: React.Dispatch<React.SetStateAction<string>> | any;
+  setState:
+    | React.Dispatch<React.SetStateAction<null>>
+    | React.Dispatch<React.SetStateAction<string>>;
+  isDisabled?: boolean;
 };
 
 const CMSelectWithWatch = ({
@@ -30,6 +34,7 @@ const CMSelectWithWatch = ({
   size = "small",
   required,
   setState,
+  isDisabled,
 }: TSelectProps) => {
   const { control } = useFormContext();
   const method = useFormContext();
@@ -46,7 +51,7 @@ const CMSelectWithWatch = ({
   return (
     <Controller
       control={control}
-      name={name} // Ensure unique name here
+      name={name}
       render={({ field, fieldState: { error } }) => (
         <FormControl fullWidth error={!!error}>
           <InputLabel id={`${name}-select-label`}>{label}</InputLabel>
@@ -59,12 +64,7 @@ const CMSelectWithWatch = ({
             size={size}
             fullWidth
             required={required}
-            // onChange={(event) => {
-            //   {
-            //     setState(event.target.value); // Update accountType here independently
-            //   }
-            //   field.onChange(event); // Make sure to update form state
-            // }}
+            disabled={isDisabled}
           >
             {options?.map((item: TItems) => (
               <MenuItem key={item?.value} value={item?.value}>

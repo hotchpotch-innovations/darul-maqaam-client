@@ -3,8 +3,9 @@
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import CMSelect from "@/components/forms/CMSelect";
+import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import { gender_options } from "@/constants/options";
-import { default_values } from "@/constants/values";
+import { create_admin_default_values } from "@/constants/values";
 import {
   adminValidationSchema,
   present_addressValidationSchema,
@@ -18,10 +19,7 @@ import { usePermanentCountryOptions } from "@/hooks/usePermanentCountryOptions";
 import { usePermanentDistrictOptions } from "@/hooks/usePermanentDistrictOptions";
 import { usePermanentDivisionOptions } from "@/hooks/usePermanentDivisionOptions";
 import { usePresentDistrictOptions } from "@/hooks/usePresentDistrictOptions";
-import {
-  useCreateAdminMutation,
-  useCreateSuperAdminMutation,
-} from "@/redux/api/user/userApi";
+import { useCreateAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Grid, Stack, Typography } from "@mui/material";
@@ -40,20 +38,14 @@ export const validationSchema = z.object({
 });
 
 const CreateAdminFrom = () => {
-  const [departmentId, setDepartmentId] = useState<string | null>(null);
-  const [presentCountryId, setPresentCountryId] = useState<string | null>(null);
+  const [departmentId, setDepartmentId] = useState(null);
+  const [presentCountryId, setPresentCountryId] = useState(null);
 
-  const [presentDivisionId, setPresentDivisionId] = useState<string | null>(
-    null
-  );
+  const [presentDivisionId, setPresentDivisionId] = useState(null);
   console.log(presentDivisionId);
 
-  const [permanentCountryId, setPermanentCountryId] = useState<string | null>(
-    null
-  );
-  const [permanentDivisionId, setPermanentDivisionId] = useState<string | null>(
-    null
-  );
+  const [permanentCountryId, setPermanentCountryId] = useState(null);
+  const [permanentDivisionId, setPermanentDivisionId] = useState(null);
 
   const [createAdmin] = useCreateAdminMutation();
 
@@ -95,13 +87,14 @@ const CreateAdminFrom = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.success("something went wrong", { id: toastId, duration: 3000 });
     }
   };
   return (
     <CMForm
       onSubmit={handleCreateAdmin}
       resolver={zodResolver(validationSchema)}
-      defaultValues={default_values}
+      defaultValues={create_admin_default_values}
     >
       <Stack direction={"row"} gap={4}>
         {/* 1st Pera */}
@@ -119,13 +112,11 @@ const CreateAdminFrom = () => {
         >
           <Typography variant="h5">Departmental Information</Typography>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="admin.departmentId"
-              fullWidth={true}
               label="Department *"
-              items={department_options ? department_options : []}
-              setIdValue={setDepartmentId}
-              // idValue={departmentId}
+              options={department_options}
+              setState={setDepartmentId}
             />
           </Grid>
           <Grid item xs={12} md={12}>
@@ -133,7 +124,7 @@ const CreateAdminFrom = () => {
               name="admin.designationId"
               fullWidth={true}
               label="Designation *"
-              items={designation_options ? designation_options : []}
+              items={designation_options}
               isDisabled={departmentId ? false : true}
             />
           </Grid>
@@ -223,21 +214,19 @@ const CreateAdminFrom = () => {
         >
           <Typography variant="h5">Present Address</Typography>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="present_address.countryId"
-              fullWidth={true}
               label="Country *"
-              items={present_country_options ? present_country_options : []}
-              setIdValue={setPresentCountryId}
+              options={present_country_options}
+              setState={setPresentCountryId}
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="present_address.divisionId"
-              fullWidth={true}
               label="Division *"
-              setIdValue={setPresentDivisionId}
-              items={present_division_options ? present_division_options : []}
+              setState={setPresentDivisionId}
+              options={present_division_options}
               isDisabled={
                 presentCountryId || present_country_isLoading ? false : true
               }
@@ -248,7 +237,7 @@ const CreateAdminFrom = () => {
               name="present_address.districtId"
               fullWidth={true}
               label="District *"
-              items={present_district_options ? present_district_options : []}
+              items={present_district_options}
               isDisabled={
                 presentDivisionId || present_division_isLoading ? false : true
               }
@@ -278,23 +267,19 @@ const CreateAdminFrom = () => {
         >
           <Typography variant="h5">Permanent Address</Typography>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="permanent_address.countryId"
-              fullWidth={true}
               label="Country *"
-              items={permanent_country_options ? permanent_country_options : []}
-              setIdValue={setPermanentCountryId}
+              options={permanent_country_options}
+              setState={setPermanentCountryId}
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="permanent_address.divisionId"
-              fullWidth={true}
               label="Division *"
-              setIdValue={setPermanentDivisionId}
-              items={
-                permanent_division_options ? permanent_division_options : []
-              }
+              setState={setPermanentDivisionId}
+              options={permanent_division_options}
               isDisabled={
                 permanentCountryId || permanent_country_isLoading ? false : true
               }
@@ -305,9 +290,7 @@ const CreateAdminFrom = () => {
               name="permanent_address.districtId"
               fullWidth={true}
               label="District *"
-              items={
-                permanent_district_options ? permanent_district_options : []
-              }
+              items={permanent_district_options}
               isDisabled={
                 permanentDivisionId || permanent_division_isLoading
                   ? false
@@ -347,7 +330,6 @@ const CreateAdminFrom = () => {
             <CMInput
               name="social_links.facebook"
               label="Facebook *"
-              size="small"
               fullWidth={true}
             />
           </Grid>{" "}
@@ -384,7 +366,7 @@ const CreateAdminFrom = () => {
           mt: "30px",
         }}
       >
-        Create Super Admin
+        Create Admin
       </Button>
     </CMForm>
   );

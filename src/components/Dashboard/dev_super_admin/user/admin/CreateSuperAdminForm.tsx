@@ -3,6 +3,7 @@
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import CMSelect from "@/components/forms/CMSelect";
+import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import { gender_options } from "@/constants/options";
 import { create_admin_default_values } from "@/constants/values";
 import {
@@ -37,20 +38,14 @@ export const validationSchema = z.object({
 });
 
 const CreateSuperAdminForm = () => {
-  const [departmentId, setDepartmentId] = useState<string | null>(null);
-  const [presentCountryId, setPresentCountryId] = useState<string | null>(null);
+  const [departmentId, setDepartmentId] = useState(null);
+  const [presentCountryId, setPresentCountryId] = useState(null);
 
-  const [presentDivisionId, setPresentDivisionId] = useState<string | null>(
-    null
-  );
+  const [presentDivisionId, setPresentDivisionId] = useState(null);
   console.log(presentDivisionId);
 
-  const [permanentCountryId, setPermanentCountryId] = useState<string | null>(
-    null
-  );
-  const [permanentDivisionId, setPermanentDivisionId] = useState<string | null>(
-    null
-  );
+  const [permanentCountryId, setPermanentCountryId] = useState(null);
+  const [permanentDivisionId, setPermanentDivisionId] = useState(null);
 
   const [createSuperAdmin] = useCreateSuperAdminMutation();
 
@@ -115,13 +110,11 @@ const CreateSuperAdminForm = () => {
         >
           <Typography variant="h5">Departmental Information</Typography>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="admin.departmentId"
-              fullWidth={true}
               label="Department *"
-              items={department_options ? department_options : []}
-              setIdValue={setDepartmentId}
-              // idValue={departmentId}
+              options={department_options}
+              setState={setDepartmentId}
             />
           </Grid>
           <Grid item xs={12} md={12}>
@@ -219,21 +212,19 @@ const CreateSuperAdminForm = () => {
         >
           <Typography variant="h5">Present Address</Typography>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="present_address.countryId"
-              fullWidth={true}
               label="Country *"
-              items={present_country_options ? present_country_options : []}
-              setIdValue={setPresentCountryId}
+              options={present_country_options}
+              setState={setPresentCountryId}
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="present_address.divisionId"
-              fullWidth={true}
               label="Division *"
-              setIdValue={setPresentDivisionId}
-              items={present_division_options ? present_division_options : []}
+              setState={setPresentDivisionId}
+              options={present_division_options}
               isDisabled={
                 presentCountryId || present_country_isLoading ? false : true
               }
@@ -244,7 +235,7 @@ const CreateSuperAdminForm = () => {
               name="present_address.districtId"
               fullWidth={true}
               label="District *"
-              items={present_district_options ? present_district_options : []}
+              items={present_district_options}
               isDisabled={
                 presentDivisionId || present_division_isLoading ? false : true
               }
@@ -274,23 +265,19 @@ const CreateSuperAdminForm = () => {
         >
           <Typography variant="h5">Permanent Address</Typography>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="permanent_address.countryId"
-              fullWidth={true}
               label="Country *"
-              items={permanent_country_options ? permanent_country_options : []}
-              setIdValue={setPermanentCountryId}
+              options={permanent_country_options}
+              setState={setPermanentCountryId}
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            <CMSelectWithWatch
               name="permanent_address.divisionId"
-              fullWidth={true}
               label="Division *"
-              setIdValue={setPermanentDivisionId}
-              items={
-                permanent_division_options ? permanent_division_options : []
-              }
+              setState={setPermanentDivisionId}
+              options={permanent_division_options}
               isDisabled={
                 permanentCountryId || permanent_country_isLoading ? false : true
               }
@@ -301,9 +288,7 @@ const CreateSuperAdminForm = () => {
               name="permanent_address.districtId"
               fullWidth={true}
               label="District *"
-              items={
-                permanent_district_options ? permanent_district_options : []
-              }
+              items={permanent_district_options}
               isDisabled={
                 permanentDivisionId || permanent_division_isLoading
                   ? false
@@ -316,7 +301,6 @@ const CreateSuperAdminForm = () => {
             <CMInput
               name="permanent_address.address_line"
               label="Address Line *"
-              size="small"
               fullWidth={true}
             />
           </Grid>

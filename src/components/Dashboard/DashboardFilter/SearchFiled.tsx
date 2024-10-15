@@ -13,7 +13,7 @@ const SearchFiled = ({ setSearchText }: TSearchFiledProps) => {
     <div>
       <Stack>
         <Typography color={"primary.main"} align="center">
-          Search By Text
+          Search by Text
         </Typography>
         <TextField
           onChange={handleChange}

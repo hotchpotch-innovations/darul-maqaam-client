@@ -4,6 +4,7 @@ type TGenderOptions = {
 };
 
 export const gender_options: TGenderOptions[] = [
+  { value: "", label: "ALL" },
   { value: "MALE", label: "MALE" },
   { value: "FEMALE", label: "FEMALE" },
   { value: "OTHERS", label: "OTHERS" },

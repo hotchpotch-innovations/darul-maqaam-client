@@ -4,12 +4,20 @@ import { useGetAllDesignationQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 type TQueryObj = {
   departmentId?: string;
+  limit?: number;
+  page?: number;
 };
 
-export const useDesignationOptions = (departmentId: string | null) => {
+export const useDesignationOptions = (
+  departmentId: string | null,
+  limit?: number,
+  page?: number
+) => {
   const queryObj: TQueryObj = {};
   if (departmentId) {
     queryObj["departmentId"] = departmentId;
+    queryObj["limit"] = limit;
+    queryObj["page"] = page;
   }
   const { data, isLoading } = useGetAllDesignationQuery({
     ...queryObj,

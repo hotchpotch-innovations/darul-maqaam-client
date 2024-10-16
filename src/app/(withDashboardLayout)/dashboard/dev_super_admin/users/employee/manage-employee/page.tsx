@@ -16,7 +16,10 @@ import { useDebounced } from "@/redux/hooks";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import Image from "next/image";
-import { useGetAllEmployeeQuery } from "@/redux/api/user/employeeApi";
+import {
+  useDeleteEmployeeMutation,
+  useGetAllEmployeeQuery,
+} from "@/redux/api/user/employeeApi";
 
 type TQueryObj = {
   designationId?: string;
@@ -144,24 +147,24 @@ const EmployeeManagePage = () => {
   ];
 
   // Handle user status change
-  const [deleteAdmin] = useDeleteAdminMutation();
+  const [deleteEmployee] = useDeleteEmployeeMutation();
 
   const handleDelete = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await deleteAdmin(id);
+      const res = await deleteEmployee(id);
       if (res?.data?.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 5000 });
       }
     } catch (err: any) {
-      toast.error(err?.message);
+      toast.error(err?.message, { id: toastId, duration: 5000 });
     }
   };
 
   // Pagination handler
   const handlePaginationChange = (newPaginationModel: any) => {
-    setCurrentPage(newPaginationModel.page + 1); // DataGrid uses 0-based indexing, adjust to 1-based
+    setCurrentPage(newPaginationModel.page + 1);
     setLimit(newPaginationModel.pageSize);
   };
   return (

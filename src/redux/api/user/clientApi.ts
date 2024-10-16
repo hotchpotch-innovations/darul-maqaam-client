@@ -29,13 +29,21 @@ const clientApi = baseApi.injectEndpoints({
         const { id, ...payload } = data;
         console.log({ payload });
         return {
-          url: `/alient/${id}`,
+          url: `/client/${id}`,
           method: "PATCH",
           contentType: "application/json",
           data: payload,
         };
       },
       invalidatesTags: [tagTypes.client],
+    }),
+
+    deleteClient: build.mutation({
+      query: (id) => ({
+        url: `/client/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes?.user, tagTypes.client],
     }),
   }),
   overrideExisting: false,
@@ -45,4 +53,5 @@ export const {
   useGetAllClientQuery,
   useGetSingleClientQuery,
   useUpdateClientMutation,
+  useDeleteClientMutation,
 } = clientApi;

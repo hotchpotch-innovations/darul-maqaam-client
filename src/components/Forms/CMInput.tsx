@@ -8,6 +8,7 @@ type TInputProps = {
   size?: "small" | "medium";
   fullWidth?: boolean;
   sx?: SxProps;
+  defaultValue?: string;
 };
 
 const CMInput = ({
@@ -17,6 +18,7 @@ const CMInput = ({
   size = "small",
   fullWidth,
   sx,
+  defaultValue,
 }: TInputProps) => {
   const { control } = useFormContext();
   return (
@@ -39,6 +41,7 @@ const CMInput = ({
           placeholder={label}
           error={!!error?.message}
           helperText={error?.message}
+          defaultValue={defaultValue}
         />
       )}
     />

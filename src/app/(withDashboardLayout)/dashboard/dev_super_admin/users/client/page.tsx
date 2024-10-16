@@ -18,10 +18,12 @@ import { useDebounced } from "@/redux/hooks";
 import React from "react";
 import Image from "next/image";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
-import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import Loading from "@/components/ui/LoadingBar";
 import Link from "next/link";
-import { useGetAllClientQuery } from "@/redux/api/user/clientApi";
+import {
+  useDeleteClientMutation,
+  useGetAllClientQuery,
+} from "@/redux/api/user/clientApi";
 import { gender_options } from "@/constants/options";
 import { useClientTypeOption } from "@/hooks/useClientTypeOptions";
 
@@ -45,7 +47,7 @@ const ClientDevSuperPage = () => {
   const [clientType, setClientType] = useState("");
   const [gender, setGender] = useState("");
 
-  const path = "/dashboard/dev_super_admin/users/admin/manage";
+  const path = "/dashboard/dev_super_admin/users/client/update";
 
   // Debounced search term to avoid too many API requests
   const debouncedTerm: any = useDebounced({
@@ -162,18 +164,18 @@ const ClientDevSuperPage = () => {
   ];
 
   // Handle user status change
-  const [deleteAdmin] = useDeleteAdminMutation();
+  const [deleteClient] = useDeleteClientMutation();
 
   const handleDelete = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await deleteAdmin(id);
+      const res = await deleteClient(id);
       if (res?.data?.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 5000 });
       }
     } catch (err: any) {
-      toast.error(err?.message);
+      toast.error(err?.message, { id: toastId, duration: 5000 });
     }
   };
 

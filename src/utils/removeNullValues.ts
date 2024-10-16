@@ -5,8 +5,14 @@ export const removeNullValues = (obj: any) => {
       removeNullValues(obj[key]);
     }
     // Remove property if value is null
-    if (obj[key] === null) {
+    if (obj[key] === null || undefined) {
       delete obj[key];
     }
   });
+};
+
+export const removeNullFields = (obj: any) => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => value !== null)
+  );
 };

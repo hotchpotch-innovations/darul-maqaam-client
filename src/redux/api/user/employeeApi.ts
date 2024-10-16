@@ -38,6 +38,14 @@ const employeeApi = baseApi.injectEndpoints({
       },
       invalidatesTags: [tagTypes.employee],
     }),
+
+    deleteEmployee: build.mutation({
+      query: (id) => ({
+        url: `/employee/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes.employee],
+    }),
   }),
   overrideExisting: false,
 });
@@ -46,4 +54,5 @@ export const {
   useGetAllEmployeeQuery,
   useGetSingleEmployeeQuery,
   useUpdateEmployeeMutation,
+  useDeleteEmployeeMutation,
 } = employeeApi;

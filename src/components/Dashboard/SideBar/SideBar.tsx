@@ -2,11 +2,12 @@ import { Box, List, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import logoImage from "../../../../public/images/mainLogo.png";
 import Link from "next/link";
-import { drawerItems } from "@/utils/drawerItems";
+
 import { TUserRole } from "@/types/common";
 import SidebarItem from "./SidebarItem";
 import { useEffect, useState } from "react";
 import { getUserInfo } from "@/services/auth.services";
+import { drawerItems } from "@/utils/drawerItems";
 
 const Sidebar = () => {
   const [userRole, setUserRole] = useState("");
@@ -20,6 +21,7 @@ const Sidebar = () => {
   if (loading) {
     return <Typography> Loading...</Typography>;
   }
+
   return (
     <Box
       sx={{

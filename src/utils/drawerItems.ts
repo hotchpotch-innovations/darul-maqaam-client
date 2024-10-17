@@ -89,12 +89,12 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
                 },
                 {
                   title: "Divisition",
-                  parentPath: `dashboard/${role}/users/admin`,
-                  path: "divisition",
+                  parentPath: `dashboard/${role}/users/settings/address`,
+                  path: "division",
                 },
                 {
                   title: "District",
-                  parentPath: `dashboard/${role}/users/admin`,
+                  parentPath: `dashboard/${role}/users/settings/address`,
                   path: "district",
                 },
               ],
@@ -135,12 +135,12 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
                 },
                 {
                   title: "Divisition",
-                  parentPath: `dashboard/${role}/users/admin`,
-                  path: "divisition",
+                  parentPath: `dashboard/${role}/users/settings/address`,
+                  path: "division",
                 },
                 {
                   title: "District",
-                  parentPath: `dashboard/${role}/users/admin`,
+                  parentPath: `dashboard/${role}/users/settings/address`,
                   path: "district",
                 },
               ],

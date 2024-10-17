@@ -1,9 +1,12 @@
+import ConutryTable from "@/components/dashboard/dev_super_admin/settings/address/country/CountryTable";
+import TitleDashboard from "@/components/dashboard/TitleDashboard";
 import { Box, Typography } from "@mui/material";
 
 const CountryPage = () => {
   return (
     <Box>
-      <Typography variant="h3"> This is Country Page</Typography>
+      <TitleDashboard title="Country Settings" />
+      <ConutryTable />
     </Box>
   );
 };

@@ -2,23 +2,17 @@
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
 import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
-import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
-import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import Image from "next/image";
-import {
-  useDeleteEmployeeMutation,
-  useGetAllEmployeeQuery,
-} from "@/redux/api/user/employeeApi";
+import { useDeleteEmployeeMutation } from "@/redux/api/user/employeeApi";
+import { useGetAllCountryQuery } from "@/redux/api/user/settings/countryApi";
 
 type TQueryObj = {
   designationId?: string;
@@ -28,13 +22,13 @@ type TQueryObj = {
   limit?: number;
 };
 
-const EmployeeManagePage = () => {
+const ConutryTable = () => {
+  const path_create_country =
+    "/dashboard/dev_super_admin/users/settings/address/country/create";
   const [currentPage, setCurrentPage] = useState(1);
 
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
-  const [departmentId, setDepartment] = useState("");
-  const [designationId, setDesignation] = useState("");
 
   const path =
     "/dashboard/dev_super_admin/users/employee/manage-employee/update";
@@ -55,24 +49,12 @@ const EmployeeManagePage = () => {
     queryObj["searchTerm"] = debouncedTerm;
   }
 
-  if (departmentId) {
-    queryObj["departmentId"] = departmentId;
-  }
-  if (designationId) {
-    queryObj["designationId"] = designationId;
-  }
-
-  const { options: department_options, isLoading: department_isLoading } =
-    useDepartmentOptions();
-
-  const { options: designation_options, isLoading: designation_isLoading } =
-    useDesignationOptions(departmentId);
-  // Fetch Admin data using API hook
-  const { data, isLoading } = useGetAllEmployeeQuery({ ...queryObj });
+  // get All Country data
+  const { data, isLoading } = useGetAllCountryQuery({ ...queryObj });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    data?.data?.map((row: any, index: number) => ({
+    data?.data?.data?.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -84,24 +66,35 @@ const EmployeeManagePage = () => {
       field: "profile_image",
       headerName: "IMAGE",
       flex: 0.5,
+      headerAlign: "center", // Horizontally center the header
+      align: "center",
+
       renderCell: (params) => (
-        <Image
-          src={params.row.profile_image}
-          alt="profile"
-          width={50}
-          height={50}
-        />
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image src={params.row.symbol} alt="profile" width={50} height={50} />
+        </Box>
       ),
     },
-    { field: "gu_id", headerName: "USER ID", flex: 1 },
+
     { field: "name", headerName: "NAME", flex: 1 },
-    { field: "email", headerName: "EMAIL", flex: 1.5 },
-    { field: "phone", headerName: "PHONE", flex: 1 },
+    { field: "currency", headerName: "CURRENCY", flex: 1 },
     {
-      field: "isDeleted",
-      headerName: "is_Deleted",
-      flex: 0.5,
+      field: "iso3",
+      headerName: "ISO3",
+      flex: 1,
     },
+
+    { field: "code", headerName: "CODE", flex: 1 },
+    { field: "phone_code", headerName: "PHONE CODE", flex: 1 },
+
+    { field: "status", headerName: "STATUS", flex: 1 },
     {
       field: "Action",
       headerName: "ACTIONS",
@@ -169,7 +162,6 @@ const EmployeeManagePage = () => {
   };
   return (
     <Box>
-      <TitleDashboard title="Manage Employee" />
       <Box sx={{ m: "30px 60px" }}>
         <Stack direction="row" justifyContent="space-between" mb={2}>
           <Box
@@ -178,20 +170,16 @@ const EmployeeManagePage = () => {
               gap: "30px",
             }}
           >
-            <SelectFilter
-              filter_title="Search by department"
-              options={department_options}
-              value={departmentId}
-              setValue={setDepartment}
-            />
-
-            <SelectFilter
-              filter_title="Search by designation"
-              options={designation_options}
-              value={designationId}
-              setValue={setDesignation}
-              isDisable={departmentId || designation_isLoading ? false : true}
-            />
+            {/* Create Country Section */}
+            <Button
+              component={Link}
+              href={path_create_country}
+              sx={{
+                maxHeight: "40px",
+              }}
+            >
+              Create
+            </Button>
           </Box>
           <SearchFiled setSearchText={setSearchTerm} />
         </Stack>
@@ -218,4 +206,4 @@ const EmployeeManagePage = () => {
   );
 };
 
-export default EmployeeManagePage;
+export default ConutryTable;

@@ -2,22 +2,17 @@
 
 import TitleDashboard from "@/components/dashboard/TitleDashboard";
 import { Box } from "@mui/material";
-
-import { useDeleteAdminMutation } from "@/redux/api/user/userApi";
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Stack, Tooltip, Typography } from "@mui/material";
-
 import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
 import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import { useDebounced } from "@/redux/hooks";
-
 import React from "react";
 import Image from "next/image";
-import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import Loading from "@/components/ui/LoadingBar";
 import Link from "next/link";
 import {
@@ -71,9 +66,6 @@ const ClientDevSuperPage = () => {
   if (gender) {
     queryObj["gender"] = gender;
   }
-
-  const { options: department_options, isLoading: department_isLoading } =
-    useDepartmentOptions();
 
   const { options: client_type_options, isLoading: designation_isLoading } =
     useClientTypeOption();

@@ -100,18 +100,18 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               ],
             },
             {
-              title: "department",
-              parentPath: `dashboard/${role}/users/admin`,
-              path: "Department",
+              title: "Department",
+              parentPath: `dashboard/${role}/users/settings`,
+              path: "department",
             },
             {
               title: "Designation",
-              parentPath: `dashboard/${role}/users/admin`,
+              parentPath: `dashboard/${role}/users/settings`,
               path: "designation",
             },
             {
               title: "Clinet Type",
-              parentPath: `dashboard/${role}/users/admin`,
+              parentPath: `dashboard/${role}/users/settings`,
               path: "client-type",
             },
           ],
@@ -121,7 +121,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           is_parent: true,
         },
         {
-          title: "Settings",
+          title: "Contant Settings",
           icon: DashboardIcon,
           child: [
             {
@@ -147,17 +147,17 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
             },
             {
               title: "department",
-              parentPath: `dashboard/${role}/users/admin`,
+              parentPath: `dashboard/${role}/users/settings`,
               path: "Department",
             },
             {
               title: "Designation",
-              parentPath: `dashboard/${role}/users/admin`,
+              parentPath: `dashboard/${role}/users/settings`,
               path: "designation",
             },
             {
               title: "Clinet Type",
-              parentPath: `dashboard/${role}/users/admin`,
+              parentPath: `dashboard/${role}/users/settings`,
               path: "client-type",
             },
           ],

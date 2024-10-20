@@ -31,6 +31,12 @@ const SidebarItem = ({ item }: TItemProps) => {
     return parts[parts.length - 1];
   };
 
+  const getLastSecondOfUrl = (url: string): string => {
+    const parts = url.split("/").filter(Boolean);
+    return parts[parts.length - 2];
+  };
+
+  const lastSecond = getLastSecondOfUrl(pathName);
   const lastPart = getLastPartOfUrl(pathName);
 
   return (

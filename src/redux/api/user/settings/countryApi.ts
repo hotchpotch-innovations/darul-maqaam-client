@@ -23,23 +23,38 @@ const countryApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.country],
     }),
 
-    // updateAdmin: build.mutation({
-    //   query: (data) => {
-    //     console.log(data);
+    updateCountry: build.mutation({
+      query: (data) => {
+        console.log(data);
 
-    //     const { id, ...payload } = data;
-    //     console.log({ payload });
-    //     return {
-    //       url: `/admin/${id}`,
-    //       method: "PATCH",
-    //       contentType: "application/json",
-    //       data: payload,
-    //     };
-    //   },
-    //   invalidatesTags: [tagTypes.admin],
-    // }),
+        const { id, ...payload } = data;
+        console.log({ payload });
+        return {
+          url: `/system/address/country/${id}`,
+          method: "PATCH",
+          contentType: "application/json",
+          data: payload,
+        };
+      },
+      invalidatesTags: [tagTypes.country],
+    }),
+
+    deleteCountry: build.mutation({
+      query: (id) => {
+        return {
+          url: `/system/address/country/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: [tagTypes.country],
+    }),
   }),
-  //   overrideExisting: false,
+  overrideExisting: false,
 });
 
-export const { useGetAllCountryQuery, useCreateCountryMutation } = countryApi;
+export const {
+  useGetAllCountryQuery,
+  useCreateCountryMutation,
+  useDeleteCountryMutation,
+  useUpdateCountryMutation,
+} = countryApi;

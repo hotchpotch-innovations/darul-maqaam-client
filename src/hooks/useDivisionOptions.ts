@@ -7,7 +7,7 @@ type TQueryObj = {
   countryId?: string;
 };
 
-export const useDivisionOptions = (Id: string | null) => {
+export const useDivisionOptions = (Id?: string | null) => {
   const queryObj: TQueryObj = {};
   if (Id) {
     queryObj["countryId"] = Id;

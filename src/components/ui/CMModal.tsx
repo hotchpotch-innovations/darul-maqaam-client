@@ -1,11 +1,6 @@
 "use client";
 
-import { Box, Button, Grid, Modal, Typography } from "@mui/material";
-import CMForm from "../forms/CMForm";
-import CMInput from "../forms/CMInput";
-import { FieldValues } from "react-hook-form";
-import { useUpdateDepartmentMutation } from "@/redux/api/user/settings/departmentApi";
-import { toast } from "sonner";
+import { Box, Modal } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -28,7 +23,7 @@ type CMModalPropes = {
   children: React.ReactNode;
 };
 
-const CMModal = ({ handleClose, open, id, children }: CMModalPropes) => {
+const CMModal = ({ handleClose, open, children }: CMModalPropes) => {
   return (
     <Box>
       <Modal

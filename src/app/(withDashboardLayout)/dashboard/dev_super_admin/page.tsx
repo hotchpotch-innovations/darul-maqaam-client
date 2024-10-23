@@ -1,8 +1,11 @@
+import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import { Box } from "@mui/material";
+
 const DevSuperAdminPage = () => {
   return (
-    <div>
-      <h1>This is Dev-Super-Admin</h1>
-    </div>
+    <Box>
+      <TitleDashboard title="This is Dev-Super-Admin Panel" />
+    </Box>
   );
 };
 

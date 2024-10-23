@@ -40,6 +40,21 @@ export const account_type_options: AccountTypeOption[] = [
   },
 ];
 
+export const super_admin_account_type_options: AccountTypeOption[] = [
+  {
+    label: "All",
+    value: "",
+  },
+  {
+    label: "Public",
+    value: "PUBLIC",
+  },
+  {
+    label: "Private",
+    value: "PRIVATE",
+  },
+];
+
 export const dev_super_admin_user_role_options: AccountTypeOption[] = [
   {
     label: "All",
@@ -52,6 +67,25 @@ export const dev_super_admin_user_role_options: AccountTypeOption[] = [
   {
     label: "Super Admin",
     value: "SUPER_ADMIN",
+  },
+  {
+    label: "Admin",
+    value: "ADMIN",
+  },
+  {
+    label: "Employee",
+    value: "EMPLOYEE",
+  },
+  {
+    label: "Client",
+    value: "CLIENT",
+  },
+];
+
+export const super_admin_user_role_options: AccountTypeOption[] = [
+  {
+    label: "All",
+    value: "",
   },
   {
     label: "Admin",

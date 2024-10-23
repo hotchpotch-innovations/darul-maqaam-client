@@ -165,34 +165,131 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
       );
       break;
 
+    case USER_ROLE.SUPER_ADMIN:
+      roleMenus.push(
+        {
+          title: "Dashboard",
+          path: `${role}`,
+          icon: DashboardIcon,
+        },
+        {
+          title: "User Management",
+          is_parent: true,
+        },
+        {
+          title: "All Users",
+          management: "users",
+          path: `${role}/${management}/all-users`,
+          icon: GroupIcon,
+        },
+        {
+          title: "Admin",
+          icon: DashboardIcon,
+          child: [
+            {
+              title: "Create Admin",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "create-admin",
+            },
+            {
+              title: "Manage",
+              parentPath: `dashboard/${role}/users/admin`,
+              path: "manage",
+            },
+          ],
+        },
+        {
+          title: "Employee",
+          icon: GroupIcon,
+          child: [
+            {
+              title: "Create Employee",
+              parentPath: `dashboard/${role}/users/employee`,
+              path: "create-employee",
+            },
+            {
+              title: "Manage",
+              parentPath: `dashboard/${role}/users/employee`,
+              path: "manage-employee",
+            },
+          ],
+        },
+        {
+          title: "Client",
+          path: `${role}/users/client`,
+          icon: GroupIcon,
+        },
+        {
+          title: "Settings",
+          icon: DashboardIcon,
+          child: [
+            {
+              title: "Department",
+              parentPath: `dashboard/${role}/users/settings`,
+              path: "department",
+            },
+            {
+              title: "Designation",
+              parentPath: `dashboard/${role}/users/settings`,
+              path: "designation",
+            },
+          ],
+        },
+        {
+          title: "Contant Management",
+          is_parent: true,
+        },
+        {
+          title: "Contant Settings",
+          icon: DashboardIcon,
+          child: [
+            {
+              title: "Address",
+              icon: DashboardIcon,
+              child: [
+                {
+                  title: "Country",
+                  parentPath: `dashboard/${role}/users/settings/address`,
+                  path: "country",
+                },
+                {
+                  title: "Divisition",
+                  parentPath: `dashboard/${role}/users/settings/address`,
+                  path: "division",
+                },
+                {
+                  title: "District",
+                  parentPath: `dashboard/${role}/users/settings/address`,
+                  path: "district",
+                },
+              ],
+            },
+            {
+              title: "department",
+              parentPath: `dashboard/${role}/users/settings`,
+              path: "Department",
+            },
+            {
+              title: "Designation",
+              parentPath: `dashboard/${role}/users/settings`,
+              path: "designation",
+            },
+            {
+              title: "Clinet Type",
+              parentPath: `dashboard/${role}/users/settings`,
+              path: "client-type",
+            },
+          ],
+        }
+      );
+      break;
+
     case USER_ROLE.ADMIN:
       roleMenus.push(
         {
           title: "Dashboard",
           path: `${role}/dashboard`,
           icon: DashboardIcon,
-        },
-        {
-          title: "Specialties",
-          path: `${role}/specialties`,
-          icon: TryIcon,
-          child: [
-            { title: "Admin 1", path: "admin1" },
-            { title: "Admin 2", path: "admin2" },
-            {
-              title: "Admin 3",
-              path: "admin3",
-              child: [
-                { title: "Three 2", path: "three2" },
-                { title: "Three 3", path: "three3" },
-              ],
-            },
-          ],
-        },
-        {
-          title: "Doctors",
-          path: `${role}/doctors`,
-          icon: MedicalInformationIcon,
         },
         {
           title: "Schedules",
@@ -203,15 +300,9 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           title: "Appointments",
           path: `${role}/appointments`,
           icon: BookOnlineIcon,
-        },
-        {
-          title: "Reviews",
-          path: `${role}/reviews`,
-          icon: ReviewsIcon,
         }
       );
       break;
-
     case USER_ROLE.EMPLOYEE:
       roleMenus.push(
         {

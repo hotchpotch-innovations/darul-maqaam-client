@@ -10,10 +10,11 @@ import CMInput from "@/components/forms/CMInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userLogin } from "@/services/actions/userLogin";
-import { getUserInfo, storeUserInfo } from "@/services/auth.services";
+import { getUserInfo } from "@/services/auth.services";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { setAccessTokenCookie } from "@/services/actions/setAccessTokenCookie";
+import { storeUserInfo } from "@/services/auth.Services.Loacl";
 
 export const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
@@ -37,7 +38,8 @@ const LoginPage = () => {
         toast.success(res?.message, { id: toastId, duration: 5000 });
         storeUserInfo({ accessToken: res?.data?.accessToken });
 
-        const userIfno = getUserInfo();
+        const userIfno: any = await getUserInfo();
+        // console.log({ userIfno });
 
         if (userIfno?.role != "client" && res?.data?.needPasswordChange) {
           router.push("/authentication/change-password");

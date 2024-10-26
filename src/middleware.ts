@@ -14,18 +14,20 @@ const roleBasedPrivateRoutes = {
   ADMIN: [/^\/dashboard\/admin/],
   CLIENT: [/^\/dashboard\/client/],
 };
-
+console.log({ authRoute });
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const accessToken = await cookies().get(authkey)?.value;
 
+  console.log({ accessToken });
+
   if (!accessToken) {
     if (authRoute.includes(pathname)) {
       return NextResponse.next();
     } else {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 

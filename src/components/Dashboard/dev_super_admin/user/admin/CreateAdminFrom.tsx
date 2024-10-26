@@ -23,6 +23,7 @@ import { useCreateAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Grid, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
@@ -38,6 +39,7 @@ export const validationSchema = z.object({
 });
 
 const CreateAdminFrom = () => {
+  const router = useRouter();
   const [departmentId, setDepartmentId] = useState(null);
   const [presentCountryId, setPresentCountryId] = useState(null);
 
@@ -84,6 +86,7 @@ const CreateAdminFrom = () => {
       console.log(res.data.success);
       if (res.data.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 3000 });
+        router.push("/dashboard/dev_super_admin/users/admin/manage");
       }
     } catch (error) {
       console.log(error);

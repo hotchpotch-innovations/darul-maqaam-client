@@ -2,16 +2,15 @@ import { USER_ROLE } from "@/constants/role";
 import { IDrawerItems, TUserRole } from "@/types/common";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
-import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import ReviewsIcon from "@mui/icons-material/Reviews";
-import TryIcon from "@mui/icons-material/Try";
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 export const drawerItems = (role: TUserRole): IDrawerItems[] => {
   const management = "users";
+
+  console.log({ role });
 
   const roleMenus: IDrawerItems[] = [];
   switch (role) {

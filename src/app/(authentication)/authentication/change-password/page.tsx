@@ -10,6 +10,7 @@ import { useChangePasswordMutation } from "@/redux/api/auth/authApi"; // Import 
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import KeyIcon from "@mui/icons-material/Key";
+import { logOutUser } from "@/services/actions/logoutUser";
 
 // Validation schema using Zod
 export const validationSchema = z.object({
@@ -28,7 +29,7 @@ const ChangePasswordPage = () => {
     try {
       const res = await changePassword(values).unwrap();
       toast.success(res?.message, { id: toastId, duration: 5000 });
-      // logoutUser();
+      logOutUser();
       router.push("/login");
     } catch (err: any) {
       toast.error(err?.message, { id: toastId, duration: 5000 });

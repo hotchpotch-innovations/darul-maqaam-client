@@ -22,7 +22,8 @@ import { usePresentDistrictOptions } from "@/hooks/usePresentDistrictOptions";
 import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
@@ -38,6 +39,8 @@ export const validationSchema = z.object({
 });
 
 const CreateSuperAdminForm = () => {
+  const router = useRouter();
+
   const [departmentId, setDepartmentId] = useState(null);
   const [presentCountryId, setPresentCountryId] = useState(null);
 
@@ -82,6 +85,7 @@ const CreateSuperAdminForm = () => {
       const res = await createSuperAdmin(data);
 
       if (res.data.success) {
+        router.push("/dashboard/dev_super_admin/users/admin/manage");
         toast.success(res?.data?.message, { id: toastId, duration: 3000 });
       }
     } catch (error) {

@@ -40,12 +40,14 @@ const userApi = baseApi.injectEndpoints({
     }),
 
     createAdmin: build.mutation({
-      query: (data) => ({
-        url: "/user/create-admin",
-        method: "POST",
-        contentType: "multipart/form-data",
-        data,
-      }),
+      query: (data) => {
+        return {
+          url: "/user/create-admin",
+          method: "POST",
+          contentType: "multipart/form-data",
+          data,
+        };
+      },
       invalidatesTags: [tagTypes?.user, tagTypes.admin],
     }),
 

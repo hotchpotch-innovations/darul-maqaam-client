@@ -21,6 +21,7 @@ import { usePermanentDivisionOptions } from "@/hooks/usePermanentDivisionOptions
 import { usePresentDistrictOptions } from "@/hooks/usePresentDistrictOptions";
 import { useCreateAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { removeNullFields } from "@/utils/removeNullValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -78,15 +79,15 @@ const CreateAdminFrom = () => {
     usePermanentDistrictOptions(permanentDivisionId);
 
   const handleCreateAdmin = async (values: FieldValues) => {
-    console.log(values);
-    const toastId = toast.loading("Pleace wait...");
-    const data = modifyPayload(values);
+    const removeNullValue = removeNullFields(values);
+    console.log({ removeNullValue });
+    const toastId = toast.loading("Pleace wait...", { duration: 3000 });
+    const data = modifyPayload(removeNullValue);
     try {
       const res = await createAdmin(data);
-      console.log(res.data.success);
       if (res.data.success) {
-        toast.success(res?.data?.message, { id: toastId, duration: 3000 });
         router.push("/dashboard/dev_super_admin/users/admin/manage");
+        toast.success(res?.data?.message, { id: toastId, duration: 3000 });
       }
     } catch (error) {
       console.log(error);

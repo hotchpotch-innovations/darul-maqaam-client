@@ -1,9 +1,9 @@
 import { authkey, resetKey } from "@/constants/authkey";
 import { setAccessTokenCookie } from "@/services/actions/setAccessTokenCookie";
-import { getNewAccessToken } from "@/services/auth.services";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
 import axios from "axios";
+import { getNewAccessToken } from "./getNewAccessToken";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
@@ -32,28 +32,22 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   //@ts-ignore
   function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-
     const responseObject: ResponseSuccessType = {
       data: response?.data,
     };
     return responseObject;
   },
   async function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    // console.log(error);
     const config = error.config;
 
-    if (error?.response?.status === 500 && !config.sent) {
+    if (error?.response?.status === 401 && !config.sent) {
       config["sent"] = true;
       const response = await getNewAccessToken();
       const accessToken = response?.data?.data?.accessToken;
       config.headers["Authorization"] = accessToken;
       setToLocalStorage(authkey, accessToken);
       setAccessTokenCookie(accessToken);
-      // setAccessToken(accessToken);
+
       return instance(config);
     } else {
       const responseObject: IGenericErrorResponse = {
@@ -61,7 +55,6 @@ instance.interceptors.response.use(
         message: error?.response?.data?.message || "Something went wrong!!!",
         errorMessages: error?.response?.data?.message,
       };
-      // return Promise.reject(error);
       return responseObject;
     }
   }

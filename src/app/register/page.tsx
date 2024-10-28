@@ -19,8 +19,8 @@ import { useGetSingleClientTypesQuery } from "@/redux/api/user/clientTypeApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { userLogin } from "@/services/actions/userLogin";
-import { storeUserInfo } from "@/services/auth.services";
 import { TResponseDataObj } from "@/types";
+import { storeUserInfo } from "@/services/auth.Services.Loacl";
 
 export const clientValidationSchema = z.object({
   owner_name: z.string().min(1, "please enter your name"),

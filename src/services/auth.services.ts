@@ -42,5 +42,3 @@ export const getNewAccessToken = async () => {
     withCredentials: true,
   });
 };
-
-// services/auth.services.js

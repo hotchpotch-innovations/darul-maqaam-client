@@ -3,18 +3,20 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import loginImage from "../../../public/images/login-blue-logo.png";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import CMForm from "@/components/forms/CMForm";
 import Link from "next/link";
 import CMInput from "@/components/forms/CMInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userLogin } from "@/services/actions/userLogin";
-import { getUserInfo } from "@/services/auth.services";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { setAccessTokenCookie } from "@/services/actions/setAccessTokenCookie";
-import { storeUserInfo } from "@/services/auth.Services.Loacl";
+import {
+  getUserInfoFromLocalStorage,
+  storeUserInfo,
+} from "@/services/auth.Services.Loacl";
 
 export const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
@@ -35,11 +37,10 @@ const LoginPage = () => {
 
       if (res?.data?.accessToken) {
         setAccessTokenCookie(res?.data?.accessToken);
-        toast.success(res?.message, { id: toastId, duration: 5000 });
         storeUserInfo({ accessToken: res?.data?.accessToken });
 
-        const userIfno: any = await getUserInfo();
-        // console.log({ userIfno });
+        const userIfno: any = await getUserInfoFromLocalStorage();
+        toast.success(res?.message, { id: toastId, duration: 5000 });
 
         if (userIfno?.role != "client" && res?.data?.needPasswordChange) {
           router.push("/authentication/change-password");

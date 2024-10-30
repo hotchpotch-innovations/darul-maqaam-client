@@ -28,14 +28,16 @@ const Sidebar = () => {
     <Box
       sx={{
         borderRight: "2px solid lightgray",
-        minHeight: "100vh",
-        bgcolor: "lightgray",
+        bgcolor: "#2E2E2E",
+        color: "#E5E7EB",
+        pb: "100px",
       }}
     >
       <Stack
         justifyContent={"center"}
         alignItems={"center"}
         direction={"row"}
+        height="90px"
         gap={2}
         py={1}
         component={Link}
@@ -52,11 +54,18 @@ const Sidebar = () => {
           C-Project
         </Typography>
       </Stack>
-      <List>
-        {drawerItems(userRole as TUserRole).map((item, index) => (
-          <SidebarItem key={index} item={item} />
-        ))}
-      </List>
+
+      <Box
+        sx={{
+          minHeight: "calc(100vh - 90*2px)",
+        }}
+      >
+        <List>
+          {drawerItems(userRole as TUserRole).map((item, index) => (
+            <SidebarItem key={index} item={item} />
+          ))}
+        </List>
+      </Box>
     </Box>
   );
 };

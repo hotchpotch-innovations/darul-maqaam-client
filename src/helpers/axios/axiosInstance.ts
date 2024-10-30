@@ -1,4 +1,4 @@
-import { authkey, resetKey } from "@/constants/authkey";
+import { authkey } from "@/constants/authkey";
 import { setAccessTokenCookie } from "@/services/actions/setAccessTokenCookie";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
@@ -13,11 +13,9 @@ instance.defaults.timeout = 60000;
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
-    const resetToken = getFromLocalStorage(resetKey);
-
     const accessToken = getFromLocalStorage(authkey);
-    if (!!resetToken) {
-      config.headers.Authorization = resetToken;
+    if (!!accessToken) {
+      config.headers.Authorization = accessToken;
     } else if (accessToken) {
       config.headers.Authorization = accessToken;
     }
@@ -52,7 +50,9 @@ instance.interceptors.response.use(
     } else {
       const responseObject: IGenericErrorResponse = {
         statusCode: error?.response?.data?.statusCode || 500,
-        message: error?.response?.data?.message || "Something went wrong!!!",
+        message:
+          error?.response?.data?.message ||
+          "Something went wrong From Axios!!! ",
         errorMessages: error?.response?.data?.message,
       };
       return responseObject;

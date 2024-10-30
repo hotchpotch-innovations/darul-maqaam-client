@@ -12,6 +12,7 @@ export interface IDrawerItems {
   parentPath?: string;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string };
   child?: IDrawerItems[];
+  parent_Id?: string;
 }
 
 export type TablePaginationActionsProps = {

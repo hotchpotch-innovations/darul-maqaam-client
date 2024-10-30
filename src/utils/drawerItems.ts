@@ -9,6 +9,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 export const drawerItems = (role: TUserRole): IDrawerItems[] => {
   const management = "users";
+  const content = "content";
 
   console.log({ role });
 
@@ -24,12 +25,14 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         {
           title: "User Management",
           is_parent: true,
+          parent_Id: "CM001",
         },
         {
           title: "All Users",
           management: "users",
           path: `${role}/${management}/all-users`,
           icon: GroupIcon,
+          parent_Id: "CM001",
         },
         {
           title: "Admin",
@@ -118,6 +121,77 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         {
           title: "Contant Management",
           is_parent: true,
+        },
+        {
+          title: "Menu",
+          path: `${role}/${content}/menu`,
+          icon: GroupIcon,
+        },
+        {
+          title: "Submenu",
+          path: `${role}/${content}/submenu`,
+          icon: GroupIcon,
+        },
+        {
+          title: "Webpage",
+          path: `${role}/${content}/web-page`,
+          icon: GroupIcon,
+        },
+        {
+          title: "W.P Section",
+          path: `${role}/${content}/page-section`,
+          icon: GroupIcon,
+        },
+        {
+          title: "Blog",
+          path: `${role}/${content}/blog`,
+          icon: GroupIcon,
+        },
+        {
+          title: "Other",
+          icon: GroupIcon,
+          child: [
+            {
+              title: "Hero-Section",
+              parentPath: `dashboard/${role}/${content}/others`,
+              path: "hero-section",
+            },
+            {
+              title: "Team",
+              parentPath: `dashboard/${role}/${content}/others`,
+              path: "team",
+            },
+            {
+              title: "Core Value",
+              parentPath: `dashboard/${role}/${content}/others`,
+              path: "core-value",
+            },
+            {
+              title: "FAQ",
+              parentPath: `dashboard/${role}/${content}/others`,
+              path: "faq",
+            },
+            {
+              title: "Memories",
+              parentPath: `dashboard/${role}/${content}/others`,
+              path: "memories",
+            },
+            {
+              title: "Company Videos",
+              parentPath: `dashboard/${role}/${content}/others`,
+              path: "company-videos",
+            },
+            {
+              title: "Resource Portal",
+              parentPath: `dashboard/${role}/${content}/others`,
+              path: "resource-portal",
+            },
+            {
+              title: "Forms & Templates",
+              parentPath: `dashboard/${role}/${content}/others`,
+              path: "forms-&-templates",
+            },
+          ],
         },
         {
           title: "Contant Settings",

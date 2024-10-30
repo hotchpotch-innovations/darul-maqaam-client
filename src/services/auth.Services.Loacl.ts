@@ -1,11 +1,11 @@
-import { authkey } from "@/constants/authkey";
+import { authkey, refreshToken } from "@/constants/authkey";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
 import { TStoreUserInfo } from "./auth.services";
 import { decodedToken } from "@/utils/jwt";
 
 export const storeUserInfo = ({ accessToken, resetToken }: TStoreUserInfo) => {
   if (resetToken) {
-    return setToLocalStorage(resetToken, accessToken);
+    return setToLocalStorage(refreshToken, accessToken);
   } else {
     return setToLocalStorage(authkey, accessToken);
   }

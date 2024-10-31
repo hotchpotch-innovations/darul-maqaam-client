@@ -6,6 +6,16 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import WebIcon from "@mui/icons-material/Web";
+import WebAssetIcon from "@mui/icons-material/WebAsset";
+import RateReviewIcon from "@mui/icons-material/RateReview";
+import DevicesOtherIcon from "@mui/icons-material/DevicesOther";
+import SettingsIcon from "@mui/icons-material/Settings";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import GroupsIcon from "@mui/icons-material/Groups";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 export const drawerItems = (role: TUserRole): IDrawerItems[] => {
   const management = "users";
@@ -31,12 +41,12 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           title: "All Users",
           management: "users",
           path: `${role}/${management}/all-users`,
-          icon: GroupIcon,
+          icon: GroupsIcon,
           parent_Id: "CM001",
         },
         {
           title: "Admin",
-          icon: DashboardIcon,
+          icon: AdminPanelSettingsIcon,
           child: [
             {
               title: "Create Super Admin",
@@ -74,11 +84,11 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         {
           title: "Client",
           path: `${role}/users/client`,
-          icon: GroupIcon,
+          icon: HowToRegIcon,
         },
         {
           title: "Settings",
-          icon: DashboardIcon,
+          icon: SettingsIcon,
           child: [
             {
               title: "Address",
@@ -125,31 +135,31 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         {
           title: "Menu",
           path: `${role}/${content}/menu`,
-          icon: GroupIcon,
+          icon: MenuIcon,
         },
         {
           title: "Submenu",
           path: `${role}/${content}/submenu`,
-          icon: GroupIcon,
+          icon: MenuOpenIcon,
         },
         {
           title: "Webpage",
           path: `${role}/${content}/web-page`,
-          icon: GroupIcon,
+          icon: WebIcon,
         },
         {
           title: "W.P Section",
           path: `${role}/${content}/page-section`,
-          icon: GroupIcon,
+          icon: WebAssetIcon,
         },
         {
           title: "Blog",
           path: `${role}/${content}/blog`,
-          icon: GroupIcon,
+          icon: RateReviewIcon,
         },
         {
           title: "Other",
-          icon: GroupIcon,
+          icon: DevicesOtherIcon,
           child: [
             {
               title: "Hero-Section",
@@ -195,7 +205,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         },
         {
           title: "Contant Settings",
-          icon: DashboardIcon,
+          icon: SettingsIcon,
           child: [
             {
               title: "Address",

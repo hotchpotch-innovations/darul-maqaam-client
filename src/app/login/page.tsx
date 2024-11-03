@@ -18,7 +18,7 @@ import {
   storeUserInfo,
 } from "@/services/auth.Services.Loacl";
 
-export const validationSchema = z.object({
+const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
   password: z.string().min(6, "passrword must be at least 6 character"),
 });

@@ -4,7 +4,7 @@ import { useGetAllDepartmentQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 
 export const useDepartmentOptions = () => {
-  const { data, isLoading } = useGetAllDepartmentQuery({});
+  const { data, isLoading } = useGetAllDepartmentQuery(null);
 
   const departmentsData = data as TResponseDataObj;
   const department_data = departmentsData?.data?.data || [];

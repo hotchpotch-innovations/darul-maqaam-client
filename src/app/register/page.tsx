@@ -22,7 +22,7 @@ import { userLogin } from "@/services/actions/userLogin";
 import { TResponseDataObj } from "@/types";
 import { storeUserInfo } from "@/services/auth.Services.Loacl";
 
-export const clientValidationSchema = z.object({
+const clientValidationSchema = z.object({
   owner_name: z.string().min(1, "please enter your name"),
   email: z.string().email("please enter a valid email"),
   gender: z.string().nonempty("Gender is required"),
@@ -31,7 +31,7 @@ export const clientValidationSchema = z.object({
   name_of_entity: z.string({ required_error: "Pleace entity name" }).optional(),
 });
 
-export const validationSchema = z.object({
+const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),
   client: clientValidationSchema,
 });

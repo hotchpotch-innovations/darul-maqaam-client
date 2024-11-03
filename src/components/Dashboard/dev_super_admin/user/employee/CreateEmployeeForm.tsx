@@ -3,12 +3,14 @@
 import CMForm from "@/components/forms/CMForm";
 import { useCountryOptions } from "@/hooks/useCountryOptions";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
-import { useDesignationOptions } from "@/hooks/useDesignationOptions";
-import { useDivisionOptions } from "@/hooks/useDivisionOptions";
-import { usePermanentCountryOptions } from "@/hooks/usePermanentCountryOptions";
-import { usePermanentDistrictOptions } from "@/hooks/usePermanentDistrictOptions";
-import { usePermanentDivisionOptions } from "@/hooks/usePermanentDivisionOptions";
-import { usePresentDistrictOptions } from "@/hooks/usePresentDistrictOptions";
+import {
+  TDesignationQueryObj,
+  useDesignationOptions,
+} from "@/hooks/useDesignationOptions";
+import {
+  TDivisionQueryObj,
+  useDivisionOptions,
+} from "@/hooks/useDivisionOptions";
 import { useCreateEmployeeMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,8 +29,12 @@ import {
   present_addressValidationSchema,
   social_linksValidationSchema,
 } from "@/constants/zodvalidation";
+import {
+  TDistrictQueryObj,
+  useDistrictOptions,
+} from "@/hooks/useDistrictOptions";
 
-export const validationSchema = z.object({
+const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),
   employee: adminValidationSchema,
   present_address: present_addressValidationSchema,
@@ -37,44 +43,72 @@ export const validationSchema = z.object({
 });
 
 const CreateEmployeeForm = () => {
+  const desingnationQueryObj: TDesignationQueryObj = {};
+  const presentDivisionQueryObj: TDivisionQueryObj = {};
+  const permanentDivisionQueryObj: TDivisionQueryObj = {};
+  const presentDistrictQueryObj: TDistrictQueryObj = {};
+  const permanentDistrictQueryObj: TDistrictQueryObj = {};
+
   const [departmentId, setDepartmentId] = useState(null);
+  //Present Address State
   const [presentCountryId, setPresentCountryId] = useState(null);
-
   const [presentDivisionId, setPresentDivisionId] = useState(null);
-  console.log(presentDivisionId);
 
+  //Permanent Address State
   const [permanentCountryId, setPermanentCountryId] = useState(null);
   const [permanentDivisionId, setPermanentDivisionId] = useState(null);
+
+  // assign query value
+  if (!!departmentId) {
+    desingnationQueryObj["departmentId"] = departmentId;
+  }
+  if (!!presentCountryId) {
+    presentDivisionQueryObj["countryId"] = presentCountryId;
+  }
+  if (!!permanentCountryId) {
+    permanentDivisionQueryObj["countryId"] = permanentCountryId;
+  }
+  if (!!presentDivisionId) {
+    presentDistrictQueryObj["divisionId"] = presentDivisionId;
+  }
+  if (!!permanentDivisionId) {
+    permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
+  }
 
   //Create Options Here
   const [createEmployee] = useCreateEmployeeMutation();
 
   const { options: department_options } = useDepartmentOptions();
-  const { options: designation_options } = useDesignationOptions(departmentId);
+  const { options: designation_options } =
+    useDesignationOptions(desingnationQueryObj);
+
+  //set Present Address Query Parameter
   const {
     options: present_country_options,
     isLoading: present_country_isLoading,
   } = useCountryOptions();
-
   const {
     options: present_division_options,
     isLoading: present_division_isLoading,
-  } = useDivisionOptions(presentCountryId);
+  } = useDivisionOptions(presentDivisionQueryObj);
+  const { options: present_district_options } = useDistrictOptions(
+    presentDistrictQueryObj
+  );
 
-  const { options: present_district_options } =
-    usePresentDistrictOptions(presentDivisionId);
-
+  // Set Permanent Address Query Parameter
   const {
     options: permanent_country_options,
     isLoading: permanent_country_isLoading,
-  } = usePermanentCountryOptions();
+  } = useCountryOptions();
   const {
     options: permanent_division_options,
     isLoading: permanent_division_isLoading,
-  } = usePermanentDivisionOptions(permanentCountryId);
-  const { options: permanent_district_options } =
-    usePermanentDistrictOptions(permanentDivisionId);
+  } = useDivisionOptions(permanentDivisionQueryObj);
+  const { options: permanent_district_options } = useDistrictOptions(
+    permanentDistrictQueryObj
+  );
 
+  // Create Employeee
   const handleCreateEmployee = async (values: FieldValues) => {
     console.log({ values });
     const toastId = toast.loading("Pleace wait...");

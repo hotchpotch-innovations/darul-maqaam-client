@@ -3,18 +3,14 @@
 import { useGetAllDivisionQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 
-type TQueryObj = {
+export type TDivisionQueryObj = {
   countryId?: string;
+  page?: number | 1;
+  limit?: number | 20;
 };
 
-export const useDivisionOptions = (Id?: string | null) => {
-  const queryObj: TQueryObj = {};
-  if (Id) {
-    queryObj["countryId"] = Id;
-  }
-  const { data, isLoading } = useGetAllDivisionQuery({
-    ...queryObj,
-  });
+export const useDivisionOptions = (queryObj: TDivisionQueryObj = {}) => {
+  const { data, isLoading } = useGetAllDivisionQuery(queryObj);
 
   const divisionData = data as TResponseDataObj;
   const division_data = divisionData?.data?.data || [];

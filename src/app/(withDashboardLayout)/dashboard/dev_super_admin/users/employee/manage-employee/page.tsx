@@ -66,7 +66,7 @@ const EmployeeManagePage = () => {
     useDepartmentOptions();
 
   const { options: designation_options, isLoading: designation_isLoading } =
-    useDesignationOptions(departmentId);
+    useDesignationOptions(queryObj);
   // Fetch Admin data using API hook
   const { data, isLoading } = useGetAllEmployeeQuery({ ...queryObj });
 

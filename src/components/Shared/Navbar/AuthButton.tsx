@@ -1,6 +1,6 @@
 "use client";
 
-import useUserInfo from "@/app/hooks/useUserInfo";
+import useUserInfo from "@/hooks/other/useUserInfo";
 import { logOutUser } from "@/services/actions/logoutUser";
 // import { isLoggedIn } from "@/services/auth.services";
 import { Button } from "@mui/material";

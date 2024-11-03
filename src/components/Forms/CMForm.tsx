@@ -23,10 +23,10 @@ const CMForm = ({
 }: TCMFormProps) => {
   const formConfig: TFormConfig = {};
 
-  if (resolver) {
+  if (!!resolver) {
     formConfig["resolver"] = resolver;
   }
-  if (defaultValues) {
+  if (!!defaultValues) {
     formConfig["defaultValues"] = defaultValues;
   }
 

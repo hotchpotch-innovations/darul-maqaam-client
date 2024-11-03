@@ -4,9 +4,7 @@ import { TResponseDataObj } from "@/types";
 
 export const useCountryOptions = () => {
   const { data, isLoading } = useGetAllcountrysQuery({});
-
   const countryDataObj = data as TResponseDataObj;
-
   const country_data = countryDataObj?.data?.data || [];
 
   // const data = countryData?.data?.data || null;

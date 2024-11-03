@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import { z } from "zod";
@@ -11,7 +11,7 @@ import { useForgotPasswordMutation } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
 import { useState } from "react";
 
-export const validationSchema = z.object({
+const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
 });
 
@@ -19,12 +19,16 @@ const ForgotPassword = () => {
   const [checkGamil, setCheckGmail] = useState(false);
   const [isGamil, setIsGmail] = useState("");
   const [forgtPassword] = useForgotPasswordMutation();
-  const handleForgot = async (values: FieldValues) => {
+
+  const handleForgot: SubmitHandler<FieldValues> = async (values) => {
     try {
       const res = await forgtPassword(values).unwrap();
-      setCheckGmail(true);
-      setIsGmail(values.email);
-      toast.success(res?.message);
+      console.log({ res });
+      if (!!res.success) {
+        setCheckGmail(true);
+        setIsGmail(values?.email);
+        toast.success(res?.message);
+      }
     } catch (err: any) {
       toast.error(err?.message);
       console.error("Failed to forgot password:", err);
@@ -111,7 +115,7 @@ const ForgotPassword = () => {
                     Please Check Your Gmail...
                   </Typography>
                   <Typography color="secondary.main" py={1}>
-                    Email Address: {isGamil} example@gmail.com
+                    Email Address: {isGamil}
                   </Typography>
                   <Typography color="secondary.main" py={1}>
                     Experied in: <samp className="text-red-500">10 minute</samp>

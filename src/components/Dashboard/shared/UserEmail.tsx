@@ -1,11 +1,9 @@
-import { getUserInfo, isLoggedIn, removeUser } from "@/services/auth.services";
-import { Button, Typography } from "@mui/material";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { getUserInfo, isLoggedIn } from "@/services/auth.services";
+import { Typography } from "@mui/material";
 
 const UserEmail = () => {
   const userInfo = getUserInfo();
-  const userEmail = userInfo?.email;
+  const userEmail = userInfo;
   const isLoggedUser = isLoggedIn();
 
   return (

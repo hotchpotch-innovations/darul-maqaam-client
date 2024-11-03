@@ -248,6 +248,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
       );
       break;
 
+    // SUPER ADMIN ============================000===========================
     case USER_ROLE.SUPER_ADMIN:
       roleMenus.push(
         {
@@ -263,11 +264,11 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           title: "All Users",
           management: "users",
           path: `${role}/${management}/all-users`,
-          icon: GroupIcon,
+          icon: GroupsIcon,
         },
         {
           title: "Admin",
-          icon: DashboardIcon,
+          icon: AdminPanelSettingsIcon,
           child: [
             {
               title: "Create Admin",
@@ -300,11 +301,11 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         {
           title: "Client",
           path: `${role}/users/client`,
-          icon: GroupIcon,
+          icon: HowToRegIcon,
         },
         {
           title: "Settings",
-          icon: DashboardIcon,
+          icon: SettingsIcon,
           child: [
             {
               title: "Department",
@@ -324,7 +325,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         },
         {
           title: "Contant Settings",
-          icon: DashboardIcon,
+          icon: SettingsIcon,
           child: [
             {
               title: "Address",

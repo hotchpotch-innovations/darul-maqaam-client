@@ -7,12 +7,18 @@ import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import { gender_options } from "@/constants/options";
 import { useCountryOptions } from "@/hooks/useCountryOptions";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
-import { useDesignationOptions } from "@/hooks/useDesignationOptions";
-import { useDivisionOptions } from "@/hooks/useDivisionOptions";
-import { usePermanentCountryOptions } from "@/hooks/usePermanentCountryOptions";
-import { usePermanentDistrictOptions } from "@/hooks/usePermanentDistrictOptions";
-import { usePermanentDivisionOptions } from "@/hooks/usePermanentDivisionOptions";
-import { usePresentDistrictOptions } from "@/hooks/usePresentDistrictOptions";
+import {
+  TDesignationQueryObj,
+  useDesignationOptions,
+} from "@/hooks/useDesignationOptions";
+import {
+  TDistrictQueryObj,
+  useDistrictOptions,
+} from "@/hooks/useDistrictOptions";
+import {
+  TDivisionQueryObj,
+  useDivisionOptions,
+} from "@/hooks/useDivisionOptions";
 import {
   useGetSingleAdminQuery,
   useUpdateAdminMutation,
@@ -30,46 +36,68 @@ type TProps = {
 };
 
 const UpdateAdminFrom = ({ adminId }: TProps) => {
+  const desingnationQueryObj: TDesignationQueryObj = {};
+  const presentDivisionQueryObj: TDivisionQueryObj = {};
+  const permanentDivisionQueryObj: TDivisionQueryObj = {};
+  const presentDistrictQueryObj: TDistrictQueryObj = {};
+  const permanentDistrictQueryObj: TDistrictQueryObj = {};
+
   const [departmentId, setDepartmentId] = useState(null);
+
+  //Present Address State
   const [presentCountryId, setPresentCountryId] = useState(null);
-
   const [presentDivisionId, setPresentDivisionId] = useState(null);
-  console.log({ presentDivisionId });
-  const [presentDistrictId, setPresentDistrictId] = useState(null);
 
+  //Permanent Address State
   const [permanentCountryId, setPermanentCountryId] = useState(null);
   const [permanentDivisionId, setPermanentDivisionId] = useState(null);
 
-  const [createSuperAdmin] = useCreateSuperAdminMutation();
+  // assign query value
+  if (!!departmentId) {
+    desingnationQueryObj["departmentId"] = departmentId;
+  }
+  if (!!presentCountryId) {
+    presentDivisionQueryObj["countryId"] = presentCountryId;
+  }
+  if (!!permanentCountryId) {
+    permanentDivisionQueryObj["countryId"] = permanentCountryId;
+  }
+  if (!!presentDivisionId) {
+    presentDistrictQueryObj["divisionId"] = presentDivisionId;
+  }
+  if (!!permanentDivisionId) {
+    permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
+  }
+
+  const [createSuperAdmin, { isLoading: isCSALoading }] =
+    useCreateSuperAdminMutation();
 
   const { options: department_options } = useDepartmentOptions();
 
-  const { options: designation_options } = useDesignationOptions(departmentId);
-  const {
-    options: present_country_options,
-    isLoading: present_country_isLoading,
-  } = useCountryOptions();
+  const { options: designation_options } =
+    useDesignationOptions(desingnationQueryObj);
 
-  const {
-    options: present_division_options,
-    isLoading: present_division_isLoading,
-  } = useDivisionOptions(presentCountryId);
+  //Present Address
+  const { options: present_country_options } = useCountryOptions();
 
-  const { options: present_district_options } =
-    usePresentDistrictOptions(presentDivisionId);
+  const { options: present_division_options } = useDivisionOptions(
+    presentDivisionQueryObj
+  );
 
-  const {
-    options: permanent_country_options,
-    isLoading: permanent_country_isLoading,
-  } = usePermanentCountryOptions();
+  const { options: present_district_options } = useDistrictOptions(
+    presentDistrictQueryObj
+  );
 
-  const {
-    options: permanent_division_options,
-    isLoading: permanent_division_isLoading,
-  } = usePermanentDivisionOptions(permanentCountryId);
+  //Permanent Address
+  const { options: permanent_country_options } = useCountryOptions();
 
-  const { options: permanent_district_options } =
-    usePermanentDistrictOptions(permanentDivisionId);
+  const { options: permanent_division_options } = useDivisionOptions(
+    permanentDivisionQueryObj
+  );
+
+  const { options: permanent_district_options } = useDistrictOptions(
+    permanentDistrictQueryObj
+  );
 
   // update api mutation
   const [updateAdmin] = useUpdateAdminMutation();
@@ -254,11 +282,11 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelectWithWatch
+            <CMSelect
               name="present_address.districtId"
-              label={"District *"}
-              setState={setPresentDistrictId}
-              options={present_district_options}
+              fullWidth={true}
+              label="District *"
+              items={present_district_options}
             />
           </Grid>
 
@@ -372,6 +400,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
       <Button
         type="submit"
         fullWidth
+        disabled={!!isCSALoading}
         sx={{
           mt: "30px",
         }}

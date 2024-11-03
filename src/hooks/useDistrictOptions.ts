@@ -3,18 +3,14 @@
 import { useGetAllDistrictQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 
-type TQueryObj = {
+export type TDistrictQueryObj = {
   divisionId?: string;
+  page?: number | 1;
+  limit?: number | 20;
 };
 
-export const usePermanentDistrictOptions = (Id: string | null) => {
-  const queryObj: TQueryObj = {};
-  if (Id) {
-    queryObj["divisionId"] = Id;
-  }
-  const { data, isLoading } = useGetAllDistrictQuery({
-    ...queryObj,
-  });
+export const useDistrictOptions = (queryObj: TDistrictQueryObj = {}) => {
+  const { data, isLoading } = useGetAllDistrictQuery(queryObj);
 
   const districtData = data as TResponseDataObj;
   const district_data = districtData?.data?.data || [];

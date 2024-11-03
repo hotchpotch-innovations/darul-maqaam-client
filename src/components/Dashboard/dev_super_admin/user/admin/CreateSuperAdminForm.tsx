@@ -13,12 +13,18 @@ import {
 } from "@/constants/zodvalidation";
 import { useCountryOptions } from "@/hooks/useCountryOptions";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
-import { useDesignationOptions } from "@/hooks/useDesignationOptions";
-import { useDivisionOptions } from "@/hooks/useDivisionOptions";
-import { usePermanentCountryOptions } from "@/hooks/usePermanentCountryOptions";
-import { usePermanentDistrictOptions } from "@/hooks/usePermanentDistrictOptions";
-import { usePermanentDivisionOptions } from "@/hooks/usePermanentDivisionOptions";
-import { usePresentDistrictOptions } from "@/hooks/usePresentDistrictOptions";
+import {
+  TDesignationQueryObj,
+  useDesignationOptions,
+} from "@/hooks/useDesignationOptions";
+import {
+  TDivisionQueryObj,
+  useDivisionOptions,
+} from "@/hooks/useDivisionOptions";
+import {
+  TDistrictQueryObj,
+  useDistrictOptions,
+} from "@/hooks/useDistrictOptions";
 import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,7 +36,7 @@ import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-export const validationSchema = z.object({
+const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),
   admin: adminValidationSchema,
   present_address: present_addressValidationSchema,
@@ -40,20 +46,43 @@ export const validationSchema = z.object({
 
 const CreateSuperAdminForm = () => {
   const router = useRouter();
+  const desingnationQueryObj: TDesignationQueryObj = {};
+  const presentDivisionQueryObj: TDivisionQueryObj = {};
+  const permanentDivisionQueryObj: TDivisionQueryObj = {};
+  const presentDistrictQueryObj: TDistrictQueryObj = {};
+  const permanentDistrictQueryObj: TDistrictQueryObj = {};
 
   const [departmentId, setDepartmentId] = useState(null);
+  // present address state
   const [presentCountryId, setPresentCountryId] = useState(null);
-
   const [presentDivisionId, setPresentDivisionId] = useState(null);
-  console.log(presentDivisionId);
 
+  // permanent address state
   const [permanentCountryId, setPermanentCountryId] = useState(null);
   const [permanentDivisionId, setPermanentDivisionId] = useState(null);
+
+  // assign query value
+  if (!!departmentId) {
+    desingnationQueryObj["departmentId"] = departmentId;
+  }
+  if (!!presentCountryId) {
+    presentDivisionQueryObj["countryId"] = presentCountryId;
+  }
+  if (!!permanentCountryId) {
+    permanentDivisionQueryObj["countryId"] = permanentCountryId;
+  }
+  if (!!presentDivisionId) {
+    presentDistrictQueryObj["divisionId"] = presentDivisionId;
+  }
+  if (!!permanentDivisionId) {
+    permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
+  }
 
   const [createSuperAdmin] = useCreateSuperAdminMutation();
 
   const { options: department_options } = useDepartmentOptions();
-  const { options: designation_options } = useDesignationOptions(departmentId);
+  const { options: designation_options } =
+    useDesignationOptions(desingnationQueryObj);
   const {
     options: present_country_options,
     isLoading: present_country_isLoading,
@@ -62,21 +91,23 @@ const CreateSuperAdminForm = () => {
   const {
     options: present_division_options,
     isLoading: present_division_isLoading,
-  } = useDivisionOptions(presentCountryId);
+  } = useDivisionOptions(presentDivisionQueryObj);
 
-  const { options: present_district_options } =
-    usePresentDistrictOptions(presentDivisionId);
+  const { options: present_district_options } = useDistrictOptions(
+    presentDistrictQueryObj
+  );
 
   const {
     options: permanent_country_options,
     isLoading: permanent_country_isLoading,
-  } = usePermanentCountryOptions();
+  } = useCountryOptions();
   const {
     options: permanent_division_options,
     isLoading: permanent_division_isLoading,
-  } = usePermanentDivisionOptions(permanentCountryId);
-  const { options: permanent_district_options } =
-    usePermanentDistrictOptions(permanentDivisionId);
+  } = useDivisionOptions(permanentDivisionQueryObj);
+  const { options: permanent_district_options } = useDistrictOptions(
+    permanentDistrictQueryObj
+  );
 
   const handleCreateSuperAdmin = async (values: FieldValues) => {
     const toastId = toast.loading("Pleace wait...");

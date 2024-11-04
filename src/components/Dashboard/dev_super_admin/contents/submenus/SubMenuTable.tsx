@@ -2,50 +2,55 @@
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
-import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
-import { useGetAllDesignationQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
-import { useDeleteDepartmentMutation } from "@/redux/api/user/settings/departmentApi";
 import CMModal from "@/components/ui/CMModal";
-import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
+import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
+import { useDivisionOptions } from "@/hooks/useDivisionOptions";
 import {
-  useDeleteDesignationMutation,
-  useUpdateDesignationMutation,
-} from "@/redux/api/user/settings/designationApi";
-type TRowParems = {
-  title: string;
-};
+  useDeleteMenuMutation,
+  useGetAllMenuQuery,
+  useUpdateMenuMutation,
+} from "@/redux/api/content/menuApi";
+import { toast } from "sonner";
 
 type TQueryObj = {
-  designationId?: string;
-  departmentId?: string;
+  divisionId?: string;
   searchTerm?: string;
   page?: number;
   limit?: number;
 };
 
-const DesignationTable = () => {
+const SubMenuTable = () => {
+  const { options } = useDivisionOptions();
+  const [divisionId, setDivisionId] = useState("");
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
-  const [updateId, setUpdateId] = useState("");
-  const handleOpen = (id: string) => {
+  const [updateId, setUpdateId] = useState({});
+  const [itemObj, setItemObj] = useState();
+
+  const item = itemObj as any;
+  const obj: any = updateId;
+  const handleOpen = (row: any) => {
     setOpen(true);
-    setUpdateId(id);
+    setUpdateId(row?.id);
+    setItemObj(row);
   };
   const handleClose = () => setOpen(false);
   //Modal Functionality Is End
 
-  const path_create_country =
-    "/dashboard/super_admin/users/settings/designation/create";
+  //Filter District
+
+  const path_create_country = "/dashboard/dev_super_admin/content/menu/create";
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -67,16 +72,18 @@ const DesignationTable = () => {
   if (debouncedTerm) {
     queryObj["searchTerm"] = debouncedTerm;
   }
+  if (divisionId) {
+    queryObj["divisionId"] = divisionId;
+  }
 
   // get All Country data
-  const { data, isLoading } = useGetAllDesignationQuery({ ...queryObj });
-  const designations = data as TResponseDataObj;
-
-  console.log({ designations });
+  const { data, isLoading } = useGetAllMenuQuery({ ...queryObj });
+  const districts = data as TResponseDataObj;
+  console.log(districts?.data);
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    designations?.data?.data?.map((row: any, index: number) => ({
+    districts?.data?.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -90,14 +97,23 @@ const DesignationTable = () => {
       flex: 1,
     },
 
-    { field: "identifier", headerName: "INDENTIFIER", flex: 1 },
     {
-      field: "department",
-      valueGetter: (params: TRowParems) => params?.title || "",
-      headerName: "DEPARTMENT",
+      field: "identifier",
+      headerName: "IDENTIFIER",
       flex: 1,
     },
-
+    {
+      field: "has_children",
+      headerName: "HAS CHILDREN",
+      flex: 1,
+      valueGetter: (params: any) => (params ? "Yes" : "No"),
+    },
+    {
+      field: "slug",
+      headerName: "HAS SUBMENUE",
+      flex: 1,
+      valueGetter: (params: any) => (params === "" ? "No" : params),
+    },
     {
       field: "Action",
       headerName: "ACTIONS",
@@ -120,7 +136,7 @@ const DesignationTable = () => {
                 color: "primary.main",
                 cursor: "pointer",
               }}
-              onClick={() => handleOpen(row?.id)}
+              onClick={() => handleOpen(row)}
             >
               <EditIcon />
             </Typography>
@@ -141,37 +157,39 @@ const DesignationTable = () => {
     },
   ];
 
-  // Handle user status change
+  // Delete Menu
+
+  const [deleteMenu] = useDeleteMenuMutation();
+  const handleDelete = async (id: string) => {
+    const toastId = toast.loading("Please wait...");
+    try {
+      const res = await deleteMenu(id);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message, { id: toastId, duration: 5000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 5000 });
+    }
+  };
 
   // Pagination handler
   const handlePaginationChange = (newPaginationModel: any) => {
     setCurrentPage(newPaginationModel.page + 1);
     setLimit(newPaginationModel.pageSize);
   };
-  // Delete Designation Handeler
-  const [deleteDesignation] = useDeleteDesignationMutation();
 
-  const handleDelete = async (id: string) => {
-    console.log({ id });
-    const toastId = toast.loading("Please wait...");
-    try {
-      const res = await deleteDesignation(id);
-      if (res?.data?.success) {
-        toast.success(res?.data?.message, { id: toastId, duration: 5000 });
-      }
-    } catch (err: any) {
-      toast.error(err?.message, { id: toastId, duration: 5000 });
-    }
-  };
+  // Update Menu Handle
 
-  // Update Designation Handeler
-  const [updateDesignation] = useUpdateDesignationMutation();
+  const [updateMenu] = useUpdateMenuMutation();
   const handleUpdate = async (values: FieldValues) => {
+    console.log(values, updateId);
     const toastId = toast.loading("Please wait...");
+
     try {
-      const res = await updateDesignation({ ...values, id: updateId }).unwrap();
+      const res = await updateMenu({ ...values, id: updateId }).unwrap();
       if (res?.success) {
         handleClose();
+        setUpdateId("");
         toast.success(res?.message, { id: toastId, duration: 3000 });
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
@@ -181,10 +199,8 @@ const DesignationTable = () => {
       console.log(error);
       toast.error("something went wrong", { duration: 3000 });
     }
-
-    console.log();
-    // console.log(values);
   };
+
   return (
     <Box>
       <Box sx={{ m: "30px 60px" }}>
@@ -206,7 +222,15 @@ const DesignationTable = () => {
               Create
             </Button>
           </Box>
-          <SearchFiled setSearchText={setSearchTerm} />
+          <Box display="flex" gap={2}>
+            <SelectFilter
+              filter_title="Search by Menu Status"
+              options={options}
+              value={divisionId}
+              setValue={setDivisionId}
+            />
+            <SearchFiled setSearchText={setSearchTerm} />
+          </Box>
         </Stack>
 
         {!isLoading ? (
@@ -217,7 +241,7 @@ const DesignationTable = () => {
               pagination
               paginationMode="server"
               pageSizeOptions={[10, 25, 50]}
-              rowCount={designations?.data?.meta?.total}
+              rowCount={districts?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
@@ -229,24 +253,20 @@ const DesignationTable = () => {
       </Box>
 
       {/* Modal is Start Here */}
-      <CMModal open={open} id={updateId} handleClose={handleClose}>
+      <CMModal open={open} id={obj?.id} handleClose={handleClose}>
         <Box>
           <Typography variant="h4" component="h4" mb={4}>
-            Update Department
+            Update Menu
           </Typography>
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              title: "",
-              identifier: "",
+              title: item?.title,
             }}
           >
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
                 <CMInput name="title" label="Title" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <CMInput name="identifier" label="Identifier" fullWidth />
               </Grid>
             </Grid>
             <Box
@@ -274,4 +294,4 @@ const DesignationTable = () => {
   );
 };
 
-export default DesignationTable;
+export default SubMenuTable;

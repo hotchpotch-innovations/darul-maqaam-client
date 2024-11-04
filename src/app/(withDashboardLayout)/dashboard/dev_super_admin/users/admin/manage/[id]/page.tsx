@@ -1,6 +1,6 @@
 "use client";
-import UpdateAdminFrom from "@/components/dashboard/dev_super_admin/user/admin/UpdateAdminFrom";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import UpdateAdminFrom from "@/components/Dashboard/dev_super_admin/user/admin-forms/UpdateAdminFrom";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 
 import { Box } from "@mui/material";
 import { useParams } from "next/navigation";

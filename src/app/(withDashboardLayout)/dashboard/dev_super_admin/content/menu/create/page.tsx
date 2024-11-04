@@ -1,5 +1,7 @@
-import CreateMenuForm from "@/components/dashboard/dev_super_admin/content/menu/MenuCreateForm";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+
+import CreateMenuForm from "@/components/Dashboard/dev_super_admin/contents/menus/MenuCreateForm";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
+
 import { Box } from "@mui/material";
 
 const page = () => {

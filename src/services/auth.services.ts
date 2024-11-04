@@ -24,16 +24,6 @@ export const getUserInfo = async () => {
   }
 };
 
-export const isLoggedIn = (): boolean => {
-  const authToken = getFromLocalStorage("authkey");
-
-  if (authToken) {
-    return !!authToken;
-  }
-
-  return false;
-};
-
 export const getNewAccessToken = async () => {
   return await axiosInstance({
     url: "http://localhost:5000/api/v1/auth/refresh-token",

@@ -1,5 +1,6 @@
-import CreateAdminFrom from "@/components/dashboard/dev_super_admin/user/admin/CreateAdminFrom";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+
+import CreateAdminFrom from "@/components/Dashboard/dev_super_admin/user/admin-forms/CreateAdminFrom";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
 const CreateAdminPage = () => {

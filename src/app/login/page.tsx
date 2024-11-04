@@ -42,10 +42,10 @@ const LoginPage = () => {
         const userIfno: any = await getUserInfoFromLocalStorage();
         toast.success(res?.message, { id: toastId, duration: 5000 });
 
-        if (userIfno?.role != "client" && res?.data?.needPasswordChange) {
+        if (userIfno?.role?.toLowerCase() != "client" && res?.data?.needPasswordChange) {
           router.push("/authentication/change-password");
         } else {
-          router.push(`/dashboard/${userIfno?.role}`);
+          router.push(`/dashboard/${userIfno?.role?.lowerCase()}`);
         }
       } else {
         toast.error(res?.message, { id: toastId, duration: 5000 });

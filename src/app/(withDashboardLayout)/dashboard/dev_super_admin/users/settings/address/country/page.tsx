@@ -1,5 +1,5 @@
-import ConutryTable from "@/components/dashboard/dev_super_admin/settings/address/country/CountryTable";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import ConutryTable from "@/components/Dashboard/dev_super_admin/settings/address/country-utils/CountryTable";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box, Typography } from "@mui/material";
 
 const CountryPage = () => {

@@ -1,5 +1,5 @@
-import DivisionTable from "@/components/dashboard/dev_super_admin/settings/address/division/DivisionTable";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import DivisionTable from "@/components/Dashboard/dev_super_admin/settings/address/division-utils/DivisionTable";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
 const DivisionPage = () => {

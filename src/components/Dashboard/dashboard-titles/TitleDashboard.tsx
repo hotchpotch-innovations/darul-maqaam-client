@@ -3,6 +3,7 @@ import { Typography } from "@mui/material";
 type TTileDashboardProps = {
   title: string;
 };
+
 const TitleDashboard = ({ title }: TTileDashboardProps) => {
   return (
     <Typography

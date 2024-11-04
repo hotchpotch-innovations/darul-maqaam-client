@@ -1,3 +1,5 @@
+"use client";
+
 import { authkey, refreshToken } from "@/constants/authkey";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
 import { TStoreUserInfo } from "./auth.services";
@@ -11,12 +13,22 @@ export const storeUserInfo = ({ accessToken, resetToken }: TStoreUserInfo) => {
   }
 };
 
+export const isLoggedIn = (): boolean => {
+  const authToken = getFromLocalStorage(authkey);
+
+  if (authToken) {
+    return !!authToken;
+  }
+
+  return false;
+};
+
 export const getUserInfoFromLocalStorage = () => {
   // const authToken = getFromLocalStorage(authkey);
   const authToken = getFromLocalStorage(authkey);
   if (authToken) {
     const decodedData: any = decodedToken(authToken);
     console.log({ decodedData });
-    return decodedData?.role.toLowerCase();
+    return decodedData;
   }
 };

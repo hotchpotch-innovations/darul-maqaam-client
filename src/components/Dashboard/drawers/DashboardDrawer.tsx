@@ -14,7 +14,7 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import dynamic from "next/dynamic";
 import AccountMenu from "../shared/accountMenu/AccountMenu";
-import Sidebar from "../Sidebar/SideBar";
+import Sidebar from "../dashboard-sidebars/SideBar";
 
 const drawerWidth = 240;
 
@@ -23,7 +23,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
   const [isClosing, setIsClosing] = React.useState(false);
 
   const UserEmail = dynamic(
-    () => import("@/components/dashboard/shared/UserEmail"),
+    () => import("../shared/UserEmail"),
     { ssr: false }
   );
 
@@ -81,7 +81,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                 component="div"
                 sx={{ color: "rgba(11, 17, 52, 0.6)" }}
               >
-                Hi, hello,
+                Hi,
               </Typography>
               <Typography
                 variant="h6"
@@ -89,7 +89,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                 component="div"
                 sx={{ color: "primary.main" }}
               >
-                Welcome to PH Health Care!
+                Welcome to Hotchpotch Innovations Ltd.!
               </Typography>
               <UserEmail />
             </Box>

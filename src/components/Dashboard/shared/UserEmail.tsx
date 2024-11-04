@@ -1,10 +1,9 @@
-import { getUserInfo, isLoggedIn } from "@/services/auth.services";
+
+import { getUserInfoFromLocalStorage, isLoggedIn } from "@/services/auth.Services.Loacl";
 import { Typography } from "@mui/material";
 
 const UserEmail = () => {
-  const userInfo = getUserInfo();
-  const userEmail = userInfo;
-  const isLoggedUser = isLoggedIn();
+  const user_info = getUserInfoFromLocalStorage()
 
   return (
     <>
@@ -14,7 +13,7 @@ const UserEmail = () => {
         component="div"
         sx={{ color: "rgba(11, 17, 52, 0.6)" }}
       >
-        Hi, {isLoggedUser ? userEmail : "example@gmail.com"},
+        Hi, {user_info?.email},
       </Typography>
     </>
   );

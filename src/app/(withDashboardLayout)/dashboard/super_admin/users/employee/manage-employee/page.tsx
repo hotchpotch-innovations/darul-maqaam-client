@@ -2,9 +2,9 @@
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
-import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import Loading from "@/components/ui/LoadingBar";
 import { Box, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";

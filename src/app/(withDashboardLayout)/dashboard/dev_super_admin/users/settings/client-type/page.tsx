@@ -1,5 +1,5 @@
-import ClientTypeTable from "@/components/dashboard/dev_super_admin/settings/client-type/ClientTypeTable";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import ClientTypeTable from "@/components/Dashboard/dev_super_admin/settings/client-type-utils/ClientTypeTable";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 import React from "react";
 

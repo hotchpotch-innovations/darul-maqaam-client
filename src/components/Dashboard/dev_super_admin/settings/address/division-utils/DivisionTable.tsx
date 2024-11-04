@@ -2,7 +2,7 @@
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -10,16 +10,16 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
-import { useGetAllDepartmentQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
-import {
-  useDeleteDepartmentMutation,
-  useUpdateDepartmentMutation,
-} from "@/redux/api/user/settings/departmentApi";
 import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
+import {
+  useDeleteDivisionMutation,
+  useGetAllDivisionQuery,
+  useUpdateDivisionMutation,
+} from "@/redux/api/user/settings/divisionApi";
 
 type TQueryObj = {
   designationId?: string;
@@ -29,19 +29,21 @@ type TQueryObj = {
   limit?: number;
 };
 
-const DepartmentTable = () => {
+const DivisionTable = () => {
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
-  const [updateId, setUpdateId] = useState("");
-  const handleOpen = (id: string) => {
+  const [obj, setObj] = useState({});
+  const division: any = obj;
+  console.log({ division });
+  const handleOpen = (obj: any) => {
     setOpen(true);
-    setUpdateId(id);
+    setObj(obj);
   };
   const handleClose = () => setOpen(false);
   //Modal Functionality Is End
 
-  const path_create_country =
-    "/dashboard/super_admin/users/settings/department/create";
+  const path_create_division =
+    "/dashboard/dev_super_admin/users/settings/address/division/create";
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -65,14 +67,14 @@ const DepartmentTable = () => {
   }
 
   // get All Country data
-  const { data, isLoading } = useGetAllDepartmentQuery({ ...queryObj });
-  const departments = data as TResponseDataObj;
+  const { data, isLoading } = useGetAllDivisionQuery({ ...queryObj });
+  const client_types = data as TResponseDataObj;
 
-  console.log({ departments });
+  console.log({ client_types });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    departments?.data?.data?.map((row: any, index: number) => ({
+    client_types?.data?.data?.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -81,12 +83,22 @@ const DepartmentTable = () => {
   const columns: GridColDef[] = [
     { field: "index", headerName: "SERIAL", width: 100 },
     {
-      field: "title",
-      headerName: "TITLE",
+      field: "name",
+      headerName: "NAME",
       flex: 1,
     },
 
-    { field: "identifier", headerName: "INDENTIFIER", flex: 1 },
+    {
+      field: "country",
+      headerName: "COUNTRY",
+      flex: 1,
+      valueGetter: (params: any) => params?.name || "",
+    },
+    {
+      field: "status",
+      headerName: "STATUS",
+      flex: 1,
+    },
 
     {
       field: "Action",
@@ -110,7 +122,7 @@ const DepartmentTable = () => {
                 color: "primary.main",
                 cursor: "pointer",
               }}
-              onClick={() => handleOpen(row?.id)}
+              onClick={() => handleOpen(row)}
             >
               <EditIcon />
             </Typography>
@@ -132,13 +144,13 @@ const DepartmentTable = () => {
   ];
 
   // Handle user status change
-  const [deleteDepartment] = useDeleteDepartmentMutation();
+  const [deleteDivision] = useDeleteDivisionMutation();
 
   const handleDelete = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await deleteDepartment(id);
+      const res = await deleteDivision(id);
       if (res?.data?.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 5000 });
       }
@@ -153,16 +165,19 @@ const DepartmentTable = () => {
     setLimit(newPaginationModel.pageSize);
   };
 
-  // Update Department Handle
-  const [updateDepartment] = useUpdateDepartmentMutation();
+  // Update Division Handle
+  const [updateDivision] = useUpdateDivisionMutation();
   const handleUpdate = async (values: FieldValues) => {
-    console.log(values, updateId);
+    console.log(values, division?.id);
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await updateDepartment({ ...values, id: updateId }).unwrap();
+      const res = await updateDivision({
+        ...values,
+        id: division?.id,
+      }).unwrap();
       if (res?.success) {
         handleClose();
-        setUpdateId("");
+        setObj("");
         toast.success(res?.message, { id: toastId, duration: 3000 });
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
@@ -189,7 +204,7 @@ const DepartmentTable = () => {
             {/* Create Country Section */}
             <Button
               component={Link}
-              href={path_create_country}
+              href={path_create_division}
               sx={{
                 maxHeight: "40px",
               }}
@@ -208,7 +223,7 @@ const DepartmentTable = () => {
               pagination
               paginationMode="server"
               pageSizeOptions={[10, 25, 50]}
-              rowCount={departments?.data?.meta?.total}
+              rowCount={client_types?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
@@ -220,24 +235,20 @@ const DepartmentTable = () => {
       </Box>
 
       {/* Modal is Start Here */}
-      <CMModal open={open} id={updateId} handleClose={handleClose}>
+      <CMModal open={open} id={division?.id} handleClose={handleClose}>
         <Box>
           <Typography variant="h4" component="h4" mb={4}>
-            Update Department
+            Update Devision
           </Typography>
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              title: "",
-              identifier: "",
+              name: division?.name,
             }}
           >
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
-                <CMInput name="title" label="Title" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <CMInput name="identifier" label="Identifier" fullWidth />
+                <CMInput name="name" label="Name" fullWidth />
               </Grid>
             </Grid>
             <Box
@@ -265,4 +276,4 @@ const DepartmentTable = () => {
   );
 };
 
-export default DepartmentTable;
+export default DivisionTable;

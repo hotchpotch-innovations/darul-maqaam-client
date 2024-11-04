@@ -1,5 +1,5 @@
-import SubMenuTable from "@/components/dashboard/dev_super_admin/content/submenu/SubMenuTable";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import SubMenuTable from "@/components/Dashboard/dev_super_admin/contents/submenus/SubMenuTable";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
 const SubmenuPage = () => {

@@ -2,7 +2,7 @@
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -16,34 +16,38 @@ import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
 import {
-  useDeleteDivisionMutation,
-  useGetAllDivisionQuery,
-  useUpdateDivisionMutation,
-} from "@/redux/api/user/settings/divisionApi";
+  useDeleteDistrictMutation,
+  useGetAllDistrictQuery,
+  useUpdateDistrictMutation,
+} from "@/redux/api/user/settings/districtApi";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
+import { useDivisionOptions } from "@/hooks/useDivisionOptions";
 
 type TQueryObj = {
-  designationId?: string;
-  departmentId?: string;
+  divisionId?: string;
   searchTerm?: string;
   page?: number;
   limit?: number;
 };
 
-const DivisionTable = () => {
+const DistrictTable = () => {
+  const { options } = useDivisionOptions();
+  const [divisionId, setDivisionId] = useState("");
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
-  const [obj, setObj] = useState({});
-  const division: any = obj;
-  console.log({ division });
-  const handleOpen = (obj: any) => {
+  const [updateId, setUpdateId] = useState({});
+  const obj: any = updateId;
+  const handleOpen = (row: any) => {
     setOpen(true);
-    setObj(obj);
+    setUpdateId(row?.id);
   };
   const handleClose = () => setOpen(false);
   //Modal Functionality Is End
 
-  const path_create_division =
-    "/dashboard/dev_super_admin/users/settings/address/division/create";
+  //Filter District
+
+  const path_create_country =
+    "/dashboard/dev_super_admin/users/settings/address/district/create";
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -65,16 +69,20 @@ const DivisionTable = () => {
   if (debouncedTerm) {
     queryObj["searchTerm"] = debouncedTerm;
   }
+  if (divisionId) {
+    queryObj["divisionId"] = divisionId;
+  }
 
   // get All Country data
-  const { data, isLoading } = useGetAllDivisionQuery({ ...queryObj });
-  const client_types = data as TResponseDataObj;
+  const { data, isLoading } = useGetAllDistrictQuery({ ...queryObj });
+  const districts = data as TResponseDataObj;
+  console.log({ districts });
 
-  console.log({ client_types });
+  console.log({ districts });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    client_types?.data?.data?.map((row: any, index: number) => ({
+    districts?.data?.data?.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -89,8 +97,8 @@ const DivisionTable = () => {
     },
 
     {
-      field: "country",
-      headerName: "COUNTRY",
+      field: "divition",
+      headerName: "DIVISION",
       flex: 1,
       valueGetter: (params: any) => params?.name || "",
     },
@@ -99,7 +107,6 @@ const DivisionTable = () => {
       headerName: "STATUS",
       flex: 1,
     },
-
     {
       field: "Action",
       headerName: "ACTIONS",
@@ -144,13 +151,13 @@ const DivisionTable = () => {
   ];
 
   // Handle user status change
-  const [deleteDivision] = useDeleteDivisionMutation();
+  const [deleteDistrict] = useDeleteDistrictMutation();
 
   const handleDelete = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await deleteDivision(id);
+      const res = await deleteDistrict(id);
       if (res?.data?.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 5000 });
       }
@@ -165,19 +172,16 @@ const DivisionTable = () => {
     setLimit(newPaginationModel.pageSize);
   };
 
-  // Update Division Handle
-  const [updateDivision] = useUpdateDivisionMutation();
+  // Update Department Handle
+  const [updateDistrict] = useUpdateDistrictMutation();
   const handleUpdate = async (values: FieldValues) => {
-    console.log(values, division?.id);
+    console.log(values, updateId);
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await updateDivision({
-        ...values,
-        id: division?.id,
-      }).unwrap();
+      const res = await updateDistrict({ ...values, id: updateId }).unwrap();
       if (res?.success) {
         handleClose();
-        setObj("");
+        setUpdateId("");
         toast.success(res?.message, { id: toastId, duration: 3000 });
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
@@ -204,7 +208,7 @@ const DivisionTable = () => {
             {/* Create Country Section */}
             <Button
               component={Link}
-              href={path_create_division}
+              href={path_create_country}
               sx={{
                 maxHeight: "40px",
               }}
@@ -212,7 +216,15 @@ const DivisionTable = () => {
               Create
             </Button>
           </Box>
-          <SearchFiled setSearchText={setSearchTerm} />
+          <Box display="flex" gap={2}>
+            <SelectFilter
+              filter_title="Search by Division"
+              options={options}
+              value={divisionId}
+              setValue={setDivisionId}
+            />
+            <SearchFiled setSearchText={setSearchTerm} />
+          </Box>
         </Stack>
 
         {!isLoading ? (
@@ -223,7 +235,7 @@ const DivisionTable = () => {
               pagination
               paginationMode="server"
               pageSizeOptions={[10, 25, 50]}
-              rowCount={client_types?.data?.meta?.total}
+              rowCount={districts?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
@@ -235,15 +247,15 @@ const DivisionTable = () => {
       </Box>
 
       {/* Modal is Start Here */}
-      <CMModal open={open} id={division?.id} handleClose={handleClose}>
+      <CMModal open={open} id={obj?.id} handleClose={handleClose}>
         <Box>
           <Typography variant="h4" component="h4" mb={4}>
-            Update Devision
+            Update Department
           </Typography>
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              name: division?.name,
+              name: obj?.name,
             }}
           >
             <Grid container spacing={3}>
@@ -276,4 +288,4 @@ const DivisionTable = () => {
   );
 };
 
-export default DivisionTable;
+export default DistrictTable;

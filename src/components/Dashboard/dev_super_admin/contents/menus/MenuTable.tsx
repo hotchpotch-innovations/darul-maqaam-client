@@ -2,7 +2,6 @@
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -14,7 +13,6 @@ import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
-import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
 import { useDivisionOptions } from "@/hooks/useDivisionOptions";
 import {
   useDeleteMenuMutation,
@@ -22,6 +20,8 @@ import {
   useUpdateMenuMutation,
 } from "@/redux/api/content/menuApi";
 import { toast } from "sonner";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 
 type TQueryObj = {
   divisionId?: string;

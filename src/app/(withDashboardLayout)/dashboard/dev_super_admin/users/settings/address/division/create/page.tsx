@@ -1,5 +1,5 @@
-import CreateDivisionForm from "@/components/dashboard/dev_super_admin/settings/address/division/CreateDivisionForm";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import CreateDivisionForm from "@/components/Dashboard/dev_super_admin/settings/address/division-utils/CreateDivisionForm";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
 const CreateDivisionPage = () => {

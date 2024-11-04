@@ -1,12 +1,12 @@
 "use client";
 
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Stack, Tooltip, Typography } from "@mui/material";
-import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
-import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";

@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
 
   const accessToken = await cookies().get(authkey)?.value;
 
-  console.log({ accessToken });
+  // console.log({ accessToken });
 
   if (!accessToken) {
     if (authRoute.includes(pathname)) {
@@ -32,6 +32,7 @@ export async function middleware(request: NextRequest) {
   }
 
   let decoedData = null;
+
   if (accessToken) {
     decoedData = jwtDecode(accessToken) as any;
   }

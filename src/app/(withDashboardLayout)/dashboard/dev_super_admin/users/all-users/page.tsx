@@ -7,9 +7,9 @@ import {
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Box, Stack, Tooltip, Typography } from "@mui/material";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
-import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
-import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import BlockIcon from "@mui/icons-material/Block";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { toast } from "sonner";

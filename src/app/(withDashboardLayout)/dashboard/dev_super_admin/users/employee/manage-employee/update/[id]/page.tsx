@@ -1,7 +1,7 @@
 "use client";
 
-import UpdateEmployeeForm from "@/components/dashboard/dev_super_admin/user/employee/UpdateEmployeeForm";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import UpdateEmployeeForm from "@/components/Dashboard/dev_super_admin/user/employee-forms/UpdateEmployeeForm";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
 

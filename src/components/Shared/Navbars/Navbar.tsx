@@ -26,7 +26,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const AuthButton = dynamic(
-    () => import("@/components/shared/navbar/AuthButton"),
+    () => import("./AuthButton"),
     { ssr: false }
   );
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(

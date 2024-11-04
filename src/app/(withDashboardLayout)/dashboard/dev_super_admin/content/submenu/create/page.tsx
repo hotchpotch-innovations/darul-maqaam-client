@@ -1,5 +1,5 @@
-import CreateSubMenuForm from "@/components/dashboard/dev_super_admin/content/submenu/SubMenuCreateForm";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import CreateSubMenuForm from "@/components/Dashboard/dev_super_admin/contents/submenus/SubMenuCreateForm";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
 const CreateSubMenu = () => {

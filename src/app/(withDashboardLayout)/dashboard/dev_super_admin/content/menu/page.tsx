@@ -1,5 +1,5 @@
-import MenuTable from "@/components/dashboard/dev_super_admin/content/menu/MenuTable";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import MenuTable from "@/components/Dashboard/dev_super_admin/contents/menus/MenuTable";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
 const page = () => {

@@ -1,5 +1,5 @@
-import CreateDistrictForm from "@/components/dashboard/dev_super_admin/settings/address/district/CreateDistrictForm";
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import CreateDistrictForm from "@/components/Dashboard/dev_super_admin/settings/address/district-utils/CreateDistrictForm";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
 const DistrictCreatePage = () => {

@@ -1,4 +1,4 @@
-import TitleDashboard from "@/components/dashboard/TitleDashboard";
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
 const BlogPage = () => {

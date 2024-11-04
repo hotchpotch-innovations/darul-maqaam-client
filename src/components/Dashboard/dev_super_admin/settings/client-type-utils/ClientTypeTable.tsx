@@ -2,55 +2,47 @@
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SearchFiled from "@/components/dashboard/dashboardFilter/SearchFiled";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
+import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
+import { useGetAllDepartmentQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
-import SelectFilter from "@/components/dashboard/dashboardFilter/SclectFilter";
-import { useDivisionOptions } from "@/hooks/useDivisionOptions";
 import {
-  useDeleteMenuMutation,
-  useGetAllMenuQuery,
-  useUpdateMenuMutation,
-} from "@/redux/api/content/menuApi";
-import { toast } from "sonner";
+  useDeleteClientTypeMutation,
+  useGetAllClientTypeQuery,
+  useUpdateClientTypeMutation,
+} from "@/redux/api/user/settings/clientTypeApi";
 
 type TQueryObj = {
-  divisionId?: string;
+  designationId?: string;
+  departmentId?: string;
   searchTerm?: string;
   page?: number;
   limit?: number;
 };
 
-const SubMenuTable = () => {
-  const { options } = useDivisionOptions();
-  const [divisionId, setDivisionId] = useState("");
+const ClientTypeTable = () => {
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
-  const [updateId, setUpdateId] = useState({});
-  const [itemObj, setItemObj] = useState();
-
-  const item = itemObj as any;
-  const obj: any = updateId;
-  const handleOpen = (row: any) => {
+  const [updateId, setUpdateId] = useState("");
+  const handleOpen = (id: string) => {
     setOpen(true);
-    setUpdateId(row?.id);
-    setItemObj(row);
+    setUpdateId(id);
   };
   const handleClose = () => setOpen(false);
   //Modal Functionality Is End
 
-  //Filter District
-
-  const path_create_country = "/dashboard/dev_super_admin/content/menu/create";
+  const path_create_country =
+    "/dashboard/dev_super_admin/users/settings/client-type/create";
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -72,18 +64,16 @@ const SubMenuTable = () => {
   if (debouncedTerm) {
     queryObj["searchTerm"] = debouncedTerm;
   }
-  if (divisionId) {
-    queryObj["divisionId"] = divisionId;
-  }
 
   // get All Country data
-  const { data, isLoading } = useGetAllMenuQuery({ ...queryObj });
-  const districts = data as TResponseDataObj;
-  console.log(districts?.data);
+  const { data, isLoading } = useGetAllClientTypeQuery({ ...queryObj });
+  const client_types = data as TResponseDataObj;
+
+  console.log({ client_types });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    districts?.data?.map((row: any, index: number) => ({
+    client_types?.data?.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -97,23 +87,8 @@ const SubMenuTable = () => {
       flex: 1,
     },
 
-    {
-      field: "identifier",
-      headerName: "IDENTIFIER",
-      flex: 1,
-    },
-    {
-      field: "has_children",
-      headerName: "HAS CHILDREN",
-      flex: 1,
-      valueGetter: (params: any) => (params ? "Yes" : "No"),
-    },
-    {
-      field: "slug",
-      headerName: "HAS SUBMENUE",
-      flex: 1,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-    },
+    { field: "identifier", headerName: "INDENTIFIER", flex: 1 },
+
     {
       field: "Action",
       headerName: "ACTIONS",
@@ -136,7 +111,7 @@ const SubMenuTable = () => {
                 color: "primary.main",
                 cursor: "pointer",
               }}
-              onClick={() => handleOpen(row)}
+              onClick={() => handleOpen(row?.id)}
             >
               <EditIcon />
             </Typography>
@@ -157,18 +132,19 @@ const SubMenuTable = () => {
     },
   ];
 
-  // Delete Menu
+  // Handle user status change
+  const [deleteClientType] = useDeleteClientTypeMutation();
 
-  const [deleteMenu] = useDeleteMenuMutation();
   const handleDelete = async (id: string) => {
+    console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await deleteMenu(id);
+      const res = await deleteClientType(id);
       if (res?.data?.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 5000 });
       }
-    } catch (error: any) {
-      toast.error(error?.message, { id: toastId, duration: 5000 });
+    } catch (err: any) {
+      toast.error(err?.message, { id: toastId, duration: 5000 });
     }
   };
 
@@ -178,15 +154,13 @@ const SubMenuTable = () => {
     setLimit(newPaginationModel.pageSize);
   };
 
-  // Update Menu Handle
-
-  const [updateMenu] = useUpdateMenuMutation();
+  // Update Department Handle
+  const [updateClientType] = useUpdateClientTypeMutation();
   const handleUpdate = async (values: FieldValues) => {
     console.log(values, updateId);
     const toastId = toast.loading("Please wait...");
-
     try {
-      const res = await updateMenu({ ...values, id: updateId }).unwrap();
+      const res = await updateClientType({ ...values, id: updateId }).unwrap();
       if (res?.success) {
         handleClose();
         setUpdateId("");
@@ -199,8 +173,10 @@ const SubMenuTable = () => {
       console.log(error);
       toast.error("something went wrong", { duration: 3000 });
     }
-  };
 
+    console.log();
+    // console.log(values);
+  };
   return (
     <Box>
       <Box sx={{ m: "30px 60px" }}>
@@ -222,15 +198,7 @@ const SubMenuTable = () => {
               Create
             </Button>
           </Box>
-          <Box display="flex" gap={2}>
-            <SelectFilter
-              filter_title="Search by Menu Status"
-              options={options}
-              value={divisionId}
-              setValue={setDivisionId}
-            />
-            <SearchFiled setSearchText={setSearchTerm} />
-          </Box>
+          <SearchFiled setSearchText={setSearchTerm} />
         </Stack>
 
         {!isLoading ? (
@@ -241,7 +209,7 @@ const SubMenuTable = () => {
               pagination
               paginationMode="server"
               pageSizeOptions={[10, 25, 50]}
-              rowCount={districts?.data?.meta?.total}
+              rowCount={client_types?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
@@ -253,20 +221,24 @@ const SubMenuTable = () => {
       </Box>
 
       {/* Modal is Start Here */}
-      <CMModal open={open} id={obj?.id} handleClose={handleClose}>
+      <CMModal open={open} id={updateId} handleClose={handleClose}>
         <Box>
           <Typography variant="h4" component="h4" mb={4}>
-            Update Menu
+            Update Department
           </Typography>
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              title: item?.title,
+              title: "",
+              identifier: "",
             }}
           >
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
                 <CMInput name="title" label="Title" fullWidth />
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <CMInput name="identifier" label="Identifier" fullWidth />
               </Grid>
             </Grid>
             <Box
@@ -294,4 +266,4 @@ const SubMenuTable = () => {
   );
 };
 
-export default SubMenuTable;
+export default ClientTypeTable;

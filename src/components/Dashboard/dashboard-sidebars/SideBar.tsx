@@ -1,22 +1,21 @@
 "use client";
-
 import { Box, List, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import logoImage from "../../../../public/images/mainLogo.png";
 import Link from "next/link";
 import { TUserRole } from "@/types/common";
-import SidebarItem from "./SidebarItem";
 import { useEffect, useState } from "react";
 import { drawerItems } from "@/utils/drawerItems";
 import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
+import SidebarItem from "./SidebarItem";
 
 const Sidebar = () => {
   const [userRole, setUserRole] = useState("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const role = getUserInfoFromLocalStorage() as any;
+    const {role} = getUserInfoFromLocalStorage() as any;
 
-    setUserRole(role);
+    setUserRole(role.toLowerCase());
     setLoading(false);
   }, []);
 

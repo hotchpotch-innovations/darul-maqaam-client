@@ -1,6 +1,5 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
-import LockIcon from "@mui/icons-material/Lock";
-// import ForgotPasswordForm from "@/components/AuthenticationForms/ForgotPasswordForm";
+// import LockIcon from "@mui/icons-material/Lock";
 import dynamic from "next/dynamic";
 
 const ForgotPassword = () => {
@@ -37,7 +36,7 @@ const ForgotPassword = () => {
                 },
               }}
             >
-              <LockIcon sx={{ color: "primary.main" }} />
+              {/* <LockIcon sx={{ color: "primary.main" }} /> */}
             </Box>
             <Typography variant="h5" pt={2} pb={1}>
               {" "}

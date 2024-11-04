@@ -1,9 +1,9 @@
 import { authkey } from "@/constants/authkey";
-import { setAccessTokenCookie } from "@/services/actions/setAccessTokenCookie";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
 import axios from "axios";
 import { getNewAccessToken } from "./getNewAccessToken";
+import setAccessTokenCookie from "@/services/actions/setAccessTokenCookie";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
@@ -15,8 +15,6 @@ instance.interceptors.request.use(
   function (config) {
     const accessToken = getFromLocalStorage(authkey);
     if (!!accessToken) {
-      config.headers.Authorization = accessToken;
-    } else if (accessToken) {
       config.headers.Authorization = accessToken;
     }
     return config;

@@ -1,5 +1,5 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
-// import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import dynamic from "next/dynamic";
 
 const ResetPasswordPage = () => {
@@ -36,7 +36,7 @@ const ResetPasswordPage = () => {
                 },
               }}
             >
-              {/* <LockOpenIcon sx={{ color: "primary.main" }} /> */}
+              <LockOpenIcon sx={{ color: "primary.main" }} />
             </Box>
             <Typography variant="h5" pt={2} pb={1}>
               Reset Password

@@ -28,7 +28,6 @@ export const getUserInfoFromLocalStorage = () => {
   const authToken = getFromLocalStorage(authkey);
   if (authToken) {
     const decodedData: any = decodedToken(authToken);
-    console.log({ decodedData });
     return decodedData;
   }
 };

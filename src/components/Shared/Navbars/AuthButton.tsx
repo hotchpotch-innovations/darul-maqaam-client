@@ -11,7 +11,8 @@ const AuthButton = () => {
   const userInfo = useUserInfo();
 
   const handleLoutOut = () => {
-    logOutUser(router);
+    logOutUser();
+    router.push("/");
   };
   return (
     <>

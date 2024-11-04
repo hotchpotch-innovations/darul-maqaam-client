@@ -1,5 +1,5 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
-// import KeyIcon from "@mui/icons-material/Key";
+import KeyIcon from "@mui/icons-material/Key";
 import dynamic from "next/dynamic";
 
 const ChangePasswordPage = () => {
@@ -36,7 +36,7 @@ const ChangePasswordPage = () => {
                 },
               }}
             >
-              {/* <KeyIcon sx={{ color: "primary.main" }} /> */}
+              <KeyIcon sx={{ color: "primary.main" }} />
             </Box>
             <Typography variant="h5" pt={2} pb={1}>
               Change Password

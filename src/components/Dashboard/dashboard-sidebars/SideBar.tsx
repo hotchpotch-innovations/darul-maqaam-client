@@ -13,9 +13,9 @@ const Sidebar = () => {
   const [userRole, setUserRole] = useState("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const {role} = getUserInfoFromLocalStorage() as any;
+    const user_info = getUserInfoFromLocalStorage() as any;
 
-    setUserRole(role.toLowerCase());
+    setUserRole(user_info?.role.toLowerCase());
     setLoading(false);
   }, []);
 

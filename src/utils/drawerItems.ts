@@ -21,8 +21,6 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
   const management = "users";
   const content = "content";
 
-  console.log({ role });
-
   const roleMenus: IDrawerItems[] = [];
   switch (role) {
     case USER_ROLE.DEV_SUPER_ADMIN:

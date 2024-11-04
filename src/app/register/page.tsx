@@ -41,7 +41,6 @@ const RegisterPage = () => {
   const [clientType, setClientType] = useState(null);
 
   const handleRegister = async (values: FieldValues) => {
-    console.log(values);
     const toastId = toast.loading("Pleace wait...");
     const payload = modifyPayload(values);
     try {

@@ -51,9 +51,11 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleLogout = () => {
     setAnchorEl(null);
-    logOutUser(router);
+    logOutUser();
+    router.push("/login");
   };
 
   return (

@@ -21,6 +21,7 @@ const ChangePasswordPage = () => {
   const router = useRouter();
   const [changePassword] = useChangePasswordMutation();
 
+  // Change password handler 
   const handleChangePassword: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait...");
     try {

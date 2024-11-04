@@ -45,7 +45,7 @@ const LoginPage = () => {
         if (userIfno?.role?.toLowerCase() != "client" && res?.data?.needPasswordChange) {
           router.push("/authentication/change-password");
         } else {
-          router.push(`/dashboard/${userIfno?.role?.lowerCase()}`);
+          router.push(`/dashboard/${userIfno?.role?.toLowerCase()}`);
         }
       } else {
         toast.error(res?.message, { id: toastId, duration: 5000 });

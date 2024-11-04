@@ -1,7 +1,4 @@
 "use client";
-
-import CMForm from "@/components/forms/CMForm";
-import CMInput from "@/components/forms/CMInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { z } from "zod";
@@ -11,24 +8,32 @@ import { useRouter } from "next/navigation";
 import KeyIcon from "@mui/icons-material/Key";
 import { logOutUser } from "@/services/actions/logoutUser";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import CMForm from "@/components/forms/CMForm";
+import CMInput from "@/components/forms/CMInput";
 
-const validationSchema = z.object({
-  oldPassword: z.string().min(6, "Please enter a valid password"),
-  newPassword: z.string().min(6, "Password must be at least 6 characters"),
-});
+
 
 const ChangePasswordPage = () => {
   const router = useRouter();
   const [changePassword] = useChangePasswordMutation();
+
+  const validationSchema = z.object({
+  oldPassword: z.string().min(6, "Please enter a valid password"),
+  newPassword: z.string().min(6, "Password must be at least 6 characters"),
+});
 
   // Change password handler 
   const handleChangePassword: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait...");
     try {
       const res = await changePassword(values).unwrap();
+      console.log(res)
+      if (res?.success) {
       toast.success(res?.message, { id: toastId, duration: 5000 });
       logOutUser();
       router.push("/login");
+      }
+
     } catch (err: any) {
       toast.error(err?.message, { id: toastId, duration: 5000 });
       console.error("Failed to change password:", err);

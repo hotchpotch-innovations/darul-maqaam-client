@@ -10,11 +10,11 @@ import React, { useEffect } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import CMForm from "@/components/forms/CMForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import CMInput from "@/components/forms/CMInput";
 import { useResetPasswordMutation } from "@/redux/api/auth/authApi";
+import CMForm from "@/components/forms/CMForm";
 
 const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),

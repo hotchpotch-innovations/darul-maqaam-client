@@ -2,14 +2,14 @@
 
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { FieldValues, SubmitHandler } from "react-hook-form";
-import CMForm from "@/components/forms/CMForm";
-import CMInput from "@/components/forms/CMInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LockIcon from "@mui/icons-material/Lock";
 import { useForgotPasswordMutation } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
 import { useState } from "react";
+import CMForm from "@/components/forms/CMForm";
+import CMInput from "@/components/forms/CMInput";
 
 const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
@@ -18,11 +18,11 @@ const validationSchema = z.object({
 const ForgotPassword = () => {
   const [checkGamil, setCheckGmail] = useState(false);
   const [isGamil, setIsGmail] = useState("");
-  const [forgtPassword] = useForgotPasswordMutation();
+  const [forgetPassword] = useForgotPasswordMutation();
 
   const handleForgot: SubmitHandler<FieldValues> = async (values) => {
     try {
-      const res = await forgtPassword(values).unwrap();
+      const res = await forgetPassword(values).unwrap();
       console.log({ res });
       if (!!res.success) {
         setCheckGmail(true);

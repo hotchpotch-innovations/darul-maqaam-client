@@ -104,7 +104,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
   const handleUpdateEmployee = async (values: FieldValues) => {
     const updatedEmployeeData = removeNullValues(values);
     console.log({ updatedEmployeeData });
-    const toastId = toast.loading("Pleace wait...");
+    const toastId = toast.loading("Please wait...");
 
     try {
       const res = await updateEmployee({ id: employee_id, ...values });

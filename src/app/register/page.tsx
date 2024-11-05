@@ -18,9 +18,9 @@ import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import { useGetSingleClientTypesQuery } from "@/redux/api/user/clientTypeApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { userLogin } from "@/services/actions/userLogin";
 import { TResponseDataObj } from "@/types";
 import { storeUserInfo } from "@/services/auth.Services.Loacl";
+import { userSignIn } from "@/services/actions/userSignIn";
 
 const clientValidationSchema = z.object({
   owner_name: z.string().min(1, "please enter your name"),
@@ -41,13 +41,13 @@ const RegisterPage = () => {
   const [clientType, setClientType] = useState(null);
 
   const handleRegister = async (values: FieldValues) => {
-    const toastId = toast.loading("Pleace wait...");
+    const toastId = toast.loading("Please wait...");
     const payload = modifyPayload(values);
     try {
       const res = await registerClient(payload);
       if (res?.data?.id) {
         toast.success(res?.message, { id: toastId, duration: 5000 });
-        const result = await userLogin({
+        const result = await userSignIn({
           password: values?.password,
           email: values?.client?.email,
         });

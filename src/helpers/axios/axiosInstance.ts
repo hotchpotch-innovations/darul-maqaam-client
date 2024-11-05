@@ -2,8 +2,10 @@ import { authkey } from "@/constants/authkey";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
 import axios from "axios";
-import { getNewAccessToken } from "./getNewAccessToken";
 import setAccessTokenCookie from "@/services/actions/setAccessTokenCookie";
+// import { getNewAccessToken } from "@/services/auth.services";
+import { logOutUser } from "@/services/actions/logoutUser";
+import { getNewAccessToken } from "@/services/getNewAccessToken";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
@@ -33,27 +35,39 @@ instance.interceptors.response.use(
     };
     return responseObject;
   },
+
   async function (error) {
     const config = error.config;
 
-    if (error?.response?.status === 401 && !config.sent) {
+    if (error?.response?.status === 403 && !config.sent) {
       config["sent"] = true;
       const response = await getNewAccessToken();
-      const accessToken = response?.data?.data?.accessToken;
-      config.headers["Authorization"] = accessToken;
-      setToLocalStorage(authkey, accessToken);
-      setAccessTokenCookie(accessToken);
+      console.log({ response });
+      if (response) {
+        const accessToken = response?.data?.data?.accessToken;
+        // console.log({ accessToken });
+        config.headers["Authorization"] = accessToken;
+        setToLocalStorage(authkey, accessToken);
+        setAccessTokenCookie(accessToken);
+      }
 
       return instance(config);
-    } else {
+    } else if (error?.response?.status === 401) {
+      logOutUser();
       const responseObject: IGenericErrorResponse = {
         statusCode: error?.response?.data?.statusCode || 500,
-        message:
-          error?.response?.data?.message ||
-          "Something went wrong From Axios!!! ",
+        success: error?.response?.data?.success || false,
+        message: error?.response?.data?.message || "You are unauthorized",
         errorMessages: error?.response?.data?.message,
       };
       return responseObject;
+    } else {
+      const responseObject: IGenericErrorResponse = {
+        statusCode: error?.response?.data?.statusCode || 500,
+        success: error?.response?.data?.success || false,
+        message: error?.response?.data?.message || "Something went wrong !!! ",
+        errorMessages: error?.response?.data?.message,
+      };
     }
   }
 );

@@ -6,9 +6,7 @@ type TLoginData = {
   password: string;
 };
 
-export const userLogin = async (data: TLoginData) => {
-  console.log({ data });
-
+export const userSignIn = async (data: TLoginData) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/login`,
     {
@@ -23,11 +21,8 @@ export const userLogin = async (data: TLoginData) => {
   );
 
   const userInfo = await res.json();
-  console.log({ userInfo });
 
   const user_data: any = jwtDecode(userInfo?.data?.accessToken);
-
-  console.log({ user_data });
 
   const passwordChangeRequired = userInfo?.data?.needPasswordChange;
 

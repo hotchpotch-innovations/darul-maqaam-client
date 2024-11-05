@@ -23,7 +23,6 @@ import {
   useGetSingleAdminQuery,
   useUpdateAdminMutation,
 } from "@/redux/api/user/adminAip";
-import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
 import { removeNullValues } from "@/utils/removeNullValues";
 import { Button, Grid, Stack, Typography } from "@mui/material";
 
@@ -36,7 +35,7 @@ type TProps = {
 };
 
 const UpdateAdminFrom = ({ adminId }: TProps) => {
-  const desingnationQueryObj: TDesignationQueryObj = {};
+  const designationQueryObj: TDesignationQueryObj = {};
   const presentDivisionQueryObj: TDivisionQueryObj = {};
   const permanentDivisionQueryObj: TDivisionQueryObj = {};
   const presentDistrictQueryObj: TDistrictQueryObj = {};
@@ -54,7 +53,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
 
   // assign query value
   if (!!departmentId) {
-    desingnationQueryObj["departmentId"] = departmentId;
+    designationQueryObj["departmentId"] = departmentId;
   }
   if (!!presentCountryId) {
     presentDivisionQueryObj["countryId"] = presentCountryId;
@@ -69,13 +68,10 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
     permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
   }
 
-  const [createSuperAdmin, { isLoading: isCSALoading }] =
-    useCreateSuperAdminMutation();
-
   const { options: department_options } = useDepartmentOptions();
 
   const { options: designation_options } =
-    useDesignationOptions(desingnationQueryObj);
+    useDesignationOptions(designationQueryObj);
 
   //Present Address
   const { options: present_country_options } = useCountryOptions();
@@ -100,22 +96,23 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
   );
 
   // update api mutation
-  const [updateAdmin] = useUpdateAdminMutation();
+  const [updateAdmin, { isLoading: isUpdateLoading }] =
+    useUpdateAdminMutation();
 
   // update handler
   const handleCreateSuperAdmin = async (values: FieldValues) => {
     const updatedAdminData = removeNullValues(values);
     console.log({ updatedAdminData });
-    const toastId = toast.loading("Pleace wait...");
+    const toastId = toast.loading("Please wait...");
 
     try {
-      const res = await updateAdmin({ id: adminId, ...values });
-      console.log(res);
-      if (res.data.success) {
-        toast.success(res?.data?.message, { id: toastId, duration: 3000 });
+      const res = await updateAdmin({ id: adminId, ...values }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
       }
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong!", { id: toastId, duration: 3000 });
     }
   };
@@ -400,7 +397,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
       <Button
         type="submit"
         fullWidth
-        disabled={!!isCSALoading}
+        disabled={isUpdateLoading}
         sx={{
           mt: "30px",
         }}

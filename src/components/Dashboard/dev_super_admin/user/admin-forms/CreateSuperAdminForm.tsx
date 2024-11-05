@@ -32,12 +32,12 @@ import { Button, Grid, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
 const validationSchema = z.object({
-  password: z.string().min(6, "passrword must be at least 6 character"),
+  password: z.string().min(6, "password must be at least 6 character"),
   admin: adminValidationSchema,
   present_address: present_addressValidationSchema,
   permanent_address: present_addressValidationSchema,
@@ -46,7 +46,7 @@ const validationSchema = z.object({
 
 const CreateSuperAdminForm = () => {
   const router = useRouter();
-  const desingnationQueryObj: TDesignationQueryObj = {};
+  const designationQueryObj: TDesignationQueryObj = {};
   const presentDivisionQueryObj: TDivisionQueryObj = {};
   const permanentDivisionQueryObj: TDivisionQueryObj = {};
   const presentDistrictQueryObj: TDistrictQueryObj = {};
@@ -63,7 +63,7 @@ const CreateSuperAdminForm = () => {
 
   // assign query value
   if (!!departmentId) {
-    desingnationQueryObj["departmentId"] = departmentId;
+    designationQueryObj["departmentId"] = departmentId;
   }
   if (!!presentCountryId) {
     presentDivisionQueryObj["countryId"] = presentCountryId;
@@ -78,11 +78,12 @@ const CreateSuperAdminForm = () => {
     permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
   }
 
-  const [createSuperAdmin] = useCreateSuperAdminMutation();
+  const [createSuperAdmin, { isLoading: isCreateLoading }] =
+    useCreateSuperAdminMutation();
 
   const { options: department_options } = useDepartmentOptions();
   const { options: designation_options } =
-    useDesignationOptions(desingnationQueryObj);
+    useDesignationOptions(designationQueryObj);
   const {
     options: present_country_options,
     isLoading: present_country_isLoading,
@@ -109,17 +110,20 @@ const CreateSuperAdminForm = () => {
     permanentDistrictQueryObj
   );
 
-  const handleCreateSuperAdmin = async (values: FieldValues) => {
-    const toastId = toast.loading("Pleace wait...");
+  const handleCreateSuperAdmin: SubmitHandler<FieldValues> = async (values) => {
+    const toastId = toast.loading("Please wait...");
     const data = modifyPayload(values);
     try {
-      const res = await createSuperAdmin(data);
+      const res = await createSuperAdmin(data).unwrap();
 
-      if (res.data.success) {
+      if (res.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
         router.push("/dashboard/dev_super_admin/users/admin/manage");
-        toast.success(res?.data?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
       console.log(error);
     }
   };
@@ -398,6 +402,7 @@ const CreateSuperAdminForm = () => {
         sx={{
           mt: "30px",
         }}
+        disabled={isCreateLoading}
       >
         Create Super Admin
       </Button>

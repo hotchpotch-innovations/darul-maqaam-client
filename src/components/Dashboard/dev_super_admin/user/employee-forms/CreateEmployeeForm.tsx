@@ -111,7 +111,7 @@ const CreateEmployeeForm = () => {
   // Create Employeee
   const handleCreateEmployee = async (values: FieldValues) => {
     console.log({ values });
-    const toastId = toast.loading("Pleace wait...");
+    const toastId = toast.loading("Please wait...");
     const data = modifyPayload(values);
     try {
       const res = await createEmployee(data);

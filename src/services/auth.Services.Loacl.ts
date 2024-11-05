@@ -24,9 +24,8 @@ export const isLoggedIn = (): boolean => {
 };
 
 export const getUserInfoFromLocalStorage = () => {
-  // const authToken = getFromLocalStorage(authkey);
   const authToken = getFromLocalStorage(authkey);
-  if (authToken) {
+  if (!!authToken) {
     const decodedData: any = decodedToken(authToken);
     return decodedData;
   }

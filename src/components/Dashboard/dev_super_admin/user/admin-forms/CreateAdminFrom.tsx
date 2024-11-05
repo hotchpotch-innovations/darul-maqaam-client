@@ -80,7 +80,8 @@ const CreateAdminFrom = () => {
     permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
   }
 
-  const [createAdmin] = useCreateAdminMutation();
+  const [createAdmin, { isLoading: isCreateLoading }] =
+    useCreateAdminMutation();
 
   const { options: department_options } = useDepartmentOptions();
   const { options: designation_options } =
@@ -118,17 +119,19 @@ const CreateAdminFrom = () => {
   const handleCreateAdmin = async (values: FieldValues) => {
     const removeNullValue = removeNullFields(values);
     console.log({ removeNullValue });
-    const toastId = toast.loading("Pleace wait...", { duration: 3000 });
+    const toastId = toast.loading("Please wait...", { duration: 3000 });
     const data = modifyPayload(removeNullValue);
     try {
-      const res = await createAdmin(data);
-      if (res.data.success) {
+      const res = await createAdmin(data).unwrap();
+      if (res.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
         router.push("/dashboard/dev_super_admin/users/admin/manage");
-        toast.success(res?.data?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
       console.log(error);
-      toast.success("something went wrong", { id: toastId, duration: 3000 });
     }
   };
   return (
@@ -406,6 +409,7 @@ const CreateAdminFrom = () => {
         sx={{
           mt: "30px",
         }}
+        disabled={isCreateLoading}
       >
         Create Admin
       </Button>

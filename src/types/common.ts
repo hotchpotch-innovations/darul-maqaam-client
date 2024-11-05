@@ -53,6 +53,7 @@ export type ResponseSuccessType = {
 
 export type IGenericErrorResponse = {
   statusCode: number;
+  success: boolean;
   message: string;
   errorMessages: IGenericErrorMessage[];
 };

@@ -8,9 +8,9 @@ import CMInput from "@/components/forms/CMInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { userLogin } from "@/services/actions/userLogin";
 import { setToLocalStorage } from "@/utils/local-starage";
 import { authkey } from "@/constants/authkey";
+import { userSignIn } from "@/services/actions/userSignIn";
 
 const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
@@ -20,8 +20,12 @@ const validationSchema = z.object({
 const LoginForm = () => {
   const handleLogin: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait...");
+    const data = {
+      email: values?.email,
+      password: values?.password,
+    };
     try {
-      const res = await userLogin(values);
+      const res = await userSignIn(data);
 
       if (res?.success) {
         const access_token = res?.data?.accessToken;

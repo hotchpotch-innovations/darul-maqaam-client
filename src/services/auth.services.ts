@@ -1,9 +1,7 @@
 "use server";
 
 import { authkey } from "@/constants/authkey";
-import { instance as axiosInstance } from "@/helpers/axios/axiosInstance";
 import { decodedToken } from "@/utils/jwt";
-import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-starage";
 import { cookies } from "next/headers";
 
 export type TStoreUserInfo = {
@@ -22,13 +20,4 @@ export const getUserInfo = async () => {
       role: decodedData?.role.toLowerCase(),
     };
   }
-};
-
-export const getNewAccessToken = async () => {
-  return await axiosInstance({
-    url: "http://localhost:5000/api/v1/auth/refresh-token",
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    withCredentials: true,
-  });
 };

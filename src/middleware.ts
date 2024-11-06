@@ -20,6 +20,10 @@ const roleBasedPrivateRoutes = {
 export async function middleware(request: NextRequest) {
   const { pathname } = request?.nextUrl;
 
+  if (pathname === "/dashboard") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
   if (pathname === "/home") {
     return NextResponse.redirect(new URL("/", request.url));
   }

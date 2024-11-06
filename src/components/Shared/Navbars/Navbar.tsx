@@ -23,12 +23,8 @@ const pages = [
   { pathName: "Dashboard", path: "/dashboard", _id: "03" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
 const Navbar = () => {
-  const AuthButton = dynamic(
-    () => import("./AuthButton"),
-    { ssr: false }
-  );
+  const AuthButton = dynamic(() => import("./AuthButton"), { ssr: false });
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );

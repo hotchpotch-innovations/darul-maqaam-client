@@ -11,24 +11,33 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdbIcon from "@mui/icons-material/Adb";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-
-const pages = [
-  { pathName: "Login", path: "/login", _id: "01" },
-  { pathName: "Register", path: "/register", _id: "02" },
-  { pathName: "Dashboard", path: "/dashboard", _id: "03" },
-];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
 
 const Navbar = () => {
-  const AuthButton = dynamic(
-    () => import("./AuthButton"),
-    { ssr: false }
-  );
+  const [userRole, setUserRole] = useState("");
+  const user_info = getUserInfoFromLocalStorage();
+  const user_role = user_info?.role?.toLowerCase();
+
+  useEffect(() => {
+    setUserRole(user_role);
+  }, [user_role]);
+
+  const pages = [
+    { pathName: "Login", path: "/login", _id: "01" },
+    { pathName: "Register", path: "/register", _id: "02" },
+    {
+      pathName: "Dashboard",
+      path: `/dashboard/${userRole && userRole}`,
+      _id: "03",
+    },
+  ];
+
+  const AuthButton = dynamic(() => import("./AuthButton"), { ssr: false });
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );

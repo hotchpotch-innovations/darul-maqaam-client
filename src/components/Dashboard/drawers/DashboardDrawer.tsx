@@ -16,16 +16,16 @@ import dynamic from "next/dynamic";
 import AccountMenu from "../shared/accountMenu/AccountMenu";
 import Sidebar from "../dashboard-sidebars/SideBar";
 
-const drawerWidth = 240;
+// 280
+const drawerWidth = 400;
 
 const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
-  const UserEmail = dynamic(
-    () => import("../shared/UserEmail"),
-    { ssr: false }
-  );
+  const UserEmail = dynamic(() => import("../shared/UserEmail"), {
+    ssr: false,
+  });
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -129,6 +129,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
             },
           }}
         >
+          {/* For mobile Device  */}
           <Sidebar />
         </Drawer>
         <Drawer
@@ -142,6 +143,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
           }}
           open
         >
+          {/* For Large Device  */}
           <Sidebar />
         </Drawer>
       </Box>

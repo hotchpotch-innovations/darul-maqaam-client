@@ -1,5 +1,5 @@
 "use client";
-import { Box, List, Stack, Typography } from "@mui/material";
+import { Box, Divider, List, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import logoImage from "../../../../public/images/mainLogo.png";
 import Link from "next/link";
@@ -61,7 +61,10 @@ const Sidebar = () => {
       >
         <List>
           {drawerItems(userRole as TUserRole).map((item, index) => (
-            <SidebarItem key={index} item={item} />
+            <Box key={index}>
+              <SidebarItem item={item} />
+              {drawerItems?.length - 1 !== index && <Divider />}
+            </Box>
           ))}
         </List>
       </Box>

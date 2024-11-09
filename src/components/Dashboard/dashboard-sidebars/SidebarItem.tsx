@@ -4,8 +4,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Stack,
-  Collapse,
   IconButton,
   Box,
   Typography,
@@ -16,6 +14,7 @@ import { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Link from "next/link";
+import FirstChildren from "./childrens/FirstChildren";
 
 type TItemProps = {
   item: IDrawerItems;
@@ -23,197 +22,101 @@ type TItemProps = {
 
 const SidebarItem = ({ item }: TItemProps) => {
   const [isChildOpen, setIsChildOpen] = useState(false);
-  const [isSecondChildOpen, setIsSecondChildOpen] = useState(false);
 
   const linkPath = `/dashboard/${item?.path}`;
   const pathName = usePathname();
 
-  const getLastPartOfUrl = (url: string): string => {
-    const parts = url.split("/").filter(Boolean);
-    return parts[parts.length - 1];
-  };
-
-  const getLastSecondOfUrl = (url: string): string => {
-    const parts = url.split("/").filter(Boolean);
-    return parts[parts.length - 2];
-  };
-
-  const lastSecond = getLastSecondOfUrl(pathName);
-  const lastPart = getLastPartOfUrl(pathName);
-
   return (
-    <Link href={item?.path ? linkPath : "#"} style={{ textDecoration: "none" }}>
-      <ListItem
-        disablePadding
-        sx={{
-          width: "100%",
-          display: "block",
-          borderBottom: "0.5px solid black",
-          color: "#E5E7EB", // Sidebar text color
-        }}
+    <>
+      <Link
+        href={item?.path ? linkPath : "#"}
+        style={{ textDecoration: "none" }}
       >
-        <ListItemButton
-          onClick={() => setIsChildOpen(!isChildOpen)}
+        <ListItem
+          disablePadding
           sx={{
-            ...(item.is_parent && {
-              bgcolor: "black",
-              cursor: "default",
-              ":hover": { bgcolor: "black" },
-            }),
             width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            display: "block",
+            // borderBottom: "0.5px solid black",
+            color: "#E5E7EB", // Sidebar text color
           }}
         >
-          <Box
+          {/* Management part  */}
+          <ListItemButton
+            onClick={() => setIsChildOpen(!isChildOpen)}
             sx={{
+              ...(item.is_parent && {
+                bgcolor: "black",
+                cursor: "pointer",
+                ":hover": { bgcolor: "black" },
+              }),
+              width: "100%",
               display: "flex",
-              gap: "0px",
-              color: "#E5E7EB", // Icon and text color
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <ListItemIcon
+            <Box
               sx={{
-                color: "#E5E7EB", // Icon color
-                ...(linkPath === pathName
-                  ? {
-                      color: "primary.main",
-                    }
-                  : {}),
+                display: "flex",
+                gap: "0px",
+                color: "#E5E7EB", // Icon and text color
               }}
             >
-              {item?.icon && <item.icon />}
-            </ListItemIcon>
-            <ListItemText>
-              <Typography
+              <ListItemIcon
                 sx={{
-                  color: "#E5E7EB", // Text color
-                  fontSize: "12px",
-                  marginLeft: "-15px",
+                  color: "#E5E7EB", // Icon color
                   ...(linkPath === pathName
                     ? {
                         color: "primary.main",
                       }
                     : {}),
-                  ...(item.is_parent && {
-                    marginLeft: "-40px",
-                    fontSize: "16px",
-                  }),
                 }}
               >
-                {item?.title}
-              </Typography>
-            </ListItemText>
-          </Box>
-          {item.child && (
-            <IconButton sx={{ color: "#E5E7EB" }}>
-              {isChildOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            </IconButton>
-          )}
-        </ListItemButton>
+                {item?.icon && <item.icon />}
+              </ListItemIcon>
 
-        <Collapse in={isChildOpen} timeout="auto" unmountOnExit>
-          <Stack width="100%" direction="column" gap={1}>
-            {item?.child?.map((childItem, index) => (
-              <Link
-                key={index}
-                href={
-                  childItem?.child
-                    ? ""
-                    : `/${childItem?.parentPath || ""}/${childItem?.path || ""}`
-                }
-                style={{ textDecoration: "none" }}
+              <ListItemText
+                sx={{
+                  marginLeft: "20px",
+                }}
               >
-                <ListItem sx={{ display: "block" }} disablePadding>
-                  <ListItemButton
-                    onClick={() => setIsSecondChildOpen(!isSecondChildOpen)}
-                    sx={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Stack direction="row" spacing={0} width="100%">
-                      <ListItemIcon sx={{ color: "#E5E7EB" }}>
-                        {childItem?.icon && <childItem.icon />}
-                      </ListItemIcon>
+                <Typography
+                  sx={{
+                    color: "#E5E7EB",
+                    fontSize: "16px",
+                    // marginLeft: "-15px",
+                    ...(linkPath === pathName
+                      ? {
+                          color: "primary.main",
+                        }
+                      : {}),
 
-                      <ListItemText>
-                        <Typography
-                          sx={{
-                            color: "#E5E7EB", // Text color
-                            fontSize: "12.5px",
-                            marginLeft: "-15px",
-                            ...(lastPart === childItem?.path
-                              ? {
-                                  color: "primary.main",
-                                }
-                              : {}),
-                          }}
-                        >
-                          {childItem?.title}
-                        </Typography>
-                      </ListItemText>
-                    </Stack>
-                    {childItem.child && (
-                      <IconButton sx={{ color: "#E5E7EB" }}>
-                        {isSecondChildOpen ? (
-                          <ExpandLessIcon />
-                        ) : (
-                          <ExpandMoreIcon />
-                        )}
-                      </IconButton>
-                    )}
-                  </ListItemButton>
-                  <Collapse in={isSecondChildOpen} timeout="auto" unmountOnExit>
-                    <Stack width="100%" direction="column">
-                      {childItem?.child?.map(
-                        (grandChildItem, grandChildIndex) => (
-                          <Link
-                            key={grandChildIndex}
-                            href={`/${grandChildItem?.parentPath || ""}/${
-                              grandChildItem?.path || ""
-                            }`}
-                            style={{ textDecoration: "none" }}
-                          >
-                            <ListItem disablePadding>
-                              <ListItemButton
-                                sx={{
-                                  width: "100%",
-                                }}
-                              >
-                                <ListItemText>
-                                  <Typography
-                                    sx={{
-                                      color: "#E5E7EB", // Text color
-                                      textAlign: "center",
-                                      fontSize: "12.5px",
-                                      ...(lastPart === grandChildItem?.path
-                                        ? {
-                                            color: "primary.main",
-                                          }
-                                        : {}),
-                                    }}
-                                  >
-                                    {grandChildItem?.title}
-                                  </Typography>
-                                </ListItemText>
-                              </ListItemButton>
-                            </ListItem>
-                          </Link>
-                        )
-                      )}
-                    </Stack>
-                  </Collapse>
-                </ListItem>
-              </Link>
-            ))}
-          </Stack>
-        </Collapse>
-      </ListItem>
-    </Link>
+                    // Management Title
+                    ...(item.is_parent && {
+                      marginLeft: "-40px",
+                      fontSize: "14px",
+                    }),
+                  }}
+                >
+                  {item?.title.length > 20
+                    ? item?.title.slice(0, 17) + "..."
+                    : item?.title}
+                </Typography>
+              </ListItemText>
+            </Box>
+            {item.child && (
+              <IconButton sx={{ color: "#E5E7EB" }}>
+                {isChildOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </IconButton>
+            )}
+          </ListItemButton>
+
+          {/* First Child of Management */}
+          <FirstChildren isChildOpen={isChildOpen} item={item} />
+        </ListItem>
+      </Link>
+    </>
   );
 };
 

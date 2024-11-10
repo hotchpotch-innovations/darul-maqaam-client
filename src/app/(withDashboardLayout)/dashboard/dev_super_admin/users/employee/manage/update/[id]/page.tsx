@@ -7,7 +7,6 @@ import { useParams } from "next/navigation";
 
 const UpdateEmployee = () => {
   const { id }: { id: string } = useParams();
-  console.log(id);
   return (
     <Box>
       <TitleDashboard title="Update Employee" />

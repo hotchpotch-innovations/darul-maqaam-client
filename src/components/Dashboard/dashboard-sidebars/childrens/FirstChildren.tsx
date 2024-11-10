@@ -47,11 +47,7 @@ const FirstChildren = ({ item, isChildOpen }: TProps) => {
         {item?.child?.map((childItem, index) => (
           <Link
             key={index}
-            href={
-              childItem?.child
-                ? ""
-                : `/${childItem?.parentPath || ""}/${childItem?.path || ""}`
-            }
+            href={childItem?.path ? childItem?.path : ""}
             style={{ textDecoration: "none" }}
           >
             <ListItem

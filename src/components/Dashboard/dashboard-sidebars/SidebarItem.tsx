@@ -22,16 +22,14 @@ type TItemProps = {
 
 const SidebarItem = ({ item }: TItemProps) => {
   const [isChildOpen, setIsChildOpen] = useState(false);
+  // console.log(item);
 
-  const linkPath = `/dashboard/${item?.path}`;
+  // const linkPath = `/dashboard/${item?.path}`;
   const pathName = usePathname();
 
   return (
     <>
-      <Link
-        href={item?.path ? linkPath : "#"}
-        style={{ textDecoration: "none" }}
-      >
+      <Box style={{ textDecoration: "none" }}>
         <ListItem
           disablePadding
           sx={{
@@ -45,11 +43,9 @@ const SidebarItem = ({ item }: TItemProps) => {
           <ListItemButton
             onClick={() => setIsChildOpen(!isChildOpen)}
             sx={{
-              ...(item.is_parent && {
-                // bgcolor: "black",
-                cursor: "pointer",
-                ":hover": { bgcolor: "primary.main" },
-              }),
+              // ...(item.is_parent && ),
+              cursor: "pointer",
+              ":hover": { bgcolor: "primary.main" },
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
@@ -66,7 +62,7 @@ const SidebarItem = ({ item }: TItemProps) => {
               <ListItemIcon
                 sx={{
                   color: "#E5E7EB", // Icon color
-                  ...(linkPath === pathName
+                  ...(item?.path === pathName
                     ? {
                         color: "primary.main",
                       }
@@ -85,16 +81,11 @@ const SidebarItem = ({ item }: TItemProps) => {
                   sx={{
                     color: "#E5E7EB",
                     fontSize: "16px",
-                    // marginLeft: "-15px",
-                    ...(linkPath === pathName
-                      ? {
-                          color: "primary.main",
-                        }
-                      : {}),
-
-                    // Management Title
+                    marginLeft: "-40px",
+                    ...(item?.path === pathName && {
+                      color: "primary.main",
+                    }),
                     ...(item.is_parent && {
-                      marginLeft: "-40px",
                       fontSize: "14px",
                     }),
                   }}
@@ -105,7 +96,7 @@ const SidebarItem = ({ item }: TItemProps) => {
                 </Typography>
               </ListItemText>
             </Box>
-            {item.child && (
+            {item?.child && (
               <IconButton sx={{ color: "#E5E7EB" }}>
                 {isChildOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </IconButton>
@@ -115,7 +106,7 @@ const SidebarItem = ({ item }: TItemProps) => {
           {/* First Child of Management */}
           <FirstChildren isChildOpen={isChildOpen} item={item} />
         </ListItem>
-      </Link>
+      </Box>
     </>
   );
 };

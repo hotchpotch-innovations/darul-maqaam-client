@@ -38,7 +38,10 @@ const ThirdChildren = ({ item, isChildOpen }: TProps) => {
     <Collapse in={isChildOpen} timeout="auto" unmountOnExit>
       <Stack width="100%" direction="column">
         {item?.child?.map((childItem, grandChildIndex) => (
-          <Link key={grandChildIndex} href={""}>
+          <Link
+            key={grandChildIndex}
+            href={childItem.path ? childItem.path : ""}
+          >
             <ListItem
               disablePadding
               sx={{

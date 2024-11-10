@@ -19,6 +19,10 @@ const Sidebar = () => {
     setLoading(false);
   }, []);
 
+  const dashboard_drawer_items = drawerItems(userRole as TUserRole);
+
+  console.log(dashboard_drawer_items);
+
   if (loading) {
     return <Typography> Loading...</Typography>;
   }
@@ -60,12 +64,15 @@ const Sidebar = () => {
         }}
       >
         <List>
-          {drawerItems(userRole as TUserRole).map((item, index) => (
-            <Box key={index}>
-              <SidebarItem item={item} />
-              {drawerItems?.length - 1 !== index && <Divider />}
-            </Box>
-          ))}
+          {drawerItems(userRole as TUserRole).map((item, index) => {
+            // console.log({ item });
+            return (
+              <Box key={index}>
+                <SidebarItem item={item} />
+                {drawerItems?.length - 1 !== index && <Divider />}
+              </Box>
+            );
+          })}
         </List>
       </Box>
     </Box>

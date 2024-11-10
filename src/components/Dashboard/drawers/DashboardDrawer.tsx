@@ -113,6 +113,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
+        {/* For mobile Device  */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -129,9 +130,10 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
             },
           }}
         >
-          {/* For mobile Device  */}
           <Sidebar />
         </Drawer>
+
+        {/* For Large Device  */}
         <Drawer
           variant="permanent"
           sx={{
@@ -143,7 +145,6 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
           }}
           open
         >
-          {/* For Large Device  */}
           <Sidebar />
         </Drawer>
       </Box>

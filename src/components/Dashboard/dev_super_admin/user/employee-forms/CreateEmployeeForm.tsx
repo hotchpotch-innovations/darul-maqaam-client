@@ -43,7 +43,7 @@ const validationSchema = z.object({
 });
 
 const CreateEmployeeForm = () => {
-  const desingnationQueryObj: TDesignationQueryObj = {};
+  const designationQueryObj: TDesignationQueryObj = {};
   const presentDivisionQueryObj: TDivisionQueryObj = {};
   const permanentDivisionQueryObj: TDivisionQueryObj = {};
   const presentDistrictQueryObj: TDistrictQueryObj = {};
@@ -60,7 +60,7 @@ const CreateEmployeeForm = () => {
 
   // assign query value
   if (!!departmentId) {
-    desingnationQueryObj["departmentId"] = departmentId;
+    designationQueryObj["departmentId"] = departmentId;
   }
   if (!!presentCountryId) {
     presentDivisionQueryObj["countryId"] = presentCountryId;
@@ -80,7 +80,7 @@ const CreateEmployeeForm = () => {
 
   const { options: department_options } = useDepartmentOptions();
   const { options: designation_options } =
-    useDesignationOptions(desingnationQueryObj);
+    useDesignationOptions(designationQueryObj);
 
   //set Present Address Query Parameter
   const {

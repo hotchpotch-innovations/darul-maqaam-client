@@ -37,7 +37,7 @@ type TProps = {
 };
 
 const UpdateEmployeeForm = ({ employee_id }: TProps) => {
-  const desingnationQueryObj: TDesignationQueryObj = {};
+  const designationQueryObj: TDesignationQueryObj = {};
   const presentDivisionQueryObj: TDivisionQueryObj = {};
   const permanentDivisionQueryObj: TDivisionQueryObj = {};
   const presentDistrictQueryObj: TDistrictQueryObj = {};
@@ -56,7 +56,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
 
   // assign query value
   if (!!departmentId) {
-    desingnationQueryObj["departmentId"] = departmentId;
+    designationQueryObj["departmentId"] = departmentId;
   }
   if (!!presentCountryId) {
     presentDivisionQueryObj["countryId"] = presentCountryId;
@@ -71,11 +71,9 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
     permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
   }
 
-  const [createSuperAdmin] = useCreateSuperAdminMutation();
-
   const { options: department_options } = useDepartmentOptions();
   const { options: designation_options } =
-    useDesignationOptions(desingnationQueryObj);
+    useDesignationOptions(designationQueryObj);
 
   // Set Present Query Options
   const { options: present_country_options } = useCountryOptions();
@@ -103,7 +101,6 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
   // update handler
   const handleUpdateEmployee = async (values: FieldValues) => {
     const updatedEmployeeData = removeNullValues(values);
-    console.log({ updatedEmployeeData });
     const toastId = toast.loading("Please wait...");
 
     try {

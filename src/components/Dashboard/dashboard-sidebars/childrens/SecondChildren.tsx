@@ -1,8 +1,6 @@
 "use client";
-
 import { IDrawerItems } from "@/types";
 import { getLastPartOfUrl } from "@/utils/drawerHelpers";
-import { usePathname } from "next/navigation";
 import {
   Collapse,
   IconButton,
@@ -13,11 +11,12 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import Link from "next/link";
-import { useState } from "react";
-import SecondChildren from "./SecondChildren";
+import ThirdChildren from "./ThirdChildren";
 
 type TProps = {
   item: IDrawerItems;
@@ -29,36 +28,24 @@ type TChildOpen = {
   isChildOpen: boolean;
 };
 
-const FirstChildren = ({ item, isChildOpen }: TProps) => {
+const SecondChildren = ({ item, isChildOpen }: TProps) => {
   const pathName = usePathname();
   const lastPart = getLastPartOfUrl(pathName);
   const [childOpenObj, setChildOpenObj] = useState<TChildOpen>({
     state: null,
     isChildOpen: false,
   });
+
   return (
     <Collapse in={isChildOpen} timeout="auto" unmountOnExit>
-      <Stack
-        // sx={{ backgroundColor: "#212020" }}
-        width="100%"
-        direction="column"
-        gap={1}
-      >
-        {item?.child?.map((childItem, index) => (
-          <Link
-            key={index}
-            href={
-              childItem?.child
-                ? ""
-                : `/${childItem?.parentPath || ""}/${childItem?.path || ""}`
-            }
-            style={{ textDecoration: "none" }}
-          >
+      <Stack width="100%" direction="column">
+        {item?.child?.map((childItem, grandChildIndex) => (
+          <Link key={grandChildIndex} href={""}>
             <ListItem
               sx={{
                 display: "block",
                 ":hover": {
-                  backgroundColor: "#172130",
+                  backgroundColor: "#111b2b",
                   transitionDuration: "0.3s",
                 },
               }}
@@ -73,34 +60,24 @@ const FirstChildren = ({ item, isChildOpen }: TProps) => {
                 }
                 sx={{
                   width: "100%",
-                  display: "flex",
-                  justifyContent: "start",
-                  textAlign: "start",
-                  alignItems: "center",
-                  // fontSize: "48px",
                 }}
               >
                 <Stack direction="row" spacing={0} width="100%">
                   <ListItemIcon sx={{ color: "#E5E7EB" }}>
                     {childItem?.icon && <childItem.icon />}
                   </ListItemIcon>
-
                   <ListItemText>
                     <Typography
                       sx={{
-                        color: "#E5E7EB",
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "start",
+                        color: "#E5E7EB", // Text color
                         textAlign: "start",
-                        alignItems: "center",
-                        fontSize: "12.5px",
+                        fontSize: "11px",
+                        marginLeft: "16px",
                         cursor: "pointer",
                         ":hover": {
                           color: "primary.main",
                           transitionDuration: "0.3s",
                         },
-                        // marginLeft: "10px",
                         ...(lastPart === childItem?.path
                           ? {
                               color: "primary.main",
@@ -112,7 +89,7 @@ const FirstChildren = ({ item, isChildOpen }: TProps) => {
                     </Typography>
                   </ListItemText>
                 </Stack>
-                {childItem.child && (
+                {childItem?.child && (
                   <IconButton sx={{ color: "#E5E7EB" }}>
                     {childOpenObj?.state === childItem?.state &&
                     childOpenObj?.isChildOpen ? (
@@ -123,14 +100,13 @@ const FirstChildren = ({ item, isChildOpen }: TProps) => {
                   </IconButton>
                 )}
               </ListItemButton>
-
-              {/* Second Child of management item */}
-              <SecondChildren
-                item={childItem}
+              {/* Third child of management  */}
+              <ThirdChildren
                 isChildOpen={
                   childOpenObj?.state === childItem?.state &&
                   childOpenObj?.isChildOpen
                 }
+                item={childItem}
               />
             </ListItem>
           </Link>
@@ -140,4 +116,4 @@ const FirstChildren = ({ item, isChildOpen }: TProps) => {
   );
 };
 
-export default FirstChildren;
+export default SecondChildren;

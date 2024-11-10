@@ -46,9 +46,9 @@ const SidebarItem = ({ item }: TItemProps) => {
             onClick={() => setIsChildOpen(!isChildOpen)}
             sx={{
               ...(item.is_parent && {
-                bgcolor: "black",
+                // bgcolor: "black",
                 cursor: "pointer",
-                ":hover": { bgcolor: "black" },
+                ":hover": { bgcolor: "primary.main" },
               }),
               width: "100%",
               display: "flex",

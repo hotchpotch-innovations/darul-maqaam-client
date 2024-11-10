@@ -27,7 +27,7 @@ const Sidebar = () => {
     <Box
       sx={{
         borderRight: "2px solid lightgray",
-        bgcolor: "#2E2E2E",
+        bgcolor: "#1E293B",
         color: "#E5E7EB",
         pb: "100px",
       }}

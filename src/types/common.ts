@@ -14,6 +14,7 @@ export interface IDrawerItems {
   child?: IDrawerItems[];
   parent_Id?: string;
   state?: string;
+  identifier?: string;
 }
 
 export type TablePaginationActionsProps = {

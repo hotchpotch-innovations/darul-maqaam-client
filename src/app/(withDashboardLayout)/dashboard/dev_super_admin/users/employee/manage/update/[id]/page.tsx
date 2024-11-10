@@ -1,8 +1,8 @@
 "use client";
 
-import UpdateEmployeeForm from "@/components/Dashboard/dev_super_admin/user/employee-forms/UpdateEmployeeForm";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import { Box, Typography } from "@mui/material";
+import UpdateEmployeeForm from "@/components/Dashboard/dev_super_admin/user/employee-forms/UpdateEmployeeForm";
+import { Box } from "@mui/material";
 import { useParams } from "next/navigation";
 
 const UpdateEmployee = () => {

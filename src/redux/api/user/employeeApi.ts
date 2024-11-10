@@ -1,6 +1,5 @@
 import { tagTypes } from "@/redux/tag-types";
 import { baseApi } from "../baseApi";
-import UpdateEmployee from "@/app/(withDashboardLayout)/dashboard/dev_super_admin/users/employee/manage-employee/update/[id]/page";
 
 const employeeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -23,7 +22,7 @@ const employeeApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.employee],
     }),
 
-    UpdateEmployee: build.mutation({
+    updateEmployee: build.mutation({
       query: (data) => {
         console.log(data);
 

@@ -17,7 +17,7 @@ import AccountMenu from "../shared/accountMenu/AccountMenu";
 import Sidebar from "../dashboard-sidebars/SideBar";
 
 // 280
-const drawerWidth = 400;
+const drawerWidth = 280;
 
 const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);

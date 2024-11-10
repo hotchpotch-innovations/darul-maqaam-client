@@ -32,12 +32,13 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         {
           title: "Dashboard",
           path: `/dashboard/${role}`,
+          management: "no-management",
           icon: DashboardIcon,
         },
         {
           title: "User Management",
           is_parent: true,
-          path: "",
+          management: users,
           icon: GroupIcon,
           parent_Id: "CM001",
           child: [
@@ -47,6 +48,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               path: `/dashboard/${role}/${users}/all-users`,
               // path: `all-users`,
               icon: GroupsIcon,
+              identifier: "/all-users",
               parent_Id: "CM001",
             },
             // user > admin
@@ -54,18 +56,22 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               title: "Admin",
               icon: AdminPanelSettingsIcon,
               state: "user_admin",
+              identifier: "/admin",
               child: [
                 {
                   title: "Create Super Admin",
                   path: `/dashboard/${role}/${users}/admin/create-super-admin`,
+                  identifier: "/create-super-admin",
                 },
                 {
                   title: "Create Admin",
                   path: `/dashboard/${role}/${users}/admin/create-admin`,
+                  identifier: "/create-admin",
                 },
                 {
                   title: "Manage",
                   path: `/dashboard/${role}/${users}/admin/manage`,
+                  identifier: "/admin/manage",
                 },
               ],
             },
@@ -74,14 +80,17 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               title: "Employee",
               icon: GroupIcon,
               state: "user_employee",
+              identifier: "/employee",
               child: [
                 {
                   title: "Create Employee",
                   path: `/dashboard/${role}/${users}/employee/create-employee`,
+                  identifier: "/create-employee",
                 },
                 {
                   title: "Manage",
                   path: `/dashboard/${role}/${users}/employee/manage`,
+                  identifier: "/employee/manage",
                 },
               ],
             },
@@ -89,6 +98,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
             {
               title: "Client",
               path: `/dashboard/${role}/${users}/client`,
+              identifier: "/client",
               icon: HowToRegIcon,
             },
             // user > settings
@@ -96,36 +106,44 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               title: "Settings",
               icon: SettingsIcon,
               state: "UserSettings",
+              identifier: "/settings",
               child: [
                 {
                   title: "Address",
                   state: "user_address",
+                  identifier: "/address",
                   child: [
                     {
                       title: "Country",
                       path: `/dashboard/${role}/${users}/settings/address/country`,
+                      identifier: "/country",
                     },
                     {
                       title: "Division",
                       path: `/dashboard/${role}/${users}/settings/address/division`,
+                      identifier: "/division",
                     },
                     {
                       title: "District",
                       path: `/dashboard/${role}/${users}/settings/address/district`,
+                      identifier: "/district",
                     },
                   ],
                 },
                 {
                   title: "Department",
                   path: `/dashboard/${role}/${users}/settings/department`,
+                  identifier: "/department",
                 },
                 {
                   title: "Designation",
                   path: `/dashboard/${role}/${users}/settings/designation`,
+                  identifier: "/designation",
                 },
                 {
                   title: "Client Type",
                   path: `/dashboard/${role}/${users}/settings/client-type`,
+                  identifier: "/client-type",
                 },
               ],
             },
@@ -136,6 +154,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
         {
           title: "Content Management",
           is_parent: true,
+          management: content,
           path: "",
           icon: MenuBookIcon,
           parent_Id: "CM002",

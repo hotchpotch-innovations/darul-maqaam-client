@@ -83,6 +83,13 @@ const ThirdChildren = ({ item, isChildOpen }: TProps) => {
                               color: "primary.main",
                             }
                           : {}),
+                        ...(pathName.includes(
+                          childItem?.identifier ? childItem?.identifier : ""
+                        )
+                          ? {
+                              color: "primary.main",
+                            }
+                          : {}),
                       }}
                     >
                       {childItem?.title}

@@ -31,6 +31,7 @@ type TChildOpen = {
 
 const FirstChildren = ({ item, isChildOpen }: TProps) => {
   const pathName = usePathname();
+  console.log({ pathName });
   const lastPart = getLastPartOfUrl(pathName);
   const [childOpenObj, setChildOpenObj] = useState<TChildOpen>({
     state: null,
@@ -97,7 +98,9 @@ const FirstChildren = ({ item, isChildOpen }: TProps) => {
                           transitionDuration: "0.3s",
                         },
                         // marginLeft: "10px",
-                        ...(lastPart === childItem?.path
+                        ...(pathName.includes(
+                          childItem?.identifier ? childItem?.identifier : ""
+                        )
                           ? {
                               color: "primary.main",
                             }

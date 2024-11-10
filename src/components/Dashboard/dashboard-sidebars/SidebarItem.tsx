@@ -50,6 +50,11 @@ const SidebarItem = ({ item }: TItemProps) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              ...(pathName.includes(item?.management ? `/${item.management}` : "")
+                ? {
+                    bgcolor: "primary.main",
+                  }
+                : {}),
             }}
           >
             <Box

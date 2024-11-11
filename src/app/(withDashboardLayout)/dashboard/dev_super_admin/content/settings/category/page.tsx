@@ -2,12 +2,12 @@ import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboa
 import { Box } from "@mui/material";
 import React from "react";
 
-const FromsAndTemplatesPage = () => {
+const CategoryPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Templates Page" />
+      <TitleDashboard title="Category Page" />
     </Box>
   );
 };
 
-export default FromsAndTemplatesPage;
+export default CategoryPage;

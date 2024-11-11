@@ -2,12 +2,12 @@ import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboa
 import { Box } from "@mui/material";
 import React from "react";
 
-const CoreValuePage = () => {
+const ArticlesPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Core Value Page" />
+      <TitleDashboard title="Articles Page" />
     </Box>
   );
 };
 
-export default CoreValuePage;
+export default ArticlesPage;

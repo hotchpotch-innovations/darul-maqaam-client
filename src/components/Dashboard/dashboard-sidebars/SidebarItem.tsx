@@ -44,13 +44,18 @@ const SidebarItem = ({ item }: TItemProps) => {
             onClick={() => setIsChildOpen(!isChildOpen)}
             sx={{
               // ...(item.is_parent && ),
-              cursor: "pointer",
-              ":hover": { bgcolor: "primary.main" },
+              ...(item?.management !== "no-management" && {
+                cursor: "pointer",
+                ":hover": { bgcolor: "primary.main" },
+              }),
+
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              ...(pathName.includes(item?.management ? `/${item.management}` : "")
+              ...(pathName.includes(
+                item?.management ? `/${item.management}` : ""
+              )
                 ? {
                     bgcolor: "primary.main",
                   }
@@ -82,23 +87,25 @@ const SidebarItem = ({ item }: TItemProps) => {
                   marginLeft: "20px",
                 }}
               >
-                <Typography
-                  sx={{
-                    color: "#E5E7EB",
-                    fontSize: "16px",
-                    marginLeft: "-40px",
-                    ...(item?.path === pathName && {
-                      color: "primary.main",
-                    }),
-                    ...(item.is_parent && {
-                      fontSize: "14px",
-                    }),
-                  }}
-                >
-                  {item?.title.length > 20
-                    ? item?.title.slice(0, 17) + "..."
-                    : item?.title}
-                </Typography>
+                <Link href={item?.path ? item?.path : ""}>
+                  <Typography
+                    sx={{
+                      color: "#E5E7EB",
+                      fontSize: "16px",
+                      marginLeft: "-40px",
+                      ...(item?.path === pathName && {
+                        color: "primary.main",
+                      }),
+                      ...(item.is_parent && {
+                        fontSize: "14px",
+                      }),
+                    }}
+                  >
+                    {item?.title.length > 20
+                      ? item?.title.slice(0, 17) + "..."
+                      : item?.title}
+                  </Typography>
+                </Link>
               </ListItemText>
             </Box>
             {item?.child && (

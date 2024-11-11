@@ -2,12 +2,12 @@ import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboa
 import { Box } from "@mui/material";
 import React from "react";
 
-const ResourcePage = () => {
+const MultiplePageSectionPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Resource Page" />
+      <TitleDashboard title="Page Section (multiple) Page" />
     </Box>
   );
 };
 
-export default ResourcePage;
+export default MultiplePageSectionPage;

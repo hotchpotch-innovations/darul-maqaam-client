@@ -17,8 +17,6 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import GroupsIcon from "@mui/icons-material/Groups";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import CategoryIcon from "@mui/icons-material/Category";
-import RuleIcon from "@mui/icons-material/Rule";
 
 export const drawerItems = (role: TUserRole): IDrawerItems[] => {
   const users = "users";
@@ -155,60 +153,66 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           title: "Content Management",
           is_parent: true,
           management: content,
-          path: "",
           icon: MenuBookIcon,
           parent_Id: "CM002",
           child: [
             {
               title: "Menu",
-              path: `${role}/${content}/menu`,
+              path: `/dashboard/${role}/${content}/menu`,
+              identifier: "/menu",
               icon: MenuIcon,
             },
             {
               title: "Submenu",
-              path: `${role}/${content}/submenu`,
+              path: `/dashboard/${role}/${content}/submenu`,
               icon: MenuOpenIcon,
+              identifier: "/submenu",
             },
             {
               title: "Webpage",
-              path: `${role}/${content}/web-page`,
+              path: `/dashboard/${role}/${content}/web-page`,
               icon: WebIcon,
+              identifier: "/web-page",
             },
             {
               title: "W.P Section (single)",
-              path: `${role}/${content}/page-section/single`,
+              path: `/dashboard/${role}/${content}/page-section/single`,
               icon: WebAssetIcon,
+              identifier: "/page-section/single",
             },
             {
               title: "W.P Section (multiple)",
-              path: `${role}/${content}/page-section/multiple`,
+              path: `/dashboard/${role}/${content}/page-section/multiple`,
               icon: WebAssetIcon,
+              identifier: "/page-section/multiple",
             },
             {
               title: "Articles",
-              path: `${role}/${content}/articles`,
+              path: `/dashboard/${role}/${content}/articles`,
               icon: RateReviewIcon,
+              identifier: "/articles",
             },
             // content > others
             {
               title: "Others",
               icon: DevicesOtherIcon,
               state: "content_others",
+              identifier: "/others",
               child: [
                 {
                   title: "Hero-Section",
-                  parentPath: `dashboard/${role}/${content}/others`,
-                  path: "hero-section",
+                  path: `/dashboard/${role}/${content}/others/hero-section`,
+                  identifier: "/hero-section",
                 },
                 {
                   title: "Team",
-                  parentPath: `dashboard/${role}/${content}/others`,
-                  path: "team",
+                  path: `/dashboard/${role}/${content}/others/team`,
+                  identifier: "/team",
                 },
                 {
                   title: "FAQ",
-                  parentPath: `dashboard/${role}/${content}/others`,
-                  path: "faq",
+                  path: `/dashboard/${role}/${content}/others/faq`,
+                  identifier: "/faq",
                 },
               ],
             },
@@ -217,17 +221,18 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               title: "Settings",
               icon: SettingsIcon,
               state: "content_settings",
+              identifier: "/content/settings",
               child: [
                 // content > settings > category
                 {
                   title: "Category",
-                  parentPath: `dashboard/${role}/${content}/settings`,
-                  path: "category",
+                  path: `/dashboard/${role}/${content}/settings/category`,
+                  identifier: "/category",
                 },
                 {
                   title: "Authority",
-                  parentPath: `dashboard/${role}/${content}/settings`,
-                  path: "authority",
+                  path: `/dashboard/${role}/${content}/settings/authority`,
+                  identifier: "/authority",
                 },
               ],
             },

@@ -2,12 +2,12 @@ import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboa
 import { Box } from "@mui/material";
 import React from "react";
 
-const CompanyVideoPage = () => {
+const SinglePageSectionPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Video Page" />
+      <TitleDashboard title="Page Section (single) Page" />
     </Box>
   );
 };
 
-export default CompanyVideoPage;
+export default SinglePageSectionPage;

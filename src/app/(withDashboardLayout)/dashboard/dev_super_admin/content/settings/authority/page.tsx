@@ -1,12 +1,13 @@
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
+import React from "react";
 
-const BlogPage = () => {
+const AuthorityPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Blog page" />
+      <TitleDashboard title="Authority Page" />
     </Box>
   );
 };
 
-export default BlogPage;
+export default AuthorityPage;

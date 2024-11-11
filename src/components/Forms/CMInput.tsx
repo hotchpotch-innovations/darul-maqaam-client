@@ -30,7 +30,7 @@ const CMInput = ({
           {...field}
           sx={{
             ...sx,
-            border: "1px solid lightgray",
+            // border: "1px solid lightgray",
             borderRadius: "3px",
           }}
           label={label}

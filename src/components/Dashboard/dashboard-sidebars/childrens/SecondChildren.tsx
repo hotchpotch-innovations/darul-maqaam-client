@@ -1,6 +1,5 @@
 "use client";
 import { IDrawerItems } from "@/types";
-import { getLastPartOfUrl } from "@/utils/drawerHelpers";
 import {
   Collapse,
   IconButton,
@@ -30,7 +29,6 @@ type TChildOpen = {
 
 const SecondChildren = ({ item, isChildOpen }: TProps) => {
   const pathName = usePathname();
-  const lastPart = getLastPartOfUrl(pathName);
   const [childOpenObj, setChildOpenObj] = useState<TChildOpen>({
     state: null,
     isChildOpen: false,
@@ -81,11 +79,6 @@ const SecondChildren = ({ item, isChildOpen }: TProps) => {
                           color: "primary.main",
                           transitionDuration: "0.3s",
                         },
-                        ...(lastPart === childItem?.path
-                          ? {
-                              color: "primary.main",
-                            }
-                          : {}),
                         ...(pathName.includes(
                           childItem?.identifier ? childItem?.identifier : ""
                         )

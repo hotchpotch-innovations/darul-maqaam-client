@@ -1,14 +1,17 @@
-
 import CreateMenuForm from "@/components/Dashboard/dev_super_admin/contents/menus/MenuCreateForm";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 const page = () => {
   return (
     <Box>
-      <TitleDashboard title="Create Menu" />
-      <CreateMenuForm />
+      <Stack>
+        <TitleDashboard title="Create Menu" />
+      </Stack>
+      <Stack>
+        <CreateMenuForm />
+      </Stack>
     </Box>
   );
 };

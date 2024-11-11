@@ -22,6 +22,7 @@ import {
   useUpdateMenuMutation,
 } from "@/redux/api/content/menuApi";
 import { toast } from "sonner";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type TQueryObj = {
   divisionId?: string;
@@ -83,7 +84,7 @@ const SubMenuTable = () => {
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    districts?.data?.map((row: any, index: number) => ({
+    districts?.data?.data.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -141,7 +142,7 @@ const SubMenuTable = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -149,7 +150,7 @@ const SubMenuTable = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -244,6 +245,9 @@ const SubMenuTable = () => {
               rowCount={districts?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={
+                districts?.data?.meta?.total < districts?.data?.meta?.limit
+              }
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

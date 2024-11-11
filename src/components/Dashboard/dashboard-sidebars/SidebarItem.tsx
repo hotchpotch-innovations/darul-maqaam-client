@@ -22,9 +22,6 @@ type TItemProps = {
 
 const SidebarItem = ({ item }: TItemProps) => {
   const [isChildOpen, setIsChildOpen] = useState(false);
-  // console.log(item);
-
-  // const linkPath = `/dashboard/${item?.path}`;
   const pathName = usePathname();
 
   return (
@@ -35,7 +32,6 @@ const SidebarItem = ({ item }: TItemProps) => {
           sx={{
             width: "100%",
             display: "block",
-            // borderBottom: "0.5px solid black",
             color: "#E5E7EB", // Sidebar text color
           }}
         >
@@ -43,7 +39,6 @@ const SidebarItem = ({ item }: TItemProps) => {
           <ListItemButton
             onClick={() => setIsChildOpen(!isChildOpen)}
             sx={{
-              // ...(item.is_parent && ),
               ...(item?.management !== "no-management" && {
                 cursor: "pointer",
                 ":hover": { bgcolor: "primary.main" },

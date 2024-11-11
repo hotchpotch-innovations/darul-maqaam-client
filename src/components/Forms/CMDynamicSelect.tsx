@@ -39,7 +39,6 @@ const CMDynamicSelect = ({
   options,
   required,
   setIdValue,
-  idValue,
 }: TSelectProps) => {
   const { control } = useFormContext();
   return (

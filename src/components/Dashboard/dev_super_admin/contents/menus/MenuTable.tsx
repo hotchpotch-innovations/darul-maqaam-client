@@ -22,6 +22,7 @@ import {
 import { toast } from "sonner";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type TQueryObj = {
   divisionId?: string;
@@ -57,6 +58,8 @@ const MenuTable = () => {
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // console.log({ limit, currentPage });
+
   // Debounced search term to avoid too many API requests
   const debouncedTerm: any = useDebounced({
     searchQuery: searchTerm,
@@ -79,11 +82,10 @@ const MenuTable = () => {
   // get All Country data
   const { data, isLoading } = useGetAllMenuQuery({ ...queryObj });
   const districts = data as TResponseDataObj;
-  console.log(districts?.data);
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    districts?.data?.map((row: any, index: number) => ({
+    districts?.data?.data.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -110,7 +112,7 @@ const MenuTable = () => {
     },
     {
       field: "slug",
-      headerName: "HAS SUBMENUE",
+      headerName: "HAS SUBMENU",
       flex: 1,
       valueGetter: (params: any) => (params === "" ? "No" : params),
     },
@@ -141,7 +143,7 @@ const MenuTable = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -149,7 +151,7 @@ const MenuTable = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -174,8 +176,8 @@ const MenuTable = () => {
 
   // Pagination handler
   const handlePaginationChange = (newPaginationModel: any) => {
-    setCurrentPage(newPaginationModel.page + 1);
-    setLimit(newPaginationModel.pageSize);
+    setCurrentPage(newPaginationModel?.page + 1);
+    setLimit(newPaginationModel?.pageSize);
   };
 
   // Update Menu Handle
@@ -244,6 +246,9 @@ const MenuTable = () => {
               rowCount={districts?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={
+                districts?.data?.meta?.total < districts?.data?.meta?.limit
+              }
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

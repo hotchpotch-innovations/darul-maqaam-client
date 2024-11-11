@@ -1,7 +1,6 @@
 "use client";
 
 import { IDrawerItems } from "@/types";
-import { getLastPartOfUrl } from "@/utils/drawerHelpers";
 import { usePathname } from "next/navigation";
 import {
   Collapse,
@@ -31,8 +30,6 @@ type TChildOpen = {
 
 const FirstChildren = ({ item, isChildOpen }: TProps) => {
   const pathName = usePathname();
-  console.log({ pathName });
-  const lastPart = getLastPartOfUrl(pathName);
   const [childOpenObj, setChildOpenObj] = useState<TChildOpen>({
     state: null,
     isChildOpen: false,

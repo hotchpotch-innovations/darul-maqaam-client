@@ -57,17 +57,21 @@ instance.interceptors.response.use(
       const responseObject: IGenericErrorResponse = {
         statusCode: error?.response?.data?.statusCode || 500,
         success: error?.response?.data?.success || false,
-        message: error?.response?.data?.message || "You are unauthorized",
+        message: error?.response?.data?.message || "You are unauthorized !!",
         errorMessages: error?.response?.data?.message,
       };
       return responseObject;
     } else {
-      const responseObject: IGenericErrorResponse = {
+      console.log(error);
+      const responseObject = {
         statusCode: error?.response?.data?.statusCode || 500,
         success: error?.response?.data?.success || false,
-        message: error?.response?.data?.message || "Something went wrong !!! ",
+        message:
+          error?.response?.data?.message ||
+          "Something went wrong, Please try again !!! ",
         errorMessages: error?.response?.data?.message,
       };
+      return responseObject;
     }
   }
 );

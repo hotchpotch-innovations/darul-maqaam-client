@@ -17,23 +17,23 @@ import {
   TDesignationQueryObj,
   useDesignationOptions,
 } from "@/hooks/useDesignationOptions";
-import {
-  TDistrictQueryObj,
-  useDistrictOptions,
-} from "@/hooks/useDistrictOptions";
-import {
-  TDivisionQueryObj,
-  useDivisionOptions,
-} from "@/hooks/useDivisionOptions";
+// import {
+//   TDistrictQueryObj,
+//   useDistrictOptions,
+// } from "@/hooks/useDistrictOptions";
+// import {
+//   TDivisionQueryObj,
+//   useDivisionOptions,
+// } from "@/hooks/useDivisionOptions";
 import { useCreateAdminMutation } from "@/redux/api/user/userApi";
+import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { removeNullFields } from "@/utils/removeNullValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-
 import { useState } from "react";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -49,36 +49,36 @@ const CreateAdminFrom = () => {
   const router = useRouter();
 
   const designationQueryObj: TDesignationQueryObj = {};
-  const presentDivisionQueryObj: TDivisionQueryObj = {};
-  const permanentDivisionQueryObj: TDivisionQueryObj = {};
-  const presentDistrictQueryObj: TDistrictQueryObj = {};
-  const permanentDistrictQueryObj: TDistrictQueryObj = {};
+  // const presentDivisionQueryObj: TDivisionQueryObj = {};
+  // const permanentDivisionQueryObj: TDivisionQueryObj = {};
+  // const presentDistrictQueryObj: TDistrictQueryObj = {};
+  // const permanentDistrictQueryObj: TDistrictQueryObj = {};
 
   const [departmentId, setDepartmentId] = useState(null);
   // present address state
   const [presentCountryId, setPresentCountryId] = useState(null);
-  const [presentDivisionId, setPresentDivisionId] = useState(null);
+  // const [presentDivisionId, setPresentDivisionId] = useState(null);
 
   // permanent address state
   const [permanentCountryId, setPermanentCountryId] = useState(null);
-  const [permanentDivisionId, setPermanentDivisionId] = useState(null);
+  // const [permanentDivisionId, setPermanentDivisionId] = useState(null);
 
   // assign query value
   if (!!departmentId) {
     designationQueryObj["departmentId"] = departmentId;
   }
-  if (!!presentCountryId) {
-    presentDivisionQueryObj["countryId"] = presentCountryId;
-  }
-  if (!!permanentCountryId) {
-    permanentDivisionQueryObj["countryId"] = permanentCountryId;
-  }
-  if (!!presentDivisionId) {
-    presentDistrictQueryObj["divisionId"] = presentDivisionId;
-  }
-  if (!!permanentDivisionId) {
-    permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
-  }
+  // if (!!presentCountryId) {
+  //   presentDivisionQueryObj["countryId"] = presentCountryId;
+  // }
+  // if (!!permanentCountryId) {
+  //   permanentDivisionQueryObj["countryId"] = permanentCountryId;
+  // }
+  // if (!!presentDivisionId) {
+  //   presentDistrictQueryObj["divisionId"] = presentDivisionId;
+  // }
+  // if (!!permanentDivisionId) {
+  //   permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
+  // }
 
   const [createAdmin, { isLoading: isCreateLoading }] =
     useCreateAdminMutation();
@@ -90,40 +90,40 @@ const CreateAdminFrom = () => {
   //Present Information
   const {
     options: present_country_options,
-    isLoading: present_country_isLoading,
+    // isLoading: present_country_isLoading,
   } = useCountryOptions();
 
-  const {
-    options: present_division_options,
-    isLoading: present_division_isLoading,
-  } = useDivisionOptions(presentDivisionQueryObj);
+  // const {
+  //   options: present_division_options,
+  //   isLoading: present_division_isLoading,
+  // } = useDivisionOptions(presentDivisionQueryObj);
 
-  const { options: present_district_options } = useDistrictOptions(
-    presentDistrictQueryObj
-  );
+  // const { options: present_district_options } = useDistrictOptions(
+  //   presentDistrictQueryObj
+  // );
 
   // Permanent Information
   const {
     options: permanent_country_options,
-    isLoading: permanent_country_isLoading,
+    // isLoading: permanent_country_isLoading,
   } = useCountryOptions();
-  const {
-    options: permanent_division_options,
-    isLoading: permanent_division_isLoading,
-  } = useDivisionOptions(permanentDivisionQueryObj);
 
-  const { options: permanent_district_options } = useDistrictOptions(
-    permanentDistrictQueryObj
-  );
+  // const {
+  //   options: permanent_division_options,
+  //   isLoading: permanent_division_isLoading,
+  // } = useDivisionOptions(permanentDivisionQueryObj);
 
-  const handleCreateAdmin = async (values: FieldValues) => {
-    const removeNullValue = removeNullFields(values);
-    console.log({ removeNullValue });
+  // const { options: permanent_district_options } = useDistrictOptions(
+  //   permanentDistrictQueryObj
+  // );
+
+  const handleCreateAdmin: SubmitHandler<FieldValues> = async (values) => {
+    // console.log({ removeNullValue });
     const toastId = toast.loading("Please wait...", { duration: 3000 });
-    const data = modifyPayload(removeNullValue);
+    const data = modifyPayload(values);
     try {
       const res = await createAdmin(data).unwrap();
-      if (res.success) {
+      if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
         router.push("/dashboard/dev_super_admin/users/admin/manage");
       } else {
@@ -132,8 +132,10 @@ const CreateAdminFrom = () => {
     } catch (error: any) {
       toast.error(error?.message, { id: toastId, duration: 3000 });
       console.log(error);
+      customTimeOut(3000).then(() => window?.location?.reload());
     }
   };
+
   return (
     <CMForm
       onSubmit={handleCreateAdmin}
@@ -266,7 +268,7 @@ const CreateAdminFrom = () => {
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelectWithWatch
+            {/* <CMSelectWithWatch
               name="present_address.divisionId"
               label="Division *"
               setState={setPresentDivisionId}
@@ -274,10 +276,16 @@ const CreateAdminFrom = () => {
               isDisabled={
                 presentCountryId || present_country_isLoading ? false : true
               }
+            /> */}
+            <CMInput
+              name="present_address.state"
+              label="State *"
+              size="small"
+              fullWidth={true}
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            {/* <CMSelect
               name="present_address.districtId"
               fullWidth={true}
               label="District *"
@@ -285,6 +293,12 @@ const CreateAdminFrom = () => {
               isDisabled={
                 presentDivisionId || present_division_isLoading ? false : true
               }
+            /> */}
+            <CMInput
+              name="present_address.city"
+              label="City *"
+              size="small"
+              fullWidth={true}
             />
           </Grid>
 
@@ -319,7 +333,7 @@ const CreateAdminFrom = () => {
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelectWithWatch
+            {/* <CMSelectWithWatch
               name="permanent_address.divisionId"
               label="Division *"
               setState={setPermanentDivisionId}
@@ -327,10 +341,16 @@ const CreateAdminFrom = () => {
               isDisabled={
                 permanentCountryId || permanent_country_isLoading ? false : true
               }
+            /> */}
+            <CMInput
+              name="permanent_address.state"
+              label="State *"
+              size="small"
+              fullWidth={true}
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            {/* <CMSelect
               name="permanent_address.districtId"
               fullWidth={true}
               label="District *"
@@ -340,6 +360,12 @@ const CreateAdminFrom = () => {
                   ? false
                   : true
               }
+            /> */}
+            <CMInput
+              name="permanent_address.city"
+              label="City *"
+              size="small"
+              fullWidth={true}
             />
           </Grid>
 

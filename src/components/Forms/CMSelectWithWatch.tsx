@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 
-import { Controller, set, useFormContext, useWatch } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 type TItems = {
   label: string;
   value: string;

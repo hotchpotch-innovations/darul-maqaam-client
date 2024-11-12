@@ -7,15 +7,15 @@ import {
   TDesignationQueryObj,
   useDesignationOptions,
 } from "@/hooks/useDesignationOptions";
-import {
-  TDivisionQueryObj,
-  useDivisionOptions,
-} from "@/hooks/useDivisionOptions";
+// import {
+//   TDivisionQueryObj,
+//   useDivisionOptions,
+// } from "@/hooks/useDivisionOptions";
 import { useCreateEmployeeMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { create_employee_default_values } from "@/constants/values";
 import { Button, Grid, Stack, Typography } from "@mui/material";
@@ -29,10 +29,12 @@ import {
   present_addressValidationSchema,
   social_linksValidationSchema,
 } from "@/constants/zodvalidation";
-import {
-  TDistrictQueryObj,
-  useDistrictOptions,
-} from "@/hooks/useDistrictOptions";
+import { useRouter } from "next/navigation";
+import { customTimeOut } from "@/utils/customTimeOut";
+// import {
+//   TDistrictQueryObj,
+//   useDistrictOptions,
+// } from "@/hooks/useDistrictOptions";
 
 const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),
@@ -44,36 +46,37 @@ const validationSchema = z.object({
 
 const CreateEmployeeForm = () => {
   const designationQueryObj: TDesignationQueryObj = {};
-  const presentDivisionQueryObj: TDivisionQueryObj = {};
-  const permanentDivisionQueryObj: TDivisionQueryObj = {};
-  const presentDistrictQueryObj: TDistrictQueryObj = {};
-  const permanentDistrictQueryObj: TDistrictQueryObj = {};
+  const router = useRouter();
+  // const presentDivisionQueryObj: TDivisionQueryObj = {};
+  // const permanentDivisionQueryObj: TDivisionQueryObj = {};
+  // const presentDistrictQueryObj: TDistrictQueryObj = {};
+  // const permanentDistrictQueryObj: TDistrictQueryObj = {};
 
   const [departmentId, setDepartmentId] = useState(null);
   //Present Address State
   const [presentCountryId, setPresentCountryId] = useState(null);
-  const [presentDivisionId, setPresentDivisionId] = useState(null);
+  // const [presentDivisionId, setPresentDivisionId] = useState(null);
 
-  //Permanent Address State
+  // Permanent Address State
   const [permanentCountryId, setPermanentCountryId] = useState(null);
-  const [permanentDivisionId, setPermanentDivisionId] = useState(null);
+  // const [permanentDivisionId, setPermanentDivisionId] = useState(null);
 
   // assign query value
   if (!!departmentId) {
     designationQueryObj["departmentId"] = departmentId;
   }
-  if (!!presentCountryId) {
-    presentDivisionQueryObj["countryId"] = presentCountryId;
-  }
-  if (!!permanentCountryId) {
-    permanentDivisionQueryObj["countryId"] = permanentCountryId;
-  }
-  if (!!presentDivisionId) {
-    presentDistrictQueryObj["divisionId"] = presentDivisionId;
-  }
-  if (!!permanentDivisionId) {
-    permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
-  }
+  // if (!!presentCountryId) {
+  //   presentDivisionQueryObj["countryId"] = presentCountryId;
+  // }
+  // if (!!permanentCountryId) {
+  //   permanentDivisionQueryObj["countryId"] = permanentCountryId;
+  // }
+  // if (!!presentDivisionId) {
+  //   presentDistrictQueryObj["divisionId"] = presentDivisionId;
+  // }
+  // if (!!permanentDivisionId) {
+  //   permanentDistrictQueryObj["divisionId"] = permanentDivisionId;
+  // }
 
   //Create Options Here
   const [createEmployee] = useCreateEmployeeMutation();
@@ -85,45 +88,51 @@ const CreateEmployeeForm = () => {
   //set Present Address Query Parameter
   const {
     options: present_country_options,
-    isLoading: present_country_isLoading,
+    // isLoading: present_country_isLoading,
   } = useCountryOptions();
-  const {
-    options: present_division_options,
-    isLoading: present_division_isLoading,
-  } = useDivisionOptions(presentDivisionQueryObj);
-  const { options: present_district_options } = useDistrictOptions(
-    presentDistrictQueryObj
-  );
+
+  // const {
+  //   options: present_division_options,
+  //   isLoading: present_division_isLoading,
+  // } = useDivisionOptions(presentDivisionQueryObj);
+  // const { options: present_district_options } = useDistrictOptions(
+  //   presentDistrictQueryObj
+  // );
 
   // Set Permanent Address Query Parameter
   const {
     options: permanent_country_options,
-    isLoading: permanent_country_isLoading,
+    // isLoading: permanent_country_isLoading,
   } = useCountryOptions();
-  const {
-    options: permanent_division_options,
-    isLoading: permanent_division_isLoading,
-  } = useDivisionOptions(permanentDivisionQueryObj);
-  const { options: permanent_district_options } = useDistrictOptions(
-    permanentDistrictQueryObj
-  );
 
-  // Create Employeee
-  const handleCreateEmployee = async (values: FieldValues) => {
-    console.log({ values });
+  // const {
+  //   options: permanent_division_options,
+  //   isLoading: permanent_division_isLoading,
+  // } = useDivisionOptions(permanentDivisionQueryObj);
+  // const { options: permanent_district_options } = useDistrictOptions(
+  //   permanentDistrictQueryObj
+  // );
+
+  // Create Employee
+  const handleCreateEmployee: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait...");
     const data = modifyPayload(values);
     try {
-      const res = await createEmployee(data);
-      console.log({ res });
-      if (res.data.success) {
-        toast.success(res?.data?.message, { id: toastId, duration: 3000 });
+      const res = await createEmployee(data).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        router.push("/dashboard/dev_super_admin/users/employee/manage");
+      } else {
+        console.log(res);
+        toast.error(res?.message, { id: toastId, duration: 3000 });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      toast.success("something went wrong", { id: toastId, duration: 3000 });
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+      customTimeOut(3000).then(() => window?.location?.reload());
     }
   };
+
   return (
     <CMForm
       onSubmit={handleCreateEmployee}
@@ -256,7 +265,7 @@ const CreateEmployeeForm = () => {
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelectWithWatch
+            {/* <CMSelectWithWatch
               name="present_address.divisionId"
               label="Division *"
               setState={setPresentDivisionId}
@@ -264,10 +273,16 @@ const CreateEmployeeForm = () => {
               isDisabled={
                 presentCountryId || present_country_isLoading ? false : true
               }
+            /> */}
+            <CMInput
+              name="present_address.state"
+              label="State *"
+              size="small"
+              fullWidth={true}
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            {/* <CMSelect
               name="present_address.districtId"
               fullWidth={true}
               label="District *"
@@ -275,6 +290,12 @@ const CreateEmployeeForm = () => {
               isDisabled={
                 presentDivisionId || present_division_isLoading ? false : true
               }
+            /> */}
+            <CMInput
+              name="present_address.city"
+              label="City *"
+              size="small"
+              fullWidth={true}
             />
           </Grid>
 
@@ -309,7 +330,7 @@ const CreateEmployeeForm = () => {
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelectWithWatch
+            {/* <CMSelectWithWatch
               name="permanent_address.divisionId"
               label="Division *"
               setState={setPermanentDivisionId}
@@ -317,10 +338,17 @@ const CreateEmployeeForm = () => {
               isDisabled={
                 permanentCountryId || permanent_country_isLoading ? false : true
               }
+            /> */}
+
+            <CMInput
+              name="permanent_address.state"
+              label="State *"
+              size="small"
+              fullWidth={true}
             />
           </Grid>
           <Grid item xs={12} md={12}>
-            <CMSelect
+            {/* <CMSelect
               name="permanent_address.districtId"
               fullWidth={true}
               label="District *"
@@ -330,6 +358,12 @@ const CreateEmployeeForm = () => {
                   ? false
                   : true
               }
+            /> */}
+            <CMInput
+              name="permanent_address.city"
+              label="City *"
+              size="small"
+              fullWidth={true}
             />
           </Grid>
 

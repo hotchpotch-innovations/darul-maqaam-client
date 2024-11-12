@@ -24,10 +24,7 @@ const employeeApi = baseApi.injectEndpoints({
 
     updateEmployee: build.mutation({
       query: (data) => {
-        console.log(data);
-
         const { id, ...payload } = data;
-        console.log({ payload });
         return {
           url: `/employee/${id}`,
           method: "PATCH",

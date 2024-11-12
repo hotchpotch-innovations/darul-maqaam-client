@@ -15,6 +15,7 @@ import { useDebounced } from "@/redux/hooks";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import Image from "next/image";
+import RestoreIcon from "@mui/icons-material/Restore";
 import {
   useDeleteEmployeeMutation,
   useGetAllEmployeeQuery,
@@ -36,8 +37,7 @@ const EmployeeManagePage = () => {
   const [departmentId, setDepartment] = useState("");
   const [designationId, setDesignation] = useState("");
 
-  const path =
-    "/dashboard/dev_super_admin/users/employee/manage-employee/update";
+  const path = "/dashboard/dev_super_admin/users/employee/update";
 
   // Debounced search term to avoid too many API requests
   const debouncedTerm: any = useDebounced({
@@ -130,7 +130,7 @@ const EmployeeManagePage = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -138,7 +138,7 @@ const EmployeeManagePage = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -207,6 +207,7 @@ const EmployeeManagePage = () => {
               rowCount={data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={data?.meta?.total < data?.meta?.limit}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

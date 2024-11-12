@@ -15,8 +15,10 @@ export const adminValidationSchema = z.object({
 
 export const present_addressValidationSchema = z.object({
   countryId: z.string().nonempty("country is required"),
-  divisionId: z.string().nonempty("division is required"),
-  districtId: z.string().nonempty("district is required"),
+  divisionId: z.string().nonempty("division is required").optional(),
+  districtId: z.string().nonempty("district is required").optional(),
+  state: z.string().nonempty("State is required"),
+  city: z.string().nonempty("City is required"),
   address_line: z.string().min(1, "please give address"),
 });
 

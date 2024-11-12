@@ -70,3 +70,10 @@ export type TResponseDataObj = {
   message: string;
   success: boolean;
 };
+
+export type TSocialLinkPayload = {
+  facebook ?: string;
+  twitter?: string;
+  linkedIn?: string;
+  instagram?: string;
+};

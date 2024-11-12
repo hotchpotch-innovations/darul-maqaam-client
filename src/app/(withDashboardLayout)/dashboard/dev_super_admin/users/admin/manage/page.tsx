@@ -29,16 +29,16 @@ import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import Loading from "@/components/ui/LoadingBar";
 import Link from "next/link";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 const ManagePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
   const [departmentId, setDepartment] = useState("");
   const [designationId, setDesignation] = useState("");
 
-  const path = "/dashboard/dev_super_admin/users/admin/manage";
+  const path = "/dashboard/dev_super_admin/users/admin/update";
 
   // Debounced search term to avoid too many API requests
   const debouncedTerm: any = useDebounced({
@@ -72,7 +72,8 @@ const ManagePage = () => {
   const { data, isLoading } = useGetAllAdminQuery({ ...queryObj });
 
   // index and also Role field to each user for serial number
-  const rowsWithIndex =
+
+  const admin_data =
     data?.data?.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
@@ -132,7 +133,7 @@ const ManagePage = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -140,7 +141,7 @@ const ManagePage = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -193,7 +194,7 @@ const ManagePage = () => {
               options={designation_options}
               value={designationId}
               setValue={setDesignation}
-              isDisable={departmentId || designation_isLoading ? false : true}
+              isDisable={department_isLoading}
             />
           </Box>
           <SearchFiled setSearchText={setSearchTerm} />
@@ -202,7 +203,7 @@ const ManagePage = () => {
         {!isLoading ? (
           <Box>
             <DataGrid
-              rows={rowsWithIndex}
+              rows={admin_data}
               columns={columns}
               pagination
               paginationMode="server"
@@ -210,6 +211,7 @@ const ManagePage = () => {
               rowCount={data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={data?.meta?.total < data?.meta?.limit}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

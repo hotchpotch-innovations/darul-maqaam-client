@@ -21,6 +21,7 @@ import {
 } from "@/redux/api/user/clientApi";
 import { gender_options } from "@/constants/options";
 import { useClientTypeOption } from "@/hooks/useClientTypeOptions";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type TQueryObj = {
   clientTypeId?: string;
@@ -140,7 +141,7 @@ const ClientDevSuperPage = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -148,7 +149,7 @@ const ClientDevSuperPage = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -218,6 +219,7 @@ const ClientDevSuperPage = () => {
               rowCount={data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={data?.meta?.total < data?.meta?.limit}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

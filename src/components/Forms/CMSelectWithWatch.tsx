@@ -25,6 +25,7 @@ type TSelectProps = {
     | React.Dispatch<React.SetStateAction<null>>
     | React.Dispatch<React.SetStateAction<string>>;
   isDisabled?: boolean;
+  defaultValue?: string;
 };
 
 const CMSelectWithWatch = ({
@@ -35,6 +36,7 @@ const CMSelectWithWatch = ({
   required,
   setState,
   isDisabled,
+  defaultValue = "",
 }: TSelectProps) => {
   const { control } = useFormContext();
   const method = useFormContext();
@@ -65,6 +67,7 @@ const CMSelectWithWatch = ({
             fullWidth
             required={required}
             disabled={isDisabled}
+            defaultValue={defaultValue}
           >
             {options?.map((item: TItems) => (
               <MenuItem key={item?.value} value={item?.value}>

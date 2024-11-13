@@ -17,6 +17,7 @@ import {
 } from "@/redux/api/user/settings/countryApi";
 
 import ConutryModla from "@/components/ui/modals/ConutryModla";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type TQueryObj = {
   designationId?: string;
@@ -137,7 +138,7 @@ const ConutryTable = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -145,7 +146,7 @@ const ConutryTable = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -207,9 +208,12 @@ const ConutryTable = () => {
               pagination
               paginationMode="server"
               pageSizeOptions={[10, 25, 50]}
-              rowCount={data?.meta?.total}
+              rowCount={data?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={
+                data?.data?.meta?.total < data?.data?.meta?.limit
+              }
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

@@ -22,6 +22,7 @@ import {
 } from "@/redux/api/user/settings/districtApi";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { useDivisionOptions } from "@/hooks/useDivisionOptions";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type TQueryObj = {
   divisionId?: string;
@@ -134,7 +135,7 @@ const DistrictTable = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -142,7 +143,7 @@ const DistrictTable = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -234,10 +235,11 @@ const DistrictTable = () => {
               columns={columns}
               pagination
               paginationMode="server"
-              pageSizeOptions={[10, 25, 50]}
+              pageSizeOptions={[10, 25, 50, 100]}
               rowCount={districts?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={data?.meta?.total < data?.meta?.limit}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

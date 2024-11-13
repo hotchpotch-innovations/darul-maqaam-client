@@ -46,6 +46,7 @@ const SelectFilter = ({
             disabled={isDisable}
             onChange={handleChange}
           >
+            <MenuItem value={""}>All</MenuItem>
             {options?.map((item) => (
               <MenuItem key={item?.value} value={item?.value}>
                 {item?.label}

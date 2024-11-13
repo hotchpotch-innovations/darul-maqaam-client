@@ -1,5 +1,4 @@
 "use client";
-
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
@@ -15,6 +14,7 @@ import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
+import RestoreIcon from "@mui/icons-material/Restore";
 import {
   useDeleteDivisionMutation,
   useGetAllDivisionQuery,
@@ -68,13 +68,13 @@ const DivisionTable = () => {
 
   // get All Country data
   const { data, isLoading } = useGetAllDivisionQuery({ ...queryObj });
-  const client_types = data as TResponseDataObj;
+  const divisions = data as TResponseDataObj;
 
-  console.log({ client_types });
+  console.log({ divisions });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    client_types?.data?.data?.map((row: any, index: number) => ({
+    divisions?.data?.data?.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -135,7 +135,7 @@ const DivisionTable = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -223,9 +223,12 @@ const DivisionTable = () => {
               pagination
               paginationMode="server"
               pageSizeOptions={[10, 25, 50]}
-              rowCount={client_types?.data?.meta?.total}
+              rowCount={divisions?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={
+                data?.data?.meta?.total < data?.data?.meta?.limit
+              }
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>
@@ -238,7 +241,7 @@ const DivisionTable = () => {
       <CMModal open={open} id={division?.id} handleClose={handleClose}>
         <Box>
           <Typography variant="h4" component="h4" mb={4}>
-            Update Devision
+            Update Division
           </Typography>
           <CMForm
             onSubmit={handleUpdate}

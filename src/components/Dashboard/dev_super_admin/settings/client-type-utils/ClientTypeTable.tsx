@@ -21,6 +21,7 @@ import {
   useGetAllClientTypeQuery,
   useUpdateClientTypeMutation,
 } from "@/redux/api/user/settings/clientTypeApi";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type TQueryObj = {
   designationId?: string;
@@ -116,7 +117,7 @@ const ClientTypeTable = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -124,7 +125,7 @@ const ClientTypeTable = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>

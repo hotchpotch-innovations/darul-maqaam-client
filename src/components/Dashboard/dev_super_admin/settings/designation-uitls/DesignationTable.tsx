@@ -12,7 +12,6 @@ import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
 import { useGetAllDesignationQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
-import { useDeleteDepartmentMutation } from "@/redux/api/user/settings/departmentApi";
 import CMModal from "@/components/ui/CMModal";
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
@@ -21,6 +20,10 @@ import {
   useDeleteDesignationMutation,
   useUpdateDesignationMutation,
 } from "@/redux/api/user/settings/designationApi";
+import RestoreIcon from "@mui/icons-material/Restore";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
+import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
+
 type TRowParems = {
   title: string;
 };
@@ -34,6 +37,7 @@ type TQueryObj = {
 };
 
 const DesignationTable = () => {
+  const { options } = useDepartmentOptions();
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
   const [updateId, setUpdateId] = useState("");
@@ -48,6 +52,7 @@ const DesignationTable = () => {
     "/dashboard/super_admin/users/settings/designation/create";
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [departmentId, setDepartmentId] = useState("");
 
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -68,11 +73,13 @@ const DesignationTable = () => {
     queryObj["searchTerm"] = debouncedTerm;
   }
 
+  if (!!departmentId) {
+    queryObj["departmentId"] = departmentId;
+  }
+
   // get All Country data
   const { data, isLoading } = useGetAllDesignationQuery({ ...queryObj });
   const designations = data as TResponseDataObj;
-
-  console.log({ designations });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
@@ -125,7 +132,7 @@ const DesignationTable = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -133,7 +140,7 @@ const DesignationTable = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -206,7 +213,15 @@ const DesignationTable = () => {
               Create
             </Button>
           </Box>
-          <SearchFiled setSearchText={setSearchTerm} />
+          <Box display="flex" gap={2}>
+            <SelectFilter
+              filter_title="Search by Department"
+              options={options}
+              value={departmentId}
+              setValue={setDepartmentId}
+            />
+            <SearchFiled setSearchText={setSearchTerm} />
+          </Box>
         </Stack>
 
         {!isLoading ? (
@@ -220,6 +235,10 @@ const DesignationTable = () => {
               rowCount={designations?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={
+                designations?.data?.meta?.total <
+                designations?.data?.meta?.limit
+              }
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

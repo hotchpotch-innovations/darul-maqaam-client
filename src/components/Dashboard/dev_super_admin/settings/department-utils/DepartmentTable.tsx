@@ -20,6 +20,7 @@ import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type TQueryObj = {
   designationId?: string;
@@ -68,8 +69,6 @@ const DepartmentTable = () => {
   const { data, isLoading } = useGetAllDepartmentQuery({ ...queryObj });
   const departments = data as TResponseDataObj;
 
-  console.log({ departments });
-
   // index and also Role field to each user for serial number
   const rowsWithIndex =
     departments?.data?.data?.map((row: any, index: number) => ({
@@ -115,7 +114,7 @@ const DepartmentTable = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -123,7 +122,7 @@ const DepartmentTable = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -211,6 +210,9 @@ const DepartmentTable = () => {
               rowCount={departments?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={
+                departments?.data?.meta?.total < departments?.data?.meta?.limit
+              }
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

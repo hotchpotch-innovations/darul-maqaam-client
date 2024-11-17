@@ -1,4 +1,4 @@
-import CreateEmployeeForm from "@/components/Dashboard/dev_super_admin/user/employee-forms/CreateEmployeeForm";
+import CreateEmployeeForm from "@/components/Dashboard/dev_super_admin/user/employee-utils/CreateEmployeeForm";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 

@@ -1,26 +1,23 @@
 "use client";
-
-import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import { Box } from "@mui/material";
-import { useState } from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Stack, Tooltip, Typography } from "@mui/material";
-import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
-import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { toast } from "sonner";
-import { useDebounced } from "@/redux/hooks";
-import React from "react";
-import Image from "next/image";
-import Loading from "@/components/ui/LoadingBar";
-import Link from "next/link";
+import { useClientTypeOption } from "@/hooks/useClientTypeOptions";
 import {
   useDeleteClientMutation,
   useGetAllClientQuery,
 } from "@/redux/api/user/clientApi";
+import { useDebounced } from "@/redux/hooks";
+import { Box, Stack, Tooltip, Typography } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import RestoreIcon from "@mui/icons-material/Restore";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { toast } from "sonner";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { gender_options } from "@/constants/options";
-import { useClientTypeOption } from "@/hooks/useClientTypeOptions";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
+import Loading from "@/components/ui/LoadingBar";
 
 type TQueryObj = {
   clientTypeId?: string;
@@ -34,7 +31,7 @@ type RRowParams = {
   title: string;
 };
 
-const ClientDevSuperPage = () => {
+const ClientTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [limit, setLimit] = useState(10);
@@ -140,7 +137,7 @@ const ClientDevSuperPage = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -148,7 +145,7 @@ const ClientDevSuperPage = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -179,54 +176,51 @@ const ClientDevSuperPage = () => {
   };
 
   return (
-    <Box>
-      <TitleDashboard title={"client list"} />
+    <Box sx={{ m: "30px 60px" }}>
+      <Stack direction="row" justifyContent="space-between" mb={2}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "30px",
+          }}
+        >
+          <SelectFilter
+            filter_title="Filter by Type"
+            options={client_type_options}
+            value={clientType}
+            setValue={setClientType}
+          />
 
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Box
-            sx={{
-              display: "flex",
-              gap: "30px",
-            }}
-          >
-            <SelectFilter
-              filter_title="Filter by Type"
-              options={client_type_options}
-              value={clientType}
-              setValue={setClientType}
-            />
+          <SelectFilter
+            filter_title="Filter by Gender"
+            options={gender_options}
+            value={gender}
+            setValue={setGender}
+          />
+        </Box>
+        <SearchFiled setSearchText={setSearchTerm} />
+      </Stack>
 
-            <SelectFilter
-              filter_title="Filter by Gender"
-              options={gender_options}
-              value={gender}
-              setValue={setGender}
-            />
-          </Box>
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Stack>
-
-        {!isLoading ? (
-          <Box>
-            <DataGrid
-              rows={rowsWithIndex}
-              columns={columns}
-              pagination
-              paginationMode="server"
-              pageSizeOptions={[10, 25, 50]}
-              rowCount={data?.meta?.total}
-              paginationModel={{ page: currentPage - 1, pageSize: limit }}
-              onPaginationModelChange={handlePaginationChange}
-              sx={{ border: "none", outline: "none", boxShadow: "none" }}
-            />
-          </Box>
-        ) : (
-          <Loading />
-        )}
-      </Box>
+      {!isLoading ? (
+        <Box>
+          <DataGrid
+            rows={rowsWithIndex}
+            columns={columns}
+            pagination
+            paginationMode="server"
+            pageSizeOptions={[10, 25, 50]}
+            rowCount={data?.meta?.total}
+            paginationModel={{ page: currentPage - 1, pageSize: limit }}
+            onPaginationModelChange={handlePaginationChange}
+            hideFooterPagination={data?.meta?.total < data?.meta?.limit}
+            sx={{ border: "none", outline: "none", boxShadow: "none" }}
+          />
+        </Box>
+      ) : (
+        <Loading />
+      )}
     </Box>
   );
 };
 
-export default ClientDevSuperPage;
+export default ClientTable;

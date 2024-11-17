@@ -1,8 +1,17 @@
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import AdminTable from "@/components/Dashboard/dev_super_admin/user/admin-utils/AdminTable";
 import { Box } from "@mui/material";
+import dynamic from "next/dynamic";
 
-const ManagePage = () => {
+const AdminManagePage = () => {
+  const AdminTable = dynamic(
+    () =>
+      import(
+        "@/components/Dashboard/dev_super_admin/user/admin-utils/AdminTable"
+      ),
+    {
+      ssr: false,
+    }
+  );
   return (
     <Box>
       <TitleDashboard title="Admins List" />
@@ -11,4 +20,4 @@ const ManagePage = () => {
   );
 };
 
-export default ManagePage;
+export default AdminManagePage;

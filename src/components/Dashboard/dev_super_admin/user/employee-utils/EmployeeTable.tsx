@@ -1,48 +1,42 @@
 "use client";
 
-import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import { Box } from "@mui/material";
-import { useState } from "react";
+import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
+import { useDesignationOptions } from "@/hooks/useDesignationOptions";
+import {
+  useDeleteEmployeeMutation,
+  useGetAllEmployeeQuery,
+} from "@/redux/api/user/employeeApi";
+import { useDebounced } from "@/redux/hooks";
+import { Box, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Stack, Tooltip, Typography } from "@mui/material";
-import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
-import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
+import Image from "next/image";
+import { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import RestoreIcon from "@mui/icons-material/Restore";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
-import { useDebounced } from "@/redux/hooks";
-import React from "react";
-import Image from "next/image";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import Link from "next/link";
-import {
-  useDeleteClientMutation,
-  useGetAllClientQuery,
-} from "@/redux/api/user/clientApi";
-import { gender_options } from "@/constants/options";
-import { useClientTypeOption } from "@/hooks/useClientTypeOptions";
 
 type TQueryObj = {
-  clientTypeId?: string;
-  gender?: string;
+  designationId?: string;
+  departmentId?: string;
   searchTerm?: string;
   page?: number;
   limit?: number;
 };
 
-type RRowParams = {
-  title: string;
-};
-
-const ClientDevSuperPage = () => {
+const EmployeeTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
-  const [clientType, setClientType] = useState("");
-  const [gender, setGender] = useState("");
+  const [departmentId, setDepartment] = useState("");
+  const [designationId, setDesignation] = useState("");
 
-  const path = "/dashboard/dev_super_admin/users/client/update";
+  const path = "/dashboard/dev_super_admin/users/employee/update";
 
   // Debounced search term to avoid too many API requests
   const debouncedTerm: any = useDebounced({
@@ -60,18 +54,20 @@ const ClientDevSuperPage = () => {
     queryObj["searchTerm"] = debouncedTerm;
   }
 
-  if (clientType) {
-    queryObj["clientTypeId"] = clientType;
+  if (departmentId) {
+    queryObj["departmentId"] = departmentId;
   }
-  if (gender) {
-    queryObj["gender"] = gender;
+  if (designationId) {
+    queryObj["designationId"] = designationId;
   }
 
-  const { options: client_type_options, isLoading: designation_isLoading } =
-    useClientTypeOption();
-  // Fetch Client data using API hook
-  const { data, isLoading } = useGetAllClientQuery({ ...queryObj });
-  console.log({ ClientData: data });
+  const { options: department_options, isLoading: department_isLoading } =
+    useDepartmentOptions();
+
+  const { options: designation_options, isLoading: designation_isLoading } =
+    useDesignationOptions(queryObj);
+  // Fetch Admin data using API hook
+  const { data, isLoading } = useGetAllEmployeeQuery({ ...queryObj });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
@@ -97,15 +93,8 @@ const ClientDevSuperPage = () => {
       ),
     },
     { field: "gu_id", headerName: "USER ID", flex: 1 },
-    { field: "owner_name", headerName: "NAME", flex: 1 },
+    { field: "name", headerName: "NAME", flex: 1 },
     { field: "email", headerName: "EMAIL", flex: 1.5 },
-    {
-      field: "clientType",
-      valueGetter: (params: RRowParams) => params?.title || "",
-      headerName: "TYPE",
-      flex: 0.8,
-    },
-    { field: "gender", headerName: "GENDER", flex: 0.8 },
     { field: "phone", headerName: "PHONE", flex: 1 },
     {
       field: "isDeleted",
@@ -140,7 +129,7 @@ const ClientDevSuperPage = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
                 color: "#C7253E",
@@ -148,7 +137,7 @@ const ClientDevSuperPage = () => {
               }}
               onClick={() => handleDelete(row?.id)}
             >
-              <DeleteOutlineIcon />
+              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
             </Typography>
           </Tooltip>
         </Box>
@@ -157,13 +146,13 @@ const ClientDevSuperPage = () => {
   ];
 
   // Handle user status change
-  const [deleteClient] = useDeleteClientMutation();
+  const [deleteEmployee] = useDeleteEmployeeMutation();
 
   const handleDelete = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await deleteClient(id);
+      const res = await deleteEmployee(id);
       if (res?.data?.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 5000 });
       }
@@ -174,59 +163,56 @@ const ClientDevSuperPage = () => {
 
   // Pagination handler
   const handlePaginationChange = (newPaginationModel: any) => {
-    setCurrentPage(newPaginationModel.page + 1); // DataGrid uses 0-based indexing, adjust to 1-based
+    setCurrentPage(newPaginationModel.page + 1);
     setLimit(newPaginationModel.pageSize);
   };
-
   return (
-    <Box>
-      <TitleDashboard title={"client list"} />
+    <Box sx={{ m: "30px 60px" }}>
+      <Stack direction="row" justifyContent="space-between" mb={2}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "30px",
+          }}
+        >
+          <SelectFilter
+            filter_title="Search by department"
+            options={department_options}
+            value={departmentId}
+            setValue={setDepartment}
+          />
 
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Box
-            sx={{
-              display: "flex",
-              gap: "30px",
-            }}
-          >
-            <SelectFilter
-              filter_title="Filter by Type"
-              options={client_type_options}
-              value={clientType}
-              setValue={setClientType}
-            />
+          <SelectFilter
+            filter_title="Search by designation"
+            options={designation_options}
+            value={designationId}
+            setValue={setDesignation}
+            isDisable={departmentId || designation_isLoading ? false : true}
+          />
+        </Box>
+        <SearchFiled setSearchText={setSearchTerm} />
+      </Stack>
 
-            <SelectFilter
-              filter_title="Filter by Gender"
-              options={gender_options}
-              value={gender}
-              setValue={setGender}
-            />
-          </Box>
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Stack>
-
-        {!isLoading ? (
-          <Box>
-            <DataGrid
-              rows={rowsWithIndex}
-              columns={columns}
-              pagination
-              paginationMode="server"
-              pageSizeOptions={[10, 25, 50]}
-              rowCount={data?.meta?.total}
-              paginationModel={{ page: currentPage - 1, pageSize: limit }}
-              onPaginationModelChange={handlePaginationChange}
-              sx={{ border: "none", outline: "none", boxShadow: "none" }}
-            />
-          </Box>
-        ) : (
-          <Loading />
-        )}
-      </Box>
+      {!isLoading ? (
+        <Box>
+          <DataGrid
+            rows={rowsWithIndex}
+            columns={columns}
+            pagination
+            paginationMode="server"
+            pageSizeOptions={[10, 25, 50]}
+            rowCount={data?.meta?.total}
+            paginationModel={{ page: currentPage - 1, pageSize: limit }}
+            onPaginationModelChange={handlePaginationChange}
+            hideFooterPagination={data?.meta?.total < data?.meta?.limit}
+            sx={{ border: "none", outline: "none", boxShadow: "none" }}
+          />
+        </Box>
+      ) : (
+        <Loading />
+      )}
     </Box>
   );
 };
 
-export default ClientDevSuperPage;
+export default EmployeeTable;

@@ -24,7 +24,7 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 
-type TRowParems = {
+type RRowParams = {
   title: string;
 };
 
@@ -100,7 +100,7 @@ const DesignationTable = () => {
     { field: "identifier", headerName: "INDENTIFIER", flex: 1 },
     {
       field: "department",
-      valueGetter: (params: TRowParems) => params?.title || "",
+      valueGetter: (params: RRowParams) => params?.title || "",
       headerName: "DEPARTMENT",
       flex: 1,
     },

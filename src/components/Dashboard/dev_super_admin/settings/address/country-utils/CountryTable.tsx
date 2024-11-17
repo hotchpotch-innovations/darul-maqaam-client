@@ -110,7 +110,7 @@ const CountryTable = () => {
     { field: "code", headerName: "CODE", flex: 1 },
     { field: "phone_code", headerName: "PHONE CODE", flex: 1 },
 
-    { field: "status", headerName: "STATUS", flex: 1 },
+    // { field: "status", headerName: "STATUS", flex: 1 },
     {
       field: "Action",
       headerName: "ACTIONS",

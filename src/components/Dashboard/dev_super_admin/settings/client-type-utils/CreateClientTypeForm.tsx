@@ -6,15 +6,18 @@ import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreateClientTypeMutation } from "@/redux/api/user/settings/clientTypeApi";
+import { useRouter } from "next/navigation";
 
 const CreateClientTypeForm = () => {
+  const router = useRouter();
   const default_values = {
     title: "",
     identifier: "",
   };
 
   const [CreateClientType] = useCreateClientTypeMutation();
-  const handleCreateCountry = async (values: FieldValues) => {
+
+  const createHandler = async (values: FieldValues) => {
     console.log(values);
 
     const toastId = toast.loading("Please wait...");
@@ -22,6 +25,7 @@ const CreateClientTypeForm = () => {
       const res = await CreateClientType(values).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
+        router.push("/dashboard/dev_super_admin/users/settings/c_type");
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
         console.log(res);
@@ -32,7 +36,7 @@ const CreateClientTypeForm = () => {
     }
   };
   return (
-    <CMForm onSubmit={handleCreateCountry} defaultValues={default_values}>
+    <CMForm onSubmit={createHandler} defaultValues={default_values}>
       <Stack direction={"row"} justifyContent="center" gap={4}>
         {/* 1st Pera */}
         <Grid

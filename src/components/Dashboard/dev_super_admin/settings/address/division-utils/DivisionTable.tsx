@@ -94,11 +94,11 @@ const DivisionTable = () => {
       flex: 1,
       valueGetter: (params: any) => params?.name || "",
     },
-    {
-      field: "status",
-      headerName: "STATUS",
-      flex: 1,
-    },
+    // {
+    //   field: "status",
+    //   headerName: "STATUS",
+    //   flex: 1,
+    // },
 
     {
       field: "Action",

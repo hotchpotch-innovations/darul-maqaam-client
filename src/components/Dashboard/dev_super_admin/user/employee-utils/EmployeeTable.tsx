@@ -96,10 +96,39 @@ const EmployeeTable = () => {
     { field: "name", headerName: "NAME", flex: 1 },
     { field: "email", headerName: "EMAIL", flex: 1.5 },
     { field: "phone", headerName: "PHONE", flex: 1 },
+    // {
+    //   field: "isDeleted",
+    //   headerName: "is_Deleted",
+    //   flex: 0.5,
+    // },
     {
       field: "isDeleted",
-      headerName: "is_Deleted",
-      flex: 0.5,
+      headerName: "Is DELETED",
+      flex: 1,
+      valueGetter: (params: any) => (params === "" ? "No" : params),
+      renderCell: ({ row }) => (
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            gap: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              alignItems: "left",
+              fontSize: "12px",
+              ...(!row.isDeleted
+                ? { color: "greenyellow" }
+                : { color: "orangered" }),
+            }}
+          >
+            {row?.isDeleted ? "YES" : "NO"}
+          </Typography>
+        </Box>
+      ),
     },
     {
       field: "Action",
@@ -132,7 +161,7 @@ const EmployeeTable = () => {
           <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
-                color: "#C7253E",
+                color: row?.isDeleted ? "#de2c48" : "#C7253E",
                 cursor: "pointer",
               }}
               onClick={() => handleDelete(row?.id)}

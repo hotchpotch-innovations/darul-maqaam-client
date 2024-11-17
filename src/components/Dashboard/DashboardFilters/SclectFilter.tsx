@@ -31,10 +31,14 @@ const SelectFilter = ({
   return (
     <Box>
       <Stack direction={"column"}>
-        <Typography color={"primary.main"} align="center">
-          {filter_title}
+        <Typography
+          sx={{ textTransform: "capitalize" }}
+          color={"primary.main"}
+          align="left"
+        >
+          {filter_title + ":"}
         </Typography>
-        <FormControl sx={{ m: 1, minWidth: 120, width: "250px" }} size="small">
+        <FormControl sx={{ mt: 1, minWidth: 120, width: "250px" }} size="small">
           <InputLabel id="demo-select-small-label">
             {value === "" ? "All" : "Filter"}
           </InputLabel>

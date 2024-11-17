@@ -4,7 +4,6 @@ type TGenderOptions = {
 };
 
 export const gender_options: TGenderOptions[] = [
-  { value: "", label: "ALL" },
   { value: "MALE", label: "MALE" },
   { value: "FEMALE", label: "FEMALE" },
   { value: "OTHERS", label: "OTHERS" },
@@ -23,10 +22,6 @@ export interface AccountTypeOption {
 // Define the account type options array with the correct type
 export const account_type_options: AccountTypeOption[] = [
   {
-    label: "All",
-    value: "",
-  },
-  {
     label: "Public",
     value: "PUBLIC",
   },
@@ -42,10 +37,6 @@ export const account_type_options: AccountTypeOption[] = [
 
 export const super_admin_account_type_options: AccountTypeOption[] = [
   {
-    label: "All",
-    value: "",
-  },
-  {
     label: "Public",
     value: "PUBLIC",
   },
@@ -56,10 +47,6 @@ export const super_admin_account_type_options: AccountTypeOption[] = [
 ];
 
 export const dev_super_admin_user_role_options: AccountTypeOption[] = [
-  {
-    label: "All",
-    value: "",
-  },
   {
     label: "Dev Super Admin",
     value: "DEV_SUPER_ADMIN",
@@ -84,10 +71,6 @@ export const dev_super_admin_user_role_options: AccountTypeOption[] = [
 
 export const super_admin_user_role_options: AccountTypeOption[] = [
   {
-    label: "All",
-    value: "",
-  },
-  {
     label: "Admin",
     value: "ADMIN",
   },
@@ -103,15 +86,11 @@ export const super_admin_user_role_options: AccountTypeOption[] = [
 
 export const user_status_options: AccountTypeOption[] = [
   {
-    label: "ALL",
-    value: "",
-  },
-  {
-    label: "Activated",
+    label: "ACTIVATED",
     value: "ACTIVATED",
   },
   {
-    label: "Blocked",
+    label: "BLOCKED",
     value: "BLOCKED",
   },
 ];

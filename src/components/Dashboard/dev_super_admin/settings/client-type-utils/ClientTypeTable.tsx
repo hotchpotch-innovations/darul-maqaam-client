@@ -10,7 +10,10 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
-import { useGetAllDepartmentQuery } from "@/redux/api/user/clientTypeApi";
+import {
+  useGetAllDepartmentQuery,
+  useGetSingleClientTypesQuery,
+} from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
@@ -43,7 +46,7 @@ const ClientTypeTable = () => {
   //Modal Functionality Is End
 
   const path_create_country =
-    "/dashboard/dev_super_admin/users/settings/client-type/create";
+    "/dashboard/dev_super_admin/users/settings/c_type/create";
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -70,7 +73,12 @@ const ClientTypeTable = () => {
   const { data, isLoading } = useGetAllClientTypeQuery({ ...queryObj });
   const client_types = data as TResponseDataObj;
 
-  console.log({ client_types });
+  const { data: client_type_data } = useGetSingleClientTypesQuery(updateId);
+  const client_type_info = client_type_data as {
+    success: boolean;
+    message: string;
+    data: Record<string, any>;
+  };
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
@@ -88,7 +96,7 @@ const ClientTypeTable = () => {
       flex: 1,
     },
 
-    { field: "identifier", headerName: "INDENTIFIER", flex: 1 },
+    { field: "identifier", headerName: "IDENTIFIER", flex: 1 },
 
     {
       field: "Action",
@@ -174,10 +182,9 @@ const ClientTypeTable = () => {
       console.log(error);
       toast.error("something went wrong", { duration: 3000 });
     }
-
-    console.log();
     // console.log(values);
   };
+
   return (
     <Box>
       <Box sx={{ m: "30px 60px" }}>
@@ -213,6 +220,7 @@ const ClientTypeTable = () => {
               rowCount={client_types?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
+              hideFooterPagination={true}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>
@@ -230,8 +238,8 @@ const ClientTypeTable = () => {
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              title: "",
-              identifier: "",
+              title: client_type_info?.data?.title || "",
+              identifier: client_type_info?.data?.identifier || "",
             }}
           >
             <Grid container spacing={3}>

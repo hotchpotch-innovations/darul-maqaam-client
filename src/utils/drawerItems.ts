@@ -140,8 +140,8 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
                 },
                 {
                   title: "Client Type",
-                  path: `/dashboard/${role}/${users}/settings/client-type`,
-                  identifier: "/client-type",
+                  path: `/dashboard/${role}/${users}/settings/c_type`,
+                  identifier: "/c_type",
                 },
               ],
             },

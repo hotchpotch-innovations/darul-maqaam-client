@@ -13,8 +13,8 @@ import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
-import { useDivisionOptions } from "@/hooks/useDivisionOptions";
 import {
+  useChangeMenuStatusMutation,
   useDeleteMenuMutation,
   useGetAllMenuQuery,
   useUpdateMenuMutation,
@@ -23,17 +23,20 @@ import { toast } from "sonner";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import RestoreIcon from "@mui/icons-material/Restore";
+import { user_status_options } from "@/constants/options";
+import BlockIcon from "@mui/icons-material/Block";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import { user_status } from "@/constants";
 
 type TQueryObj = {
-  divisionId?: string;
+  status?: string;
   searchTerm?: string;
   page?: number;
   limit?: number;
 };
 
 const MenuTable = () => {
-  const { options } = useDivisionOptions();
-  const [divisionId, setDivisionId] = useState("");
+  const [status, setStatus] = useState("");
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
   const [updateId, setUpdateId] = useState({});
@@ -47,9 +50,6 @@ const MenuTable = () => {
     setItemObj(row);
   };
   const handleClose = () => setOpen(false);
-  //Modal Functionality Is End
-
-  //Filter District
 
   const path_create_country = "/dashboard/dev_super_admin/content/menu/create";
 
@@ -72,20 +72,20 @@ const MenuTable = () => {
     page: currentPage, // Sending current page as 1-based to the API
   };
 
-  if (debouncedTerm) {
+  if (!!debouncedTerm) {
     queryObj["searchTerm"] = debouncedTerm;
   }
-  if (divisionId) {
-    queryObj["divisionId"] = divisionId;
+  if (!!status) {
+    queryObj["status"] = status;
   }
 
   // get All Country data
   const { data, isLoading } = useGetAllMenuQuery({ ...queryObj });
-  const districts = data as TResponseDataObj;
+  const menus_data = data as TResponseDataObj;
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
-    districts?.data?.data.map((row: any, index: number) => ({
+    menus_data?.data?.data.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
       role: row?.user?.role,
@@ -117,6 +117,35 @@ const MenuTable = () => {
       valueGetter: (params: any) => (params === "" ? "No" : params),
     },
     {
+      field: "status",
+      headerName: "STATUS",
+      flex: 1,
+      valueGetter: (params: any) => (params === "" ? "No" : params),
+      renderCell: ({ row }) => (
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            gap: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              alignItems: "left",
+              fontSize: "12px",
+              ...(row.status === user_status?.activate
+                ? { color: "greenyellow" }
+                : { color: "orangered" }),
+            }}
+          >
+            {row?.status}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
@@ -143,6 +172,26 @@ const MenuTable = () => {
               <EditIcon />
             </Typography>
           </Tooltip>
+          <Tooltip
+            title={row?.status === user_status?.activate ? "Block" : "Activate"}
+          >
+            <Typography
+              sx={{
+                color:
+                  row?.status === user_status?.activate
+                    ? "orangered"
+                    : "greenyellow",
+                cursor: "pointer",
+              }}
+              onClick={() => statusHandler(row?.id)}
+            >
+              {row?.status === user_status?.activate ? (
+                <BlockIcon />
+              ) : (
+                <TaskAltIcon />
+              )}
+            </Typography>
+          </Tooltip>
           <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
             <Typography
               sx={{
@@ -162,12 +211,31 @@ const MenuTable = () => {
   // Delete Menu
 
   const [deleteMenu] = useDeleteMenuMutation();
+
   const handleDelete = async (id: string) => {
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await deleteMenu(id);
-      if (res?.data?.success) {
-        toast.success(res?.data?.message, { id: toastId, duration: 5000 });
+      const res = await deleteMenu(id).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 5000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 5000 });
+    }
+  };
+
+  const [changeStatus] = useChangeMenuStatusMutation();
+
+  const statusHandler = async (id: string) => {
+    const toastId = toast.loading("Please wait...");
+    try {
+      const res = await changeStatus(id).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 5000 });
       }
     } catch (error: any) {
       toast.error(error?.message, { id: toastId, duration: 5000 });
@@ -226,10 +294,10 @@ const MenuTable = () => {
           </Box>
           <Box display="flex" gap={2}>
             <SelectFilter
-              filter_title="Search by Menu Status"
-              options={options}
-              value={divisionId}
-              setValue={setDivisionId}
+              filter_title="Filter by Status"
+              options={user_status_options}
+              value={status}
+              setValue={setStatus}
             />
             <SearchFiled setSearchText={setSearchTerm} />
           </Box>
@@ -243,11 +311,11 @@ const MenuTable = () => {
               pagination
               paginationMode="server"
               pageSizeOptions={[10, 25, 50]}
-              rowCount={districts?.data?.meta?.total}
+              rowCount={menus_data?.data?.meta?.total}
               paginationModel={{ page: currentPage - 1, pageSize: limit }}
               onPaginationModelChange={handlePaginationChange}
               hideFooterPagination={
-                districts?.data?.meta?.total < districts?.data?.meta?.limit
+                menus_data?.data?.meta?.total < menus_data?.data?.meta?.limit
               }
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />

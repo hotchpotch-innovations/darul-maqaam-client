@@ -18,6 +18,7 @@ import {
   user_status_options,
 } from "@/constants/options";
 import Loading from "@/components/ui/LoadingBar";
+import { user_status } from "@/constants";
 
 type TQueryObj = {
   account_type?: string;
@@ -76,8 +77,37 @@ const AllUserTable = () => {
     { field: "gu_id", headerName: "USER ID", flex: 1 },
     { field: "email", headerName: "EMAIL", flex: 2 },
     { field: "role", headerName: "ROLE", flex: 1 },
-    { field: "status", headerName: "STATUS", flex: 1 },
     { field: "account_type", headerName: "ACCOUNT TYPE", flex: 1 },
+    // { field: "status", headerName: "STATUS", flex: 1 },
+    {
+      field: "status",
+      headerName: "STATUS",
+      flex: 1,
+      valueGetter: (params: any) => (params === "" ? "No" : params),
+      renderCell: ({ row }) => (
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            gap: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              alignItems: "left",
+              fontSize: "12px",
+              ...(row.status === user_status?.activate
+                ? { color: "greenyellow" }
+                : { color: "orangered" }),
+            }}
+          >
+            {row?.status}
+          </Typography>
+        </Box>
+      ),
+    },
     {
       field: "Action",
       headerName: "ACTIONS",
@@ -92,10 +122,11 @@ const AllUserTable = () => {
               justifyContent: "center",
             }}
           >
-            <Tooltip title={row?.status === "ACTIVATED" ? "Active" : "Block"}>
+            <Tooltip title={row?.status === "ACTIVATED" ? "Block" : "Active"}>
               <Typography
                 sx={{
-                  color: row?.status === "ACTIVATED" ? "red" : "green",
+                  color:
+                    row?.status === "ACTIVATED" ? "orangered" : "greenyellow",
                   cursor: "pointer",
                 }}
                 onClick={() => handleStatus(row?.gu_id)}

@@ -4,10 +4,11 @@ import { baseApi } from "../baseApi";
 const menuApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getAllMenu: build.query({
-      query: () => {
+      query: (paramObj) => {
         return {
           url: `/content/menu`,
           method: "GET",
+          params: paramObj,
         };
       },
       providesTags: [contentTags?.menu],
@@ -44,6 +45,14 @@ const menuApi = baseApi.injectEndpoints({
       },
       invalidatesTags: [contentTags.menu],
     }),
+
+    changeMenuStatus: build.mutation({
+      query: (id) => ({
+        url: `/content/menu/status/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [contentTags.menu],
+    }),
   }),
 });
 
@@ -52,4 +61,5 @@ export const {
   useCreateMenuMutation,
   useUpdateMenuMutation,
   useDeleteMenuMutation,
+  useChangeMenuStatusMutation,
 } = menuApi;

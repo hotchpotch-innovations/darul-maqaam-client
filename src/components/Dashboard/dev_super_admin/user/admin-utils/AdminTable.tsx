@@ -92,7 +92,19 @@ const AdminTable = () => {
       ),
     },
     { field: "gu_id", headerName: "USER ID", flex: 1 },
-    { field: "name", headerName: "NAME", flex: 1 },
+    {
+      field: "name",
+      headerName: "NAME",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography
+          component={Link}
+          href={`/dashboard/dev_super_admin/users/details/${params.row.id}`}
+        >
+          {params?.row?.name}
+        </Typography>
+      ),
+    },
     { field: "email", headerName: "EMAIL", flex: 1.5 },
     { field: "role", headerName: "ROLE", flex: 1 },
     { field: "phone", headerName: "PHONE", flex: 1 },

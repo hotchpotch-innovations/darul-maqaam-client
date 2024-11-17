@@ -1,4 +1,4 @@
-import CreateAdminFrom from "@/components/Dashboard/dev_super_admin/user/admin-forms/CreateAdminFrom";
+import CreateAdminFrom from "@/components/Dashboard/dev_super_admin/user/admin-utils/CreateAdminFrom";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 

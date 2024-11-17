@@ -27,7 +27,7 @@ type TQueryObj = {
   limit?: number;
 };
 
-const ConutryTable = () => {
+const CountryTable = () => {
   //Modal Functionality Is Start
   const [open, setOpen] = useState(false);
   const [obj, setObj] = useState({});
@@ -227,4 +227,4 @@ const ConutryTable = () => {
   );
 };
 
-export default ConutryTable;
+export default CountryTable;

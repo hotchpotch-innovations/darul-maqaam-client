@@ -168,6 +168,7 @@ const AllUserPage = () => {
               rowCount={data?.meta?.total || 0} // Total rows in the database
               paginationModel={{ page: currentPage - 1, pageSize: limit }} // Adjust for 0-based index in DataGrid
               onPaginationModelChange={handlePaginationChange} // Handle pagination changes
+              hideFooterPagination={data?.meta?.total < data?.meta?.limit}
               sx={{ border: "none", outline: "none", boxShadow: "none" }}
             />
           </Box>

@@ -1,4 +1,4 @@
-import CreateSuperAdminForm from "@/components/Dashboard/dev_super_admin/user/admin-forms/CreateSuperAdminForm";
+import CreateSuperAdminForm from "@/components/Dashboard/dev_super_admin/user/admin-utils/CreateSuperAdminForm";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 

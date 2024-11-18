@@ -91,7 +91,25 @@ const AdminTable = () => {
         />
       ),
     },
-    { field: "gu_id", headerName: "USER ID", flex: 1 },
+    {
+      field: "gu_id",
+      headerName: "USER ID",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography
+          component={Link}
+          href={`/dashboard/dev_super_admin/users/admin/details/${params.row.id}`}
+          sx={{
+            color: "#1f68de",
+            ":hover": {
+              textDecoration: "underline",
+            },
+          }}
+        >
+          {params?.row?.gu_id}
+        </Typography>
+      ),
+    },
     {
       field: "name",
       headerName: "NAME",
@@ -99,7 +117,13 @@ const AdminTable = () => {
       renderCell: (params) => (
         <Typography
           component={Link}
-          href={`/dashboard/dev_super_admin/users/details/${params.row.id}`}
+          href={`/dashboard/dev_super_admin/users/admin/details/${params.row.id}`}
+          sx={{
+            color: "#1f68de",
+            ":hover": {
+              textDecoration: "underline",
+            },
+          }}
         >
           {params?.row?.name}
         </Typography>

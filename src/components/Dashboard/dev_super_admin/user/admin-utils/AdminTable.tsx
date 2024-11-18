@@ -91,18 +91,42 @@ const AdminTable = () => {
         />
       ),
     },
-    { field: "gu_id", headerName: "USER ID", flex: 1 },
+    {
+      field: "gu_id",
+      headerName: "USER ID",
+      flex: 1,
+      renderCell: (params) => (
+        <Box
+          component={Link}
+          href={`/dashboard/dev_super_admin/users/admin/details/${params.row.id}`}
+          sx={{
+            ":hover": {
+              textDecoration: "underline",
+              color: "#1f68de",
+            },
+          }}
+        >
+          {params?.row?.gu_id}
+        </Box>
+      ),
+    },
     {
       field: "name",
       headerName: "NAME",
       flex: 1,
       renderCell: (params) => (
-        <Typography
+        <Box
           component={Link}
-          href={`/dashboard/dev_super_admin/users/details/${params.row.id}`}
+          href={`/dashboard/dev_super_admin/users/admin/details/${params.row.id}`}
+          sx={{
+            ":hover": {
+              textDecoration: "underline",
+              color: "#1f68de",
+            },
+          }}
         >
           {params?.row?.name}
-        </Typography>
+        </Box>
       ),
     },
     { field: "email", headerName: "EMAIL", flex: 1.5 },
@@ -128,7 +152,7 @@ const AdminTable = () => {
             gap: 2,
           }}
         >
-          <Typography
+          <Box
             sx={{
               alignItems: "left",
               fontSize: "12px",
@@ -138,7 +162,7 @@ const AdminTable = () => {
             }}
           >
             {row?.isDeleted ? "YES" : "NO"}
-          </Typography>
+          </Box>
         </Box>
       ),
     },

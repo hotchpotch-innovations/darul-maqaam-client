@@ -4,8 +4,6 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import {
   Avatar,
   Card,
@@ -14,65 +12,94 @@ import {
   Box,
   IconButton,
   CardHeader,
-  Grid2,
   Stack,
+  Grid2,
 } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { useGetSingleAdminQuery } from "@/redux/api/user/adminAip";
+import Loading from "@/components/ui/LoadingBar";
 
 type TProps = {
   userId: String;
 };
 
-const InfoRow = ({ label, value }: { label: string; value: string }) => (
-  <Box display="flex" justifyContent="space-between" alignItems="center">
-    <p>
-      <span style={{ fontWeight: "bold" }}>{label}</span>: {value}
-    </p>
+type TInfoRowProps = {
+  label: string;
+  value: string | undefined;
+};
+
+const InfoRow = ({ label, value }: TInfoRowProps) => (
+  <Box sx={{ display: "flex", gap: 1, textAlign: "left" }}>
+    <Typography variant="subtitle1" fontWeight="bold">
+      {label}:
+    </Typography>
+    <Typography variant="subtitle1">{value}</Typography>
   </Box>
 );
 
 const UserDetailsPage = ({ userId }: TProps) => {
-  const userInfo = [
-    { label: "Name", value: "Md Rakibul Hasan" },
-    { label: "Department", value: "Developer" },
-    { label: "Designation", value: "Senior Developer" },
-    { label: "Email", value: "rakibul@example.com" },
-    { label: "Web Mail", value: "rakibul@example.com" },
-    { label: "Gender", value: "Male" },
-    { label: "Phone", value: "+1234567890" },
-  ];
+  const { data, isLoading } = useGetSingleAdminQuery(userId);
+  console.log(data?.data);
+  const {
+    profile_image,
+    name,
+    email,
+    web_mail,
+    gender,
+    phone,
+    designation,
+    department,
+    permanentAddress,
+  } = data?.data || {};
+  console.log(profile_image, name);
 
   return (
-    // <Box sx={{ m: { xs: "20px", sm: "30px 60px" } }}>
-    <Box sx={{ m: "30px 60px" }}>
-      <Grid2 container spacing={2}>
-        <Grid2 size={{ xs: 12 }}>
-          {/* User profile card */}
-          <Card
-            sx={{
-              width: { xs: "100%" },
-              textAlign: "center",
-              borderRadius: 1,
-              padding: 2,
-              backgroundColor: "#f5f5f5",
-              boxShadow:
-                " rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
-            }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Avatar
-                src="https://via.placeholder.com/150"
-                alt="Profile Picture"
-                sx={{ width: 100, height: 100 }}
-              />
-              {/* <IconButton
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Box
+          sx={{
+            flexGrow: 1,
+            marginTop: 6,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Grid2 container spacing={2} sx={{ maxWidth: "lg", width: "100%" }}>
+            {/* User avatar */}
+            <Grid2 size={{ xs: 12, lg: 5 }}>
+              {/* User profile card */}
+              <Card
+                sx={{
+                  width: { xs: "100%" },
+                  textAlign: "center",
+                  borderRadius: 1,
+                  padding: [4, 4, 0, 4],
+                  backgroundColor: "#f5f5f5",
+                  boxShadow:
+                    " rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
+                }}
+              >
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Avatar
+                    src={profile_image}
+                    alt="Profile Picture"
+                    sx={{
+                      width: 100,
+                      height: 100,
+                      borderRadius: "50%",
+                      border: "2px solid black",
+                    }}
+                  />
+                  {/* <IconButton
                 sx={{
                   position: "absolute",
                   bottom: 0,
@@ -85,115 +112,85 @@ const UserDetailsPage = ({ userId }: TProps) => {
               >
                 <CameraAltIcon fontSize="small" />
               </IconButton> */}
-            </Box>
-            <CardContent>
-              <Typography variant="h6" component="div">
-                Anna Adame
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Lead Designer / Developer
-              </Typography>
-            </CardContent>
-          </Card>
+                </Box>
+                <CardContent>
+                  <Typography variant="h6" component="div">
+                    {name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lead Designer / Developer
+                  </Typography>
+                </CardContent>
+                <Stack
+                  spacing={4}
+                  direction="row"
+                  sx={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <FacebookIcon />
+                  <LinkedInIcon />
+                  <GitHubIcon />
+                  <TwitterIcon />
+                </Stack>
+              </Card>
 
-          {/* User address information */}
-          <Box sx={{ mt: 4 }}>
-            <Typography
-              variant="h4"
-              component="div"
-              sx={{ mb: 2, textAlign: "center" }}
-            >
-              User Information
-            </Typography>
+              {/* User social media */}
+              {/* <Box sx={{ mt: 4 }}>
+                <Typography
+                  variant="h4"
+                  component="div"
+                  sx={{ mb: 2, textAlign: "center" }}
+                >
+                  Social
+                </Typography>
+                <Stack
+                  spacing={4}
+                  direction="row"
+                  sx={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <FacebookIcon />
+                  <LinkedInIcon />
+                  <GitHubIcon />
+                  <TwitterIcon />
+                </Stack>
+              </Box> */}
+            </Grid2>
 
-            <Stack spacing={3} sx={{ textAlign: "center", mx: 3 }}>
-              {/* Using Stack for consistent vertical spacing */}
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Typography variant="h6" component="div">
-                  Present Address
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  123 Main Street, Apt 4B, Springfield, IL 62704
-                </Typography>
+            {/* Details */}
+            <Grid2 size={{ xs: 12, lg: 7 }}>
+              <Box ml={6}>
+                {name && <InfoRow label="Full Name" value={name} />}
+                {gender && <InfoRow label="Gender" value={gender} />}
+                {email && <InfoRow label="Email Address" value={email} />}
+                {web_mail && <InfoRow label="Web Mail" value={web_mail} />}
+                {phone && <InfoRow label="Phone Number" value={phone} />}
+                {department?.title && (
+                  <InfoRow label="Department" value={department?.title} />
+                )}
+                {designation?.title && (
+                  <InfoRow label="Designation" value={designation?.title} />
+                )}
+                {permanentAddress && (
+                  <InfoRow
+                    label="Address"
+                    value={`${permanentAddress?.address_line}, ${permanentAddress?.city}, ${permanentAddress?.state}, ${permanentAddress?.country?.name}`}
+                  />
+                )}
+                {/* <Grid2 container>
+                  <Grid2 size={{ xs: 12, lg: 6 }}></Grid2>
+                  <Grid2 size={{ xs: 12, lg: 6 }}></Grid2>
+                </Grid2> */}
               </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 2,
-                }}
-              >
-                <Typography variant="h6" component="div">
-                  Permanent Address
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  456 Oak Avenue, Apt 12C, Springfield, IL 62704
-                </Typography>
-              </Box>
-
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Typography variant="h6" component="div">
-                  Registered Address
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  789 Pine Road, Springfield, IL 62704
-                </Typography>
-              </Box>
-            </Stack>
-          </Box>
-
-          {/* User social media */}
-          <Box sx={{ mt: 4 }}>
-            <Typography
-              variant="h4"
-              component="div"
-              sx={{ mb: 2, textAlign: "center" }}
-            >
-              Social
-            </Typography>
-            <Stack
-              spacing={4}
-              direction="row"
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <span>
-                <FacebookIcon />
-              </span>
-              <span>
-                <LinkedInIcon />
-              </span>
-              <span>
-                <GitHubIcon />
-              </span>
-              <span>
-                <TwitterIcon />
-              </span>
-            </Stack>
-          </Box>
-        </Grid2>
-
-        {/* User personal details */}
-        <Grid2 size={{ xs: 12 }}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            flexDirection="column"
-          >
-            {userInfo.map((item, index) => (
-              <p key={index}>
-                <span style={{ fontWeight: "bold" }}>{item.label}</span>:{" "}
-                {item.value}
-              </p>
-            ))}
-          </Box>
-        </Grid2>
-      </Grid2>
-    </Box>
+            </Grid2>
+          </Grid2>
+        </Box>
+      )}
+    </>
   );
 };
 

@@ -8,7 +8,6 @@ const page = () => {
     <Box>
       <TitleDashboard title="Create Client Type" />
       <CreateClientTypeForm />
-      {/* abc  */}
     </Box>
   );
 };

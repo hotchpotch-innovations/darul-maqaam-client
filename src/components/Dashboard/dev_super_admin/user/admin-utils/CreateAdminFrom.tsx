@@ -162,6 +162,7 @@ const CreateAdminFrom = () => {
             <CMSelectWithWatch
               name="admin.departmentId"
               label="Department *"
+              size="medium"
               options={department_options}
               setState={setDepartmentId}
             />
@@ -171,6 +172,7 @@ const CreateAdminFrom = () => {
               name="admin.designationId"
               fullWidth={true}
               label="Designation *"
+              size="medium"
               items={designation_options}
               isDisabled={departmentId ? false : true}
             />
@@ -179,7 +181,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="admin.web_mail"
               label="Web Gmail"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>{" "}
@@ -188,7 +190,7 @@ const CreateAdminFrom = () => {
               name="admin.phone"
               label="Phone *"
               type="text"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -211,6 +213,7 @@ const CreateAdminFrom = () => {
               name="admin.gender"
               fullWidth={true}
               label="Gender *"
+              size="medium"
               items={gender_options}
             />
           </Grid>
@@ -219,7 +222,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="admin.name"
               label="Name *"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -228,7 +231,7 @@ const CreateAdminFrom = () => {
               name="admin.email"
               label="Gmail *"
               type="email"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -237,7 +240,7 @@ const CreateAdminFrom = () => {
               name="password"
               label="Password *"
               type="password"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -260,6 +263,7 @@ const CreateAdminFrom = () => {
             <CMSelectWithWatch
               name="present_address.countryId"
               label="Country *"
+              size="medium"
               options={present_country_options}
               setState={setPresentCountryId}
             />
@@ -277,7 +281,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="present_address.state"
               label="State *"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -294,7 +298,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="present_address.city"
               label="City *"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -303,7 +307,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="present_address.address_line"
               label="Address Line *"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -323,6 +327,7 @@ const CreateAdminFrom = () => {
             <CMSelectWithWatch
               name="permanent_address.countryId"
               label="Country *"
+              size="medium"
               options={permanent_country_options}
               setState={setPermanentCountryId}
             />
@@ -340,7 +345,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="permanent_address.state"
               label="State *"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -359,7 +364,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="permanent_address.city"
               label="City *"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -368,7 +373,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="permanent_address.address_line"
               label="Address Line *"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -393,6 +398,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="social_links.facebook"
               label="Facebook *"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -400,7 +406,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="social_links.twitter"
               label="Twitter"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -408,7 +414,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="social_links.linkedIn"
               label="LinkedIn"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>
@@ -416,7 +422,7 @@ const CreateAdminFrom = () => {
             <CMInput
               name="social_links.instagram"
               label="Instagram"
-              size="small"
+              size="medium"
               fullWidth={true}
             />
           </Grid>

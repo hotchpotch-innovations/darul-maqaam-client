@@ -92,8 +92,45 @@ const EmployeeTable = () => {
         />
       ),
     },
-    { field: "gu_id", headerName: "USER ID", flex: 1 },
-    { field: "name", headerName: "NAME", flex: 1 },
+    {
+      field: "gu_id",
+      headerName: "USER ID",
+      flex: 1,
+      renderCell: (params) => (
+        <Box
+          component={Link}
+          href={`/dashboard/dev_super_admin/users/employee/details/${params.row.id}`}
+          sx={{
+            ":hover": {
+              textDecoration: "underline",
+              color: "#1f68de",
+            },
+          }}
+        >
+          {params?.row?.gu_id}
+        </Box>
+      ),
+    },
+    {
+      field: "name",
+      headerName: "NAME",
+      flex: 1,
+
+      renderCell: (params) => (
+        <Box
+          component={Link}
+          href={`/dashboard/dev_super_admin/users/employee/details/${params.row.id}`}
+          sx={{
+            ":hover": {
+              textDecoration: "underline",
+              color: "#1f68de",
+            },
+          }}
+        >
+          {params?.row?.name}
+        </Box>
+      ),
+    },
     { field: "email", headerName: "EMAIL", flex: 1.5 },
     { field: "phone", headerName: "PHONE", flex: 1 },
     // {

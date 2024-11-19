@@ -19,13 +19,14 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useGetSingleAdminQuery } from "@/redux/api/user/adminAip";
 import Loading from "@/components/ui/LoadingBar";
 
-type TProps = {
-  userId: String;
-};
-
 type TInfoRowProps = {
   label: string;
   value: string | undefined;
+};
+
+type TProps = {
+  isLoading: boolean;
+  userData: Record<string, any>;
 };
 
 const InfoRow = ({ label, value }: TInfoRowProps) => (
@@ -37,22 +38,19 @@ const InfoRow = ({ label, value }: TInfoRowProps) => (
   </Box>
 );
 
-const AdminUserDetailsPage = ({ userId }: TProps) => {
-  const { data, isLoading } = useGetSingleAdminQuery(userId);
-  console.log(data?.data);
+const UserDetailsPage = ({ isLoading, userData }: TProps) => {
+  console.log(isLoading);
   const {
     profile_image,
     name,
+    gender,
     email,
     web_mail,
-    gender,
     phone,
-    designation,
     department,
+    designation,
     permanentAddress,
-  } = data?.data || {};
-  console.log(profile_image, name);
-
+  } = userData || {};
   return (
     <>
       {isLoading ? (
@@ -171,4 +169,4 @@ const AdminUserDetailsPage = ({ userId }: TProps) => {
   );
 };
 
-export default AdminUserDetailsPage;
+export default UserDetailsPage;

@@ -93,8 +93,45 @@ const ClientTable = () => {
         />
       ),
     },
-    { field: "gu_id", headerName: "USER ID", flex: 1 },
-    { field: "owner_name", headerName: "NAME", flex: 1 },
+    {
+      field: "gu_id",
+      headerName: "USER ID",
+      flex: 1,
+
+      renderCell: (params) => (
+        <Box
+          component={Link}
+          href={`/dashboard/dev_super_admin/users/client/details/${params.row.id}`}
+          sx={{
+            ":hover": {
+              textDecoration: "underline",
+              color: "#1f68de",
+            },
+          }}
+        >
+          {params?.row?.gu_id}
+        </Box>
+      ),
+    },
+    {
+      field: "owner_name",
+      headerName: "NAME",
+      flex: 1,
+      renderCell: (params) => (
+        <Box
+          component={Link}
+          href={`/dashboard/dev_super_admin/users/client/details/${params.row.id}`}
+          sx={{
+            ":hover": {
+              textDecoration: "underline",
+              color: "#1f68de",
+            },
+          }}
+        >
+          {params?.row?.owner_name}
+        </Box>
+      ),
+    },
     { field: "email", headerName: "EMAIL", flex: 1.5 },
     {
       field: "clientType",

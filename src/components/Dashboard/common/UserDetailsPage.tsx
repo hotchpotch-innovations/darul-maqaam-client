@@ -40,8 +40,8 @@ const InfoRow = ({ label, value }: TInfoRowProps) => (
 
 const UserDetailsPage = ({ isLoading, userData }: TProps) => {
   const {
-    profile_image,
     name,
+    profile_image,
     gender,
     email,
     web_mail,
@@ -49,7 +49,46 @@ const UserDetailsPage = ({ isLoading, userData }: TProps) => {
     department,
     designation,
     permanentAddress,
+
+    // Client data
+    owner_name,
+    father_name,
+    mother_name,
+    incorporation,
+    e_bin,
+    e_tin,
+    nid,
+    trade_license,
+    circle,
+    name_of_entity, //company name
+    clientType,
   } = userData || {};
+
+  //
+  const userInfo = {
+    "Full Name": name || owner_name,
+    Gender: gender,
+    "Email Address": email,
+    "Web Mail": web_mail,
+    "Phone Number": phone,
+    Department: department?.title ?? null,
+    Designation: designation?.title ?? null,
+    Address: permanentAddress
+      ? `${permanentAddress.address_line}, ${permanentAddress.city ?? ""}, ${
+          permanentAddress.state ?? ""
+        }, ${permanentAddress.country?.name ?? ""}`.trim()
+      : null,
+    "Father's Name": father_name,
+    "Mother's Name": mother_name,
+    Incorporation: incorporation,
+    "E-BIN": e_bin,
+    "E-TIN": e_tin,
+    NID: nid,
+    "Trade License": trade_license,
+    Circle: circle,
+    "Company Name": name_of_entity,
+  };
+
   return (
     <>
       {isLoading ? (
@@ -114,9 +153,12 @@ const UserDetailsPage = ({ isLoading, userData }: TProps) => {
                   <Typography variant="h6" component="div">
                     {name}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lead Designer / Developer
-                  </Typography>
+
+                  {(designation || clientType) && (
+                    <Typography variant="body2" color="text.secondary">
+                      {designation?.title || clientType?.title}
+                    </Typography>
+                  )}
                 </CardContent>
                 <Stack
                   spacing={4}
@@ -138,27 +180,16 @@ const UserDetailsPage = ({ isLoading, userData }: TProps) => {
             {/* Details */}
             <Grid2 size={{ xs: 12, lg: 7 }}>
               <Box ml={6} mt={5}>
-                {name && <InfoRow label="Full Name" value={name} />}
-                {gender && <InfoRow label="Gender" value={gender} />}
-                {email && <InfoRow label="Email Address" value={email} />}
-                {web_mail && <InfoRow label="Web Mail" value={web_mail} />}
-                {phone && <InfoRow label="Phone Number" value={phone} />}
-                {department?.title && (
-                  <InfoRow label="Department" value={department?.title} />
+                {Object.entries(userInfo).map(
+                  ([label, value]) =>
+                    value && (
+                      <InfoRow
+                        key={label}
+                        label={label}
+                        value={value.toString()}
+                      />
+                    )
                 )}
-                {designation?.title && (
-                  <InfoRow label="Designation" value={designation?.title} />
-                )}
-                {permanentAddress && (
-                  <InfoRow
-                    label="Address"
-                    value={`${permanentAddress?.address_line}, ${permanentAddress?.city}, ${permanentAddress?.state}, ${permanentAddress?.country?.name}`}
-                  />
-                )}
-                {/* <Grid2 container>
-                  <Grid2 size={{ xs: 12, lg: 6 }}></Grid2>
-                  <Grid2 size={{ xs: 12, lg: 6 }}></Grid2>
-                </Grid2> */}
               </Box>
             </Grid2>
           </Grid2>

@@ -1,17 +1,18 @@
 "use client";
 
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import UserDetailsPage from "@/components/Dashboard/dev_super_admin/common/UserDetailsPage";
+import AdminUserDetailsPage from "@/components/Dashboard/dev_super_admin/common/AdminUserDetailsPage";
+
 import { useParams } from "next/navigation";
 
-const UserDetails = () => {
+const AdminUserDetails = () => {
   const { id }: { id: string } = useParams();
   return (
     <>
       <TitleDashboard title="User Info" />
-      <UserDetailsPage userId={id} />
+      <AdminUserDetailsPage userId={id} />
     </>
   );
 };
 
-export default UserDetails;
+export default AdminUserDetails;

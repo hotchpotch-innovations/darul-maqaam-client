@@ -391,7 +391,7 @@ const CreateSuperAdminForm = () => {
               size="medium"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.twitter"
@@ -399,7 +399,7 @@ const CreateSuperAdminForm = () => {
               size="medium"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.linkedIn"
@@ -407,7 +407,7 @@ const CreateSuperAdminForm = () => {
               size="medium"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.instagram"

@@ -1,26 +1,39 @@
 export const modifyPayload = (values: any) => {
   const obj = { ...values };
 
+  // file
   const file = obj["file"];
   delete obj["file"];
 
-  //file
-
+  //files
   const files = obj["files"];
   delete obj["files"];
 
+  // primary logo
+  const primaryLogo = obj["primary_logo"];
+  delete obj["primary_logo"];
+
+  // secondary logo
+  const secondaryLogo = obj["secondary_logo"];
+  delete obj["secondary_logo"];
+
+  // banner image
+  const bannerImage = obj["banner_image"];
+  delete obj["banner_image"];
+
+  // data
   const data = JSON.stringify(obj);
-
   const formData = new FormData();
-
-  if (data) {
+  if (!!data) {
     formData.append("data", data);
   }
-  if (file) {
+
+  if (!!file) {
     formData.append("file", file);
   }
+
   if (!!files) {
-    //convert Filelist to an array
+    //convert File list to an array
     const filesArray = Array.from(files);
 
     if (filesArray.length > 0) {
@@ -33,6 +46,18 @@ export const modifyPayload = (values: any) => {
         filesArray
       );
     }
+  }
+
+  if (!!primaryLogo) {
+    formData.append("primary_logo", primaryLogo);
+  }
+
+  if (!!secondaryLogo) {
+    formData.append("secondary_logo", secondaryLogo);
+  }
+
+  if (!!bannerImage) {
+    formData.append("banner_image", bannerImage);
   }
 
   return formData;

@@ -30,6 +30,7 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
+
 const CMFileInput = ({
   name,
   multiple = false,

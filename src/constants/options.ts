@@ -10,17 +10,17 @@ export const gender_options: TGenderOptions[] = [
 ];
 
 export const account_types_options: TGenderOptions[] = [
-  { value: "individual", label: "Individul" },
+  { value: "individual", label: "Individual" },
   { value: "company", label: "Company" },
 ];
 
-export interface AccountTypeOption {
+export interface ISelectOption {
   label: string;
   value: string;
 }
 
 // Define the account type options array with the correct type
-export const account_type_options: AccountTypeOption[] = [
+export const account_type_options: ISelectOption[] = [
   {
     label: "Public",
     value: "PUBLIC",
@@ -35,7 +35,7 @@ export const account_type_options: AccountTypeOption[] = [
   },
 ];
 
-export const super_admin_account_type_options: AccountTypeOption[] = [
+export const super_admin_account_type_options: ISelectOption[] = [
   {
     label: "Public",
     value: "PUBLIC",
@@ -46,7 +46,7 @@ export const super_admin_account_type_options: AccountTypeOption[] = [
   },
 ];
 
-export const dev_super_admin_user_role_options: AccountTypeOption[] = [
+export const dev_super_admin_user_role_options: ISelectOption[] = [
   {
     label: "Dev Super Admin",
     value: "DEV_SUPER_ADMIN",
@@ -69,7 +69,7 @@ export const dev_super_admin_user_role_options: AccountTypeOption[] = [
   },
 ];
 
-export const super_admin_user_role_options: AccountTypeOption[] = [
+export const super_admin_user_role_options: ISelectOption[] = [
   {
     label: "Admin",
     value: "ADMIN",
@@ -84,7 +84,7 @@ export const super_admin_user_role_options: AccountTypeOption[] = [
   },
 ];
 
-export const user_status_options: AccountTypeOption[] = [
+export const user_status_options: ISelectOption[] = [
   {
     label: "ACTIVATED",
     value: "ACTIVATED",
@@ -92,5 +92,20 @@ export const user_status_options: AccountTypeOption[] = [
   {
     label: "BLOCKED",
     value: "BLOCKED",
+  },
+];
+
+export const multiple_page_section_types_options: ISelectOption[] = [
+  {
+    label: "Service",
+    value: "service",
+  },
+  {
+    label: "Product",
+    value: "product",
+  },
+  {
+    label: "Core Value",
+    value: "core_value",
   },
 ];

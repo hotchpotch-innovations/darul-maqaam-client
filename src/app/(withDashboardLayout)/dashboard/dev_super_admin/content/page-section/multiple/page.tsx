@@ -5,7 +5,7 @@ import React from "react";
 const MultiplePageSectionPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Page Section (multiple) Page" />
+      <TitleDashboard title="Page Section (multiple) List" />
     </Box>
   );
 };

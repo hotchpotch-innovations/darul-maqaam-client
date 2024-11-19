@@ -12,8 +12,6 @@ const AdminUserDetails = () => {
 
   const { data, isLoading } = useGetSingleAdminQuery(id);
 
-  if (isLoading) <Loading />;
-
   return (
     <>
       <TitleDashboard title="Admin Info" />

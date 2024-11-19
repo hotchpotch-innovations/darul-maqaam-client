@@ -39,7 +39,6 @@ const InfoRow = ({ label, value }: TInfoRowProps) => (
 );
 
 const UserDetailsPage = ({ isLoading, userData }: TProps) => {
-  console.log(isLoading);
   const {
     profile_image,
     name,

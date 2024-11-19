@@ -135,10 +135,10 @@ const CreateSuperAdminForm = () => {
       resolver={zodResolver(validationSchema)}
       defaultValues={create_admin_default_values}
     >
-      <Stack direction={"row"} gap={4}>
+      <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
         {/* 1st Pera */}
         <Grid
-          size={{ xs: 3, md: 6 }}
+          size={{ xs: 12, lg: 6 }}
           container
           gap={2}
           sx={{
@@ -187,7 +187,7 @@ const CreateSuperAdminForm = () => {
 
         {/* 2nd Pera */}
         <Grid
-          size={{ xs: 3, md: 6 }}
+          size={{ xs: 12, lg: 6 }}
           container
           gap={2}
           sx={{
@@ -235,9 +235,9 @@ const CreateSuperAdminForm = () => {
         </Grid>
       </Stack>
 
-      <Stack direction={"row"} gap={4} mt={4}>
+      <Stack direction={{ xs: "column", lg: "row" }} gap={4} mt={4}>
         <Grid
-          size={{ xs: 3, md: 4 }}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{
@@ -303,7 +303,7 @@ const CreateSuperAdminForm = () => {
           </Grid>
         </Grid>
         <Grid
-          size={{ xs: 3, md: 4 }}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{
@@ -374,7 +374,7 @@ const CreateSuperAdminForm = () => {
          * ========================================================
          */}
         <Grid
-          size={{ xs: 3, md: 4 }}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{

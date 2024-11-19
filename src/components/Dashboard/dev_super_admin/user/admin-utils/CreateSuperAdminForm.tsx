@@ -28,7 +28,7 @@ import {
 import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
@@ -423,16 +423,22 @@ const CreateSuperAdminForm = () => {
           </Grid>
         </Grid>
       </Stack>
-      <Button
-        type="submit"
-        fullWidth
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
-        disabled={isCreateLoading}
       >
-        Create Super Admin
-      </Button>
+        <Button
+          type="submit"
+          sx={{
+            mt: "30px",
+          }}
+          disabled={isCreateLoading}
+        >
+          Create Super Admin
+        </Button>
+      </Box>
     </CMForm>
   );
 };

@@ -34,7 +34,7 @@ const CMInput = ({
             ...sx,
             // border: "1px solid lightgray",
             borderRadius: "3px",
-            backgroundColor: readOnly ? "#e0e0e0" : "white",
+            backgroundColor: readOnly ? "#f5f5f5" : "white",
           }}
           label={label}
           type={type}

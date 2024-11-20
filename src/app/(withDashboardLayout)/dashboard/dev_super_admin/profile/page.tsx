@@ -1,5 +1,5 @@
 "use client";
-import UserProfile from "@/components/Dashboard/common/UserProfile";
+import UserProfile from "@/components/Dashboard/common/profile/UserProfile";
 import { useGetMyProfileQuery } from "@/redux/api/user/userApi";
 import { useParams } from "next/navigation";
 import React from "react";

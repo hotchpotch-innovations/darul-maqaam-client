@@ -1,17 +1,24 @@
 "use client";
 
+import UserDetailsPage from "@/components/Dashboard/common/UserDetailsPage";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import UserDetailsPage from "@/components/Dashboard/dev_super_admin/common/UserDetailsPage";
+import Loading from "@/components/ui/LoadingBar";
+import { useGetSingleAdminQuery } from "@/redux/api/user/adminAip";
+
 import { useParams } from "next/navigation";
 
-const UserDetails = () => {
+const AdminUserDetails = () => {
   const { id }: { id: string } = useParams();
+
+  const { data, isLoading } = useGetSingleAdminQuery(id);
+
   return (
     <>
-      <TitleDashboard title="User Info" />
-      <UserDetailsPage userId={id} />
+      <TitleDashboard title="Admin Info" />
+
+      <UserDetailsPage isLoading={isLoading} userData={data?.data} />
     </>
   );
 };
 
-export default UserDetails;
+export default AdminUserDetails;

@@ -109,10 +109,13 @@ export default function AccountMenu() {
         </Link>
 
         <Divider />
-        <MenuItem onClick={handleClose}>
-          <Avatar sx={{ background: "transparent", color: "primary.main" }} />
-          Profile
-        </MenuItem>
+
+        <Link href={`/dashboard/dev_super_admin/profile`}>
+          <MenuItem onClick={handleClose}>
+            <Avatar sx={{ background: "transparent", color: "primary.main" }} />
+            Profile
+          </MenuItem>
+        </Link>
 
         <Divider />
 

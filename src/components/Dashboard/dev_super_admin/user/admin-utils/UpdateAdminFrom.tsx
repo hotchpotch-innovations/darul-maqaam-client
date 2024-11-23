@@ -26,7 +26,7 @@ import {
 import { TSocialLinkPayload } from "@/types";
 import { customTimeOut } from "@/utils/customTimeOut";
 // import { removeNullValues } from "@/utils/removeNullValues";
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 
@@ -442,16 +442,22 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
           </Grid>
         </Grid>
       </Stack>
-      <Button
-        type="submit"
-        fullWidth
-        disabled={isUpdateLoading}
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
       >
-        Update
-      </Button>
+        <Button
+          type="submit"
+          disabled={isUpdateLoading}
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Update Admin
+        </Button>
+      </Box>
     </CMForm>
   );
 };

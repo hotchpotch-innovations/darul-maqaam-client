@@ -28,7 +28,8 @@ import {
 import { TSocialLinkPayload } from "@/types";
 import { customTimeOut } from "@/utils/customTimeOut";
 // import { removeNullValues } from "@/utils/removeNullValues";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 
 import {
@@ -205,12 +206,10 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
 
   return (
     <CMForm onSubmit={handleUpdateEmployee} defaultValues={default_values}>
-      <Stack direction={"row"} gap={4}>
+      <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
         {/* 1st Pera */}
         <Grid
-          item
-          xs={3}
-          md={6}
+          size={{ xs: 12, lg: 6 }}
           container
           gap={2}
           sx={{
@@ -220,7 +219,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
           p={4}
         >
           <Typography variant="h5">Departmental Information</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelectWithWatch
               name="departmentId"
               label="Department *"
@@ -228,7 +227,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               setState={setDepartmentId}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelect
               name={"designationId"}
               fullWidth={true}
@@ -236,7 +235,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               items={designation_options}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="web_mail"
               label={"Web-Mail *"}
@@ -248,9 +247,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
 
         {/* 2nd Pera */}
         <Grid
-          item
-          xs={3}
-          md={6}
+          size={{ xs: 12, lg: 6 }}
           container
           gap={2}
           sx={{
@@ -260,7 +257,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
           p={4}
         >
           <Typography variant="h5">Basic Information</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelect
               name="gender"
               fullWidth={true}
@@ -269,7 +266,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="name"
               label={"Name *"}
@@ -278,7 +275,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="phone"
               label={"phone *"}
@@ -290,11 +287,9 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
         </Grid>
       </Stack>
 
-      <Stack direction={"row"} gap={4} mt={4}>
+      <Stack direction={{ xs: "column", lg: "row" }} gap={4} mt={4}>
         <Grid
-          item
-          xs={3}
-          md={4}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{
@@ -304,7 +299,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
           p={2}
         >
           <Typography variant="h5">Present Address</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelectWithWatch
               name="present_address.countryId"
               label={"Country *"}
@@ -312,7 +307,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               setState={setPresentCountryId}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             {/* <CMSelectWithWatch
               name="present_address.divisionId"
               label={"Division *"}
@@ -327,7 +322,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             {/* <CMSelect
               name="present_address.districtId"
               label={"District *"}
@@ -341,7 +336,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="present_address.address_line"
               label={"Address Line *"}
@@ -351,9 +346,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
           </Grid>
         </Grid>
         <Grid
-          item
-          xs={3}
-          md={4}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{
@@ -363,7 +356,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
           p={2}
         >
           <Typography variant="h5">Permanent Address</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelectWithWatch
               name="permanent_address.countryId"
               label={"Country *"}
@@ -371,7 +364,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               setState={setPermanentCountryId}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             {/* <CMSelectWithWatch
               name="permanent_address.divisionId"
               label={"Division *"}
@@ -385,7 +378,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             {/* <CMSelect
               name="permanent_address.districtId"
               label={"District *"}
@@ -399,7 +392,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="permanent_address.address_line"
               label={"Address Line *"}
@@ -414,9 +407,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
          * ========================================================
          */}
         <Grid
-          item
-          xs={3}
-          md={4}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{
@@ -426,7 +417,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
           p={2}
         >
           <Typography variant="h5">Social Links</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="social_links.facebook"
               label={"Facebook *"}
@@ -434,7 +425,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>{" "}
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="social_links.twitter"
               label={"Twitter"}
@@ -442,7 +433,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>{" "}
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="social_links.linkedIn"
               label={"LinkedIn"}
@@ -450,7 +441,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>{" "}
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="social_links.instagram"
               label={"Instagram"}
@@ -460,15 +451,21 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
           </Grid>
         </Grid>
       </Stack>
-      <Button
-        type="submit"
-        fullWidth
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
       >
-        Update
-      </Button>
+        <Button
+          type="submit"
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Update
+        </Button>
+      </Box>
     </CMForm>
   );
 };

@@ -1,18 +1,23 @@
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
-import { useCountryOptions } from "@/hooks/useCountryOptions";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
+import { useAppSelector } from "@/redux/hooks";
+import { useCountryOptions } from "@/hooks/useCountryOptions";
+import { FieldValues } from "react-hook-form";
 
 const ProfileData = () => {
+  const { user, isLoading } = useAppSelector((state) => state.user);
+  console.log(user);
+
   const [presentCountryId, setPresentCountryId] = useState(null);
   const [permanentCountryId, setPermanentCountryId] = useState(null);
 
   const { options: present_country_options } = useCountryOptions();
 
-  const handleUpdate = () => {
-    console.log("Profile Update");
+  const handleUpdate = async (values: FieldValues) => {
+    console.log(values);
   };
 
   const default_values = {
@@ -134,6 +139,23 @@ const ProfileData = () => {
         </Stack>
         {/* Permanent Address End */}
       </Stack>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          type="submit"
+          // disabled={isUpdateLoading}
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Update
+        </Button>
+      </Box>
     </CMForm>
   );
 };

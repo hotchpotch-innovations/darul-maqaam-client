@@ -26,7 +26,8 @@ import {
 import { TSocialLinkPayload } from "@/types";
 import { customTimeOut } from "@/utils/customTimeOut";
 // import { removeNullValues } from "@/utils/removeNullValues";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 
 import {
@@ -195,12 +196,10 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
 
   return (
     <CMForm onSubmit={handleCreateSuperAdmin} defaultValues={default_values}>
-      <Stack direction={"row"} gap={4}>
+      <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
         {/* 1st Pera */}
         <Grid
-          item
-          xs={3}
-          md={6}
+          size={{ xs: 12, lg: 6 }}
           container
           gap={2}
           sx={{
@@ -210,7 +209,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
           p={4}
         >
           <Typography variant="h5">Departmental Information</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelectWithWatch
               name="departmentId"
               label="Department *"
@@ -218,7 +217,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               setState={setDepartmentId}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelect
               name={"designationId"}
               fullWidth={true}
@@ -226,7 +225,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               items={designation_options}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="web_mail"
               label={"Web-Mail *"}
@@ -238,9 +237,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
 
         {/* 2nd Pera */}
         <Grid
-          item
-          xs={3}
-          md={6}
+          size={{ xs: 12, lg: 6 }}
           container
           gap={2}
           sx={{
@@ -250,7 +247,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
           p={4}
         >
           <Typography variant="h5">Basic Information</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelect
               name="gender"
               fullWidth={true}
@@ -259,7 +256,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="name"
               label={"Name *"}
@@ -268,7 +265,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="phone"
               label={"phone *"}
@@ -280,11 +277,9 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
         </Grid>
       </Stack>
 
-      <Stack direction={"row"} gap={4} mt={4}>
+      <Stack direction={{ xs: "column", lg: "row" }} gap={4} mt={4}>
         <Grid
-          item
-          xs={3}
-          md={4}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{
@@ -294,7 +289,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
           p={2}
         >
           <Typography variant="h5">Present Address</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelectWithWatch
               name="present_address.countryId"
               label={"Country *"}
@@ -302,7 +297,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               setState={setPresentCountryId}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             {/* <CMSelectWithWatch
               name="present_address.divisionId"
               label={"Division *"}
@@ -316,7 +311,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             {/* <CMSelect
               name="present_address.districtId"
               fullWidth={true}
@@ -332,7 +327,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="present_address.address_line"
               label={"Address Line *"}
@@ -342,9 +337,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
           </Grid>
         </Grid>
         <Grid
-          item
-          xs={3}
-          md={4}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{
@@ -354,7 +347,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
           p={2}
         >
           <Typography variant="h5">Permanent Address</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelectWithWatch
               name="permanent_address.countryId"
               label={"Country *"}
@@ -362,7 +355,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               setState={setPermanentCountryId}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             {/* <CMSelectWithWatch
               name="permanent_address.divisionId"
               label={"Division *"}
@@ -376,7 +369,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             {/* <CMSelect
               name="permanent_address.districtId"
               label={"District *"}
@@ -390,7 +383,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="permanent_address.address_line"
               label={"Address Line *"}
@@ -405,9 +398,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
          * ========================================================
          */}
         <Grid
-          item
-          xs={3}
-          md={4}
+          size={{ xs: 12, lg: 4 }}
           container
           gap={2}
           sx={{
@@ -417,7 +408,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
           p={2}
         >
           <Typography variant="h5">Social Links</Typography>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="social_links.facebook"
               label={"Facebook *"}
@@ -425,7 +416,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               fullWidth={true}
             />
           </Grid>{" "}
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="social_links.twitter"
               label={"Twitter"}
@@ -433,7 +424,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               fullWidth={true}
             />
           </Grid>{" "}
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="social_links.linkedIn"
               label={"LinkedIn"}
@@ -441,7 +432,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               fullWidth={true}
             />
           </Grid>{" "}
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="social_links.instagram"
               label={"Instagram"}

@@ -1,23 +1,18 @@
-type TGenderOptions = {
-  value: string;
+export interface ISelectOption {
   label: string;
-};
+  value: string;
+}
 
-export const gender_options: TGenderOptions[] = [
+export const gender_options: ISelectOption[] = [
   { value: "MALE", label: "MALE" },
   { value: "FEMALE", label: "FEMALE" },
   { value: "OTHERS", label: "OTHERS" },
 ];
 
-export const account_types_options: TGenderOptions[] = [
+export const account_types_options: ISelectOption[] = [
   { value: "individual", label: "Individual" },
   { value: "company", label: "Company" },
 ];
-
-export interface ISelectOption {
-  label: string;
-  value: string;
-}
 
 // Define the account type options array with the correct type
 export const account_type_options: ISelectOption[] = [

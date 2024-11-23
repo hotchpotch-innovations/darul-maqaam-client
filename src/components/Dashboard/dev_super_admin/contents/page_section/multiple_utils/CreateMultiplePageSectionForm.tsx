@@ -1,6 +1,5 @@
 "use client";
 
-import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
 import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
 import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
@@ -27,7 +26,7 @@ type TMultiplePageSectionPayload = {
   price?: number;
   discount_rate?: number;
   yt_video_url?: URL;
-  banner_image?: any;
+  cover_image?: any;
   files?: any;
   sub_titles?: Array<string>;
   descriptions?: Array<string>;
@@ -45,7 +44,7 @@ const CreateMultiplePageSectionForm = () => {
   const [price, setPrice] = useState("");
   const [discount_rate, setDiscountRate] = useState("");
   const [yt_video_url, setYtVideoUrl] = useState();
-  const [banner_image, setBannerImage] = useState(null);
+  const [cover_image, setCoverImage] = useState(null);
   const [files, setFiles] = useState(null);
   const [sub_titles, setSubsub_titles] = useState([""]);
   const [descriptions, setDescriptions] = useState([""]);
@@ -56,7 +55,7 @@ const CreateMultiplePageSectionForm = () => {
   //   price,
   //   discount_rate,
   //   yt_video_url,
-  //   banner_image,
+  //   cover_image,
   //   files,
   //   sub_titles,
   //   descriptions,
@@ -92,8 +91,8 @@ const CreateMultiplePageSectionForm = () => {
       if (!!yt_video_url) {
         data["yt_video_url"] = yt_video_url;
       }
-      if (!!banner_image) {
-        data["banner_image"] = banner_image;
+      if (!!cover_image) {
+        data["cover_image"] = cover_image;
       }
       if (!!files) {
         data["files"] = files;
@@ -109,13 +108,10 @@ const CreateMultiplePageSectionForm = () => {
       //   convertToRaw(editorState.getCurrentContent())
       // );
 
-      console.log({ data });
-
       const payload = modifyPayload(data);
       // console.log({ payload });
       try {
         const res = await createMultipleSection(payload).unwrap();
-        console.log(res);
 
         if (res?.success) {
           toast.success(res.message, { id: toastId, duration: 2000 });
@@ -228,11 +224,12 @@ const CreateMultiplePageSectionForm = () => {
               <Stack direction={"row"} gap={2}>
                 <Grid size={6}>
                   <CMStateFileInput
-                    name="banner_image"
+                    name="cover_image"
                     label="Banner Image"
                     accept="image/*"
-                    setState={setBannerImage}
+                    setState={setCoverImage}
                     btn_width="100%"
+                    state={cover_image}
                   />
                 </Grid>
                 <Grid size={6}>
@@ -241,6 +238,7 @@ const CreateMultiplePageSectionForm = () => {
                     label="Files"
                     accept="image/*, video/*"
                     setState={setFiles}
+                    state={files}
                     multiple={true}
                     btn_width="100%"
                   />

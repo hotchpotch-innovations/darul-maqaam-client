@@ -18,8 +18,8 @@ export const modifyPayload = (values: any) => {
   delete obj["secondary_logo"];
 
   // banner image
-  const bannerImage = obj["banner_image"];
-  delete obj["banner_image"];
+  const coverImage = obj["cover_image"];
+  delete obj["cover_image"];
 
   // data
   const data = JSON.stringify(obj);
@@ -56,8 +56,8 @@ export const modifyPayload = (values: any) => {
     formData.append("secondary_logo", secondaryLogo);
   }
 
-  if (!!bannerImage) {
-    formData.append("banner_image", bannerImage);
+  if (!!coverImage) {
+    formData.append("cover_image", coverImage);
   }
 
   return formData;

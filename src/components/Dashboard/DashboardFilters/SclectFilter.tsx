@@ -6,12 +6,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Box, Stack, Typography } from "@mui/material";
-import { AccountTypeOption } from "@/constants/options";
+import { ISelectOption } from "@/constants/options";
 
 type TSelectFilterProps = {
   setValue: React.Dispatch<React.SetStateAction<string>>;
   value: string | undefined;
-  options: AccountTypeOption[];
+  options: ISelectOption[];
   filter_title?: string | null;
   isDisable?: boolean;
 };

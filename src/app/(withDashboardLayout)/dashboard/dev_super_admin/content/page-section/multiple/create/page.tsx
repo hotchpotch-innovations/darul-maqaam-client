@@ -1,9 +1,18 @@
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import CreateMultiplePageSectionForm from "@/components/Dashboard/dev_super_admin/contents/page_section/multiple_utils/CreateMultiplePageSectionForm";
 import { Box, Stack } from "@mui/material";
+import dynamic from "next/dynamic";
 import React from "react";
 
 const MultiplePageSectionCreatePage = () => {
+  const CreateMultiplePageSectionForm = dynamic(
+    () =>
+      import(
+        "@/components/Dashboard/dev_super_admin/contents/page_section/multiple_utils/CreateMultiplePageSectionForm"
+      ),
+    {
+      ssr: false,
+    }
+  );
   return (
     <Box>
       <Stack>

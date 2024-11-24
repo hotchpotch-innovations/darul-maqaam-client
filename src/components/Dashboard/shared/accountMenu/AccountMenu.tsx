@@ -12,6 +12,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { logOutUser } from "@/services/actions/logoutUser";
+import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
 
 const menuStyles = {
   paper: {
@@ -41,6 +42,8 @@ const menuStyles = {
 };
 
 export default function AccountMenu() {
+  const userInfo = getUserInfoFromLocalStorage();
+  const userProfilePath = userInfo?.role.toLowerCase();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
@@ -110,7 +113,7 @@ export default function AccountMenu() {
 
         <Divider />
 
-        <Link href={`/dashboard/dev_super_admin/profile`}>
+        <Link href={`/dashboard/${userProfilePath}/profile`}>
           <MenuItem onClick={handleClose}>
             <Avatar sx={{ background: "transparent", color: "primary.main" }} />
             Profile

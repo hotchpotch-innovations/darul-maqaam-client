@@ -12,15 +12,6 @@ const userApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.user],
     }),
 
-    getAllAdmin: build.query({
-      query: (paramObj) => ({
-        url: "/admin",
-        method: "GET",
-        params: paramObj,
-      }),
-      providesTags: [tagTypes.admin],
-    }),
-
     getMyProfile: build.query({
       query: () => ({
         url: "/user/me",
@@ -86,7 +77,6 @@ export const {
   useChangeUserStatusMutation,
   useCreateSuperAdminMutation,
   useCreateAdminMutation,
-  useGetAllAdminQuery,
   useDeleteAdminMutation,
   useCreateEmployeeMutation,
 } = userApi;

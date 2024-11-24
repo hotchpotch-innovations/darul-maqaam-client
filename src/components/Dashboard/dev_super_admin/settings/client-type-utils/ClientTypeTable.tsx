@@ -10,10 +10,6 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
-import {
-  useGetAllDepartmentQuery,
-  useGetSingleClientTypesQuery,
-} from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
@@ -22,6 +18,7 @@ import { FieldValues } from "react-hook-form";
 import {
   useDeleteClientTypeMutation,
   useGetAllClientTypeQuery,
+  useGetSingleClientTypeQuery,
   useUpdateClientTypeMutation,
 } from "@/redux/api/user/settings/clientTypeApi";
 import RestoreIcon from "@mui/icons-material/Restore";
@@ -73,7 +70,7 @@ const ClientTypeTable = () => {
   const { data, isLoading } = useGetAllClientTypeQuery({ ...queryObj });
   const client_types = data as TResponseDataObj;
 
-  const { data: client_type_data } = useGetSingleClientTypesQuery(updateId);
+  const { data: client_type_data } = useGetSingleClientTypeQuery(updateId);
   const client_type_info = client_type_data as {
     success: boolean;
     message: string;

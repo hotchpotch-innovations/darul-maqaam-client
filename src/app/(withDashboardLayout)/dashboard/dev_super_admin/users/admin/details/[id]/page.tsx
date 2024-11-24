@@ -2,7 +2,7 @@
 
 import UserDetailsPage from "@/components/Dashboard/common/UserDetailsPage";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import { useGetSingleAdminQuery } from "@/redux/api/user/adminAip";
+import { useGetSingleAdminQuery } from "@/redux/api/user/adminApi";
 
 import { useParams } from "next/navigation";
 

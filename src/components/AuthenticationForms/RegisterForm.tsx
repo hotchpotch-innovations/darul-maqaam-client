@@ -17,8 +17,8 @@ import { userSignIn } from "@/services/actions/userSignIn";
 import { setToLocalStorage } from "@/utils/local-starage";
 import { authkey } from "@/constants/authkey";
 import { useClientTypeOption } from "@/hooks/useClientTypeOptions";
-import { useGetSingleClientTypesQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
+import { useGetSingleClientTypeQuery } from "@/redux/api/user/settings/clientTypeApi";
 
 const clientValidationSchema = z.object({
   owner_name: z.string().min(1, "please enter your name"),
@@ -38,7 +38,7 @@ const validationSchema = z.object({
 });
 
 const RegisterForm = () => {
-  const [clientType, setClientType] = useState(null);
+  const [clientType, setClientType] = useState("");
 
   const handleRegister: SubmitHandler<FieldValues> = async (values) => {
     const { client, password } = values;
@@ -99,7 +99,7 @@ const RegisterForm = () => {
     client: client,
   };
 
-  const { data } = useGetSingleClientTypesQuery(clientType, {
+  const { data } = useGetSingleClientTypeQuery(clientType, {
     refetchOnFocus: !!clientType,
   });
   const is_company = data as TResponseDataObj;

@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useDeleteAdminMutation,
-  useGetAllAdminQuery,
-} from "@/redux/api/user/userApi";
+import { useDeleteAdminMutation } from "@/redux/api/user/userApi";
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Box, Stack, Tooltip, Typography } from "@mui/material";
@@ -14,6 +11,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import { useDebounced } from "@/redux/hooks";
+import React from "react";
+import Image from "next/image";
+import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
+import { useDesignationOptions } from "@/hooks/useDesignationOptions";
+import Loading from "@/components/ui/LoadingBar";
+import Link from "next/link";
+import { useGetAllAdminQuery } from "@/redux/api/user/adminApi";
 
 type TQueryObj = {
   designationId?: string;
@@ -22,13 +26,6 @@ type TQueryObj = {
   page?: number;
   limit?: number;
 };
-
-import React from "react";
-import Image from "next/image";
-import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
-import { useDesignationOptions } from "@/hooks/useDesignationOptions";
-import Loading from "@/components/ui/LoadingBar";
-import Link from "next/link";
 
 const ManagePage = () => {
   const [currentPage, setCurrentPage] = useState(1);

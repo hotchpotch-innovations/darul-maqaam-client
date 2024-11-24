@@ -10,10 +10,10 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
-import { useGetAllDepartmentQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 import {
   useDeleteDepartmentMutation,
+  useGetAllDepartmentQuery,
   useUpdateDepartmentMutation,
 } from "@/redux/api/user/settings/departmentApi";
 import CMModal from "@/components/ui/CMModal";

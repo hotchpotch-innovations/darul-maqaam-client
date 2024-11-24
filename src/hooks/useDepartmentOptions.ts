@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetAllDepartmentQuery } from "@/redux/api/user/clientTypeApi";
+import { useGetAllDepartmentQuery } from "@/redux/api/user/settings/departmentApi";
 import { TResponseDataObj } from "@/types";
 
 export const useDepartmentOptions = () => {

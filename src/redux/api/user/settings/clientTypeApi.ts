@@ -12,6 +12,14 @@ const clientTypeApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.client_type],
     }),
 
+    getSingleClientType: build.query({
+      query: (id: string) => ({
+        url: `/system/client-type/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.client_type],
+    }),
+
     createClientType: build.mutation({
       query: (data) => ({
         url: "/system/client-type/create",
@@ -48,6 +56,7 @@ const clientTypeApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllClientTypeQuery,
+  useGetSingleClientTypeQuery,
   useCreateClientTypeMutation,
   useDeleteClientTypeMutation,
   useUpdateClientTypeMutation,

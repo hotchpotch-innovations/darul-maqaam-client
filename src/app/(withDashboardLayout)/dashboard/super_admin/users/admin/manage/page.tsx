@@ -1,6 +1,5 @@
 "use client";
 
-import { useDeleteAdminMutation } from "@/redux/api/user/userApi";
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Box, Stack, Tooltip, Typography } from "@mui/material";
@@ -17,7 +16,10 @@ import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import Loading from "@/components/ui/LoadingBar";
 import Link from "next/link";
-import { useGetAllAdminQuery } from "@/redux/api/user/adminApi";
+import {
+  useDeleteAdminMutation,
+  useGetAllAdminQuery,
+} from "@/redux/api/user/adminApi";
 
 type TQueryObj = {
   designationId?: string;

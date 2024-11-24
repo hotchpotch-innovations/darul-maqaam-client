@@ -28,6 +28,25 @@ const userApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.user],
     }),
 
+    updateMyProfile: build.mutation({
+      query: (data) => ({
+        url: `/user/update-my-profile`,
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: [tagTypes.user, tagTypes.profile],
+    }),
+
+    changeProfileImage: build.mutation({
+      query: (data) => ({
+        url: `/user/change-profile-image`,
+        method: "POST",
+        contentType: "multipart/form-data",
+        data,
+      }),
+      invalidatesTags: [tagTypes.user, tagTypes.profile],
+    }),
+
     createSuperAdmin: build.mutation({
       query: (data) => ({
         url: "/user/create-super-admin",
@@ -57,15 +76,17 @@ const userApi = baseApi.injectEndpoints({
         contentType: "multipart/form-data",
         data,
       }),
-      invalidatesTags: [tagTypes?.user, tagTypes.admin],
+      invalidatesTags: [tagTypes?.user, tagTypes.employee],
     }),
 
-    deleteAdmin: build.mutation({
-      query: (id) => ({
-        url: `/admin/${id}`,
-        method: "DELETE",
+    createClient: build.mutation({
+      query: (data) => ({
+        url: "/user/create-client",
+        method: "POST",
+        contentType: "multipart/form-data",
+        data,
       }),
-      invalidatesTags: [tagTypes?.user, tagTypes.admin],
+      invalidatesTags: [tagTypes?.user, tagTypes.client],
     }),
   }),
   overrideExisting: false,
@@ -74,9 +95,10 @@ const userApi = baseApi.injectEndpoints({
 export const {
   useGetAllUsersQuery,
   useGetMyProfileQuery,
+  useUpdateMyProfileMutation,
+  useChangeProfileImageMutation,
   useChangeUserStatusMutation,
   useCreateSuperAdminMutation,
   useCreateAdminMutation,
-  useDeleteAdminMutation,
   useCreateEmployeeMutation,
 } = userApi;

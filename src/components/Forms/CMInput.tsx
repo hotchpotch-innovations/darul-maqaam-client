@@ -9,6 +9,7 @@ type TInputProps = {
   fullWidth?: boolean;
   sx?: SxProps;
   defaultValue?: string;
+  readOnly?: boolean;
 };
 
 const CMInput = ({
@@ -19,6 +20,7 @@ const CMInput = ({
   fullWidth,
   sx,
   defaultValue,
+  readOnly = false,
 }: TInputProps) => {
   const { control } = useFormContext();
   return (
@@ -32,6 +34,7 @@ const CMInput = ({
             ...sx,
             // border: "1px solid lightgray",
             borderRadius: "3px",
+            backgroundColor: readOnly ? "#f5f5f5" : "white",
           }}
           label={label}
           type={type}
@@ -42,6 +45,11 @@ const CMInput = ({
           error={!!error?.message}
           helperText={error?.message}
           defaultValue={defaultValue}
+          slotProps={{
+            input: {
+              readOnly,
+            },
+          }}
         />
       )}
     />

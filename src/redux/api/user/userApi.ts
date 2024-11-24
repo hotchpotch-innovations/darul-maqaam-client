@@ -21,6 +21,14 @@ const userApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.admin],
     }),
 
+    getMyProfile: build.query({
+      query: () => ({
+        url: "/user/me",
+        method: "GET",
+      }),
+      providesTags: [tagTypes.profile],
+    }),
+
     changeUserStatus: build.mutation({
       query: (id) => ({
         url: `/user/status/${id}`,
@@ -74,6 +82,7 @@ const userApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllUsersQuery,
+  useGetMyProfileQuery,
   useChangeUserStatusMutation,
   useCreateSuperAdminMutation,
   useCreateAdminMutation,

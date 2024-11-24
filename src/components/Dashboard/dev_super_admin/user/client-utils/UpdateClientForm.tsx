@@ -5,7 +5,8 @@ import {
   useUpdateClientMutation,
 } from "@/redux/api/user/clientApi";
 import { removeNullFields } from "@/utils/removeNullValues";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -52,12 +53,10 @@ const UpdateClientForm = ({ client_id }: TProps) => {
 
   return (
     <CMForm onSubmit={handleUpdateClient} defaultValues={default_values}>
-      <Stack direction={"row"} gap={4}>
+      <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
         {/* 1st Pera */}
         <Grid
-          item
-          xs={3}
-          md={6}
+          size={{ xs: 12, lg: 6 }}
           container
           gap={2}
           sx={{
@@ -68,7 +67,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
         >
           <Typography variant="h5">Basic Information </Typography>
           {client_data?.name_of_entity && (
-            <Grid item xs={12} md={12}>
+            <Grid size={12}>
               <CMInput
                 name="name_of_entity"
                 label={"Company Name"}
@@ -77,7 +76,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               />
             </Grid>
           )}
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="owner_name"
               label={"Owner Name"}
@@ -85,7 +84,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="father_name"
               label={"Father Name"}
@@ -93,7 +92,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="mother_name"
               label={"Mother Name "}
@@ -101,7 +100,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="phone"
               label={"Phone"}
@@ -109,7 +108,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="nid"
               label={"NID NO"}
@@ -122,9 +121,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
         {/* 2nd Pera */}
 
         <Grid
-          item
-          xs={3}
-          md={6}
+          size={{ xs: 12, lg: 6 }}
           container
           gap={2}
           sx={{
@@ -135,7 +132,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
         >
           <Typography variant="h5">Official Information</Typography>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="trade_license"
               label={"Trade LIcense NO"}
@@ -144,7 +141,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="incorporation"
               label={"Incorporation NO"}
@@ -153,7 +150,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="e_tin"
               label={"E-TIN NO"}
@@ -162,7 +159,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="e_bin"
               label={"E-BIN NO"}
@@ -171,7 +168,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="zone"
               label={"Zone NO"}
@@ -180,7 +177,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="circle"
               label={"Circle NO"}
@@ -191,15 +188,21 @@ const UpdateClientForm = ({ client_id }: TProps) => {
           </Grid>
         </Grid>
       </Stack>
-      <Button
-        type="submit"
-        fullWidth
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
       >
-        Update Client
-      </Button>
+        <Button
+          type="submit"
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Update Client
+        </Button>
+      </Box>
     </CMForm>
   );
 };

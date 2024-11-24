@@ -16,7 +16,7 @@ import {
   Grid2,
 } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { useGetSingleAdminQuery } from "@/redux/api/user/adminAip";
+import { useGetSingleAdminQuery } from "@/redux/api/user/adminApi";
 import Loading from "@/components/ui/LoadingBar";
 
 type TInfoRowProps = {

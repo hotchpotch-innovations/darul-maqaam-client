@@ -1,10 +1,9 @@
 "use client";
-
-import { useGetAllAccountTypesQuery } from "@/redux/api/user/clientTypeApi";
+import { useGetAllClientTypeQuery } from "@/redux/api/user/settings/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 
 export const useClientTypeOption = () => {
-  const { data, isLoading } = useGetAllAccountTypesQuery({});
+  const { data, isLoading } = useGetAllClientTypeQuery({});
 
   const clientTypeDataObj = data as TResponseDataObj;
   const client_data = clientTypeDataObj?.data || [];

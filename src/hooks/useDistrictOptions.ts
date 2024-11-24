@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetAllDistrictQuery } from "@/redux/api/user/clientTypeApi";
+import { useGetAllDistrictQuery } from "@/redux/api/user/settings/districtApi";
 import { TResponseDataObj } from "@/types";
 
 export type TDistrictQueryObj = {

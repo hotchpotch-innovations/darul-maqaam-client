@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetAllDesignationQuery } from "@/redux/api/user/clientTypeApi";
+import { useGetAllDesignationQuery } from "@/redux/api/user/settings/designationApi";
 import { TResponseDataObj } from "@/types";
 
 export type TDesignationQueryObj = {

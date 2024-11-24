@@ -4,10 +4,7 @@ import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
-import {
-  useDeleteAdminMutation,
-  useGetAllAdminQuery,
-} from "@/redux/api/user/userApi";
+import { useDeleteAdminMutation } from "@/redux/api/user/userApi";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -18,6 +15,7 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useGetAllAdminQuery } from "@/redux/api/user/adminApi";
 
 type TQueryObj = {
   designationId?: string;

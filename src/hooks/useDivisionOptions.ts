@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetAllDivisionQuery } from "@/redux/api/user/clientTypeApi";
+import { useGetAllDivisionQuery } from "@/redux/api/user/settings/divisionApi";
 import { TResponseDataObj } from "@/types";
 
 export type TDivisionQueryObj = {

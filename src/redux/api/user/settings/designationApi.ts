@@ -3,6 +3,14 @@ import { baseApi } from "../../baseApi";
 
 const designationApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    getAllDesignation: build.query({
+      query: (paramObj: any) => ({
+        url: "/system/designation",
+        method: "GET",
+        params: paramObj,
+      }),
+      providesTags: [tagTypes.designation],
+    }),
     createDesignation: build.mutation({
       query: (data) => ({
         url: "/system/designation/create",
@@ -38,6 +46,7 @@ const designationApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useGetAllDesignationQuery,
   useCreateDesignationMutation,
   useDeleteDesignationMutation,
   useUpdateDesignationMutation,

@@ -10,7 +10,6 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
-import { useGetAllDesignationQuery } from "@/redux/api/user/clientTypeApi";
 import { TResponseDataObj } from "@/types";
 import CMModal from "@/components/ui/CMModal";
 import CMForm from "@/components/forms/CMForm";
@@ -18,6 +17,7 @@ import CMInput from "@/components/forms/CMInput";
 import { FieldValues } from "react-hook-form";
 import {
   useDeleteDesignationMutation,
+  useGetAllDesignationQuery,
   useUpdateDesignationMutation,
 } from "@/redux/api/user/settings/designationApi";
 import RestoreIcon from "@mui/icons-material/Restore";

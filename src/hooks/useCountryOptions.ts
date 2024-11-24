@@ -1,9 +1,9 @@
 "use client";
-import { useGetAllcountrysQuery } from "@/redux/api/user/clientTypeApi";
+import { useGetAllCountryQuery } from "@/redux/api/user/settings/countryApi";
 import { TResponseDataObj } from "@/types";
 
 export const useCountryOptions = () => {
-  const { data, isLoading } = useGetAllcountrysQuery({});
+  const { data, isLoading } = useGetAllCountryQuery({});
   const countryDataObj = data as TResponseDataObj;
   const country_data = countryDataObj?.data?.data || [];
 

@@ -22,7 +22,7 @@ import {
 import {
   useGetSingleAdminQuery,
   useUpdateAdminMutation,
-} from "@/redux/api/user/adminAip";
+} from "@/redux/api/user/adminApi";
 import { TSocialLinkPayload } from "@/types";
 import { customTimeOut } from "@/utils/customTimeOut";
 // import { removeNullValues } from "@/utils/removeNullValues";

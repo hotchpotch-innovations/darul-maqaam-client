@@ -53,11 +53,9 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
 
   //Present Address State
   const [presentCountryId, setPresentCountryId] = useState(null);
-  // const [presentDivisionId, setPresentDivisionId] = useState(null);
 
   //Permanent Address State
   const [permanentCountryId, setPermanentCountryId] = useState(null);
-  // const [permanentDivisionId, setPermanentDivisionId] = useState(null);
 
   // assign query value
   if (!!departmentId) {

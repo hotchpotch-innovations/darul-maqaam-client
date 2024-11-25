@@ -28,12 +28,24 @@ import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
 
 // API hook to fetch user profile data
-import { useGetMyProfileQuery } from "@/redux/api/user/userApi";
+import {
+  useGetMyProfileQuery,
+  useUpdateMyProfileMutation,
+} from "@/redux/api/user/userApi";
 
 // API hook to fetch country options
 import { useCountryOptions } from "@/hooks/useCountryOptions";
 import Loading from "@/components/ui/LoadingBar";
+import { toast } from "sonner";
+import { customTimeOut } from "@/utils/customTimeOut";
+import Image from "next/image";
 
+type TAddress = {
+  countryId?: string;
+  state?: string;
+  city?: string;
+  address_line?: string;
+};
 const ClientProfile = () => {
   // State variables for handling active tab and country IDs
   const [value, setValue] = useState(0);
@@ -46,8 +58,9 @@ const ClientProfile = () => {
   const client_data = data?.data;
   console.log(client_data);
 
-  // User data role from localStorage
-  const userRole = getUserInfoFromLocalStorage();
+  // API hook to update client data
+  const [updateProfile, { isLoading: isUpdateLoading }] =
+    useUpdateMyProfileMutation();
 
   // Country options
   const { options: country_options } = useCountryOptions();
@@ -57,9 +70,58 @@ const ClientProfile = () => {
     setValue(newValue);
   };
 
+  // Utility function to create address data
+  const createAddressData = (address: {
+    countryId?: string;
+    state?: string;
+    city?: string;
+    address_line?: string;
+  }): TAddress => {
+    const addressData: TAddress = {};
+
+    if (address.countryId) addressData["countryId"] = address.countryId;
+    if (address.state) addressData["state"] = address.state;
+    if (address.city) addressData["city"] = address.city;
+    if (address.address_line)
+      addressData["address_line"] = address.address_line;
+
+    return addressData;
+  };
+
   // Function to handle form submission for profile update
   const handleUpdate = async (values: FieldValues) => {
-    console.log(values);
+    const { present_address, permanent_address, register_address, ...data } =
+      values;
+
+    const toastId = toast.loading("Please wait...");
+
+    // Creating address data for each address type
+    const presentAddressData = createAddressData(present_address);
+    const permanentAddressData = createAddressData(permanent_address);
+    const registerAddressData = createAddressData(register_address);
+
+    // Add addresses to payload only if all required fields are present
+    if (Object.keys(presentAddressData).length > 0) {
+      data["present_address"] = presentAddressData;
+    }
+    if (Object.keys(permanentAddressData).length > 0) {
+      data["permanent_address"] = permanentAddressData;
+    }
+    if (Object.keys(registerAddressData).length > 0) {
+      data["register_address"] = registerAddressData;
+    }
+
+    try {
+      const res = await updateProfile({ ...data }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error) {
+      toast.error("Something went wrong!", { id: toastId, duration: 3000 });
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
   };
 
   // Default form values for user profile, used as initial form state
@@ -76,23 +138,26 @@ const ClientProfile = () => {
     e_bin: client_data?.e_bin,
     zone: client_data?.zone,
     circle: client_data?.circle,
+
     present_address: {
-      countryId: client_data?.present_address?.countryId,
-      state: client_data?.present_address?.state,
-      city: client_data?.present_address?.city,
-      address_line: client_data?.present_address?.address_line,
+      countryId: client_data?.presentAddress?.countryId,
+      state: client_data?.presentAddress?.state,
+      city: client_data?.presentAddress?.city,
+      address_line: client_data?.presentAddress?.address_line,
     },
+
     permanent_address: {
-      countryId: client_data?.permanent_address?.countryId,
-      state: client_data?.permanent_address?.state,
-      city: client_data?.permanent_address?.city,
-      address_line: client_data?.permanent_address?.address_line,
+      countryId: client_data?.permanentAddress?.countryId,
+      state: client_data?.permanentAddress?.state,
+      city: client_data?.permanentAddress?.city,
+      address_line: client_data?.permanentAddress?.address_line,
     },
+
     register_address: {
-      countryId: client_data?.register_address?.countryId,
-      state: client_data?.register_address?.state,
-      city: client_data?.register_address?.city,
-      address_line: client_data?.register_address?.address_line,
+      countryId: client_data?.registerAddress?.countryId,
+      state: client_data?.registerAddress?.state,
+      city: client_data?.registerAddress?.city,
+      address_line: client_data?.registerAddress?.address_line,
     },
   };
 
@@ -124,33 +189,56 @@ const ClientProfile = () => {
             >
               <Card
                 sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  minHeight: 220,
+                  width: { xs: "100%" },
+                  textAlign: "center",
+                  borderRadius: 1,
+                  padding: [4, 4, 0, 4],
+                  backgroundColor: "#f5f5f5",
+                  boxShadow:
+                    " rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
                 }}
               >
-                <CardActionArea sx={{ paddingTop: "20px" }}>
-                  <Stack sx={{ alignItems: "center" }}>
-                    <Avatar sx={{ bgcolor: "red" }}>MRH</Avatar>
-                  </Stack>
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="div"
-                      sx={{ textAlign: "center" }}
-                    >
-                      Lizard
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary", textAlign: "center" }}
-                    >
-                      Developer
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Avatar
+                    src={client_data?.profile_image}
+                    alt={client_data?.owner_name}
+                    sx={{
+                      width: 100,
+                      height: 100,
+                      borderRadius: "50%",
+                      border: "2px solid black",
+                    }}
+                  />
+                  {/* <IconButton
+                sx={{
+                  position: "absolute",
+                  bottom: 0,
+                  right: "calc(50% - 20px)",
+                  backgroundColor: "white",
+                  border: "1px solid #ddd",
+                  width: 40,
+                  height: 40,
+                }}
+              >
+                <CameraAltIcon fontSize="small" />
+              </IconButton> */}
+                </Box>
+                <CardContent>
+                  <Typography variant="h6" component="div">
+                    {client_data?.owner_name}
+                  </Typography>
+
+                  <Typography variant="body2" color="text.secondary">
+                    {client_data?.clientType?.title}
+                  </Typography>
+                </CardContent>
               </Card>
             </Grid>
 
@@ -305,6 +393,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="State"
                           size="small"
+                          required={!!presentCountryId}
                         />
                       </Stack>
                       <Stack
@@ -316,6 +405,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="City"
                           size="small"
+                          required={!!presentCountryId}
                         />
 
                         <CMInput
@@ -323,6 +413,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="Address Line"
                           size="small"
+                          required={!!presentCountryId}
                         />
                       </Stack>
 
@@ -345,6 +436,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="State"
                           size="small"
+                          required={!!permanentCountryId}
                         />
                       </Stack>
                       <Stack
@@ -356,6 +448,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="City"
                           size="small"
+                          required={!!permanentCountryId}
                         />
 
                         <CMInput
@@ -363,6 +456,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="Address Line"
                           size="small"
+                          required={!!permanentCountryId}
                         />
                       </Stack>
 
@@ -385,6 +479,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="State"
                           size="small"
+                          required={!!registerCountryId}
                         />
                       </Stack>
                       <Stack
@@ -396,6 +491,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="City"
                           size="small"
+                          required={!!registerCountryId}
                         />
 
                         <CMInput
@@ -403,6 +499,7 @@ const ClientProfile = () => {
                           fullWidth={true}
                           label="Address Line"
                           size="small"
+                          required={!!registerCountryId}
                         />
                       </Stack>
                     </Stack>
@@ -416,7 +513,7 @@ const ClientProfile = () => {
                   >
                     <Button
                       type="submit"
-                      // disabled={isUpdateLoading}
+                      disabled={isUpdateLoading}
                       sx={{
                         mt: "30px",
                       }}

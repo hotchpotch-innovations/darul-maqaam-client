@@ -138,12 +138,13 @@ const Profile = () => {
               </CardActionArea>
             </Card>
 
-            {userRole?.role !== "CLIENT" && (
-              <Box mt={4} mb={2}>
-                <Typography mb={2} variant="h6">
-                  Social
-                </Typography>
+            <Box mt={4} mb={2}>
+              <Typography mb={2} variant="h6">
+                Social
+              </Typography>
 
+              {/* TODO: handleUpdate and default_values */}
+              <CMForm onSubmit={handleUpdate} defaultValues={default_values}>
                 <Stack spacing={2}>
                   <Box
                     sx={{
@@ -216,8 +217,8 @@ const Profile = () => {
                     />
                   </Box>
                 </Stack>
-              </Box>
-            )}
+              </CMForm>
+            </Box>
           </Box>
         </Grid>
 

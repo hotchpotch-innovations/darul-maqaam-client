@@ -10,6 +10,7 @@ type TInputProps = {
   sx?: SxProps;
   defaultValue?: string;
   readOnly?: boolean;
+  required?: boolean;
 };
 
 const CMInput = ({
@@ -21,6 +22,7 @@ const CMInput = ({
   sx,
   defaultValue,
   readOnly = false,
+  required = false,
 }: TInputProps) => {
   const { control } = useFormContext();
   return (
@@ -45,6 +47,7 @@ const CMInput = ({
           error={!!error?.message}
           helperText={error?.message}
           defaultValue={defaultValue}
+          required={required}
           slotProps={{
             input: {
               readOnly,

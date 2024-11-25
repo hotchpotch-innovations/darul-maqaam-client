@@ -15,6 +15,7 @@ const roleBasedPrivateRoutes = {
   SUPER_ADMIN: [/^\/dashboard\/super_admin/],
   ADMIN: [/^\/dashboard\/admin/],
   CLIENT: [/^\/dashboard\/client/],
+  EMPLOYEE: [/^\/dashboard\/employee/],
 };
 
 export async function middleware(request: NextRequest) {

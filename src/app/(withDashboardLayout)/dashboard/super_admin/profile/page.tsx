@@ -1,11 +1,10 @@
 import dynamic from "next/dynamic";
 
-const AdminProfilePage = () => {
+const SuperAdminProfilePage = () => {
   const PrivateUserProfile = dynamic(
     () => import("@/components/Dashboard/common/profile/PrivateUserProfile"),
     { ssr: false }
   );
-
   return (
     <>
       <PrivateUserProfile />
@@ -13,4 +12,4 @@ const AdminProfilePage = () => {
   );
 };
 
-export default AdminProfilePage;
+export default SuperAdminProfilePage;

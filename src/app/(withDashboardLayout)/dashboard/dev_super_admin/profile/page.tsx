@@ -1,12 +1,16 @@
 "use client";
-import Profile from "@/components/Dashboard/common/profile/Profile";
+import dynamic from "next/dynamic";
 
-const SuperAdminProfile = () => {
+const DevSuperAdminProfilePage = () => {
+  const PrivateUserProfile = dynamic(
+    () => import("@/components/Dashboard/common/profile/PrivateUserProfile"),
+    { ssr: false }
+  );
   return (
     <>
-      <Profile />
+      <PrivateUserProfile />
     </>
   );
 };
 
-export default SuperAdminProfile;
+export default DevSuperAdminProfilePage;

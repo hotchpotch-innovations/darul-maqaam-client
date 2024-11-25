@@ -1,38 +1,39 @@
 "use client";
 
-import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
-import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
-import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
-import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
-import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
-import { multiple_page_section_types_options } from "@/constants/options";
 import {
   TCategoryQueryObj,
   useCategoryOptions,
 } from "@/hooks/content/useCategoryOptions";
-import { useCreateMultipleSectionMutation } from "@/redux/api/content/multiplePageSectionApi";
+import { useCreateArticleMutation } from "@/redux/api/content/articleApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { Button, Stack } from "@mui/material";
-import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import Grid from "@mui/material/Grid2";
+import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
+import {
+  article_types_options,
+  multiple_page_section_types_options,
+} from "@/constants/options";
+import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
+import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
+import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
+import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
 
-type TMultiplePageSectionPayload = {
+type TArticlePayload = {
   type?: string;
   categoryId?: string;
   title?: string;
-  price?: number;
-  discount_rate?: number;
   yt_video_url?: URL;
+  author?: string;
   cover_image?: any;
   files?: any;
   sub_titles?: Array<string>;
   descriptions?: Array<string>;
 };
-
-const CreateMultiplePageSectionForm = () => {
+const CreateArticleForm = () => {
   const router = useRouter();
   const categoryQueryObj: TCategoryQueryObj = {
     page: 1,
@@ -41,19 +42,18 @@ const CreateMultiplePageSectionForm = () => {
   const [type, setType] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [title, setTitle] = useState();
-  const [price, setPrice] = useState("");
-  const [discount_rate, setDiscountRate] = useState("");
+  const [author, setAuthor] = useState("");
   const [yt_video_url, setYtVideoUrl] = useState();
   const [cover_image, setCoverImage] = useState(null);
   const [files, setFiles] = useState(null);
   const [sub_titles, setSubTitles] = useState([""]);
   const [descriptions, setDescriptions] = useState([""]);
+
   // console.log({
   //   type,
   //   categoryId,
   //   title,
-  //   price,
-  //   discount_rate,
+  //   author,
   //   yt_video_url,
   //   cover_image,
   //   files,
@@ -68,8 +68,8 @@ const CreateMultiplePageSectionForm = () => {
   const { options: category_options, isLoading: isCategoryLoading } =
     useCategoryOptions(categoryQueryObj);
 
-  const [createMultipleSection, { isLoading: isCreateLoading }] =
-    useCreateMultipleSectionMutation();
+  const [createArticle, { isLoading: isCreateLoading }] =
+    useCreateArticleMutation();
 
   // create function handler
   const submitHandler = async () => {
@@ -77,15 +77,12 @@ const CreateMultiplePageSectionForm = () => {
     if (!type || !categoryId || !title) {
       toast.error("Data does not found!", { id: toastId, duration: 2000 });
     } else {
-      const data: TMultiplePageSectionPayload = {};
+      const data: TArticlePayload = {};
       data["type"] = type;
       data["categoryId"] = categoryId;
       data["title"] = title;
-      if (!!price) {
-        data["price"] = parseFloat(price);
-      }
-      if (!!discount_rate) {
-        data["discount_rate"] = parseFloat(discount_rate);
+      if (!!author) {
+        data["author"] = author;
       }
       if (!!yt_video_url) {
         data["yt_video_url"] = yt_video_url;
@@ -110,13 +107,11 @@ const CreateMultiplePageSectionForm = () => {
       const payload = modifyPayload(data);
       // console.log({ payload });
       try {
-        const res = await createMultipleSection(payload).unwrap();
+        const res = await createArticle(payload).unwrap();
 
         if (res?.success) {
           toast.success(res.message, { id: toastId, duration: 2000 });
-          router.push(
-            "/dashboard/dev_super_admin/content/page-section/multiple"
-          );
+          router.push("/dashboard/dev_super_admin/content/articles");
         } else {
           toast.error(res?.message, { id: toastId, duration: 2000 });
           console.log(res);
@@ -131,7 +126,6 @@ const CreateMultiplePageSectionForm = () => {
       }
     }
   };
-
   return (
     <>
       <Stack direction={"column"} spacing={4}>
@@ -154,7 +148,7 @@ const CreateMultiplePageSectionForm = () => {
                 setState={setType}
                 state={type}
                 fullWidth={true}
-                items={multiple_page_section_types_options}
+                items={article_types_options}
               />
             </Grid>
             <Grid size={12}>
@@ -194,19 +188,9 @@ const CreateMultiplePageSectionForm = () => {
           >
             <Grid size={12}>
               <CMStateInput
-                name="price"
-                label="Price"
-                setState={setPrice}
-                type="number"
-                fullWidth={true}
-              />
-            </Grid>
-            <Grid size={12}>
-              <CMStateInput
-                name="discount_rate"
-                label="Discount (Rate)"
-                setState={setDiscountRate}
-                type="number"
+                name="author"
+                label="Author"
+                setState={setAuthor}
                 fullWidth={true}
               />
             </Grid>
@@ -302,10 +286,10 @@ const CreateMultiplePageSectionForm = () => {
         }}
         disabled={isCreateLoading}
       >
-        Create Item
+        Create Article
       </Button>
     </>
   );
 };
 
-export default CreateMultiplePageSectionForm;
+export default CreateArticleForm;

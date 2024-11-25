@@ -104,3 +104,18 @@ export const multiple_page_section_types_options: ISelectOption[] = [
     value: "core_value",
   },
 ];
+
+export const article_types_options: ISelectOption[] = [
+  {
+    label: "Blog",
+    value: "blog",
+  },
+  {
+    label: "News",
+    value: "news",
+  },
+  {
+    label: "Events",
+    value: "events",
+  },
+];

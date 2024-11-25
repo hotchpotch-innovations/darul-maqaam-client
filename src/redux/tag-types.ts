@@ -17,6 +17,7 @@ export const contentTags = {
   menu: "menu",
   submenu: "submenu",
   multiple_section: "multiple_section",
+  article: "article",
   category: "common_category",
   authority: "common_authority",
 };
@@ -36,6 +37,7 @@ export const tagTypesList = [
   contentTags.menu,
   contentTags.submenu,
   contentTags.multiple_section,
+  contentTags.article,
   contentTags.category,
   contentTags.authority,
 ];

@@ -12,45 +12,68 @@ const multiplePageSectionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.multiple_section],
     }),
-    // getAllCategories: build.query({
-    //   query: (paramObj) => ({
-    //     url: "/content/config/common-category",
-    //     method: "GET",
-    //     params: paramObj,
-    //   }),
-    //   providesTags: [contentTags?.category],
-    // }),
+    getAllMPS: build.query({
+      query: (paramObj) => ({
+        url: "/content/multiple-page-section/",
+        method: "GET",
+        params: paramObj,
+      }),
+      providesTags: [contentTags?.multiple_section],
+    }),
+    getSingleMPS: build.query({
+      query: (id: string) => ({
+        url: `/content/multiple-page-section/${id}`,
+        method: "GET",
+        // params: paramObj,
+      }),
+      providesTags: [contentTags?.multiple_section],
+    }),
 
-    // updateCategory: build.mutation({
-    //   query: (data) => {
-    //     const { id, ...payload } = data;
-    //     return {
-    //       url: `/content/config/common-category/${id}`,
-    //       method: "PATCH",
-    //       contentType: "application/json",
-    //       data: payload,
-    //     };
-    //   },
-    //   invalidatesTags: [contentTags?.category],
-    // }),
+    updateMPSItem: build.mutation({
+      query: (data) => {
+        const { id, ...payload } = data;
+        return {
+          url: `/content/multiple-page-section/${id}`,
+          method: "PATCH",
+          contentType: "application/json",
+          data: payload,
+        };
+      },
+      invalidatesTags: [contentTags?.multiple_section],
+    }),
 
-    // deleteCategory: build.mutation({
-    //   query: (id) => {
-    //     return {
-    //       url: `/content/config/common-category/${id}`,
-    //       method: "DELETE",
-    //     };
-    //   },
-    //   invalidatesTags: [contentTags?.category],
-    // }),
-    // changeCategoryStatus: build.mutation({
-    //   query: (id) => ({
-    //     url: `/content/config/common-category/${id}`,
-    //     method: "PATCH",
-    //   }),
-    //   invalidatesTags: [contentTags?.category],
-    // }),
+    deleteMPSItem: build.mutation({
+      query: (id) => {
+        return {
+          url: `/content/multiple-page-section/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: [contentTags?.multiple_section],
+    }),
+    changeMPSItemStatus: build.mutation({
+      query: (id) => ({
+        url: `/content/multiple-page-section/status/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [contentTags?.multiple_section],
+    }),
+    changePublishedMPSItemStatus: build.mutation({
+      query: (id) => ({
+        url: `/content/multiple-page-section/published/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [contentTags?.multiple_section],
+    }),
   }),
 });
 
-export const { useCreateMultipleSectionMutation } = multiplePageSectionApi;
+export const {
+  useCreateMultipleSectionMutation,
+  useGetAllMPSQuery,
+  useGetSingleMPSQuery,
+  useDeleteMPSItemMutation,
+  useChangeMPSItemStatusMutation,
+  useChangePublishedMPSItemStatusMutation,
+  useUpdateMPSItemMutation,
+} = multiplePageSectionApi;

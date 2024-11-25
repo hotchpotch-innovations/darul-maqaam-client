@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 const SubmenuPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Submenu Page" />
+      <TitleDashboard title="Submenu List" />
       <SubMenuTable />
     </Box>
   );

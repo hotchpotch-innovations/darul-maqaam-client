@@ -2,31 +2,33 @@
 
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Grid, Typography } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-import { useCreateMenuMutation } from "@/redux/api/content/menuApi";
 import { useRouter } from "next/navigation";
+import { useCreateSubmenuMutation } from "@/redux/api/content/submenuApi";
+import CMSelect from "@/components/forms/CMSelect";
+import { useMenubarOptions } from "@/hooks/content/useMenubarOptions";
 
 const CreateSubMenuForm = () => {
   const router = useRouter();
 
   const default_values = {
+    menubarId: "",
     title: "",
     identifier: "",
   };
 
-  const [createMenu] = useCreateMenuMutation();
-  const handleCreateCountry = async (values: FieldValues) => {
-    console.log(values);
-    // const create_country_data = modifyPayload(values);
+  const { options: menubar_options } = useMenubarOptions();
+  const [createSubmenu] = useCreateSubmenuMutation();
+  const handleCreateSubmenu = async (values: FieldValues) => {
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await createMenu(values).unwrap();
+      const res = await createSubmenu(values).unwrap();
 
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
-        router.push("/dashboard/dev_super_admin/content/menu");
+        router.push("/dashboard/dev_super_admin/content/submenu");
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
         console.log(res);
@@ -37,7 +39,7 @@ const CreateSubMenuForm = () => {
     }
   };
   return (
-    <CMForm onSubmit={handleCreateCountry} defaultValues={default_values}>
+    <CMForm onSubmit={handleCreateSubmenu} defaultValues={default_values}>
       <Stack direction={"row"} justifyContent="center" gap={4}>
         {/* 1st Pera */}
         <Grid
@@ -54,6 +56,14 @@ const CreateSubMenuForm = () => {
         >
           <Typography variant="h5">Menu Information </Typography>
 
+          <Grid item xs={12} md={12}>
+            <CMSelect
+              name="menubarId"
+              label="Menubar"
+              items={menubar_options}
+              fullWidth={true}
+            />
+          </Grid>
           <Grid item xs={12} md={12}>
             <CMInput name="title" label="Title" fullWidth={true} />
           </Grid>
@@ -77,7 +87,7 @@ const CreateSubMenuForm = () => {
               mt: "30px",
             }}
           >
-            Create Menu
+            Create Submenu
           </Button>
         </Box>
       </Stack>

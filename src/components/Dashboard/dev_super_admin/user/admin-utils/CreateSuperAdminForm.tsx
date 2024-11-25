@@ -173,7 +173,7 @@ const CreateSuperAdminForm = () => {
               size="medium"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="admin.phone"

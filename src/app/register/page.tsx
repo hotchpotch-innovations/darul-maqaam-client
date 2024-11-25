@@ -38,7 +38,6 @@ const RegisterPage = () => {
               className="h-auto w-auto"
             />
             <Typography variant="h5" pt={2} pb={1}>
-              {" "}
               Register Here
             </Typography>
 

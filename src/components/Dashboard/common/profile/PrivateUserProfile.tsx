@@ -37,7 +37,7 @@ import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress, TSocialLinkPayload } from "@/types";
 
-const Profile = () => {
+const PrivateUserProfile = () => {
   // State variables for handling active tab and country IDs
   const [value, setValue] = useState(0);
   const [presentCountryId, setPresentCountryId] = useState(null);
@@ -483,4 +483,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default PrivateUserProfile;

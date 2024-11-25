@@ -71,7 +71,6 @@ const ForgotPasswordForm = () => {
         </CMForm>
       ) : (
         <Box>
-          {" "}
           <Typography color="green" fontSize={20} fontWeight={550} py={1}>
             Please Check Your Gmail...
           </Typography>

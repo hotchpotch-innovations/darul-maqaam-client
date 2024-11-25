@@ -230,7 +230,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               size="small"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
         </Grid>
 
         {/* 2nd Pera */}
@@ -413,7 +413,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               size="small"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.twitter"
@@ -421,7 +421,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               size="small"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.linkedIn"
@@ -429,7 +429,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
               size="small"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.instagram"

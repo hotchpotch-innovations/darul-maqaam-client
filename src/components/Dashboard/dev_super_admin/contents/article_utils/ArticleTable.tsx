@@ -359,6 +359,7 @@ const ArticleTable = () => {
             Create
           </Button>
         </Box>
+
         <Box display="flex" gap={2}>
           <SelectFilter
             filter_title="Filter by Type"

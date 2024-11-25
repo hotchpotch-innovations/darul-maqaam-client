@@ -18,7 +18,7 @@ type TSelectProps = {
   label?: string;
   size?: "small" | "medium";
   fullWidth?: boolean;
-  items?: TItems[];
+  items: TItems[];
   required?: boolean;
   isDisabled?: boolean;
   setIdValue?: any;
@@ -30,7 +30,7 @@ const CMSelect = ({
   label,
   size = "small",
   fullWidth,
-  items,
+  items = [],
   required,
   isDisabled,
   setIdValue,

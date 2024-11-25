@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 const CreateSubMenu = () => {
   return (
     <Box>
-      <TitleDashboard title="Create Sub Menue" />
+      <TitleDashboard title="Create Sub Menu" />
       <CreateSubMenuForm />
     </Box>
   );

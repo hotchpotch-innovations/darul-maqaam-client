@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 const page = () => {
   return (
     <Box>
-      <TitleDashboard title="Menu Page" />
+      <TitleDashboard title="Menu List" />
       <MenuTable />
     </Box>
   );

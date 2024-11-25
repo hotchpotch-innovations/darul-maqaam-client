@@ -1,7 +1,7 @@
-"use client";
+"use clinet";
 import Profile from "@/components/Dashboard/common/profile/Profile";
 
-const SuperAdminProfile = () => {
+const AdminProfile = () => {
   return (
     <>
       <Profile />
@@ -9,4 +9,4 @@ const SuperAdminProfile = () => {
   );
 };
 
-export default SuperAdminProfile;
+export default AdminProfile;

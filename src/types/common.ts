@@ -72,8 +72,16 @@ export type TResponseDataObj = {
 };
 
 export type TSocialLinkPayload = {
-  facebook ?: string;
+  facebook?: string;
   twitter?: string;
   linkedIn?: string;
   instagram?: string;
+};
+
+// Props types for Address
+export type TAddress = {
+  countryId?: string;
+  state?: string;
+  city?: string;
+  address_line?: string;
 };

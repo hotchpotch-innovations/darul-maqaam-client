@@ -10,7 +10,6 @@ import {
   Box,
   Button,
   Card,
-  CardActionArea,
   CardContent,
   Stack,
   Tab,
@@ -24,9 +23,6 @@ import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 
-// Importing the function to get user info from localStorage
-import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
-
 // API hook to fetch user profile data
 import {
   useGetMyProfileQuery,
@@ -38,14 +34,8 @@ import { useCountryOptions } from "@/hooks/useCountryOptions";
 import Loading from "@/components/ui/LoadingBar";
 import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
-import Image from "next/image";
+import { TAddress } from "@/types";
 
-type TAddress = {
-  countryId?: string;
-  state?: string;
-  city?: string;
-  address_line?: string;
-};
 const ClientProfile = () => {
   // State variables for handling active tab and country IDs
   const [value, setValue] = useState(0);

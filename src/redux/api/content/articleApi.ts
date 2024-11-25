@@ -22,18 +22,26 @@ const articleApi = baseApi.injectEndpoints({
       providesTags: [contentTags?.article],
     }),
 
-    // updateCategory: build.mutation({
-    //   query: (data) => {
-    //     const { id, ...payload } = data;
-    //     return {
-    //       url: `/content/config/common-category/${id}`,
-    //       method: "PATCH",
-    //       contentType: "application/json",
-    //       data: payload,
-    //     };
-    //   },
-    //   invalidatesTags: [contentTags?.category],
-    // }),
+    getSingleArticle: build.query({
+      query: (id: string) => ({
+        url: `/content/article/${id}`,
+        method: "GET",
+      }),
+      providesTags: [contentTags?.article],
+    }),
+
+    updateArticle: build.mutation({
+      query: (data) => {
+        const { id, ...payload } = data;
+        return {
+          url: `/content/article/${id}`,
+          method: "PATCH",
+          contentType: "application/json",
+          data: payload,
+        };
+      },
+      invalidatesTags: [contentTags?.article],
+    }),
 
     deleteArticle: build.mutation({
       query: (id) => {
@@ -51,12 +59,22 @@ const articleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.article],
     }),
+    changePublishedArticleStatus: build.mutation({
+      query: (id) => ({
+        url: `/content/article/published/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [contentTags?.article],
+    }),
   }),
 });
 
 export const {
   useCreateArticleMutation,
   useGetAllArticlesQuery,
+  useGetSingleArticleQuery,
+  useUpdateArticleMutation,
   useDeleteArticleMutation,
   useChangeArticleStatusMutation,
+  useChangePublishedArticleStatusMutation,
 } = articleApi;

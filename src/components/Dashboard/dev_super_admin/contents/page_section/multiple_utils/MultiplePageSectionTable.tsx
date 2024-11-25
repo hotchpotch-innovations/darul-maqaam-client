@@ -1,8 +1,12 @@
 "use client";
-import dayjs from "dayjs";
-import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
-import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import Loading from "@/components/ui/LoadingBar";
+
+import { useCategoryOptions } from "@/hooks/content/useCategoryOptions";
+import {
+  useChangeMPSItemStatusMutation,
+  useChangePublishedMPSItemStatusMutation,
+  useDeleteMPSItemMutation,
+  useGetAllMPSQuery,
+} from "@/redux/api/content/multiplePageSectionApi";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -10,26 +14,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import UnpublishedIcon from "@mui/icons-material/Unpublished";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import BlockIcon from "@mui/icons-material/Block";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import RestoreIcon from "@mui/icons-material/Restore";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
+import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import {
-  article_types_options,
+  multiple_page_section_types_options,
   user_status_options,
 } from "@/constants/options";
-import { useCategoryOptions } from "@/hooks/content/useCategoryOptions";
-import {
-  useChangeArticleStatusMutation,
-  useChangePublishedArticleStatusMutation,
-  useDeleteArticleMutation,
-  useGetAllArticlesQuery,
-} from "@/redux/api/content/articleApi";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import UnpublishedIcon from "@mui/icons-material/Unpublished";
+import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
+import Loading from "@/components/ui/LoadingBar";
 
-type TArticleQueryObj = {
+type TMPSQueryObj = {
   status?: string;
   type?: string;
   categoryId?: string;
@@ -42,7 +42,7 @@ type TCategoryQueryObj = {
   page?: number;
   limit?: number;
 };
-const ArticleTable = () => {
+const MultiplePageSectionTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,7 +50,8 @@ const ArticleTable = () => {
   const [categoryId, setCategory] = useState("");
   const [status, setStatus] = useState("");
 
-  const path = "/dashboard/dev_super_admin/content/articles/update";
+  const path =
+    "/dashboard/dev_super_admin/content/page-section/multiple/update";
 
   // Debounced search term to avoid too many API requests
   const debouncedTerm: any = useDebounced({
@@ -59,7 +60,7 @@ const ArticleTable = () => {
   });
 
   // Create query object to pass to API call
-  const article_query_obj: TArticleQueryObj = {
+  const mps_query_obj: TMPSQueryObj = {
     limit,
     page: currentPage, // Sending current page as 1-based to the API
   };
@@ -70,28 +71,30 @@ const ArticleTable = () => {
   };
 
   if (!!debouncedTerm) {
-    article_query_obj["searchTerm"] = debouncedTerm;
+    mps_query_obj["searchTerm"] = debouncedTerm;
   }
 
   if (!!type) {
-    article_query_obj["type"] = type;
+    mps_query_obj["type"] = type;
     category_query_obj["type"] = type;
   }
   if (!!categoryId) {
-    article_query_obj["categoryId"] = categoryId;
+    mps_query_obj["categoryId"] = categoryId;
   }
   if (!!status) {
-    article_query_obj["status"] = status;
+    mps_query_obj["status"] = status;
   }
 
   const { options: category_options, isLoading: category_isLoading } =
     useCategoryOptions(category_query_obj);
 
-  // Fetch Admin data using API hook
-  const { data, isLoading } = useGetAllArticlesQuery({ ...article_query_obj });
+  // Fetch MPS data using API hook
+  const { data, isLoading } = useGetAllMPSQuery({
+    ...mps_query_obj,
+  });
   //   console.log({ data });
 
-  const article_data =
+  const mps_data =
     data?.data?.data?.map((row: any, index: number) => ({
       ...row,
       index: (currentPage - 1) * limit + (index + 1),
@@ -107,7 +110,7 @@ const ArticleTable = () => {
       renderCell: (params) => (
         <Box>
           <Image
-            src={params?.row?.cover_image?.url}
+            src={params?.row?.cover_image?.url || ""}
             alt="Cover_Image"
             width={100}
             height={100}
@@ -122,7 +125,7 @@ const ArticleTable = () => {
       renderCell: (params) => (
         <Box
           component={Link}
-          href={`/dashboard/dev_super_admin/content/articles/details/${params?.row?.id}`}
+          href={`/dashboard/dev_super_admin/content/page-section/multiple/details/${params?.row?.id}`}
           sx={{
             ":hover": {
               textDecoration: "underline",
@@ -146,18 +149,22 @@ const ArticleTable = () => {
       renderCell: (params) => <Box>{params?.row?.common_category?.title}</Box>,
     },
     {
-      field: "author",
-      headerName: "Author",
+      field: "price",
+      headerName: "Price",
       flex: 1,
+      renderCell: (params) => (
+        <Box>{params?.row?.price > 0 ? params?.row?.price : "N/A"}</Box>
+      ),
     },
     {
-      field: "published_date",
-      headerName: "Published Date",
+      field: "discount_rate",
+      headerName: "Discount Rate",
       flex: 1,
-      renderCell: (params: Record<string, any>) => {
-        const date = dayjs(params?.published_date).format("DD MMM YYYY");
-        return <Box>{date}</Box>;
-      },
+      renderCell: (params) => (
+        <Box>
+          {params?.row?.discount_rate > 0 ? params?.row?.discount_rate : "N/A"}
+        </Box>
+      ),
     },
     {
       field: "isPublished",
@@ -290,15 +297,15 @@ const ArticleTable = () => {
   ];
 
   // Handle user status change
-  const [deleteArticle] = useDeleteArticleMutation();
-  const [changeStatus] = useChangeArticleStatusMutation();
-  const [changePublishedStatus] = useChangePublishedArticleStatusMutation();
+  const [deleteMPSItem] = useDeleteMPSItemMutation();
+  const [changeStatus] = useChangeMPSItemStatusMutation();
+  const [changePublishedStatus] = useChangePublishedMPSItemStatusMutation();
 
   const handleDelete = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await deleteArticle(id);
+      const res = await deleteMPSItem(id);
       if (res?.data?.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 5000 });
       }
@@ -351,7 +358,9 @@ const ArticleTable = () => {
           {/* Create Country Section */}
           <Button
             component={Link}
-            href={"/dashboard/dev_super_admin/content/articles/create"}
+            href={
+              "/dashboard/dev_super_admin/content/page-section/multiple/create"
+            }
             sx={{
               maxHeight: "40px",
             }}
@@ -362,7 +371,7 @@ const ArticleTable = () => {
         <Box display="flex" gap={2}>
           <SelectFilter
             filter_title="Filter by Type"
-            options={article_types_options}
+            options={multiple_page_section_types_options}
             value={type}
             setValue={setType}
           />
@@ -387,7 +396,7 @@ const ArticleTable = () => {
       {!isLoading ? (
         <Box>
           <DataGrid
-            rows={article_data}
+            rows={mps_data}
             columns={columns}
             pagination
             paginationMode="server"
@@ -408,4 +417,4 @@ const ArticleTable = () => {
   );
 };
 
-export default ArticleTable;
+export default MultiplePageSectionTable;

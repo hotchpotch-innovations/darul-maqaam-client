@@ -83,7 +83,7 @@ const LoginForm = () => {
         </Button>
 
         <Typography textAlign={"center"} py={2}>
-          do not have an account?{" "}
+          do not have an account?
           <Link href={"/register"}>
             <span className="text-blue-500">Register</span>
           </Link>

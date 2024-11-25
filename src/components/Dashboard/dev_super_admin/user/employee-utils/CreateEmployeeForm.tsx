@@ -179,7 +179,7 @@ const CreateEmployeeForm = () => {
               size="medium"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="employee.phone"

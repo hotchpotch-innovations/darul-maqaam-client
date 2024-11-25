@@ -67,7 +67,7 @@ const CMMultipleTextarea = ({
               <Typography component="span" color="error">
                 *
               </Typography>
-            )}{" "}
+            )}
             {label + " :"}
           </Typography>
         )}

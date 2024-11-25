@@ -50,7 +50,7 @@ const Sidebar = () => {
           height={40}
           width={40}
           className="size-16"
-        />{" "}
+        />
         <Typography variant="h5" color="primary.main" fontWeight={700}>
           C-Project
         </Typography>

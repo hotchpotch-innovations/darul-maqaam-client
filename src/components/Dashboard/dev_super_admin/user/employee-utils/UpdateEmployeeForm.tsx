@@ -242,7 +242,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               size="small"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
         </Grid>
 
         {/* 2nd Pera */}
@@ -424,7 +424,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               size="small"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.twitter"
@@ -432,7 +432,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               size="small"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.linkedIn"
@@ -440,7 +440,7 @@ const UpdateEmployeeForm = ({ employee_id }: TProps) => {
               size="small"
               fullWidth={true}
             />
-          </Grid>{" "}
+          </Grid>
           <Grid size={12}>
             <CMInput
               name="social_links.instagram"

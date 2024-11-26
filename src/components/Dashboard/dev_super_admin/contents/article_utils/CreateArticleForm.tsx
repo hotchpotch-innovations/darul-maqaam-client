@@ -1,5 +1,4 @@
 "use client";
-
 import {
   TCategoryQueryObj,
   useCategoryOptions,
@@ -13,10 +12,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Grid from "@mui/material/Grid2";
 import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
-import {
-  article_types_options,
-  multiple_page_section_types_options,
-} from "@/constants/options";
+import { article_types_options } from "@/constants/options";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
 import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
 import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";

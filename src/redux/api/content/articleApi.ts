@@ -61,6 +61,7 @@ const articleApi = baseApi.injectEndpoints({
       },
       invalidatesTags: [contentTags?.article],
     }),
+
     changeArticleStatus: build.mutation({
       query: (id) => ({
         url: `/content/article/status/${id}`,
@@ -68,6 +69,7 @@ const articleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.article],
     }),
+
     changePublishedArticleStatus: build.mutation({
       query: (id) => ({
         url: `/content/article/published/${id}`,

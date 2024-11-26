@@ -87,9 +87,10 @@ const SubMenuTable = () => {
   }
 
   // get All Country data
-  const { data, isLoading } = useGetAllSubmenuQuery({ ...queryObj });
+  const { data, isLoading, isFetching } = useGetAllSubmenuQuery({
+    ...queryObj,
+  });
   const submenu_data = data as TResponseDataObj;
-  console.log(submenu_data?.data);
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
@@ -308,7 +309,7 @@ const SubMenuTable = () => {
           </Box>
         </Stack>
 
-        {!isLoading ? (
+        {!isLoading || !isFetching ? (
           <Box>
             <DataGrid
               rows={rowsWithIndex}

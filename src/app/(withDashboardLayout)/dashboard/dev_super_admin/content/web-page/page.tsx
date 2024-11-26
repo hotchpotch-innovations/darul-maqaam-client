@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 const WebPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Web Page" />
+      <TitleDashboard title="Web Page List" />
     </Box>
   );
 };

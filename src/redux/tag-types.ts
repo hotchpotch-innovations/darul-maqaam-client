@@ -16,6 +16,7 @@ export enum tagTypes {
 export const contentTags = {
   menu: "menu",
   submenu: "submenu",
+  webpage: "webpage",
   multiple_section: "multiple_section",
   article: "article",
   category: "common_category",
@@ -36,6 +37,7 @@ export const tagTypesList = [
   tagTypes.client,
   contentTags.menu,
   contentTags.submenu,
+  contentTags.webpage,
   contentTags.multiple_section,
   contentTags.article,
   contentTags.category,

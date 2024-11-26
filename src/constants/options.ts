@@ -120,6 +120,21 @@ export const article_types_options: ISelectOption[] = [
   },
 ];
 
+export const webpage_types_options: ISelectOption[] = [
+  {
+    label: "Basic",
+    value: "basic",
+  },
+  {
+    label: "Service",
+    value: "service",
+  },
+  {
+    label: "Article",
+    value: "article",
+  },
+];
+
 export const isPublished_options: ISelectOption[] = [
   {
     label: "YES",

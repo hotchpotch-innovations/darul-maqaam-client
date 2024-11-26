@@ -2,12 +2,12 @@
 import { useGetAllMenuQuery } from "@/redux/api/content/menuApi";
 import { TResponseDataObj } from "@/types";
 
-export type TCategoryQueryObj = {
+export type TMenubarQueryObj = {
   limit?: number | 20;
   page?: number | 1;
 };
 
-export const useMenubarOptions = (queryObj: TCategoryQueryObj = {}) => {
+export const useMenubarOptions = (queryObj: TMenubarQueryObj = {}) => {
   const { data, isLoading } = useGetAllMenuQuery(queryObj);
 
   const menubarData = data as TResponseDataObj;

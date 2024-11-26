@@ -119,3 +119,14 @@ export const article_types_options: ISelectOption[] = [
     value: "events",
   },
 ];
+
+export const isPublished_options: ISelectOption[] = [
+  {
+    label: "YES",
+    value: "true",
+  },
+  {
+    label: "NO",
+    value: "false",
+  },
+];

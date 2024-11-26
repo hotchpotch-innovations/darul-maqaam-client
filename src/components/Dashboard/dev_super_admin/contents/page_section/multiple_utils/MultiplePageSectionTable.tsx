@@ -5,7 +5,7 @@ import {
   useChangeMPSItemStatusMutation,
   useChangePublishedMPSItemStatusMutation,
   useDeleteMPSItemMutation,
-  useGetAllMPSQuery,
+  useGetAllPrivateMPSQuery,
 } from "@/redux/api/content/multiplePageSectionApi";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
@@ -23,6 +23,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import {
+  isPublished_options,
   multiple_page_section_types_options,
   user_status_options,
 } from "@/constants/options";
@@ -33,6 +34,7 @@ type TMPSQueryObj = {
   status?: string;
   type?: string;
   categoryId?: string;
+  isPublished?: string;
   searchTerm?: string;
   page?: number;
   limit?: number;
@@ -49,6 +51,7 @@ const MultiplePageSectionTable = () => {
   const [type, setType] = useState("");
   const [categoryId, setCategory] = useState("");
   const [status, setStatus] = useState("");
+  const [isPublished, setIsPublished] = useState("");
 
   const path =
     "/dashboard/dev_super_admin/content/page-section/multiple/update";
@@ -84,12 +87,15 @@ const MultiplePageSectionTable = () => {
   if (!!status) {
     mps_query_obj["status"] = status;
   }
+  if (!!isPublished) {
+    mps_query_obj["isPublished"] = isPublished;
+  }
 
   const { options: category_options, isLoading: category_isLoading } =
     useCategoryOptions(category_query_obj);
 
   // Fetch MPS data using API hook
-  const { data, isLoading } = useGetAllMPSQuery({
+  const { data, isLoading } = useGetAllPrivateMPSQuery({
     ...mps_query_obj,
   });
   //   console.log({ data });
@@ -382,6 +388,12 @@ const MultiplePageSectionTable = () => {
             value={categoryId}
             setValue={setCategory}
             isDisable={!type}
+          />
+          <SelectFilter
+            filter_title="Filter by publish status"
+            options={isPublished_options}
+            value={isPublished}
+            setValue={setIsPublished}
           />
           <SelectFilter
             filter_title="Filter by status"

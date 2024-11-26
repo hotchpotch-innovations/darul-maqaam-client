@@ -1,5 +1,6 @@
 "use client";
 
+import Editor from "@/components/forms/editors/Editor";
 import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
 import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
 import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
@@ -30,6 +31,7 @@ type TMultiplePageSectionPayload = {
   files?: any;
   sub_titles?: Array<string>;
   descriptions?: Array<string>;
+  contents?: string;
 };
 
 const CreateMultiplePageSectionForm = () => {
@@ -48,6 +50,9 @@ const CreateMultiplePageSectionForm = () => {
   const [files, setFiles] = useState(null);
   const [sub_titles, setSubsub_titles] = useState([""]);
   const [descriptions, setDescriptions] = useState([""]);
+  // Get value from text editor
+  const [editorValue, setEditorValue] = useState("");
+
   // console.log({
   //   type,
   //   categoryId,
@@ -79,6 +84,7 @@ const CreateMultiplePageSectionForm = () => {
       toast.error("Data does not found!", { id: toastId, duration: 2000 });
     } else {
       const data: TMultiplePageSectionPayload = {};
+
       data["type"] = type;
       data["categoryId"] = categoryId;
       data["title"] = title;
@@ -104,12 +110,12 @@ const CreateMultiplePageSectionForm = () => {
         data["descriptions"] = descriptions;
       }
 
-      // data["section_contents"] = draftToHtml(
-      //   convertToRaw(editorState.getCurrentContent())
-      // );
+      if (editorValue.length > 0) {
+        data["contents"] = editorValue;
+      }
 
       const payload = modifyPayload(data);
-      // console.log({ payload });
+      // console.log(data);
       try {
         const res = await createMultipleSection(payload).unwrap();
 
@@ -290,6 +296,23 @@ const CreateMultiplePageSectionForm = () => {
                 states={descriptions}
               />
             </Grid>
+          </Grid>
+        </Stack>
+
+        {/* Rich Text Editor */}
+        <Stack direction={"row"} gap={4}>
+          <Grid
+            size={12}
+            container
+            gap={2}
+            sx={{
+              border: "1px solid lightgray",
+              boxShadow: 1,
+            }}
+            p={4}
+          >
+            {/* Rich text editor */}
+            <Editor onChange={setEditorValue} />
           </Grid>
         </Stack>
       </Stack>

@@ -38,7 +38,7 @@ const SelectFilter = ({
         >
           {filter_title + ":"}
         </Typography>
-        <FormControl sx={{ mt: 1, minWidth: 120, width: "250px" }} size="small">
+        <FormControl sx={{ mt: 1, minWidth: 120, width: "200px" }} size="small">
           <InputLabel id="demo-select-small-label">
             {value === "" ? "All" : "Filter"}
           </InputLabel>
@@ -50,9 +50,15 @@ const SelectFilter = ({
             disabled={isDisable}
             onChange={handleChange}
           >
-            <MenuItem value={""}>All</MenuItem>
+            <MenuItem sx={{ fontSize: "14px" }} value={""}>
+              All
+            </MenuItem>
             {options?.map((item) => (
-              <MenuItem key={item?.value} value={item?.value}>
+              <MenuItem
+                sx={{ fontSize: "14px" }}
+                key={item?.value}
+                value={item?.value}
+              >
                 {item?.label}
               </MenuItem>
             ))}

@@ -13,9 +13,18 @@ const articleApi = baseApi.injectEndpoints({
       invalidatesTags: [contentTags?.article],
     }),
 
-    getAllArticles: build.query({
+    getAllPublicArticles: build.query({
       query: (paramObj) => ({
-        url: "/content/article/",
+        url: "/content/article/public",
+        method: "GET",
+        params: paramObj,
+      }),
+      providesTags: [contentTags?.article],
+    }),
+
+    getAllPrivateArticles: build.query({
+      query: (paramObj) => ({
+        url: "/content/article/private",
         method: "GET",
         params: paramObj,
       }),
@@ -71,7 +80,8 @@ const articleApi = baseApi.injectEndpoints({
 
 export const {
   useCreateArticleMutation,
-  useGetAllArticlesQuery,
+  useGetAllPublicArticlesQuery,
+  useGetAllPrivateArticlesQuery,
   useGetSingleArticleQuery,
   useUpdateArticleMutation,
   useDeleteArticleMutation,

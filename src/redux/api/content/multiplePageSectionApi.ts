@@ -12,14 +12,25 @@ const multiplePageSectionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.multiple_section],
     }),
-    getAllMPS: build.query({
+
+    getAllPrivateMPS: build.query({
       query: (paramObj) => ({
-        url: "/content/multiple-page-section/",
+        url: "/content/multiple-page-section/private",
         method: "GET",
         params: paramObj,
       }),
       providesTags: [contentTags?.multiple_section],
     }),
+
+    getAllPublicMPS: build.query({
+      query: (paramObj) => ({
+        url: "/content/multiple-page-section/public",
+        method: "GET",
+        params: paramObj,
+      }),
+      providesTags: [contentTags?.multiple_section],
+    }),
+
     getSingleMPS: build.query({
       query: (id: string) => ({
         url: `/content/multiple-page-section/${id}`,
@@ -70,7 +81,8 @@ const multiplePageSectionApi = baseApi.injectEndpoints({
 
 export const {
   useCreateMultipleSectionMutation,
-  useGetAllMPSQuery,
+  useGetAllPrivateMPSQuery,
+  useGetAllPublicMPSQuery,
   useGetSingleMPSQuery,
   useDeleteMPSItemMutation,
   useChangeMPSItemStatusMutation,

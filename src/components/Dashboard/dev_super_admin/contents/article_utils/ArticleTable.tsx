@@ -15,6 +15,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import {
   article_types_options,
+  isPublished_options,
   user_status_options,
 } from "@/constants/options";
 import { useCategoryOptions } from "@/hooks/content/useCategoryOptions";
@@ -22,7 +23,7 @@ import {
   useChangeArticleStatusMutation,
   useChangePublishedArticleStatusMutation,
   useDeleteArticleMutation,
-  useGetAllArticlesQuery,
+  useGetAllPrivateArticlesQuery,
 } from "@/redux/api/content/articleApi";
 import BlockIcon from "@mui/icons-material/Block";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
@@ -32,6 +33,7 @@ import UnpublishedIcon from "@mui/icons-material/Unpublished";
 type TArticleQueryObj = {
   status?: string;
   type?: string;
+  isPublished?: string;
   categoryId?: string;
   searchTerm?: string;
   page?: number;
@@ -49,6 +51,7 @@ const ArticleTable = () => {
   const [type, setType] = useState("");
   const [categoryId, setCategory] = useState("");
   const [status, setStatus] = useState("");
+  const [isPublished, setIsPublished] = useState("");
 
   const path = "/dashboard/dev_super_admin/content/articles/update";
 
@@ -83,12 +86,17 @@ const ArticleTable = () => {
   if (!!status) {
     article_query_obj["status"] = status;
   }
+  if (!!isPublished) {
+    article_query_obj["isPublished"] = isPublished;
+  }
 
   const { options: category_options, isLoading: category_isLoading } =
     useCategoryOptions(category_query_obj);
 
   // Fetch Admin data using API hook
-  const { data, isLoading } = useGetAllArticlesQuery({ ...article_query_obj });
+  const { data, isLoading } = useGetAllPrivateArticlesQuery({
+    ...article_query_obj,
+  });
   //   console.log({ data });
 
   const article_data =
@@ -374,6 +382,13 @@ const ArticleTable = () => {
             value={categoryId}
             setValue={setCategory}
             isDisable={!type}
+          />
+
+          <SelectFilter
+            filter_title="Filter by publish status"
+            options={isPublished_options}
+            value={isPublished}
+            setValue={setIsPublished}
           />
           <SelectFilter
             filter_title="Filter by status"

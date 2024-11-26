@@ -14,20 +14,21 @@ import {
   Button,
   Card,
   CardContent,
+  IconButton,
   Stack,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { SyntheticEvent, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { FieldValues } from "react-hook-form";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import Loading from "@/components/ui/LoadingBar";
+import CameraAltSharpIcon from "@mui/icons-material/CameraAltSharp";
 
-import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
 import {
   useGetMyProfileQuery,
   useUpdateMyProfileMutation,
@@ -36,12 +37,16 @@ import { useCountryOptions } from "@/hooks/useCountryOptions";
 import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress, TSocialLinkPayload } from "@/types";
+import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
+import styled from "@emotion/styled";
 
 const PrivateUserProfile = () => {
   // State variables for handling active tab and country IDs
   const [value, setValue] = useState(0);
   const [presentCountryId, setPresentCountryId] = useState(null);
   const [permanentCountryId, setPermanentCountryId] = useState(null);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  console.log(profileImage);
 
   // Fetching user data from the API
   const { data, isLoading } = useGetMyProfileQuery("");
@@ -114,6 +119,17 @@ const PrivateUserProfile = () => {
     }
   };
 
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
   // Default form values
   const default_values = {
     name: user_data?.name,
@@ -184,35 +200,61 @@ const PrivateUserProfile = () => {
                   >
                     <Box
                       sx={{
-                        position: "relative",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                       }}
                     >
-                      <Avatar
-                        src={user_data?.profile_image}
-                        alt={user_data?.name}
-                        sx={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: "50%",
-                          border: "2px solid black",
-                        }}
-                      />
-                      {/* <IconButton
-                  sx={{
-                    position: "absolute",
-                    bottom: 0,
-                    right: "calc(50% - 20px)",
-                    backgroundColor: "white",
-                    border: "1px solid #ddd",
-                    width: 40,
-                    height: 40,
-                  }}
-                >
-                  <CameraAltIcon fontSize="small" />
-                </IconButton> */}
+                      <Box sx={{ position: "relative" }}>
+                        <Avatar
+                          src={user_data?.profile_image}
+                          alt={user_data?.name}
+                          sx={{
+                            width: 100,
+                            height: 100,
+                            borderRadius: "50%",
+                            border: "2px solid black",
+                          }}
+                        />
+
+                        <IconButton
+                          sx={{
+                            position: "absolute",
+                            right: 5,
+                            bottom: -2,
+                            backgroundColor: "#dce0dd",
+                            border: "1px solid #bbb",
+                            borderRadius: "50%",
+                            boxShadow: "none",
+                            width: 30,
+                            height: 30,
+                            zIndex: 1,
+                            "&:hover": {
+                              backgroundColor: "#f0f0f0",
+                              borderColor: "#bbb",
+                              boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                            },
+                          }}
+                          component="label"
+                        >
+                          <CameraAltSharpIcon fontSize="small"></CameraAltSharpIcon>
+                          <VisuallyHiddenInput
+                            type="file"
+                            onChange={(
+                              event: ChangeEvent<HTMLInputElement>
+                            ) => {
+                              const selectedFile = event.target.files
+                                ? event.target.files[0]
+                                : null;
+                              setProfileImage(selectedFile);
+
+                              // const files = event?.target?.files;
+                              // if (!files) return;
+                              // return setProfileImage(files[0]);
+                            }}
+                          />
+                        </IconButton>
+                      </Box>
                     </Box>
                     <CardContent>
                       <Typography variant="h6" component="div">

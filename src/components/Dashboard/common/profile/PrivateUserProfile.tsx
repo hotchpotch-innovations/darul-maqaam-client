@@ -15,13 +15,15 @@ import {
   Card,
   CardContent,
   IconButton,
+  Modal,
   Stack,
   Tab,
   Tabs,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, SyntheticEvent, useState } from "react";
 import { FieldValues } from "react-hook-form";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
@@ -37,21 +39,46 @@ import { useCountryOptions } from "@/hooks/useCountryOptions";
 import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress, TSocialLinkPayload } from "@/types";
-import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
 import styled from "@emotion/styled";
+import { modifyPayload } from "@/utils/modifyPayload";
 
 const PrivateUserProfile = () => {
+  // Modal style
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 500,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    gap: 2,
+    textAlign: "center",
+  };
+
   // State variables for handling active tab and country IDs
   const [value, setValue] = useState(0);
+  const [open, setOpen] = useState(false);
   const [presentCountryId, setPresentCountryId] = useState(null);
   const [permanentCountryId, setPermanentCountryId] = useState(null);
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   console.log(profileImage);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    setOpen(false);
+  };
 
   // Fetching user data from the API
   const { data, isLoading } = useGetMyProfileQuery("");
   const user_data = data?.data;
-  console.log(user_data);
 
   // API hook to update client data
   const [updateProfile, { isLoading: isUpdateLoading }] =
@@ -105,7 +132,7 @@ const PrivateUserProfile = () => {
         social_links: socialLinkData,
       }),
     };
-    console.log(payload);
+
     try {
       const res = await updateProfile({ ...payload }).unwrap();
       if (res?.success) {
@@ -119,17 +146,29 @@ const PrivateUserProfile = () => {
     }
   };
 
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
+  // Function to handle profile images update
+  const handleImageUpdate = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files ? event.target.files[0] : null;
+    if (selectedFile) {
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setProfileImage(fileUrl);
+      setFile(selectedFile);
+    }
+  };
+
+  const handleImageUpload = () => {
+    const payload = modifyPayload({ file });
+    console.log(payload);
+  };
+
+  // Trigger file input on Avatar click
+  const handleAvatarClick = () => {
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
   // Default form values
   const default_values = {
     name: user_data?.name,
@@ -236,23 +275,50 @@ const PrivateUserProfile = () => {
                             },
                           }}
                           component="label"
+                          onClick={handleOpen}
                         >
-                          <CameraAltSharpIcon fontSize="small"></CameraAltSharpIcon>
-                          <VisuallyHiddenInput
-                            type="file"
-                            onChange={(
-                              event: ChangeEvent<HTMLInputElement>
-                            ) => {
-                              const selectedFile = event.target.files
-                                ? event.target.files[0]
-                                : null;
-                              setProfileImage(selectedFile);
+                          <CameraAltSharpIcon fontSize="small" />
 
-                              // const files = event?.target?.files;
-                              // if (!files) return;
-                              // return setProfileImage(files[0]);
-                            }}
-                          />
+                          {/* Modal is Start Here */}
+                          <Modal
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                          >
+                            <Box sx={style}>
+                              <Typography variant="subtitle2" fontWeight={600}>
+                                Update Your Profile Picture
+                              </Typography>
+                              <Tooltip
+                                title="Click to change your profile picture"
+                                placement="right-start"
+                              >
+                                <Avatar
+                                  src={profileImage || user_data?.profile_image}
+                                  alt={user_data?.name}
+                                  sx={{
+                                    width: 200,
+                                    height: 200,
+                                    borderRadius: "50%",
+                                    border: "2px solid black",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={handleAvatarClick}
+                                />
+                              </Tooltip>
+                              <input
+                                type="file"
+                                id="fileInput"
+                                hidden
+                                accept="image/*"
+                                onChange={handleImageUpdate}
+                              />
+                              <Button type="submit" onClick={handleImageUpload}>
+                                Save Changes
+                              </Button>
+                            </Box>
+                          </Modal>
                         </IconButton>
                       </Box>
                     </Box>

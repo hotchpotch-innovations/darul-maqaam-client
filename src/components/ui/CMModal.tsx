@@ -19,7 +19,7 @@ const style = {
 type CMModalPropes = {
   handleClose: any;
   open: boolean;
-  id: string;
+  id?: string;
   children: React.ReactNode;
 };
 

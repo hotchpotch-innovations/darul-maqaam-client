@@ -32,6 +32,7 @@ import Loading from "@/components/ui/LoadingBar";
 import CameraAltSharpIcon from "@mui/icons-material/CameraAltSharp";
 
 import {
+  useChangeProfileImageMutation,
   useGetMyProfileQuery,
   useUpdateMyProfileMutation,
 } from "@/redux/api/user/userApi";
@@ -68,7 +69,6 @@ const PrivateUserProfile = () => {
   const [permanentCountryId, setPermanentCountryId] = useState(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  console.log(profileImage);
 
   const handleOpen = () => setOpen(true);
   const handleClose = (event: MouseEvent<HTMLElement>) => {
@@ -83,6 +83,10 @@ const PrivateUserProfile = () => {
   // API hook to update client data
   const [updateProfile, { isLoading: isUpdateLoading }] =
     useUpdateMyProfileMutation();
+
+  // API hook to update profile picture
+  const [updatePicture, { isLoading: isUpdatePicLoading }] =
+    useChangeProfileImageMutation();
 
   // Country options
   const { options: country_options } = useCountryOptions();
@@ -156,9 +160,24 @@ const PrivateUserProfile = () => {
     }
   };
 
-  const handleImageUpload = () => {
+  const handleImageUpload = async () => {
+    if (!file) return;
+    const toastId = toast.loading("Please wait...");
+
     const payload = modifyPayload({ file });
-    console.log(payload);
+
+    try {
+      const res = await updatePicture(payload).unwrap();
+
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error) {
+      toast.error("Something went wrong!", { id: toastId, duration: 3000 });
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
   };
 
   // Trigger file input on Avatar click
@@ -314,7 +333,11 @@ const PrivateUserProfile = () => {
                                 accept="image/*"
                                 onChange={handleImageUpdate}
                               />
-                              <Button type="submit" onClick={handleImageUpload}>
+                              <Button
+                                type="submit"
+                                disabled={isUpdatePicLoading || !file}
+                                onClick={handleImageUpload}
+                              >
                                 Save Changes
                               </Button>
                             </Box>

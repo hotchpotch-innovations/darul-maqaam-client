@@ -85,3 +85,9 @@ export type TAddress = {
   city?: string;
   address_line?: string;
 };
+
+export type TDefaultMetaInfo = {
+  meta_title: string;
+  meta_description: string;
+  meta_keywords: string;
+};

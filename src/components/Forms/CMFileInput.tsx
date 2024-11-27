@@ -1,8 +1,8 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { styled, SxProps } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { useEffect } from "react";
+import { Controller } from "react-hook-form";
+import { useState } from "react";
 
 type TInputProps = {
   name: string;
@@ -10,9 +10,9 @@ type TInputProps = {
   label?: string;
   required?: boolean;
   accept?: string;
-  setState:
-    | React.Dispatch<React.SetStateAction<null>>
-    | React.Dispatch<React.SetStateAction<string>>;
+  // setState:
+  //   | React.Dispatch<React.SetStateAction<null>>
+  //   | React.Dispatch<React.SetStateAction<string>>;
   // type?: string;
   // size?: "small" | "medium";
   // fullWidth?: boolean;
@@ -38,50 +38,64 @@ const CMFileInput = ({
   required = false,
   accept = "image/*",
   sx,
-  setState,
-}: TInputProps) => {
-  const { control } = useFormContext();
-  const method = useFormContext();
+}: // setState,
+TInputProps) => {
+  const [file, setFile] = useState<any>();
+  // const { control } = useFormContext();
+  // const method = useFormContext();
 
-  const inputValue = useWatch({
-    control: method.control,
-    name,
-  });
+  // const inputValue = useWatch({
+  //   control: method.control,
+  //   name,
+  // });
 
-  useEffect(() => {
-    setState(inputValue?.name);
-  }, [inputValue, setState]);
+  // useEffect(() => {
+  //   setState(inputValue?.name);
+  // }, [inputValue, setState]);
+
   return (
     <Controller
-      control={control}
+      // control={control}
       name={name}
       render={({
         field: { onChange, value, ...field },
         fieldState: { error },
       }) => (
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-          sx={{
-            width: "50%",
-            ...sx,
-          }}
-        >
-          {label}
-          <VisuallyHiddenInput
-            type="file"
-            onChange={(event: any) => {
-              onChange(event?.target?.files?.[0]);
+        <>
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+            sx={{
+              width: "50%",
+              ...sx,
             }}
-            multiple={multiple}
-            required={required}
-            accept={accept}
-            id={name}
-          />
-        </Button>
+          >
+            {label}
+            <VisuallyHiddenInput
+              type="file"
+              {...field}
+              onChange={(event: any) => {
+                onChange(
+                  multiple ? event?.target?.files : event?.target?.files?.[0]
+                );
+                setFile(
+                  multiple ? event?.target?.files : event?.target?.files?.[0]
+                );
+              }}
+              multiple={multiple}
+              required={required}
+              accept={accept}
+              id={name}
+            />
+          </Button>
+          <Typography color="info" fontSize={"12px"}>
+            {multiple && file?.length > 0 && `${file.length} file selected.`}
+            {!multiple && !!file && `${file?.name} is selected.`}
+          </Typography>
+        </>
       )}
     ></Controller>
   );

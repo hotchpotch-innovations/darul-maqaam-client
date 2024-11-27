@@ -4,7 +4,7 @@ import {
   useGetSingleClientQuery,
   useUpdateClientMutation,
 } from "@/redux/api/user/clientApi";
-import { removeNullFields } from "@/utils/removeNullValues";
+import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { FieldValues } from "react-hook-form";
@@ -37,7 +37,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
   };
 
   const handleUpdateClient = async (values: FieldValues) => {
-    const update_client_info = removeNullFields(values);
+    const update_client_info = filterUndefinedValues(values);
     const toastId = toast.loading("Updating....", { duration: 3000 });
     try {
       const res = await updateClient({ id: client_id, ...update_client_info });

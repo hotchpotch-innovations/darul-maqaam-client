@@ -27,7 +27,6 @@ import {
 // import { useCreateSuperAdminMutation } from "@/redux/api/user/userApi";
 import { TSocialLinkPayload } from "@/types";
 import { customTimeOut } from "@/utils/customTimeOut";
-// import { removeNullValues } from "@/utils/removeNullValues";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";

@@ -38,6 +38,7 @@ import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress } from "@/types";
 import ProfilePicture from "./ProfilePicture";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { filterUndefinedValues } from "@/utils/sanitizeObject";
 
 const PublicUserProfile = () => {
   // State variables for handling active tab and country IDs
@@ -66,24 +67,6 @@ const PublicUserProfile = () => {
     setValue(newValue);
   };
 
-  // Utility function to create address data
-  const createAddressData = (address: {
-    countryId?: string;
-    state?: string;
-    city?: string;
-    address_line?: string;
-  }): TAddress => {
-    const addressData: TAddress = {};
-
-    if (address.countryId) addressData["countryId"] = address.countryId;
-    if (address.state) addressData["state"] = address.state;
-    if (address.city) addressData["city"] = address.city;
-    if (address.address_line)
-      addressData["address_line"] = address.address_line;
-
-    return addressData;
-  };
-
   // Function to handle form submission for profile update
   const handleUpdate = async (values: FieldValues) => {
     const { present_address, permanent_address, register_address, ...data } =
@@ -91,24 +74,29 @@ const PublicUserProfile = () => {
 
     const toastId = toast.loading("Please wait...");
 
-    // Creating address data for each address type
-    const presentAddressData = createAddressData(present_address);
-    const permanentAddressData = createAddressData(permanent_address);
-    const registerAddressData = createAddressData(register_address);
+    // Filter the address and social link data, only including fields with valid values
+    const presentAddressData: TAddress = filterUndefinedValues(present_address);
+    const permanentAddressData: TAddress =
+      filterUndefinedValues(permanent_address);
+    const registerAddressData: TAddress =
+      filterUndefinedValues(register_address);
 
-    // Add addresses to payload only if all required fields are present
-    if (Object.keys(presentAddressData).length > 0) {
-      data["present_address"] = presentAddressData;
-    }
-    if (Object.keys(permanentAddressData).length > 0) {
-      data["permanent_address"] = permanentAddressData;
-    }
-    if (Object.keys(registerAddressData).length > 0) {
-      data["register_address"] = registerAddressData;
-    }
+    // Construct the final payload, including address and social data only if they are not empty
+    const payload: FieldValues = {
+      ...data,
+      ...(Object.keys(presentAddressData).length > 0 && {
+        present_address: presentAddressData,
+      }),
+      ...(Object.keys(permanentAddressData).length > 0 && {
+        permanent_address: permanentAddressData,
+      }),
+      ...(Object.keys(registerAddressData).length > 0 && {
+        social_links: registerAddressData,
+      }),
+    };
 
     try {
-      const res = await updateProfile({ ...data }).unwrap();
+      const res = await updateProfile({ ...payload }).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
       } else {

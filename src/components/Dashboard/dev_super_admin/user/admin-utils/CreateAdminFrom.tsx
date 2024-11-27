@@ -30,7 +30,6 @@ import {
 import { useCreateAdminMutation } from "@/redux/api/user/userApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
-import { removeNullFields } from "@/utils/removeNullValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";

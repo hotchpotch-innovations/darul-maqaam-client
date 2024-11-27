@@ -5,7 +5,7 @@ import {
   useUpdateMPSItemMutation,
 } from "@/redux/api/content/multiplePageSectionApi";
 import { customTimeOut } from "@/utils/customTimeOut";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -118,7 +118,7 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
         <Stack direction={"row"} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 6, md: 12 }}
+            size={12}
             container
             gap={2}
             sx={{
@@ -169,10 +169,10 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
           </Grid>
         </Stack>
 
-        <Stack direction={"row"} gap={4}>
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -194,7 +194,7 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
 
           {/* 2nd Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -231,17 +231,23 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
         </Stack>
       </Stack>
 
-      <Button
-        onClick={() => submitHandler()}
-        type="submit"
-        fullWidth
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
-        disabled={isUpdateLoading}
       >
-        Update Item
-      </Button>
+        <Button
+          type="submit"
+          onClick={() => submitHandler()}
+          disabled={isUpdateLoading}
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Update Item
+        </Button>
+      </Box>
     </>
   );
 };

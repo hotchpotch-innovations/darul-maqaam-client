@@ -14,7 +14,7 @@ import {
 import { useCreateMultipleSectionMutation } from "@/redux/api/content/multiplePageSectionApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -324,17 +324,23 @@ const CreateMultiplePageSectionForm = () => {
         </Stack>
       </Stack>
 
-      <Button
-        onClick={() => submitHandler()}
-        type="submit"
-        fullWidth
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
-        disabled={isCreateLoading}
       >
-        Create Item
-      </Button>
+        <Button
+          type="submit"
+          onClick={() => submitHandler()}
+          disabled={isCreateLoading}
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Create Item
+        </Button>
+      </Box>
     </>
   );
 };

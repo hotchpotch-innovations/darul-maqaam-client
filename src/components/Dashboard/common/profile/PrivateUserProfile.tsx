@@ -40,7 +40,6 @@ import { useCountryOptions } from "@/hooks/useCountryOptions";
 import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress, TSocialLinkPayload } from "@/types";
-import styled from "@emotion/styled";
 import { modifyPayload } from "@/utils/modifyPayload";
 
 const PrivateUserProfile = () => {

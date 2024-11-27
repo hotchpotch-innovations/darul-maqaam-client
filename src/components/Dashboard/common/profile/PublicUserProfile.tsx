@@ -25,6 +25,7 @@ import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 
 // API hook to fetch user profile data
 import {
+  useChangeProfileImageMutation,
   useGetMyProfileQuery,
   useUpdateMyProfileMutation,
 } from "@/redux/api/user/userApi";
@@ -35,6 +36,8 @@ import Loading from "@/components/ui/LoadingBar";
 import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress } from "@/types";
+import ProfilePicture from "./ProfilePicture";
+import { modifyPayload } from "@/utils/modifyPayload";
 
 const PublicUserProfile = () => {
   // State variables for handling active tab and country IDs
@@ -46,11 +49,14 @@ const PublicUserProfile = () => {
   // Fetching user data from the API
   const { data, isLoading } = useGetMyProfileQuery("");
   const client_data = data?.data;
-  console.log(client_data);
 
   // API hook to update client data
   const [updateProfile, { isLoading: isUpdateLoading }] =
     useUpdateMyProfileMutation();
+
+  // API hook to update profile picture
+  const [updatePicture, { isLoading: isPictureUpdateLoading }] =
+    useChangeProfileImageMutation();
 
   // Country options
   const { options: country_options } = useCountryOptions();
@@ -103,6 +109,25 @@ const PublicUserProfile = () => {
 
     try {
       const res = await updateProfile({ ...data }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error) {
+      toast.error("Something went wrong!", { id: toastId, duration: 3000 });
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
+  };
+
+  // Function to handle for update user profile picture
+  const handleImageUpload = async (file: File) => {
+    if (!file) return;
+    const toastId = toast.loading("Uploading...");
+    const payload = modifyPayload({ file });
+
+    try {
+      const res = await updatePicture(payload).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
       } else {
@@ -190,35 +215,16 @@ const PublicUserProfile = () => {
               >
                 <Box
                   sx={{
-                    position: "relative",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
-                  <Avatar
-                    src={client_data?.profile_image}
-                    alt={client_data?.owner_name}
-                    sx={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: "50%",
-                      border: "2px solid black",
-                    }}
+                  <ProfilePicture
+                    userData={client_data}
+                    isUploading={isPictureUpdateLoading}
+                    onImageUpload={handleImageUpload}
                   />
-                  {/* <IconButton
-                sx={{
-                  position: "absolute",
-                  bottom: 0,
-                  right: "calc(50% - 20px)",
-                  backgroundColor: "white",
-                  border: "1px solid #ddd",
-                  width: 40,
-                  height: 40,
-                }}
-              >
-                <CameraAltIcon fontSize="small" />
-              </IconButton> */}
                 </Box>
                 <CardContent>
                   <Typography variant="h6" component="div">

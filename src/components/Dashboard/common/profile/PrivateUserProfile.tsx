@@ -171,6 +171,7 @@ const PrivateUserProfile = () => {
 
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
+        setOpen(false);
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
       }

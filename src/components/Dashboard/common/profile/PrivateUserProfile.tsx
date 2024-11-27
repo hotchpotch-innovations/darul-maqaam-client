@@ -41,6 +41,7 @@ import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress, TSocialLinkPayload } from "@/types";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { filterUndefinedValues } from "@/utils/sanitizeObject";
 
 const PrivateUserProfile = () => {
   // Modal style
@@ -93,19 +94,6 @@ const PrivateUserProfile = () => {
   // Handle tab changes
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
-
-  // Utility function to filter out undefined or empty values from an object
-  const filterUndefinedValues = (obj: Record<string, any>) => {
-    return Object.entries(obj)
-      .filter(
-        ([_, value]) => value !== undefined && value !== null && value !== ""
-      )
-      .reduce((acc, [key, value]) => {
-        // @ts-ignore
-        acc[key] = value;
-        return acc;
-      }, {});
   };
 
   // Function to handle profile update

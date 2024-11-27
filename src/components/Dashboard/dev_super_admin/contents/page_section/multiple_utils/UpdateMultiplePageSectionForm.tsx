@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid2";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
 import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
 import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
+import Editor from "@/components/forms/editors/Editor";
 
 type TMultiplePageSectionPayload = {
   title?: string;
@@ -35,6 +36,8 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
   const [yt_video_url, setYtVideoUrl] = useState();
   const [sub_titles, setSubTitles] = useState([""]);
   const [descriptions, setDescriptions] = useState([""]);
+  // Get updated value from text editor
+  const [editorValue, setEditorValue] = useState("");
 
   const { data, isLoading } = useGetSingleMPSQuery(id);
   const mps_data = data?.data;
@@ -47,6 +50,7 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
       setYtVideoUrl(mps_data?.yt_video_url);
       setSubTitles(mps_data?.sub_titles);
       setDescriptions(mps_data?.descriptions);
+      setEditorValue(mps_data?.contents);
     }
   }, [mps_data]);
 
@@ -77,9 +81,9 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
         data["descriptions"] = descriptions;
       }
 
-      // data["section_contents"] = draftToHtml(
-      //   convertToRaw(editorState.getCurrentContent())
-      // );
+      if (editorValue.length > 0) {
+        data["contents"] = editorValue;
+      }
 
       try {
         const res = await updateMultipleSection({ id, ...data }).unwrap();
@@ -207,6 +211,22 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
                 states={descriptions}
               />
             </Grid>
+          </Grid>
+        </Stack>
+        {/* Rich Text Editor */}
+        <Stack direction={"row"} gap={4}>
+          <Grid
+            size={12}
+            container
+            gap={2}
+            sx={{
+              border: "1px solid lightgray",
+              boxShadow: 1,
+            }}
+            p={4}
+          >
+            {/* Rich text editor */}
+            <Editor setState={setEditorValue} defaultValue={editorValue} />
           </Grid>
         </Stack>
       </Stack>

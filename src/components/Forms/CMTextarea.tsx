@@ -39,7 +39,7 @@ const CMTextarea = ({
           )}
           <TextareaAutosize
             {...field}
-            value={defaultValue}
+            defaultValue={defaultValue}
             placeholder={label}
             required={required}
             minRows={4}

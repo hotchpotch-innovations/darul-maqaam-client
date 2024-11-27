@@ -14,6 +14,7 @@ type TSelectFilterProps = {
   options: ISelectOption[];
   filter_title?: string | null;
   isDisable?: boolean;
+  width?: string;
 };
 
 const SelectFilter = ({
@@ -22,6 +23,7 @@ const SelectFilter = ({
   options,
   filter_title,
   isDisable,
+  width = "200px",
 }: TSelectFilterProps) => {
   const handleChange = (event: SelectChangeEvent) => {
     const newValue = event.target.value;
@@ -38,7 +40,10 @@ const SelectFilter = ({
         >
           {filter_title + ":"}
         </Typography>
-        <FormControl sx={{ mt: 1, minWidth: 120, width: "200px" }} size="small">
+        <FormControl
+          sx={{ mt: 1, minWidth: 120, width: { width } }}
+          size="small"
+        >
           <InputLabel id="demo-select-small-label">
             {value === "" ? "All" : "Filter"}
           </InputLabel>

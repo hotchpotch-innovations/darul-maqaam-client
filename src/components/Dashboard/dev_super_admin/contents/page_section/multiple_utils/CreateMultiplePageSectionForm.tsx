@@ -114,7 +114,7 @@ const CreateMultiplePageSectionForm = () => {
       }
 
       const payload = modifyPayload(data);
-      // console.log(data);
+      // console.log(data?.contents);
       try {
         const res = await createMultipleSection(payload).unwrap();
 
@@ -311,7 +311,7 @@ const CreateMultiplePageSectionForm = () => {
             p={4}
           >
             {/* Rich text editor */}
-            <Editor onChange={setEditorValue} />
+            <Editor setState={setEditorValue} defaultValue={editorValue} />
           </Grid>
         </Stack>
       </Stack>

@@ -10,13 +10,9 @@ import {
   CardContent,
   Typography,
   Box,
-  IconButton,
-  CardHeader,
   Stack,
   Grid2,
 } from "@mui/material";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { useGetSingleAdminQuery } from "@/redux/api/user/adminApi";
 import Loading from "@/components/ui/LoadingBar";
 
 type TInfoRowProps = {
@@ -64,7 +60,6 @@ const UserDetailsPage = ({ isLoading, userData }: TProps) => {
     clientType,
   } = userData || {};
 
-  //
   const userInfo = {
     "Full Name": name || owner_name,
     Gender: gender,

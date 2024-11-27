@@ -9,27 +9,22 @@ import {
   CustomTabPanel,
 } from "@/components/Dashboard/common/profile/ProfileTab";
 import {
-  Avatar,
   Box,
   Button,
   Card,
   CardContent,
-  IconButton,
-  Modal,
   Stack,
   Tab,
   Tabs,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { ChangeEvent, MouseEvent, SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { FieldValues } from "react-hook-form";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import Loading from "@/components/ui/LoadingBar";
-import CameraAltSharpIcon from "@mui/icons-material/CameraAltSharp";
 
 import {
   useChangeProfileImageMutation,
@@ -45,24 +40,6 @@ import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import ProfilePicture from "./ProfilePicture";
 
 const PrivateUserProfile = () => {
-  // Modal style
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 500,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 4,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    gap: 2,
-    textAlign: "center",
-  };
-
   // State variables for handling active tab and country IDs
   const [value, setValue] = useState(0);
   const [presentCountryId, setPresentCountryId] = useState(null);

@@ -37,7 +37,6 @@ const ModalContent: React.FC<{
   isUploading,
   handleImageChange,
   handleImageUpload,
-  handleClose,
 }) => {
   return (
     <Box

@@ -1,10 +1,11 @@
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 type Tprops = {
-  onChange: any;
+  setState: any;
+  defaultValue?: any;
 };
 
-const Editor = ({ onChange }: Tprops) => {
+const Editor = ({ setState, defaultValue }: Tprops) => {
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
@@ -25,17 +26,16 @@ const Editor = ({ onChange }: Tprops) => {
     toolbar: toolbarOptions,
   };
 
-  const handleEditorChange = (newValue: any) => {
-    onChange(newValue);
-  };
-
   return (
     <div className="h-56">
       <ReactQuill
         className="flex h-full flex-col !rounded-lg"
         modules={modules}
         theme="snow"
-        onChange={handleEditorChange}
+        onChange={(newValue: any) => {
+          setState(newValue);
+        }}
+        value={defaultValue}
       />
     </div>
   );

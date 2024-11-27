@@ -141,10 +141,10 @@ const CreateMultiplePageSectionForm = () => {
   return (
     <>
       <Stack direction={"column"} spacing={4}>
-        <Stack direction={"row"} gap={4}>
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -186,7 +186,7 @@ const CreateMultiplePageSectionForm = () => {
 
           {/* 2nd Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -226,7 +226,15 @@ const CreateMultiplePageSectionForm = () => {
               />
             </Grid>
             <Grid size={12}>
-              <Stack direction={"row"} gap={2}>
+              <Stack
+                direction={{ xs: "column", lg: "row" }}
+                gap={2}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Grid size={6}>
                   <CMStateFileInput
                     name="cover_image"
@@ -253,10 +261,10 @@ const CreateMultiplePageSectionForm = () => {
           </Grid>
         </Stack>
 
-        <Stack direction={"row"} gap={4}>
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -278,7 +286,7 @@ const CreateMultiplePageSectionForm = () => {
 
           {/* 2nd Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{

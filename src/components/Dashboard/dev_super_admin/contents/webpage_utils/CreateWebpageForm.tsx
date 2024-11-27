@@ -15,6 +15,7 @@ import useSubmenuOptions, {
 import { useCreateWebpageMutation } from "@/redux/api/content/webpageApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
@@ -75,22 +76,22 @@ const CreateWebpageForm = () => {
 
   // Create handler for webpage
   const createHandler: SubmitHandler<FieldValues> = async (values) => {
-    console.log(values);
-    // const toastId = toast.loading("Please wait...", { duration: 3000 });
-    // const data = modifyPayload(values);
-    // try {
-    //   const res = await createWebpage(data).unwrap();
-    //   if (res?.success) {
-    //     toast.success(res?.message, { id: toastId, duration: 3000 });
-    //     router.push("/dashboard/dev_super_admin/content/webpage");
-    //   } else {
-    //     toast.error(res?.message, { id: toastId, duration: 3000 });
-    //   }
-    // } catch (error: any) {
-    //   toast.error(error?.message, { id: toastId, duration: 3000 });
-    //   console.log(error);
-    //   customTimeOut(3000).then(() => window?.location?.reload());
-    // }
+    const data = filterUndefinedValues({ ...values });
+    const toastId = toast.loading("Please wait...", { duration: 3000 });
+    const payload = modifyPayload(data);
+    try {
+      const res = await createWebpage(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        router.push("/dashboard/dev_super_admin/content/web-page");
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+      console.log(error);
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
   };
 
   return (
@@ -172,7 +173,12 @@ const CreateWebpageForm = () => {
               />
             </Grid>
             <Grid size={12}>
-              <CMInput name="slug" label="Webpage Slug" fullWidth={true} />
+              <CMInput
+                name="slug"
+                label="Webpage Slug"
+                size="medium"
+                fullWidth={true}
+              />
             </Grid>
           </Grid>
 
@@ -202,6 +208,7 @@ const CreateWebpageForm = () => {
               <CMInput
                 name="og_author"
                 label="Open Graph Author"
+                size="medium"
                 fullWidth={true}
               />
             </Grid>

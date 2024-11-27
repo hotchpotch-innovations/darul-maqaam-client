@@ -71,6 +71,7 @@ export const create_employee_default_values = {
 };
 
 export const default_meta_info: TDefaultMetaInfo = {
+  og_author: "Hotchpotch Innovations Ltd",
   meta_title: "Hotchpotch Innovations Ltd",
   meta_description:
     "Hotchpotch Innovations is a leading IT, design, and software development company based in Bangladesh. Established in 2016, we deliver high-quality software and services guided by the principles of consultancy, brainstorming, continuous innovation, and precise execution. Our service models include hiring individual specialists, assembling complete teams, and managing projects. Our company is known for its technological expertise and collaborative approach to project management, specializing in creating bespoke technology solutions and innovative digital experiences for clients worldwide.",

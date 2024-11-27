@@ -87,6 +87,7 @@ export type TAddress = {
 };
 
 export type TDefaultMetaInfo = {
+  og_author: string;
   meta_title: string;
   meta_description: string;
   meta_keywords: string;

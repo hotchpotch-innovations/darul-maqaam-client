@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 type Tprops = {
@@ -27,9 +28,9 @@ const Editor = ({ setState, defaultValue }: Tprops) => {
   };
 
   return (
-    <div className="h-56">
+    <Box sx={{ width: "100%", height: "500px" }}>
       <ReactQuill
-        className="flex h-full flex-col !rounded-lg"
+        style={{ height: "400px" }}
         modules={modules}
         theme="snow"
         onChange={(newValue: any) => {
@@ -37,7 +38,7 @@ const Editor = ({ setState, defaultValue }: Tprops) => {
         }}
         value={defaultValue}
       />
-    </div>
+    </Box>
   );
 };
 

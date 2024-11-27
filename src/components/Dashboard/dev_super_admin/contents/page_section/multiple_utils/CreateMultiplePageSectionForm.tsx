@@ -14,7 +14,7 @@ import {
 import { useCreateMultipleSectionMutation } from "@/redux/api/content/multiplePageSectionApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -141,10 +141,10 @@ const CreateMultiplePageSectionForm = () => {
   return (
     <>
       <Stack direction={"column"} spacing={4}>
-        <Stack direction={"row"} gap={4}>
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -186,7 +186,7 @@ const CreateMultiplePageSectionForm = () => {
 
           {/* 2nd Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -226,7 +226,15 @@ const CreateMultiplePageSectionForm = () => {
               />
             </Grid>
             <Grid size={12}>
-              <Stack direction={"row"} gap={2}>
+              <Stack
+                direction={{ xs: "column", lg: "row" }}
+                gap={2}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Grid size={6}>
                   <CMStateFileInput
                     name="cover_image"
@@ -253,10 +261,10 @@ const CreateMultiplePageSectionForm = () => {
           </Grid>
         </Stack>
 
-        <Stack direction={"row"} gap={4}>
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -278,7 +286,7 @@ const CreateMultiplePageSectionForm = () => {
 
           {/* 2nd Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -316,17 +324,23 @@ const CreateMultiplePageSectionForm = () => {
         </Stack>
       </Stack>
 
-      <Button
-        onClick={() => submitHandler()}
-        type="submit"
-        fullWidth
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
-        disabled={isCreateLoading}
       >
-        Create Item
-      </Button>
+        <Button
+          type="submit"
+          onClick={() => submitHandler()}
+          disabled={isCreateLoading}
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Create Item
+        </Button>
+      </Box>
     </>
   );
 };

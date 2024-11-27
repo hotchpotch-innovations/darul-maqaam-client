@@ -40,7 +40,6 @@ import { useCountryOptions } from "@/hooks/useCountryOptions";
 import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress, TSocialLinkPayload } from "@/types";
-import styled from "@emotion/styled";
 import { modifyPayload } from "@/utils/modifyPayload";
 
 const PrivateUserProfile = () => {
@@ -171,6 +170,7 @@ const PrivateUserProfile = () => {
 
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
+        setOpen(false);
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
       }

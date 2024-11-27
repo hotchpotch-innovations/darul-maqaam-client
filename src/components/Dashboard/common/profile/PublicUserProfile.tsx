@@ -6,7 +6,6 @@ import {
   CustomTabPanel,
 } from "@/components/Dashboard/common/profile/ProfileTab";
 import {
-  Avatar,
   Box,
   Button,
   Card,

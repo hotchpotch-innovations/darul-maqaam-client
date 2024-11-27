@@ -41,6 +41,8 @@ import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress, TSocialLinkPayload } from "@/types";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { filterUndefinedValues } from "@/utils/sanitizeObject";
+import ProfilePicture from "./ProfilePicture";
 
 const PrivateUserProfile = () => {
   // Modal style
@@ -63,17 +65,8 @@ const PrivateUserProfile = () => {
 
   // State variables for handling active tab and country IDs
   const [value, setValue] = useState(0);
-  const [open, setOpen] = useState(false);
   const [presentCountryId, setPresentCountryId] = useState(null);
   const [permanentCountryId, setPermanentCountryId] = useState(null);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = (event: MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    setOpen(false);
-  };
 
   // Fetching user data from the API
   const { data, isLoading } = useGetMyProfileQuery("");
@@ -84,7 +77,7 @@ const PrivateUserProfile = () => {
     useUpdateMyProfileMutation();
 
   // API hook to update profile picture
-  const [updatePicture, { isLoading: isUpdatePicLoading }] =
+  const [updatePicture, { isLoading: isPictureUpdateLoading }] =
     useChangeProfileImageMutation();
 
   // Country options
@@ -93,19 +86,6 @@ const PrivateUserProfile = () => {
   // Handle tab changes
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
-
-  // Utility function to filter out undefined or empty values from an object
-  const filterUndefinedValues = (obj: Record<string, any>) => {
-    return Object.entries(obj)
-      .filter(
-        ([_, value]) => value !== undefined && value !== null && value !== ""
-      )
-      .reduce((acc, [key, value]) => {
-        // @ts-ignore
-        acc[key] = value;
-        return acc;
-      }, {});
   };
 
   // Function to handle profile update
@@ -149,42 +129,22 @@ const PrivateUserProfile = () => {
     }
   };
 
-  // Function to handle profile images update
-  const handleImageUpdate = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files ? event.target.files[0] : null;
-    if (selectedFile) {
-      const fileUrl = URL.createObjectURL(selectedFile);
-      setProfileImage(fileUrl);
-      setFile(selectedFile);
-    }
-  };
-
-  const handleImageUpload = async () => {
+  // Function to handle for update user profile picture
+  const handleImageUpload = async (file: File) => {
     if (!file) return;
-    const toastId = toast.loading("Please wait...");
-
+    const toastId = toast.loading("Uploading...");
     const payload = modifyPayload({ file });
 
     try {
       const res = await updatePicture(payload).unwrap();
-
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
-        setOpen(false);
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
       }
     } catch (error) {
       toast.error("Something went wrong!", { id: toastId, duration: 3000 });
       customTimeOut(3000).then(() => window?.location?.reload());
-    }
-  };
-
-  // Trigger file input on Avatar click
-  const handleAvatarClick = () => {
-    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
     }
   };
 
@@ -263,87 +223,11 @@ const PrivateUserProfile = () => {
                         alignItems: "center",
                       }}
                     >
-                      <Box sx={{ position: "relative" }}>
-                        <Avatar
-                          src={user_data?.profile_image}
-                          alt={user_data?.name}
-                          sx={{
-                            width: 100,
-                            height: 100,
-                            borderRadius: "50%",
-                            border: "2px solid black",
-                          }}
-                        />
-
-                        <IconButton
-                          sx={{
-                            position: "absolute",
-                            right: 5,
-                            bottom: -2,
-                            backgroundColor: "#dce0dd",
-                            border: "1px solid #bbb",
-                            borderRadius: "50%",
-                            boxShadow: "none",
-                            width: 30,
-                            height: 30,
-                            zIndex: 1,
-                            "&:hover": {
-                              backgroundColor: "#f0f0f0",
-                              borderColor: "#bbb",
-                              boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-                            },
-                          }}
-                          component="label"
-                          onClick={handleOpen}
-                        >
-                          <CameraAltSharpIcon fontSize="small" />
-
-                          {/* Modal is Start Here */}
-                          <Modal
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                          >
-                            <Box sx={style}>
-                              <Typography variant="subtitle2" fontWeight={600}>
-                                Update Your Profile Picture
-                              </Typography>
-                              <Tooltip
-                                title="Click to change your profile picture"
-                                placement="right-start"
-                              >
-                                <Avatar
-                                  src={profileImage || user_data?.profile_image}
-                                  alt={user_data?.name}
-                                  sx={{
-                                    width: 200,
-                                    height: 200,
-                                    borderRadius: "50%",
-                                    border: "2px solid black",
-                                    cursor: "pointer",
-                                  }}
-                                  onClick={handleAvatarClick}
-                                />
-                              </Tooltip>
-                              <input
-                                type="file"
-                                id="fileInput"
-                                hidden
-                                accept="image/*"
-                                onChange={handleImageUpdate}
-                              />
-                              <Button
-                                type="submit"
-                                disabled={isUpdatePicLoading || !file}
-                                onClick={handleImageUpload}
-                              >
-                                Save Changes
-                              </Button>
-                            </Box>
-                          </Modal>
-                        </IconButton>
-                      </Box>
+                      <ProfilePicture
+                        userData={user_data}
+                        isUploading={isPictureUpdateLoading}
+                        onImageUpload={handleImageUpload}
+                      />
                     </Box>
                     <CardContent>
                       <Typography variant="h6" component="div">

@@ -61,12 +61,7 @@ const CreateCountryForm = () => {
             size="small"
             fullWidth={true}
           />
-          <CMFileInput name="file" setState={setFilename} />
-
-          <Typography width="fullWidth">
-            {filename ? filename : "Choose Your File"}
-          </Typography>
-
+          <CMFileInput name="file" label="Choose a symbol" />
         </Grid>
       </Grid>
       <Box

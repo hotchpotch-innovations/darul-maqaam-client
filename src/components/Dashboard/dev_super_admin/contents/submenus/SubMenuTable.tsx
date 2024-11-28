@@ -4,7 +4,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useState } from "react";
@@ -269,68 +277,71 @@ const SubMenuTable = () => {
   };
 
   return (
-    <Box>
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Box
+    <Box sx={{ p: 2 }}>
+      {/* Top Row: Search and Create Button */}
+      <Grid container spacing={2} alignItems="center">
+        <Grid size={{ xs: 12, lg: 4 }} textAlign={{ xs: "center", md: "left" }}>
+          <Button
+            component={Link}
+            href={"/dashboard/dev_super_admin/content/submenu/create"}
             sx={{
-              display: "flex",
-              alignItems: "end",
-              gap: "30px",
+              width: {
+                xs: "100%",
+                lg: "80%",
+              },
             }}
           >
-            {/* Create Country Section */}
-            <Button
-              component={Link}
-              href={"/dashboard/dev_super_admin/content/submenu/create"}
-              sx={{
-                maxHeight: "40px",
-              }}
-            >
-              Create
-            </Button>
-          </Box>
+            Create
+          </Button>
+        </Grid>
 
-          <Box display="flex" gap={2}>
-            <SelectFilter
-              filter_title="Filter by menubar"
-              options={menubar_options}
-              value={menubarId}
-              setValue={setMenubarId}
-            />
+        <Grid size={{ xs: 12, lg: 8 }}>
+          <SearchFiled setSearchText={setSearchTerm} />
+        </Grid>
+      </Grid>
 
-            <SelectFilter
-              filter_title="Filter by status"
-              options={user_status_options}
-              value={status}
-              setValue={setStatus}
-            />
-            <SearchFiled setSearchText={setSearchTerm} />
-          </Box>
-        </Stack>
+      {/* Bottom Row: Filters */}
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <SelectFilter
+            filter_title="Filter by menubar"
+            options={menubar_options}
+            value={menubarId}
+            setValue={setMenubarId}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <SelectFilter
+            filter_title="Filter by status"
+            options={user_status_options}
+            value={status}
+            setValue={setStatus}
+            fullWidth
+          />
+        </Grid>
+      </Grid>
 
-        {!isLoading || !isFetching ? (
-          <Box>
-            <DataGrid
-              rows={rowsWithIndex}
-              columns={columns}
-              pagination
-              paginationMode="server"
-              pageSizeOptions={[10, 25, 50]}
-              rowCount={submenu_data?.data?.meta?.total}
-              paginationModel={{ page: currentPage - 1, pageSize: limit }}
-              onPaginationModelChange={handlePaginationChange}
-              hideFooterPagination={
-                submenu_data?.data?.meta?.total <
-                submenu_data?.data?.meta?.limit
-              }
-              sx={{ border: "none", outline: "none", boxShadow: "none" }}
-            />
-          </Box>
-        ) : (
-          <Loading />
-        )}
-      </Box>
+      {!isLoading || !isFetching ? (
+        <Box>
+          <DataGrid
+            rows={rowsWithIndex}
+            columns={columns}
+            pagination
+            paginationMode="server"
+            pageSizeOptions={[10, 25, 50]}
+            rowCount={submenu_data?.data?.meta?.total}
+            paginationModel={{ page: currentPage - 1, pageSize: limit }}
+            onPaginationModelChange={handlePaginationChange}
+            hideFooterPagination={
+              submenu_data?.data?.meta?.total < submenu_data?.data?.meta?.limit
+            }
+            sx={{ border: "none", outline: "none", boxShadow: "none" }}
+          />
+        </Box>
+      ) : (
+        <Loading />
+      )}
 
       {/* Modal is Start Here */}
       <CMModal open={open} id={obj?.id} handleClose={handleClose}>
@@ -345,7 +356,7 @@ const SubMenuTable = () => {
             }}
           >
             <Grid container spacing={3}>
-              <Grid item xs={12} md={12}>
+              <Grid size={12}>
                 <CMInput name="title" label="Title" fullWidth />
               </Grid>
             </Grid>
@@ -369,7 +380,6 @@ const SubMenuTable = () => {
           </CMForm>
         </Box>
       </CMModal>
-      {/* Modal is End Here */}
     </Box>
   );
 };

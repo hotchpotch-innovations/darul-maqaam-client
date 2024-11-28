@@ -6,7 +6,15 @@ import {
   useGetAllUsersQuery,
 } from "@/redux/api/user/userApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import BlockIcon from "@mui/icons-material/Block";
@@ -161,28 +169,43 @@ const AllUserTable = () => {
     setLimit(newPaginationModel.pageSize);
   };
   return (
-    <Box sx={{ m: "30px 60px" }}>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <SelectFilter
-          filter_title="Search by account type"
-          options={account_type_options}
-          value={accountType}
-          setValue={setAccountType}
-        />
-        <SelectFilter
-          filter_title="Search by user role"
-          options={dev_super_admin_user_role_options}
-          value={userRole}
-          setValue={setUserRole}
-        />
-        <SelectFilter
-          filter_title="Search by user status"
-          options={user_status_options}
-          value={userStatus}
-          setValue={setUserStatus}
-        />
-        <SearchFiled setSearchText={setSearchTerm} />
-      </Stack>
+    <Box sx={{ p: 2 }}>
+      {/* Bottom Row: Filters */}
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <SelectFilter
+            filter_title="Search by account type"
+            options={account_type_options}
+            value={accountType}
+            setValue={setAccountType}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <SelectFilter
+            filter_title="Search by user role"
+            options={dev_super_admin_user_role_options}
+            value={userRole}
+            setValue={setUserRole}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <SelectFilter
+            filter_title="Search by user status"
+            options={user_status_options}
+            value={userStatus}
+            setValue={setUserStatus}
+            fullWidth
+          />
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={2} alignItems="center" mt={2}>
+        <Grid size={12}>
+          <SearchFiled setSearchText={setSearchTerm} />
+        </Grid>
+      </Grid>
 
       {!isLoading ? (
         <Box>

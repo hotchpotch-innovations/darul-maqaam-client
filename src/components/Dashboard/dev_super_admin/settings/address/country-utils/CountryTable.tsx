@@ -4,7 +4,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -177,28 +178,25 @@ const CountryTable = () => {
   };
 
   return (
-    <Box>
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Box
-            sx={{
-              display: "flex",
-              gap: "30px",
-            }}
-          >
-            {/* Create Country Section */}
+    <>
+      <Box sx={{ p: 2 }}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid size={{ xs: 6, lg: 6 }} textAlign="left">
             <Button
               component={Link}
               href={path_create_country}
               sx={{
                 maxHeight: "40px",
+                width: "60%",
               }}
             >
               Create
             </Button>
-          </Box>
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Stack>
+          </Grid>
+          <Grid size={{ xs: 6, lg: 6 }}>
+            <SearchFiled setSearchText={setSearchTerm} />
+          </Grid>
+        </Grid>
 
         {!isLoading ? (
           <Box>
@@ -223,7 +221,7 @@ const CountryTable = () => {
       </Box>
 
       <ConutryModla obj={obj} setState={setOpen} open={open} />
-    </Box>
+    </>
   );
 };
 

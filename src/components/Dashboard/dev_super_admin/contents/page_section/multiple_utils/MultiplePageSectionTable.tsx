@@ -8,7 +8,15 @@ import {
   useGetAllPrivateMPSQuery,
 } from "@/redux/api/content/multiplePageSectionApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
@@ -353,16 +361,13 @@ const MultiplePageSectionTable = () => {
     setLimit(newPaginationModel.pageSize);
   };
   return (
-    <Box sx={{ m: "30px 60px" }}>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "end",
-            gap: "30px",
-          }}
-        >
-          {/* Create Country Section */}
+    <Box sx={{ p: 2 }}>
+      {/* Top Row: Search and Create Button */}
+      <Grid container spacing={2} alignItems="center">
+        <Grid size={8}>
+          <SearchFiled setSearchText={setSearchTerm} />
+        </Grid>
+        <Grid size={4} textAlign={{ xs: "center", md: "right" }}>
           <Button
             component={Link}
             href={
@@ -374,38 +379,49 @@ const MultiplePageSectionTable = () => {
           >
             Create
           </Button>
-        </Box>
-        <Box display="flex" gap={2}>
+        </Grid>
+      </Grid>
+
+      {/* Bottom Row: Filters */}
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <SelectFilter
-            filter_title="Filter by Type"
+            filter_title="Select Type"
             options={multiple_page_section_types_options}
             value={type}
             setValue={setType}
+            fullWidth
           />
-
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <SelectFilter
-            filter_title="Filter by category"
+            filter_title="Select Category"
             options={category_options}
             value={categoryId}
             setValue={setCategory}
             isDisable={!type}
+            fullWidth
           />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <SelectFilter
-            filter_title="Filter by publish status"
+            filter_title="Select Publish Status"
             options={isPublished_options}
             value={isPublished}
             setValue={setIsPublished}
+            fullWidth
           />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <SelectFilter
-            filter_title="Filter by status"
+            filter_title="Select status"
             options={user_status_options}
             value={status}
             setValue={setStatus}
+            fullWidth
           />
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Box>
-      </Stack>
-
+        </Grid>
+      </Grid>
       {!isLoading ? (
         <Box>
           <DataGrid

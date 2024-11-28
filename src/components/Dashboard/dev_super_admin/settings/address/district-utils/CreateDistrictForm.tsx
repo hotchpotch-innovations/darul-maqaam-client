@@ -2,7 +2,8 @@
 
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreateClientTypeMutation } from "@/redux/api/user/settings/clientTypeApi";
@@ -39,53 +40,41 @@ const CreateDistrictForm = () => {
   };
   return (
     <CMForm onSubmit={handleCreateCountry} defaultValues={default_values}>
-      <Stack direction={"row"} justifyContent="center" gap={4}>
-        {/* 1st Pera */}
-        <Grid
-          item
-          xs={3}
-          md={6}
-          container
-          gap={2}
-          sx={{
-            border: "1px solid lightgray",
-            boxShadow: 1,
-          }}
-          p={4}
-        >
-          <Typography variant="h5">Basic Information </Typography>
+      <Grid
+        container
+        gap={2}
+        sx={{
+          border: "1px solid lightgray",
+          boxShadow: 1,
+        }}
+        p={4}
+      >
+        <Typography variant="h5">Basic Information </Typography>
 
-          <Grid item xs={12} md={12}>
-            <CMSelect
-              name="divisionId"
-              items={options}
-              label="Select Division"
-            />
-          </Grid>
-          <Grid item xs={12} md={12}>
-            <CMInput name="name" label="Name" fullWidth={true} />
-          </Grid>
+        <Grid size={12}>
+          <CMSelect name="divisionId" items={options} label="Select Division" />
         </Grid>
+        <Grid size={12}>
+          <CMInput name="name" label="Name" fullWidth={true} />
+        </Grid>
+      </Grid>
 
-        {/* 2nd Pera */}
-      </Stack>
-      <Stack sx={{}} justifyContent="center" direction="row">
-        <Box
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          type="submit"
           sx={{
-            width: "400px",
+            mt: "30px",
+            width: "30%",
           }}
         >
-          <Button
-            type="submit"
-            fullWidth
-            sx={{
-              mt: "30px",
-            }}
-          >
-            Create Department
-          </Button>
-        </Box>
-      </Stack>
+          Add District
+        </Button>
+      </Box>
     </CMForm>
   );
 };

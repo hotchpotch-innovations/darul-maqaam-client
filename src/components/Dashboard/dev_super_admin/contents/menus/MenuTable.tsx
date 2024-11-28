@@ -3,7 +3,15 @@
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useState } from "react";
@@ -272,58 +280,68 @@ const MenuTable = () => {
   };
 
   return (
-    <Box>
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Box
+    <Box sx={{ p: 2 }}>
+      {/* Main Row */}
+      <Grid container spacing={2} alignItems="center">
+        {/* Create Button */}
+        <Grid
+          size={{ xs: 12, md: 3 }}
+          textAlign={{ xs: "center", sm: "left" }}
+          mt={4}
+        >
+          <Button
+            component={Link}
+            href={path_create_country}
             sx={{
-              display: "flex",
-              gap: "30px",
+              width: {
+                xs: "100%",
+                md: "80%",
+              },
             }}
           >
-            {/* Create Country Section */}
-            <Button
-              component={Link}
-              href={path_create_country}
-              sx={{
-                maxHeight: "40px",
-              }}
-            >
-              Create
-            </Button>
-          </Box>
-          <Box display="flex" gap={2}>
+            Create
+          </Button>
+        </Grid>
+
+        <Grid container size={{ xs: 12, md: 9 }} sx={{ alignItems: "center" }}>
+          {/* Filter Field */}
+          <Grid size={{ xs: 12, md: 6 }}>
             <SelectFilter
               filter_title="Filter by Status"
               options={user_status_options}
               value={status}
               setValue={setStatus}
+              fullWidth
             />
-            <SearchFiled setSearchText={setSearchTerm} />
-          </Box>
-        </Stack>
+          </Grid>
 
-        {!isLoading ? (
-          <Box>
-            <DataGrid
-              rows={rowsWithIndex}
-              columns={columns}
-              pagination
-              paginationMode="server"
-              pageSizeOptions={[10, 25, 50]}
-              rowCount={menus_data?.data?.meta?.total}
-              paginationModel={{ page: currentPage - 1, pageSize: limit }}
-              onPaginationModelChange={handlePaginationChange}
-              hideFooterPagination={
-                menus_data?.data?.meta?.total < menus_data?.data?.meta?.limit
-              }
-              sx={{ border: "none", outline: "none", boxShadow: "none" }}
-            />
-          </Box>
-        ) : (
-          <Loading />
-        )}
-      </Box>
+          {/* Search Field */}
+          <Grid size={{ xs: 12, md: 6 }} mt={4}>
+            <SearchFiled setSearchText={setSearchTerm} />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      {!isLoading ? (
+        <Box>
+          <DataGrid
+            rows={rowsWithIndex}
+            columns={columns}
+            pagination
+            paginationMode="server"
+            pageSizeOptions={[10, 25, 50]}
+            rowCount={menus_data?.data?.meta?.total}
+            paginationModel={{ page: currentPage - 1, pageSize: limit }}
+            onPaginationModelChange={handlePaginationChange}
+            hideFooterPagination={
+              menus_data?.data?.meta?.total < menus_data?.data?.meta?.limit
+            }
+            sx={{ border: "none", outline: "none", boxShadow: "none" }}
+          />
+        </Box>
+      ) : (
+        <Loading />
+      )}
 
       {/* Modal is Start Here */}
       <CMModal open={open} id={obj?.id} handleClose={handleClose}>
@@ -338,7 +356,7 @@ const MenuTable = () => {
             }}
           >
             <Grid container spacing={3}>
-              <Grid item xs={12} md={12}>
+              <Grid size={12}>
                 <CMInput name="title" label="Title" fullWidth />
               </Grid>
             </Grid>
@@ -362,7 +380,6 @@ const MenuTable = () => {
           </CMForm>
         </Box>
       </CMModal>
-      {/* Modal is End Here */}
     </Box>
   );
 };

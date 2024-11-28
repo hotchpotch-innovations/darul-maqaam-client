@@ -29,6 +29,7 @@ type TArticlePayload = {
   sub_titles?: Array<string>;
   descriptions?: Array<string>;
 };
+
 const CreateArticleForm = () => {
   const router = useRouter();
   const categoryQueryObj: TCategoryQueryObj = {

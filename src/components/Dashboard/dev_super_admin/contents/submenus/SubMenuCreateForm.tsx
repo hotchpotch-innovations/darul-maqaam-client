@@ -41,8 +41,7 @@ const CreateSubMenuForm = () => {
   };
   return (
     <CMForm onSubmit={handleCreateSubmenu} defaultValues={default_values}>
-      <Stack direction={"row"} justifyContent="center" gap={4}>
-        {/* 1st Pera */}
+      <Stack justifyContent="center" gap={4}>
         <Grid
           container
           gap={2}
@@ -70,24 +69,17 @@ const CreateSubMenuForm = () => {
           </Grid>
         </Grid>
 
-        {/* 2nd Pera */}
+        <Stack>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button type="submit">Create Submenu</Button>
+          </Box>
+        </Stack>
       </Stack>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        {" "}
-        <Button
-          type="submit"
-          sx={{
-            mt: "30px",
-          }}
-        >
-          Create Submenu
-        </Button>
-      </Box>
     </CMForm>
   );
 };

@@ -2,7 +2,8 @@
 
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
-import { Box, Button, Stack, Grid, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -43,9 +44,6 @@ const CreateSubMenuForm = () => {
       <Stack direction={"row"} justifyContent="center" gap={4}>
         {/* 1st Pera */}
         <Grid
-          item
-          xs={3}
-          md={6}
           container
           gap={2}
           sx={{
@@ -56,7 +54,7 @@ const CreateSubMenuForm = () => {
         >
           <Typography variant="h5">Menu Information </Typography>
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMSelect
               name="menubarId"
               label="Menubar"
@@ -64,33 +62,32 @@ const CreateSubMenuForm = () => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput name="title" label="Title" fullWidth={true} />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput name="identifier" label="Identifier" fullWidth={true} />
           </Grid>
         </Grid>
 
         {/* 2nd Pera */}
       </Stack>
-      <Stack direction="row" justifyContent="center">
-        <Box
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        {" "}
+        <Button
+          type="submit"
           sx={{
-            width: "400px",
+            mt: "30px",
           }}
         >
-          <Button
-            type="submit"
-            fullWidth
-            sx={{
-              mt: "30px",
-            }}
-          >
-            Create Submenu
-          </Button>
-        </Box>
-      </Stack>
+          Create Submenu
+        </Button>
+      </Box>
     </CMForm>
   );
 };

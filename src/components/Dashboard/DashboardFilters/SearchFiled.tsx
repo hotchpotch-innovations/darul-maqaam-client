@@ -10,25 +10,14 @@ const SearchFiled = ({ setSearchText }: TSearchFiledProps) => {
     setSearchText(newValue);
   };
   return (
-    <div>
-      <Stack>
-        <Typography
-          sx={{ textTransform: "capitalize" }}
-          color={"primary.main"}
-          align="left"
-        >
-          Search by keyword:
-        </Typography>
-        <TextField
-          onChange={handleChange}
-          sx={{ mt: 1, minWidth: 120, width: "250px" }}
-          id="outlined-basic"
-          label="Search"
-          variant="outlined"
-          size="small"
-        />
-      </Stack>
-    </div>
+    <TextField
+      onChange={handleChange}
+      id="outlined-basic"
+      fullWidth
+      label="Search by keyword"
+      variant="outlined"
+      size="small"
+    />
   );
 };
 

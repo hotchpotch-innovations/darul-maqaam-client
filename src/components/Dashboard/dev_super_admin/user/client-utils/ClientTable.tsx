@@ -5,7 +5,8 @@ import {
   useGetAllClientQuery,
 } from "@/redux/api/user/clientApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
@@ -242,30 +243,30 @@ const ClientTable = () => {
   };
 
   return (
-    <Box sx={{ m: "30px 60px" }}>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Box
-          sx={{
-            display: "flex",
-            gap: "30px",
-          }}
-        >
+    <Box sx={{ p: 2 }}>
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid size={{ xs: 12, lg: 4 }}>
           <SelectFilter
             filter_title="Filter by Type"
             options={client_type_options}
             value={clientType}
             setValue={setClientType}
+            fullWidth
           />
-
+        </Grid>
+        <Grid size={{ xs: 12, lg: 4 }}>
           <SelectFilter
             filter_title="Filter by Gender"
             options={gender_options}
             value={gender}
             setValue={setGender}
+            fullWidth
           />
-        </Box>
-        <SearchFiled setSearchText={setSearchTerm} />
-      </Stack>
+        </Grid>
+        <Grid size={{ xs: 12, lg: 4 }} mt={{ xs: 0, lg: 4 }}>
+          <SearchFiled setSearchText={setSearchTerm} />
+        </Grid>
+      </Grid>
 
       {!isLoading ? (
         <Box>

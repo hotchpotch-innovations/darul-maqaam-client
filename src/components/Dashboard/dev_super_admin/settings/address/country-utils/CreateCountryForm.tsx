@@ -61,7 +61,13 @@ const CreateCountryForm = () => {
             size="small"
             fullWidth={true}
           />
-          <CMFileInput name="file" label="Choose a symbol" />
+          <CMFileInput
+            sx={{
+              width: "100%",
+            }}
+            name="file"
+            label="Choose a symbol"
+          />
         </Grid>
       </Grid>
       <Box

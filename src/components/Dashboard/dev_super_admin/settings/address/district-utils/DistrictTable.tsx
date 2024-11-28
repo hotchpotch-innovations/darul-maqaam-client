@@ -4,7 +4,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -197,37 +198,35 @@ const DistrictTable = () => {
     // console.log(values);
   };
   return (
-    <Box>
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Box
+    <>
+      <Grid container spacing={2} alignItems="center">
+        <Grid size={{ xs: 4, lg: 4 }} textAlign="left" mt={4}>
+          <Button
+            component={Link}
+            href={path_create_country}
             sx={{
-              display: "flex",
-              gap: "30px",
+              maxHeight: "40px",
+              width: "60%",
             }}
           >
-            {/* Create Country Section */}
-            <Button
-              component={Link}
-              href={path_create_country}
-              sx={{
-                maxHeight: "40px",
-              }}
-            >
-              Create
-            </Button>
-          </Box>
-          <Box display="flex" gap={2}>
-            <SelectFilter
-              filter_title="Search by Division"
-              options={options}
-              value={divisionId}
-              setValue={setDivisionId}
-            />
-            <SearchFiled setSearchText={setSearchTerm} />
-          </Box>
-        </Stack>
+            Create
+          </Button>
+        </Grid>
+        <Grid size={{ xs: 4, lg: 4 }}>
+          <SelectFilter
+            filter_title="Search by Division"
+            options={options}
+            value={divisionId}
+            setValue={setDivisionId}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={{ xs: 4, lg: 4 }} mt={4}>
+          <SearchFiled setSearchText={setSearchTerm} />
+        </Grid>
+      </Grid>
 
+      <Box sx={{ p: 2 }}>
         {!isLoading ? (
           <Box>
             <DataGrid
@@ -261,7 +260,7 @@ const DistrictTable = () => {
             }}
           >
             <Grid container spacing={3}>
-              <Grid item xs={12} md={12}>
+              <Grid size={12}>
                 <CMInput name="name" label="Name" fullWidth />
               </Grid>
             </Grid>
@@ -286,7 +285,7 @@ const DistrictTable = () => {
         </Box>
       </CMModal>
       {/* Modal is End Here */}
-    </Box>
+    </>
   );
 };
 

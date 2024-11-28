@@ -1,18 +1,14 @@
 "use client";
-
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 import CMFileInput from "@/components/forms/CMFileInput";
-import { useState } from "react";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { useCreateCountryMutation } from "@/redux/api/user/settings/countryApi";
 import { toast } from "sonner";
 
 const CreateCountryForm = () => {
-  const [filename, setFilename] = useState("");
-
   const default_values = {
     file: "",
     name: "",
@@ -107,11 +103,7 @@ const CreateCountryForm = () => {
               alignItems="center"
               gap={2}
             >
-              <CMFileInput name="file" setState={setFilename} />
-
-              <Typography width="fullWidth">
-                {filename ? filename : "Choose Your File"}
-              </Typography>
+              <CMFileInput name="file" label="Choose symbol" />
             </Stack>
           </Grid>
         </Grid>

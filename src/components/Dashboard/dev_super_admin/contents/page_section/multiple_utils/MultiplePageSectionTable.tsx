@@ -44,6 +44,7 @@ type TCategoryQueryObj = {
   page?: number;
   limit?: number;
 };
+
 const MultiplePageSectionTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);

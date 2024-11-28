@@ -280,13 +280,7 @@ const SubMenuTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Top Row: Search and Create Button */}
       <Grid container spacing={2} alignItems="center">
-        <Grid size={{ xs: 12, lg: 8 }}>
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Grid>
-        <Grid
-          size={{ xs: 12, lg: 4 }}
-          textAlign={{ xs: "center", md: "right" }}
-        >
+        <Grid size={{ xs: 12, lg: 4 }} textAlign={{ xs: "center", md: "left" }}>
           <Button
             component={Link}
             href={"/dashboard/dev_super_admin/content/submenu/create"}
@@ -299,6 +293,10 @@ const SubMenuTable = () => {
           >
             Create
           </Button>
+        </Grid>
+
+        <Grid size={{ xs: 12, lg: 8 }}>
+          <SearchFiled setSearchText={setSearchTerm} />
         </Grid>
       </Grid>
 

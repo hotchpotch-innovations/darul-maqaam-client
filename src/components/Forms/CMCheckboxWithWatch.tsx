@@ -10,6 +10,7 @@ type TProps = {
   onValueChange: any;
   defaultChecked?: boolean;
 };
+
 const CMCheckboxWithWatch = ({
   name,
   label,

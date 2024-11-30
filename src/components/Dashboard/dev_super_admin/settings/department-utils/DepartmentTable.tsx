@@ -42,7 +42,7 @@ const DepartmentTable = () => {
   //Modal Functionality Is End
 
   const path_create_country =
-    "/dashboard/super_admin/users/settings/department/create";
+    "/dashboard/dev_super_admin/users/settings/department/create";
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -177,8 +177,13 @@ const DepartmentTable = () => {
   };
   return (
     <Box>
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
+      <Box sx={{ p: 2 }}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          mb={2}
+          spacing={2}
+        >
           <Box
             sx={{
               display: "flex",

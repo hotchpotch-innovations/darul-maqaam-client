@@ -49,7 +49,7 @@ const DesignationTable = () => {
   //Modal Functionality Is End
 
   const path_create_country =
-    "/dashboard/super_admin/users/settings/designation/create";
+    "/dashboard/dev_super_admin/users/settings/designation/create";
 
   const [currentPage, setCurrentPage] = useState(1);
   const [departmentId, setDepartmentId] = useState("");

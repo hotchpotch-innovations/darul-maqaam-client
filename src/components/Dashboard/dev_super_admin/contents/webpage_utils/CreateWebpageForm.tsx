@@ -101,7 +101,7 @@ const CreateWebpageForm = () => {
         resolver={zodResolver(validationSchema)}
         defaultValues={default_values}
       >
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 2 }}>
           {/* Main Container */}
           <Grid container spacing={2}>
             {/* Left Column */}

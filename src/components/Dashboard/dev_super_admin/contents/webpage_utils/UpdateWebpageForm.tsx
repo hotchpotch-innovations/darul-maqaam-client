@@ -11,7 +11,7 @@ import {
 import { customTimeOut } from "@/utils/customTimeOut";
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -88,19 +88,9 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
       resolver={zodResolver(validationSchema)}
       defaultValues={default_values}
     >
-      <Stack direction={"column"} spacing={4}>
-        <Stack direction={"row"} gap={4}>
-          {/* 1st Pera */}
-          <Grid
-            size={{ xs: 3, md: 6 }}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-            }}
-            p={4}
-          >
+      <Box sx={{ p: 2 }}>
+        <Grid container spacing={6} alignItems="center">
+          <Grid container spacing={2} size={{ xs: 12, lg: 6 }}>
             <Grid size={12}>
               <CMInput
                 name="title"
@@ -135,17 +125,7 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
             </Grid>
           </Grid>
 
-          {/* 2nd Pera */}
-          <Grid
-            size={{ xs: 3, md: 6 }}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-            }}
-            p={4}
-          >
+          <Grid size={{ xs: 12, lg: 6 }}>
             <Grid size={12}>
               <CMTextarea name="meta_description" label="Meta Description" />
             </Grid>
@@ -153,18 +133,24 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
               <CMTextarea name="meta_keywords" label="Meta Keywords" />
             </Grid>
           </Grid>
-        </Stack>
-      </Stack>
+        </Grid>
 
-      <Button
-        type="submit"
-        fullWidth
-        sx={{
-          mt: "30px",
-        }}
-      >
-        Update Webpage
-      </Button>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button
+            type="submit"
+            sx={{
+              mt: "30px",
+            }}
+          >
+            Update Webpage
+          </Button>
+        </Box>
+      </Box>
     </CMForm>
   );
 };

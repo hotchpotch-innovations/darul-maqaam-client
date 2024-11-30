@@ -4,7 +4,8 @@ import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, TextField, Tooltip, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
@@ -347,58 +348,75 @@ const ArticleTable = () => {
     setLimit(newPaginationModel.pageSize);
   };
   return (
-    <Box sx={{ m: "30px 60px" }}>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "end",
-            gap: "30px",
-          }}
-        >
-          {/* Create Country Section */}
+    <Box sx={{ p: 2 }}>
+      <Grid container spacing={2}>
+        {/* Create button */}
+        <Grid size={4}>
           <Button
             component={Link}
             href={"/dashboard/dev_super_admin/content/articles/create"}
             sx={{
               maxHeight: "40px",
+              width: {
+                xs: "100%",
+                md: "50%",
+              },
             }}
           >
             Create
           </Button>
-        </Box>
-
-        <Box display="flex" gap={2}>
-          <SelectFilter
-            filter_title="Filter by Type"
-            options={article_types_options}
-            value={type}
-            setValue={setType}
-          />
-
-          <SelectFilter
-            filter_title="Filter by category"
-            options={category_options}
-            value={categoryId}
-            setValue={setCategory}
-            isDisable={!type}
-          />
-
-          <SelectFilter
-            filter_title="Filter by publish status"
-            options={isPublished_options}
-            value={isPublished}
-            setValue={setIsPublished}
-          />
-          <SelectFilter
-            filter_title="Filter by status"
-            options={user_status_options}
-            value={status}
-            setValue={setStatus}
-          />
+        </Grid>
+        {/* Search box */}
+        <Grid size={8}>
           <SearchFiled setSearchText={setSearchTerm} />
-        </Box>
-      </Stack>
+        </Grid>
+
+        {/* Filtering */}
+        <Grid size={12}>
+          <Box>
+            <Grid container spacing={2}>
+              <Grid size={6}>
+                <SelectFilter
+                  filter_title="Filter by Type"
+                  options={article_types_options}
+                  value={type}
+                  setValue={setType}
+                  fullWidth={true}
+                />
+              </Grid>
+              <Grid size={6}>
+                <SelectFilter
+                  filter_title="Filter by category"
+                  options={category_options}
+                  value={categoryId}
+                  setValue={setCategory}
+                  isDisable={!type}
+                  fullWidth={true}
+                />
+              </Grid>
+
+              <Grid size={6}>
+                <SelectFilter
+                  filter_title="Filter by publish status"
+                  options={isPublished_options}
+                  value={isPublished}
+                  setValue={setIsPublished}
+                  fullWidth={true}
+                />
+              </Grid>
+              <Grid size={6}>
+                <SelectFilter
+                  filter_title="Filter by status"
+                  options={user_status_options}
+                  value={status}
+                  setValue={setStatus}
+                  fullWidth={true}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+        </Grid>
+      </Grid>
 
       {!isLoading ? (
         <Box>

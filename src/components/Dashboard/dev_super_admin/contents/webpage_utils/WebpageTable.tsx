@@ -386,7 +386,7 @@ const WebpageTable = () => {
         <Grid size={4}>
           <Button
             component={Link}
-            href={"/dashboard/dev_super_admin/content/articles/create"}
+            href={"/dashboard/dev_super_admin/content/web-page/create"}
             sx={{
               maxHeight: "40px",
               width: "60%",

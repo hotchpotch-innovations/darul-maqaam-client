@@ -17,7 +17,7 @@ import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -95,146 +95,163 @@ const CreateWebpageForm = () => {
   };
 
   return (
-    <CMForm
-      onSubmit={createHandler}
-      resolver={zodResolver(validationSchema)}
-      defaultValues={default_values}
-    >
-      <Stack direction={"column"} spacing={4}>
-        <Stack direction={"row"} gap={4}>
-          {/* 1st Pera */}
-          <Grid
-            size={{ xs: 3, md: 6 }}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-            }}
-            p={4}
-          >
-            <Grid size={12}>
-              <Stack direction={"row"} justifyContent={"space-between"} gap={2}>
-                <Grid size={{ xs: 3, md: 6 }}>
-                  <CMSelect
-                    name="page_type"
-                    label="Type"
-                    size="medium"
-                    items={webpage_types_options}
-                  />
-                </Grid>
-                <Grid size={{ xs: 3, md: 3 }}>
-                  <CMCheckboxWithWatch
-                    name="has_menubar"
-                    label="Has Menu?"
-                    onValueChange={setHasMenu}
-                  />
-                </Grid>
-              </Stack>
-            </Grid>
-            {!!hasMenu && (
-              <Grid size={12}>
-                <CMSelectWithWatch
-                  name="menubarId"
-                  label="Menu"
-                  size="medium"
-                  options={menubar_options}
-                  setState={setMenubarId}
-                />
-              </Grid>
-            )}
-
-            {!!hasMenu && submenu_options.length > 0 && (
-              <Grid size={12}>
-                <CMSelect
-                  name="submenuId"
-                  label="Submenu"
-                  size="medium"
-                  items={submenu_options}
-                  isDisabled={isMenubarLoading}
-                />
-              </Grid>
-            )}
-
-            <Grid size={12}>
-              <CMInput
-                name="title"
-                label="Webpage Title"
-                size="medium"
-                fullWidth={true}
-              />
-            </Grid>
-            <Grid size={12}>
-              <CMInput
-                name="identifier"
-                label="Webpage Identifier"
-                size="medium"
-                fullWidth={true}
-              />
-            </Grid>
-            <Grid size={12}>
-              <CMInput
-                name="slug"
-                label="Webpage Slug"
-                size="medium"
-                fullWidth={true}
-              />
-            </Grid>
-          </Grid>
-
-          {/* 2nd Pera */}
-          <Grid
-            size={{ xs: 3, md: 6 }}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-              // display: "flex",
-              // justifyContent: "center",
-              // alignItems: "center",
-            }}
-            p={4}
-          >
-            <Grid size={12}>
-              <CMInput
-                name="meta_title"
-                label="Meta Title"
-                size="medium"
-                fullWidth={true}
-              />
-            </Grid>
-            <Grid size={12}>
-              <CMInput
-                name="og_author"
-                label="Open Graph Author"
-                size="medium"
-                fullWidth={true}
-              />
-            </Grid>
-            <Grid size={12}>
-              <CMTextarea name="meta_description" label="Meta Description" />
-            </Grid>
-            <Grid size={12}>
-              <CMTextarea name="meta_keywords" label="Meta Keywords" />
-            </Grid>
-            <Grid size={12}>
-              <CMFileInput name="file" label="Open Graph Image" />
-            </Grid>
-          </Grid>
-        </Stack>
-      </Stack>
-
-      <Button
-        type="submit"
-        fullWidth
-        sx={{
-          mt: "30px",
-        }}
+    <>
+      <CMForm
+        onSubmit={createHandler}
+        resolver={zodResolver(validationSchema)}
+        defaultValues={default_values}
       >
-        Create Webpage
-      </Button>
-    </CMForm>
+        <Box sx={{ p: 3 }}>
+          {/* Main Container */}
+          <Grid container spacing={2}>
+            {/* Left Column */}
+            <Grid size={{ xs: 12, lg: 6 }}>
+              <Box sx={{ p: 2 }}>
+                <Grid container spacing={2}>
+                  {/* Type */}
+                  <Grid size={{ xs: 12, sm: 6 }}>
+                    <CMSelect
+                      name="page_type"
+                      label="Type"
+                      size="medium"
+                      items={webpage_types_options}
+                      fullWidth={true}
+                    />
+                  </Grid>
+                  {/* Toggle hasMenu */}
+                  <Grid size={{ xs: 12, sm: 6 }}>
+                    <CMCheckboxWithWatch
+                      name="has_menubar"
+                      label="Has Menu?"
+                      onValueChange={setHasMenu}
+                    />
+                  </Grid>
+
+                  {/* if hasMenu : menu */}
+                  <Grid size={{ xs: 12, sm: 6 }}>
+                    {!!hasMenu && (
+                      <CMSelectWithWatch
+                        name="menubarId"
+                        label="Menu"
+                        size="medium"
+                        options={menubar_options}
+                        setState={setMenubarId}
+                      />
+                    )}
+                  </Grid>
+
+                  {/* if hasMenu && subMenu_options : sub menu */}
+                  <Grid size={{ xs: 12, sm: 6 }}>
+                    {!!hasMenu && submenu_options.length > 0 && (
+                      <CMSelect
+                        name="submenuId"
+                        label="Submenu"
+                        size="medium"
+                        items={submenu_options}
+                        isDisabled={isMenubarLoading}
+                        fullWidth={true}
+                      />
+                    )}
+                  </Grid>
+
+                  {/* Web page title */}
+                  <Grid size={12}>
+                    <CMInput
+                      name="title"
+                      label="Webpage Title"
+                      size="medium"
+                      fullWidth={true}
+                    />
+                  </Grid>
+                  {/* Web page identifier */}
+                  <Grid size={12}>
+                    <CMInput
+                      name="identifier"
+                      label="Webpage Identifier"
+                      size="medium"
+                      fullWidth={true}
+                    />
+                  </Grid>
+                  {/* Web page slug */}
+                  <Grid size={12}>
+                    <CMInput
+                      name="slug"
+                      label="Webpage Slug"
+                      size="medium"
+                      fullWidth={true}
+                    />
+                  </Grid>
+                  {/* Open graph image */}
+                  <Grid size={12}>
+                    <CMFileInput
+                      sx={{ width: "100%" }}
+                      name="file"
+                      label="Open Graph Image"
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+            </Grid>
+
+            {/* Right Column */}
+            <Grid size={{ xs: 12, lg: 6 }}>
+              <Box sx={{ p: 2 }}>
+                <Grid container spacing={2}>
+                  {/* Meta title */}
+                  <Grid size={12}>
+                    <CMInput
+                      name="meta_title"
+                      label="Meta Title"
+                      size="medium"
+                      fullWidth={true}
+                    />
+                  </Grid>
+
+                  {/* Open graph author */}
+                  <Grid size={12}>
+                    <CMInput
+                      name="og_author"
+                      label="Open Graph Author"
+                      size="medium"
+                      fullWidth={true}
+                    />
+                  </Grid>
+
+                  {/* Meta descriptions */}
+                  <Grid size={12}>
+                    <CMTextarea
+                      name="meta_description"
+                      label="Meta Description"
+                    />
+                  </Grid>
+
+                  {/* Meta keyword */}
+                  <Grid size={12}>
+                    <CMTextarea name="meta_keywords" label="Meta Keywords" />
+                  </Grid>
+                </Grid>
+              </Box>
+            </Grid>
+          </Grid>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button
+              type="submit"
+              sx={{
+                mt: "30px",
+                mr: "20px",
+              }}
+            >
+              Create Webpage
+            </Button>
+          </Box>
+        </Box>
+      </CMForm>
+    </>
   );
 };
 

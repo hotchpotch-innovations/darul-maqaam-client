@@ -184,8 +184,13 @@ const ClientTypeTable = () => {
 
   return (
     <Box>
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
+      <Box sx={{ p: 2 }}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          mb={2}
+          spacing={2}
+        >
           <Box
             sx={{
               display: "flex",

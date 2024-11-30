@@ -118,6 +118,7 @@ const CreateWebpageForm = () => {
                       fullWidth={true}
                     />
                   </Grid>
+
                   {/* Toggle hasMenu */}
                   <Grid size={{ xs: 12, sm: 6 }}>
                     <CMCheckboxWithWatch
@@ -163,6 +164,7 @@ const CreateWebpageForm = () => {
                       fullWidth={true}
                     />
                   </Grid>
+
                   {/* Web page identifier */}
                   <Grid size={12}>
                     <CMInput
@@ -172,6 +174,7 @@ const CreateWebpageForm = () => {
                       fullWidth={true}
                     />
                   </Grid>
+
                   {/* Web page slug */}
                   <Grid size={12}>
                     <CMInput
@@ -181,6 +184,7 @@ const CreateWebpageForm = () => {
                       fullWidth={true}
                     />
                   </Grid>
+
                   {/* Open graph image */}
                   <Grid size={12}>
                     <CMFileInput

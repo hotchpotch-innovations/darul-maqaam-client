@@ -42,7 +42,7 @@ const DepartmentTable = () => {
   //Modal Functionality Is End
 
   const path_create_country =
-    "/dashboard/super_admin/users/settings/department/create";
+    "/dashboard/dev_super_admin/users/settings/department/create";
 
   const [currentPage, setCurrentPage] = useState(1);
 

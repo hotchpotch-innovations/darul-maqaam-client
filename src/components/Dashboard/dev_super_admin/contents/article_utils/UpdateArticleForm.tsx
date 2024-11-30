@@ -5,7 +5,7 @@ import {
   useUpdateArticleMutation,
 } from "@/redux/api/content/articleApi";
 import { customTimeOut } from "@/utils/customTimeOut";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -106,7 +106,7 @@ const UpdateArticleForm = ({ id }: TProps) => {
         <Stack direction={"row"} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 6, md: 12 }}
+            size={{ xs: 12 }}
             container
             gap={2}
             sx={{
@@ -146,10 +146,10 @@ const UpdateArticleForm = ({ id }: TProps) => {
           </Grid>
         </Stack>
 
-        <Stack direction={"row"} gap={4}>
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -171,7 +171,7 @@ const UpdateArticleForm = ({ id }: TProps) => {
 
           {/* 2nd Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -191,18 +191,18 @@ const UpdateArticleForm = ({ id }: TProps) => {
           </Grid>
         </Stack>
       </Stack>
-
-      <Button
-        onClick={() => submitHandler()}
-        type="submit"
-        fullWidth
-        sx={{
-          mt: "30px",
-        }}
-        disabled={isUpdateLoading}
-      >
-        Update Article
-      </Button>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          onClick={() => submitHandler()}
+          type="submit"
+          sx={{
+            mt: "30px",
+          }}
+          disabled={isUpdateLoading}
+        >
+          Update Article
+        </Button>
+      </Box>
     </>
   );
 };

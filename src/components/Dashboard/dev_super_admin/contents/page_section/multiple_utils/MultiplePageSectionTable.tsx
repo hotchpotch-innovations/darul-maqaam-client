@@ -364,10 +364,7 @@ const MultiplePageSectionTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Top Row: Search and Create Button */}
       <Grid container spacing={2} alignItems="center">
-        <Grid size={8}>
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Grid>
-        <Grid size={4} textAlign={{ xs: "center", md: "right" }}>
+        <Grid size={4} textAlign={{ xs: "center", md: "left" }}>
           <Button
             component={Link}
             href={
@@ -375,10 +372,18 @@ const MultiplePageSectionTable = () => {
             }
             sx={{
               maxHeight: "40px",
+              width: {
+                xs: "100%",
+                md: "60%",
+              },
             }}
           >
             Create
           </Button>
+        </Grid>
+
+        <Grid size={8}>
+          <SearchFiled setSearchText={setSearchTerm} />
         </Grid>
       </Grid>
 

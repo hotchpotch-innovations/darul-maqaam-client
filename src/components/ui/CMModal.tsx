@@ -11,7 +11,6 @@ const style = {
   maxWidth: "550px",
   minWidth: "30%",
   bgcolor: "background.paper",
-  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };

@@ -13,7 +13,7 @@ import useWebpageOptions, {
 import { useCreateSPSectionMutation } from "@/redux/api/content/singlePageSectionApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -35,7 +35,7 @@ type TSPSPayload = {
   files?: any;
   section_titles?: Array<string>;
   section_descriptions?: Array<string>;
-  section_contents?: string;
+  contents?: string;
 };
 
 const CreateSinglePageSectionForm = () => {
@@ -62,7 +62,8 @@ const CreateSinglePageSectionForm = () => {
   const [files, setFiles] = useState(null);
   const [section_titles, setSectionTitles] = useState([""]);
   const [section_descriptions, setSectionDescriptions] = useState([""]);
-  const [section_contents, setSectionContents] = useState("");
+  // Get value from text editor
+  const [editorValue, setEditorValue] = useState("");
 
   // options query assign
   if (!!menubarId) {
@@ -113,8 +114,8 @@ const CreateSinglePageSectionForm = () => {
       if (section_descriptions?.length > 0) {
         data["section_descriptions"] = section_descriptions;
       }
-      if (!!section_contents) {
-        data["section_contents"] = section_contents;
+      if (editorValue.length > 0) {
+        data["contents"] = editorValue;
       }
 
       //   console.log(data);
@@ -143,10 +144,11 @@ const CreateSinglePageSectionForm = () => {
   return (
     <>
       <Stack direction={"column"} spacing={4}>
-        <Stack direction={"row"} gap={4}>
-          {/* 1st Pera */}
+        {/* About, Submenu, Webpage, section name, section slug */}
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
+          {/* About, Submenu, Webpage */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -156,21 +158,16 @@ const CreateSinglePageSectionForm = () => {
             p={4}
           >
             <Grid size={12}>
-              <Stack direction={"row"} justifyContent={"space-between"} gap={2}>
-                <Grid size={{ xs: 3, md: 6 }}></Grid>
-                <Grid size={{ xs: 3, md: 4 }}>
-                  <CMStateCheckbox
-                    name="has_webpage_parent"
-                    label="Has Webpage Parent?"
-                    setState={setHasWebpageParent}
-                    state={hasWebpageParent}
-                  />
-                </Grid>
-              </Stack>
+              <CMStateCheckbox
+                name="has_webpage_parent"
+                label="Has Webpage Parent?"
+                setState={setHasWebpageParent}
+                state={hasWebpageParent}
+              />
             </Grid>
 
-            {hasWebpageParent && (
-              <Grid size={12}>
+            <Grid size={12}>
+              {hasWebpageParent && (
                 <CMSelectStateInput
                   name="menubarId"
                   label="Menu"
@@ -180,11 +177,11 @@ const CreateSinglePageSectionForm = () => {
                   items={menubar_options}
                   isDisabled={isMenubarLoading}
                 />
-              </Grid>
-            )}
+              )}
+            </Grid>
 
-            {hasWebpageParent && menubarId && submenu_options?.length > 0 && (
-              <Grid size={12}>
+            <Grid size={12}>
+              {hasWebpageParent && menubarId && submenu_options?.length > 0 && (
                 <CMSelectStateInput
                   name="submenuId"
                   label="Submenu"
@@ -194,8 +191,8 @@ const CreateSinglePageSectionForm = () => {
                   items={submenu_options}
                   isDisabled={isSubmenuLoading}
                 />
-              </Grid>
-            )}
+              )}
+            </Grid>
 
             <Grid size={12}>
               <CMSelectStateInput
@@ -210,9 +207,9 @@ const CreateSinglePageSectionForm = () => {
             </Grid>
           </Grid>
 
-          {/* 2nd Pera */}
+          {/* Section name, Section Slug */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -241,28 +238,24 @@ const CreateSinglePageSectionForm = () => {
               />
             </Grid>
             <Grid size={12}>
-              <Stack direction={"row"} gap={2}>
-                <Grid size={6}></Grid>
-                <Grid size={6}>
-                  <CMStateFileInput
-                    name="files"
-                    label="Files"
-                    accept="image/*, video/*"
-                    setState={setFiles}
-                    state={files}
-                    multiple={true}
-                    btn_width="100%"
-                  />
-                </Grid>
-              </Stack>
+              <CMStateFileInput
+                name="files"
+                label="Files"
+                accept="image/*, video/*"
+                setState={setFiles}
+                state={files}
+                multiple={true}
+                btn_width="100%"
+              />
             </Grid>
           </Grid>
         </Stack>
 
-        <Stack direction={"row"} gap={4}>
-          {/* 1st Pera */}
+        {/* Section title & Section descriptions */}
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
+          {/* Section title */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -282,9 +275,9 @@ const CreateSinglePageSectionForm = () => {
             </Grid>
           </Grid>
 
-          {/* 2nd Pera */}
+          {/* Section Descriptions */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -303,6 +296,7 @@ const CreateSinglePageSectionForm = () => {
             </Grid>
           </Grid>
         </Stack>
+
         {/* Rich Text Editor */}
         <Stack direction={"row"} gap={4}>
           <Grid
@@ -316,25 +310,28 @@ const CreateSinglePageSectionForm = () => {
             p={4}
           >
             {/* Rich text editor */}
-            <Editor
-              setState={setSectionContents}
-              defaultValue={section_contents}
-            />
+            <Editor setState={setEditorValue} defaultValue={editorValue} />
           </Grid>
         </Stack>
       </Stack>
 
-      <Button
-        onClick={() => submitHandler()}
-        type="submit"
-        fullWidth
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
-        disabled={isCreateLoading}
       >
-        Create Section
-      </Button>
+        <Button
+          type="submit"
+          onClick={() => submitHandler()}
+          disabled={isCreateLoading}
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Create Section
+        </Button>
+      </Box>
     </>
   );
 };

@@ -23,6 +23,7 @@ import {
 } from "@/redux/api/content/webpageApi";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -379,69 +380,81 @@ const WebpageTable = () => {
   };
 
   return (
-    <Box sx={{ m: "30px 60px" }}>
-      <Box
-        sx={{
-          marginY: "28px",
-        }}
-      >
-        <Button
-          component={Link}
-          href={"/dashboard/dev_super_admin/content/articles/create"}
-          sx={{
-            maxHeight: "40px",
-          }}
-        >
-          Create
-        </Button>
-      </Box>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <SelectFilter
-          filter_title="Filter by Type"
-          options={webpage_types_options}
-          value={type}
-          setValue={setType}
-          width="160px"
-        />
+    <Box sx={{ p: 2 }}>
+      {/* Button and search field */}
+      <Grid container spacing={2} alignItems="center">
+        <Grid size={4}>
+          <Button
+            component={Link}
+            href={"/dashboard/dev_super_admin/content/web-page/create"}
+            sx={{
+              maxHeight: "40px",
+              width: "60%",
+            }}
+          >
+            Create
+          </Button>
+        </Grid>
 
-        <SelectFilter
-          filter_title="Filter by menu"
-          options={menubar_options}
-          value={menubarId}
-          setValue={setMenubarId}
-          width="160px"
-          isDisable={menubar_isLoading}
-        />
-        <SelectFilter
-          filter_title="Filter by submenu"
-          options={submenu_options}
-          value={submenuId}
-          setValue={setSubmenuId}
-          width="160px"
-          isDisable={!menubarId}
-        />
-
-        <SelectFilter
-          filter_title="Filter by publish status"
-          options={isPublished_options}
-          value={isPublished}
-          setValue={setIsPublished}
-          width="160px"
-        />
-
-        <SelectFilter
-          filter_title="Filter by status"
-          options={user_status_options}
-          value={status}
-          setValue={setStatus}
-          width="160px"
-        />
-
-        <Box>
+        <Grid size={8}>
           <SearchFiled setSearchText={setSearchTerm} />
-        </Box>
-        {/* </Box> */}
-      </Stack>
+        </Grid>
+      </Grid>
+
+      {/* Filter (Type & Menu) */}
+      <Grid container spacing={2} alignItems="center" mt={2}>
+        <Grid size={6}>
+          <SelectFilter
+            filter_title="Content Type"
+            options={webpage_types_options}
+            value={type}
+            setValue={setType}
+            fullWidth
+          />
+        </Grid>
+
+        <Grid size={6}>
+          <SelectFilter
+            filter_title="Menu Selection"
+            options={menubar_options}
+            value={menubarId}
+            setValue={setMenubarId}
+            isDisable={menubar_isLoading}
+            fullWidth
+          />
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={2} alignItems="center" mt={2}>
+        <Grid size={4}>
+          <SelectFilter
+            filter_title="Submenu Selection"
+            options={submenu_options}
+            value={submenuId}
+            setValue={setSubmenuId}
+            fullWidth
+            isDisable={!menubarId}
+          />
+        </Grid>
+        <Grid size={4}>
+          <SelectFilter
+            filter_title="Publication Status"
+            options={isPublished_options}
+            value={isPublished}
+            setValue={setIsPublished}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={4}>
+          <SelectFilter
+            filter_title="User Status"
+            options={user_status_options}
+            value={status}
+            setValue={setStatus}
+            fullWidth
+          />
+        </Grid>
+      </Grid>
 
       {!isLoading ? (
         <Box>

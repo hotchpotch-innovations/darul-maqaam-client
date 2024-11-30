@@ -17,7 +17,8 @@ import {
   useGetAllPrivateSPSQuery,
 } from "@/redux/api/content/singlePageSectionApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -331,16 +332,10 @@ const SinglePageSectionTable = () => {
   };
 
   return (
-    <Box sx={{ m: "30px 60px" }}>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "end",
-            gap: "30px",
-          }}
-        >
-          {/* Create Country Section */}
+    <Box sx={{ p: 2 }}>
+      {/* Top Row: Search and Create Button */}
+      <Grid container spacing={2} alignItems="center">
+        <Grid size={4} textAlign={{ xs: "center", md: "left" }}>
           <Button
             component={Link}
             href={
@@ -348,43 +343,62 @@ const SinglePageSectionTable = () => {
             }
             sx={{
               maxHeight: "40px",
+              width: {
+                xs: "100%",
+                md: "60%",
+              },
             }}
           >
             Create
           </Button>
-        </Box>
-        <Box display="flex" gap={2}>
+        </Grid>
+        <Grid size={8}>
+          <SearchFiled setSearchText={setSearchTerm} />
+        </Grid>
+      </Grid>
+
+      {/* Bottom Row: Filters */}
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <SelectFilter
             filter_title="Filter Menubar"
             options={menubar_options}
             value={menubarId}
             setValue={setMenubarId}
             isDisable={isMenubarLoading}
+            fullWidth
           />
-
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <SelectFilter
             filter_title="Filter by Submenu"
             options={submenu_options}
             value={submenuId}
             setValue={setSubmenuId}
             isDisable={!menubarId || isSubmenuLoading}
+            fullWidth
           />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <SelectFilter
             filter_title="Filter by Webpage"
             options={webpage_options}
             value={webpageId}
             setValue={setWebpageId}
             isDisable={isWebpageLoading}
+            fullWidth
           />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <SelectFilter
             filter_title="Filter by status"
             options={user_status_options}
             value={status}
             setValue={setStatus}
+            fullWidth
           />
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Box>
-      </Stack>
+        </Grid>
+      </Grid>
 
       {!isLoading ? (
         <Box>

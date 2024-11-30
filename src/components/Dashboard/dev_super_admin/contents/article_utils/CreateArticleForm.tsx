@@ -6,7 +6,7 @@ import {
 import { useCreateArticleMutation } from "@/redux/api/content/articleApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -126,10 +126,10 @@ const CreateArticleForm = () => {
   return (
     <>
       <Stack direction={"column"} spacing={4}>
-        <Stack direction={"row"} gap={4}>
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -171,7 +171,7 @@ const CreateArticleForm = () => {
 
           {/* 2nd Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -201,7 +201,15 @@ const CreateArticleForm = () => {
               />
             </Grid>
             <Grid size={12}>
-              <Stack direction={"row"} gap={2}>
+              <Stack
+                direction={{ xs: "column", lg: "row" }}
+                gap={2}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Grid size={6}>
                   <CMStateFileInput
                     name="cover_image"
@@ -228,10 +236,10 @@ const CreateArticleForm = () => {
           </Grid>
         </Stack>
 
-        <Stack direction={"row"} gap={4}>
+        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* 1st Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -253,7 +261,7 @@ const CreateArticleForm = () => {
 
           {/* 2nd Pera */}
           <Grid
-            size={{ xs: 3, md: 6 }}
+            size={{ xs: 12, lg: 6 }}
             container
             gap={2}
             sx={{
@@ -274,17 +282,24 @@ const CreateArticleForm = () => {
         </Stack>
       </Stack>
 
-      <Button
-        onClick={() => submitHandler()}
-        type="submit"
-        fullWidth
+      {/* Create article button */}
+      <Box
         sx={{
-          mt: "30px",
+          display: "flex",
+          justifyContent: "flex-end",
         }}
-        disabled={isCreateLoading}
       >
-        Create Article
-      </Button>
+        <Button
+          type="submit"
+          onClick={() => submitHandler()}
+          disabled={isCreateLoading}
+          sx={{
+            mt: "30px",
+          }}
+        >
+          Create Article
+        </Button>
+      </Box>
     </>
   );
 };

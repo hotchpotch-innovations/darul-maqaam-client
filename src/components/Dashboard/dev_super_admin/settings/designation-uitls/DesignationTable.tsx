@@ -4,7 +4,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -194,35 +195,40 @@ const DesignationTable = () => {
   };
   return (
     <Box>
-      <Box sx={{ m: "30px 60px" }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Box
-            sx={{
-              display: "flex",
-              gap: "30px",
-            }}
-          >
-            {/* Create Country Section */}
-            <Button
-              component={Link}
-              href={path_create_country}
-              sx={{
-                maxHeight: "40px",
-              }}
-            >
-              Create
-            </Button>
-          </Box>
-          <Box display="flex" gap={2}>
+      <Box sx={{ p: 2 }}>
+        <Grid container spacing={2} mb={1}>
+          <Grid size={{ xs: 12, lg: 8 }} mt={4}>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid size={4}>
+                  <Button
+                    component={Link}
+                    href={path_create_country}
+                    sx={{
+                      maxHeight: "40px",
+                    }}
+                  >
+                    Create
+                  </Button>
+                </Grid>
+
+                <Grid size={8}>
+                  <SearchFiled setSearchText={setSearchTerm} />
+                </Grid>
+              </Grid>
+            </Box>
+          </Grid>
+
+          <Grid size={{ xs: 12, lg: 4 }}>
             <SelectFilter
               filter_title="Search by Department"
               options={options}
               value={departmentId}
               setValue={setDepartmentId}
+              fullWidth={true}
             />
-            <SearchFiled setSearchText={setSearchTerm} />
-          </Box>
-        </Stack>
+          </Grid>
+        </Grid>
 
         {!isLoading ? (
           <Box>
@@ -261,10 +267,10 @@ const DesignationTable = () => {
             }}
           >
             <Grid container spacing={3}>
-              <Grid item xs={12} md={12}>
+              <Grid size={12}>
                 <CMInput name="title" label="Title" fullWidth />
               </Grid>
-              <Grid item xs={12} md={12}>
+              <Grid size={12}>
                 <CMInput name="identifier" label="Identifier" fullWidth />
               </Grid>
             </Grid>

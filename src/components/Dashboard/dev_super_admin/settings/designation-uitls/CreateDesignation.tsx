@@ -2,7 +2,8 @@
 
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
@@ -38,58 +39,44 @@ const CreateDesignation = () => {
   };
   return (
     <CMForm onSubmit={handleCreateCountry} defaultValues={default_values}>
-      <Stack direction={"row"} justifyContent="center" gap={4}>
-        {/* 1st Pera */}
-        <Grid
-          item
-          xs={3}
-          md={6}
-          container
-          gap={2}
-          sx={{
-            border: "1px solid lightgray",
-            boxShadow: 1,
-          }}
-          p={4}
-        >
-          <Typography variant="h5">Basic Information </Typography>
+      <Grid
+        container
+        gap={2}
+        sx={{
+          border: "1px solid lightgray",
+          boxShadow: 1,
+        }}
+        p={4}
+      >
+        <Typography variant="h5">Basic Information </Typography>
 
-          <Grid item xs={12} md={12}>
-            <CMSelectWithWatch
-              name="departmentId"
-              label="Department *"
-              options={department_options}
-              setState={setDepartmentId}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={12}>
-            <CMInput name="title" label="Title" fullWidth={true} />
-          </Grid>
-          <Grid item xs={12} md={12}>
-            <CMInput name="identifier" label="Identifier" fullWidth={true} />
-          </Grid>
+        <Grid size={12}>
+          <CMInput name="title" label="Title" fullWidth={true} />
         </Grid>
+        <Grid size={12}>
+          <CMInput name="identifier" label="Identifier" fullWidth={true} />
+        </Grid>
+      </Grid>
 
-        {/* 2nd Pera */}
-      </Stack>
-      <Stack sx={{}} justifyContent="center" direction="row">
-        <Box
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          type="submit"
           sx={{
-            width: "400px",
+            mt: "30px",
+            width: {
+              xs: "40%",
+              lg: "20%",
+            },
           }}
         >
-          <Button
-            type="submit"
-            fullWidth
-            sx={{
-              mt: "30px",
-            }}
-          >
-            create designation
-          </Button>
-        </Box>
-      </Stack>
+          create designation
+        </Button>
+      </Box>
     </CMForm>
   );
 };

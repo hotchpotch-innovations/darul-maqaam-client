@@ -38,7 +38,7 @@ const ForgotPasswordForm = () => {
     <Box
       sx={{
         width: "100%",
-        padding: "10px 20px",
+        padding: "25px 25px",
       }}
     >
       {!checkGamil ? (

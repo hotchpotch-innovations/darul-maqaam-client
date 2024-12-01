@@ -20,7 +20,7 @@ const ForgotPassword = () => {
           alignItems: "center",
         }}
       >
-        <Box sx={{ maxWidth: "600px", width: "100%", boxShadow: "1" }} pt={4}>
+        <Box sx={{ maxWidth: "500px", width: "100%", boxShadow: "1" }} pt={4}>
           <Stack
             sx={{
               justifyContent: "center",

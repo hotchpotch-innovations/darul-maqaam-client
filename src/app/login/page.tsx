@@ -24,7 +24,7 @@ const LoginPage = () => {
       >
         <Box
           sx={{
-            maxWidth: "600px",
+            maxWidth: "480px",
             width: "100%",
             boxShadow: "1",
           }}
@@ -38,13 +38,14 @@ const LoginPage = () => {
             }}
           >
             <Image
+              style={{ marginTop: "8px" }}
               src={loginImage}
               alt="Login Logo Image "
               height={60}
               width={60}
             />
             <Typography variant="h5" pt={2} pb={1}>
-              Login Here
+              Login
             </Typography>
 
             <LoginForm />

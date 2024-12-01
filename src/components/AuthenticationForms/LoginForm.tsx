@@ -50,8 +50,8 @@ const LoginForm = () => {
   return (
     <Box
       sx={{
-        width: "100%",
-        padding: "10px 20px",
+        width: "70%",
+        padding: "60px 15px",
       }}
     >
       <CMForm

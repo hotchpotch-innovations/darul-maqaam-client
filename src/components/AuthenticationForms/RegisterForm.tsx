@@ -1,5 +1,6 @@
 "use client";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import React, { useEffect, useState } from "react";
 import CMForm from "../forms/CMForm";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -123,7 +124,7 @@ const RegisterForm = () => {
       >
         <Grid container spacing={2}>
           {client_type_options?.length > 1 && (
-            <Grid item xs={12} md={12}>
+            <Grid size={12}>
               <CMSelectWithWatch
                 setState={setClientType}
                 name="client.clientTypeId"
@@ -135,7 +136,7 @@ const RegisterForm = () => {
           )}
 
           {isCompany === "company" && (
-            <Grid item xs={12} md={12}>
+            <Grid size={12}>
               <CMInput
                 name="client.name_of_entity"
                 label="Company Name *"
@@ -145,7 +146,7 @@ const RegisterForm = () => {
             </Grid>
           )}
 
-          <Grid item xs={12} md={12}>
+          <Grid size={12}>
             <CMInput
               name="client.owner_name"
               label="Name *"
@@ -153,25 +154,7 @@ const RegisterForm = () => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
-            <CMInput
-              name="client.email"
-              label="Email *"
-              type="email"
-              size="small"
-              fullWidth={true}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <CMInput
-              name="password"
-              label="Password *"
-              type="password"
-              size="small"
-              fullWidth={true}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, lg: 6 }}>
             <CMInput
               name="client.phone"
               label="Contact Number *"
@@ -180,7 +163,7 @@ const RegisterForm = () => {
               fullWidth={true}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, lg: 6 }}>
             <CMSelect
               name="client.gender"
               fullWidth={true}
@@ -188,19 +171,39 @@ const RegisterForm = () => {
               items={gender_options}
             />
           </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <CMInput
+              name="client.email"
+              label="Email *"
+              type="email"
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <CMInput
+              name="password"
+              label="Password *"
+              type="password"
+              size="small"
+              fullWidth={true}
+            />
+          </Grid>
         </Grid>
         <Button
           type="submit"
-          fullWidth
           sx={{
             mt: "30px",
+            display: "block",
+            mx: "auto",
+            width: "40%",
           }}
         >
           Register
         </Button>
 
         <Typography textAlign={"center"} py={2}>
-          Do you already have an account?{" "}
+          Already have an account?
           <Link href={"/login"}>
             <span className="text-blue-500">Login</span>
           </Link>

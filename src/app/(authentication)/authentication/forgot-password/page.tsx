@@ -38,7 +38,7 @@ const ForgotPassword = () => {
             >
               <LockIcon sx={{ color: "primary.main" }} />
             </Box>
-            <Typography variant="h5" pt={2} pb={1}>
+            <Typography variant="h4" pt={2} pb={4}>
               Forgot Password
             </Typography>
             <ForgotPasswordForm />

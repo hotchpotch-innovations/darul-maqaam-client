@@ -20,7 +20,7 @@ const ForgotPassword = () => {
           alignItems: "center",
         }}
       >
-        <Box sx={{ maxWidth: "600px", width: "100%", boxShadow: "1" }} pt={4}>
+        <Box sx={{ maxWidth: "500px", width: "100%", boxShadow: "1" }} pt={4}>
           <Stack
             sx={{
               justifyContent: "center",
@@ -38,7 +38,7 @@ const ForgotPassword = () => {
             >
               <LockIcon sx={{ color: "primary.main" }} />
             </Box>
-            <Typography variant="h5" pt={2} pb={1}>
+            <Typography variant="h4" pt={2} pb={4}>
               Forgot Password
             </Typography>
             <ForgotPasswordForm />

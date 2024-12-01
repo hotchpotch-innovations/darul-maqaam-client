@@ -1,5 +1,6 @@
 "use client";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForgotPasswordMutation } from "@/redux/api/auth/authApi";
@@ -37,7 +38,7 @@ const ForgotPasswordForm = () => {
     <Box
       sx={{
         width: "100%",
-        padding: "10px 20px",
+        padding: "25px 25px",
       }}
     >
       {!checkGamil ? (
@@ -49,25 +50,29 @@ const ForgotPasswordForm = () => {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12} md={12}>
+            <Grid size={{ xs: 12, md: 12 }}>
+              <Typography sx={{ fontSize: "16px", marginBottom: "12px" }}>
+                Please enter your email address for password recovery:
+              </Typography>
               <CMInput
-                label="Email"
+                label="Email address"
                 type="email"
                 fullWidth={true}
                 name="email"
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            sx={{
-              mt: "20px",
-              mb: "10px",
-            }}
-          >
-            Submit
-          </Button>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              type="submit"
+              sx={{
+                mt: "20px",
+                mb: "10px",
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
         </CMForm>
       ) : (
         <Box>

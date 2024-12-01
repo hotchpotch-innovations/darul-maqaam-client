@@ -1,4 +1,4 @@
-import { SxProps, TextField } from "@mui/material";
+import { InputAdornment, SxProps, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
 type TInputProps = {
@@ -11,6 +11,7 @@ type TInputProps = {
   defaultValue?: string;
   readOnly?: boolean;
   required?: boolean;
+  endAdornment?: JSX.Element;
 };
 
 const CMInput = ({
@@ -23,6 +24,7 @@ const CMInput = ({
   defaultValue,
   readOnly = false,
   required = false,
+  endAdornment,
 }: TInputProps) => {
   const { control } = useFormContext();
   return (
@@ -51,6 +53,9 @@ const CMInput = ({
           slotProps={{
             input: {
               readOnly,
+              endAdornment: endAdornment ? (
+                <InputAdornment position="end">{endAdornment}</InputAdornment>
+              ) : null,
             },
           }}
         />

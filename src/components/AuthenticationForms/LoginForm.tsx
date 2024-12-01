@@ -1,6 +1,7 @@
 "use client";
 
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import CMForm from "@/components/forms/CMForm";
 import Link from "next/link";
@@ -11,6 +12,8 @@ import { toast } from "sonner";
 import { setToLocalStorage } from "@/utils/local-starage";
 import { authkey } from "@/constants/authkey";
 import { userSignIn } from "@/services/actions/userSignIn";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useState } from "react";
 
 const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
@@ -18,6 +21,11 @@ const validationSchema = z.object({
 });
 
 const LoginForm = () => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const toggolePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
   const handleLogin: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait...");
     const data = {
@@ -55,20 +63,40 @@ const LoginForm = () => {
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12} md={12}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <CMInput label="Email" fullWidth={true} name="email" />
           </Grid>
-          <Grid item xs={12} md={12}>
-            <CMInput
-              name="password"
-              type="password"
-              label="Password"
-              fullWidth={true}
-            />
+          <Grid size={{ xs: 12, md: 12 }}>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Grid flexGrow={1}>
+                <CMInput
+                  name="password"
+                  type={isPasswordVisible ? "text" : "password"}
+                  label="Password"
+                  fullWidth={true}
+                  endAdornment={
+                    <IconButton
+                      onClick={toggolePasswordVisibility}
+                      edge="end"
+                      sx={{
+                        backgroundColor: "#f5f5f5",
+                        "&:hover": {
+                          backgroundColor: "#e0e0e0",
+                        },
+                        borderRadius: "10px",
+                        padding: "5px",
+                      }}
+                    >
+                      {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  }
+                />
+              </Grid>
+            </Stack>
           </Grid>
           <Typography textAlign={"end"} py={1} width={"100%"}>
             <Link href={"authentication/forgot-password"}>
-              <span className="text-blue-500 text-end">forgot password</span>
+              <span className="text-blue-500 text-end">Forgot Password?</span>
             </Link>
           </Typography>
         </Grid>
@@ -83,9 +111,9 @@ const LoginForm = () => {
         </Button>
 
         <Typography textAlign={"center"} py={2}>
-          do not have an account?
+          Don&apos;t have an account?
           <Link href={"/register"}>
-            <span className="text-blue-500">Register</span>
+            <span className="text-blue-500"> Register</span>
           </Link>
         </Typography>
       </CMForm>

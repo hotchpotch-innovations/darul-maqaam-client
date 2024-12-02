@@ -32,6 +32,7 @@ import {
 } from "@/constants/zodvalidation";
 import { useRouter } from "next/navigation";
 import { customTimeOut } from "@/utils/customTimeOut";
+import CMPasswordInput from "@/components/forms/without_form_state_fields/CMPasswordInput";
 // import {
 //   TDistrictQueryObj,
 //   useDistrictOptions,
@@ -141,7 +142,7 @@ const CreateEmployeeForm = () => {
       defaultValues={create_employee_default_values}
     >
       <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-        {/* 1st Pera */}
+        {/* Departmental Information */}
         <Grid
           size={{ xs: 12, lg: 6 }}
           container
@@ -191,7 +192,7 @@ const CreateEmployeeForm = () => {
           </Grid>
         </Grid>
 
-        {/* 2nd Pera */}
+        {/* Basic Information */}
         <Grid
           size={{ xs: 12, lg: 6 }}
           container
@@ -231,10 +232,10 @@ const CreateEmployeeForm = () => {
             />
           </Grid>
           <Grid size={12}>
-            <CMInput
+            <CMPasswordInput
               name="password"
-              label="Password *"
-              type="password"
+              label="Password"
+              required={true}
               size="medium"
               fullWidth={true}
             />
@@ -243,6 +244,7 @@ const CreateEmployeeForm = () => {
       </Stack>
 
       <Stack direction={{ xs: "column", lg: "row" }} gap={4} mt={4}>
+        {/* Present Address */}
         <Grid
           size={{ xs: 12, lg: 4 }}
           container
@@ -307,6 +309,8 @@ const CreateEmployeeForm = () => {
             />
           </Grid>
         </Grid>
+
+        {/* Permanent Address */}
         <Grid
           size={{ xs: 12, lg: 4 }}
           container
@@ -374,11 +378,8 @@ const CreateEmployeeForm = () => {
             />
           </Grid>
         </Grid>
-        {/**
-         * ======================================================
-         *              Four pera
-         * ========================================================
-         */}
+
+        {/* Social Links */}
         <Grid
           size={{ xs: 12, lg: 4 }}
           container

@@ -29,8 +29,7 @@ type TMultiplePageSectionPayload = {
   yt_video_url?: URL;
   cover_image?: any;
   files?: any;
-  sub_titles?: Array<string>;
-  descriptions?: Array<string>;
+  summary?: string;
   contents?: string;
 };
 
@@ -48,8 +47,7 @@ const CreateMultiplePageSectionForm = () => {
   const [yt_video_url, setYtVideoUrl] = useState();
   const [cover_image, setCoverImage] = useState(null);
   const [files, setFiles] = useState(null);
-  const [sub_titles, setSubTitles] = useState([""]);
-  const [descriptions, setDescriptions] = useState([""]);
+  const [summary, setSummary] = useState("");
   // Get value from text editor
   const [editorValue, setEditorValue] = useState("");
 
@@ -102,16 +100,15 @@ const CreateMultiplePageSectionForm = () => {
       if (!!files) {
         data["files"] = files;
       }
-      if (sub_titles?.length > 0) {
-        data["sub_titles"] = sub_titles;
-      }
-      if (descriptions?.length > 0) {
-        data["descriptions"] = descriptions;
+
+      if (summary?.length > 0) {
+        data["summary"] = summary;
       }
 
       if (editorValue.length > 0) {
         data["contents"] = editorValue;
       }
+      // console.log(data);
 
       const payload = modifyPayload(data);
       // console.log(data?.contents);
@@ -142,7 +139,7 @@ const CreateMultiplePageSectionForm = () => {
     <>
       <Stack direction={"column"} spacing={4}>
         <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-          {/* 1st Pera */}
+          {/* Type & Category */}
           <Grid
             size={{ xs: 12, lg: 6 }}
             container
@@ -171,7 +168,7 @@ const CreateMultiplePageSectionForm = () => {
                 state={categoryId}
                 fullWidth={true}
                 items={category_options}
-                isDisabled={isCategoryLoading}
+                isDisabled={!type}
               />
             </Grid>
             <Grid size={12}>
@@ -184,7 +181,7 @@ const CreateMultiplePageSectionForm = () => {
             </Grid>
           </Grid>
 
-          {/* 2nd Pera */}
+          {/* Price, Discouint Price, Youtube URL, Banner Image & Files(Images) */}
           <Grid
             size={{ xs: 12, lg: 6 }}
             container
@@ -262,9 +259,8 @@ const CreateMultiplePageSectionForm = () => {
         </Stack>
 
         <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-          {/* 1st Pera */}
           <Grid
-            size={{ xs: 12, lg: 6 }}
+            size={{ xs: 12 }}
             container
             gap={2}
             sx={{
@@ -274,33 +270,11 @@ const CreateMultiplePageSectionForm = () => {
             p={4}
           >
             <Grid size={12}>
-              <CMMultipleInput
-                name="sub_titles"
-                label="Sub sub_titles"
-                setState={setSubTitles}
-                states={sub_titles}
+              <CMStateInput
+                name="summary"
+                label="Summary"
+                setState={setSummary}
                 fullWidth={true}
-              />
-            </Grid>
-          </Grid>
-
-          {/* 2nd Pera */}
-          <Grid
-            size={{ xs: 12, lg: 6 }}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-            }}
-            p={4}
-          >
-            <Grid size={12}>
-              <CMMultipleTextarea
-                name="description"
-                label="Descriptions"
-                setState={setDescriptions}
-                states={descriptions}
               />
             </Grid>
           </Grid>

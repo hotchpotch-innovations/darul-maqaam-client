@@ -35,7 +35,7 @@ type TSPSPayload = {
   files?: any;
   section_titles?: Array<string>;
   section_descriptions?: Array<string>;
-  contents?: string;
+  section_contents?: string;
 };
 
 const CreateSinglePageSectionForm = () => {
@@ -63,7 +63,7 @@ const CreateSinglePageSectionForm = () => {
   const [section_titles, setSectionTitles] = useState([""]);
   const [section_descriptions, setSectionDescriptions] = useState([""]);
   // Get value from text editor
-  const [editorValue, setEditorValue] = useState("");
+  const [contents, setContents] = useState("");
 
   // options query assign
   if (!!menubarId) {
@@ -114,16 +114,18 @@ const CreateSinglePageSectionForm = () => {
       if (section_descriptions?.length > 0) {
         data["section_descriptions"] = section_descriptions;
       }
-      if (editorValue.length > 0) {
-        data["contents"] = editorValue;
+      if (contents.length > 0) {
+        data["section_contents"] = contents;
       }
 
       //   console.log(data);
 
       const payload = modifyPayload(data);
+      // console.log({ data, payload });
+
       try {
         const res = await createSPS(payload).unwrap();
-
+        console.log(res);
         if (res?.success) {
           toast.success(res.message, { id: toastId, duration: 2000 });
           router.push("/dashboard/dev_super_admin/content/page-section/single");
@@ -310,7 +312,7 @@ const CreateSinglePageSectionForm = () => {
             p={4}
           >
             {/* Rich text editor */}
-            <Editor setState={setEditorValue} defaultValue={editorValue} />
+            <Editor setState={setContents} defaultValue={contents} />
           </Grid>
         </Stack>
       </Stack>

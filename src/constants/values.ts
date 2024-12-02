@@ -1,73 +1,53 @@
 import { TDefaultMetaInfo } from "@/types";
 
+export const create_social_link_default_values = {
+  facebook: "",
+  twitter: "",
+  linkedIn: "",
+  instagram: "",
+};
+
+export const create_address_default_values = {
+  countryId: "",
+  // divisionId: "",
+  // districtId: "",
+  state: "",
+  city: "",
+  address_line: "",
+};
+
+export const create_private_user_default_values = {
+  departmentId: "",
+  web_mail: "",
+  phone: "",
+  designationId: "",
+  name: "",
+  email: "",
+  gender: "",
+};
+
 export const create_admin_default_values = {
   password: "",
-  admin: {
-    departmentId: "",
-    web_mail: "",
-    phone: "",
-    designationId: "",
-    name: "",
-    email: "",
-    gender: "",
-  },
-  present_address: {
-    countryId: "",
-    // divisionId: "",
-    // districtId: "",
-    state: "",
-    city: "",
-    address_line: "",
-  },
-  permanent_address: {
-    countryId: "",
-    // divisionId: "",
-    // districtId: "",
-    state: "",
-    city: "",
-    address_line: "",
-  },
-  social_links: {
-    facebook: "",
-    twitter: "",
-    linkedIn: "",
-    instagram: "",
-  },
+  admin: create_private_user_default_values,
+  present_address: create_address_default_values,
+  permanent_address: create_address_default_values,
+  social_links: create_social_link_default_values,
 };
 
 export const create_employee_default_values = {
   password: "",
-  employee: {
-    departmentId: "",
-    web_mail: "",
-    phone: "",
-    designationId: "",
-    name: "",
-    email: "",
-    gender: "",
-  },
-  present_address: {
-    countryId: "",
-    // divisionId: "",
-    // districtId: "",
-    state: "",
-    city: "",
-    address_line: "",
-  },
-  permanent_address: {
-    countryId: "",
-    // divisionId: "",
-    // districtId: "",
-    state: "",
-    city: "",
-    address_line: "",
-  },
-  social_links: {
-    facebook: "",
-    twitter: "",
-    linkedIn: "",
-    instagram: "",
-  },
+  employee: create_private_user_default_values,
+  present_address: create_address_default_values,
+  permanent_address: create_address_default_values,
+  social_links: create_social_link_default_values,
+};
+
+export const create_team_member_default_values = {
+  name: "",
+  departmentId: "",
+  designationId: "",
+  description: "",
+  socialLink: create_social_link_default_values,
 };
 
 export const default_meta_info: TDefaultMetaInfo = {

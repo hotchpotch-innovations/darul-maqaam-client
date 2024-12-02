@@ -27,7 +27,7 @@ import { gender_options } from "@/constants/options";
 import { z } from "zod";
 import {
   adminValidationSchema,
-  present_addressValidationSchema,
+  addressValidationSchema,
   social_linksValidationSchema,
 } from "@/constants/zodvalidation";
 import { useRouter } from "next/navigation";
@@ -40,8 +40,8 @@ import { customTimeOut } from "@/utils/customTimeOut";
 const validationSchema = z.object({
   password: z.string().min(6, "passrword must be at least 6 character"),
   employee: adminValidationSchema,
-  present_address: present_addressValidationSchema,
-  permanent_address: present_addressValidationSchema,
+  present_address: addressValidationSchema,
+  permanent_address: addressValidationSchema,
   social_links: social_linksValidationSchema,
 });
 

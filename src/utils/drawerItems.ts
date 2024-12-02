@@ -199,11 +199,11 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               state: "content_others",
               identifier: "/others",
               child: [
-                {
-                  title: "Hero-Section",
-                  path: `/dashboard/${role}/${content}/others/hero-section`,
-                  identifier: "/hero-section",
-                },
+                // {
+                //   title: "Hero-Section",
+                //   path: `/dashboard/${role}/${content}/others/hero-section`,
+                //   identifier: "/hero-section",
+                // },
                 {
                   title: "Team",
                   path: `/dashboard/${role}/${content}/others/team`,

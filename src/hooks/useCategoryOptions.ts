@@ -9,7 +9,7 @@ export type TCategoryQueryObj = {
   page?: number | 1;
 };
 
-export const useDesignationOptions = (queryObj: TCategoryQueryObj = {}) => {
+export const useCategoryOptions = (queryObj: TCategoryQueryObj = {}) => {
   const { data, isLoading } = useGetAllCategoriesQuery(queryObj);
 
   const categoryData = data as TResponseDataObj;

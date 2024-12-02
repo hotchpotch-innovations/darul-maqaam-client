@@ -10,7 +10,7 @@ import { gender_options } from "@/constants/options";
 import { create_admin_default_values } from "@/constants/values";
 import {
   adminValidationSchema,
-  present_addressValidationSchema,
+  addressValidationSchema,
   social_linksValidationSchema,
 } from "@/constants/zodvalidation";
 import { useCountryOptions } from "@/hooks/useCountryOptions";
@@ -40,10 +40,10 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const validationSchema = z.object({
-  password: z.string().min(6, "passrword must be at least 6 character"),
+  password: z.string().min(6, "password must be at least 6 character"),
   admin: adminValidationSchema,
-  present_address: present_addressValidationSchema,
-  permanent_address: present_addressValidationSchema,
+  present_address: addressValidationSchema,
+  permanent_address: addressValidationSchema,
   social_links: social_linksValidationSchema,
 });
 

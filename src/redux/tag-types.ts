@@ -20,6 +20,7 @@ export const contentTags = {
   multiple_section: "multiple_section",
   single_section: "single_section",
   article: "article",
+  team: "team",
   category: "common_category",
   authority: "common_authority",
 };
@@ -42,6 +43,7 @@ export const tagTypesList = [
   contentTags.multiple_section,
   contentTags.single_section,
   contentTags.article,
+  contentTags.team,
   contentTags.category,
   contentTags.authority,
 ];

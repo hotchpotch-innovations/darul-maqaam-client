@@ -28,7 +28,6 @@ import { customTimeOut } from "@/utils/customTimeOut";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
-
 import {
   // useEffect,
   useState,
@@ -103,7 +102,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
     useUpdateAdminMutation();
 
   // update handler
-  const handleCreateSuperAdmin = async (values: FieldValues) => {
+  const handleUpdateAdmin = async (values: FieldValues) => {
     const toastId = toast.loading("Please wait...");
     const { social_links, ...payload } = values;
     const { facebook, instagram, linkedIn, twitter } = social_links;
@@ -192,7 +191,7 @@ const UpdateAdminFrom = ({ adminId }: TProps) => {
   };
 
   return (
-    <CMForm onSubmit={handleCreateSuperAdmin} defaultValues={default_values}>
+    <CMForm onSubmit={handleUpdateAdmin} defaultValues={default_values}>
       <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
         {/* 1st Pera */}
         <Grid

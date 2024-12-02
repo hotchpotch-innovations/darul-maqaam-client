@@ -39,44 +39,44 @@ const teamApi = baseApi.injectEndpoints({
       providesTags: [contentTags?.team],
     }),
 
-    // updateWebpage: build.mutation({
-    //   query: (data) => {
-    //     const { id, ...payload } = data;
-    //     return {
-    //       url: `/content/team/${id}`,
-    //       method: "PATCH",
-    //       contentType: "application/json",
-    //       data: payload,
-    //     };
-    //   },
-    //   invalidatesTags: [contentTags?.team],
-    // }),
+    updateTeam: build.mutation({
+      query: (data) => {
+        const { id, ...payload } = data;
+        return {
+          url: `/content/team/${id}`,
+          method: "PATCH",
+          contentType: "application/json",
+          data: payload,
+        };
+      },
+      invalidatesTags: [contentTags?.team],
+    }),
 
-    // deleteWebpage: build.mutation({
-    //   query: (id) => {
-    //     return {
-    //       url: `/content/team/${id}`,
-    //       method: "DELETE",
-    //     };
-    //   },
-    //   invalidatesTags: [contentTags?.team],
-    // }),
+    deleteTeam: build.mutation({
+      query: (id) => {
+        return {
+          url: `/content/team/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: [contentTags?.team],
+    }),
 
-    // changeWebpageStatus: build.mutation({
-    //   query: (id) => ({
-    //     url: `/content/team/status/${id}`,
-    //     method: "PATCH",
-    //   }),
-    //   invalidatesTags: [contentTags?.team],
-    // }),
+    changeTeamStatus: build.mutation({
+      query: (id) => ({
+        url: `/content/team/status/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [contentTags?.team],
+    }),
 
-    // changePublishedWebpageStatus: build.mutation({
-    //   query: (id) => ({
-    //     url: `/content/team/published/${id}`,
-    //     method: "PATCH",
-    //   }),
-    //   invalidatesTags: [contentTags?.team],
-    // }),
+    changePublishedTeamStatus: build.mutation({
+      query: (id) => ({
+        url: `/content/team/published/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [contentTags?.team],
+    }),
 
     // changeOGImage: build.mutation({
     //   query: (data) => {
@@ -98,9 +98,9 @@ export const {
   useGetAllPublicTeamMemberQuery,
   useGetAllPrivateTeamMemberQuery,
   useGetSingleTeamMemberQuery,
-  //   useUpdateWebpageMutation,
-  //   useDeleteWebpageMutation,
-  //   useChangeWebpageStatusMutation,
-  //   useChangePublishedWebpageStatusMutation,
+  useUpdateTeamMutation,
+  useDeleteTeamMutation,
+  useChangeTeamStatusMutation,
+  useChangePublishedTeamStatusMutation,
   //   useChangeOGImageMutation,
 } = teamApi;

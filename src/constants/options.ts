@@ -92,6 +92,10 @@ export const user_status_options: ISelectOption[] = [
 
 export const multiple_page_section_types_options: ISelectOption[] = [
   {
+    label: "Hero Section",
+    value: "hero_section",
+  },
+  {
     label: "Service",
     value: "service",
   },

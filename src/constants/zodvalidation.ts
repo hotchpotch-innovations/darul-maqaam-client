@@ -13,7 +13,7 @@ export const adminValidationSchema = z.object({
   gender: z.string().nonempty("gender is required"),
 });
 
-export const present_addressValidationSchema = z.object({
+export const addressValidationSchema = z.object({
   countryId: z.string().nonempty("country is required"),
   divisionId: z.string().nonempty("division is required").optional(),
   districtId: z.string().nonempty("district is required").optional(),
@@ -25,7 +25,9 @@ export const present_addressValidationSchema = z.object({
 export const social_linksValidationSchema = z.object({
   facebook: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().url("Please enter a valid Facebook URL")
+    z
+      .string()
+      .url("Please enter a valid Facebook URL")
   ),
   twitter: z.preprocess(
     (value) => (value === "" ? undefined : value),

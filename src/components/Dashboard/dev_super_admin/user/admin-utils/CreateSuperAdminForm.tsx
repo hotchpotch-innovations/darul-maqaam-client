@@ -36,6 +36,7 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { customTimeOut } from "@/utils/customTimeOut";
+import CMPasswordInput from "@/components/forms/without_form_state_fields/CMPasswordInput";
 
 const validationSchema = z.object({
   password: z.string().min(6, "password must be at least 6 character"),
@@ -136,7 +137,7 @@ const CreateSuperAdminForm = () => {
       defaultValues={create_admin_default_values}
     >
       <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-        {/* 1st Pera */}
+        {/* Department Information */}
         <Grid
           size={{ xs: 12, lg: 6 }}
           container
@@ -185,7 +186,7 @@ const CreateSuperAdminForm = () => {
           </Grid>
         </Grid>
 
-        {/* 2nd Pera */}
+        {/* Basic Information */}
         <Grid
           size={{ xs: 12, lg: 6 }}
           container
@@ -224,11 +225,11 @@ const CreateSuperAdminForm = () => {
             />
           </Grid>
           <Grid size={12}>
-            <CMInput
+            <CMPasswordInput
               name="password"
-              label="Password *"
-              type="password"
+              label="Password"
               size="medium"
+              required={true}
               fullWidth={true}
             />
           </Grid>
@@ -236,6 +237,7 @@ const CreateSuperAdminForm = () => {
       </Stack>
 
       <Stack direction={{ xs: "column", lg: "row" }} gap={4} mt={4}>
+        {/* Present Address */}
         <Grid
           size={{ xs: 12, lg: 4 }}
           container
@@ -302,6 +304,8 @@ const CreateSuperAdminForm = () => {
             />
           </Grid>
         </Grid>
+
+        {/* Permanent Address */}
         <Grid
           size={{ xs: 12, lg: 4 }}
           container
@@ -368,11 +372,8 @@ const CreateSuperAdminForm = () => {
             />
           </Grid>
         </Grid>
-        {/**
-         * ======================================================
-         *              Four pera
-         * ========================================================
-         */}
+
+        {/* Social Links */}
         <Grid
           size={{ xs: 12, lg: 4 }}
           container

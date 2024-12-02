@@ -14,6 +14,7 @@ import { authkey } from "@/constants/authkey";
 import { userSignIn } from "@/services/actions/userSignIn";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
+import CMPasswordInput from "../forms/without_form_state_fields/CMPasswordInput";
 
 const validationSchema = z.object({
   email: z.string().email("please enter a valid email"),
@@ -64,32 +65,20 @@ const LoginForm = () => {
       >
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 12 }}>
-            <CMInput label="Email" fullWidth={true} name="email" />
+            <CMInput
+              label="Email"
+              fullWidth={true}
+              name="email"
+              required={true}
+            />
           </Grid>
           <Grid size={{ xs: 12, md: 12 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Grid flexGrow={1}>
-                <CMInput
+                <CMPasswordInput
                   name="password"
-                  type={isPasswordVisible ? "text" : "password"}
                   label="Password"
-                  fullWidth={true}
-                  endAdornment={
-                    <IconButton
-                      onClick={toggolePasswordVisibility}
-                      edge="end"
-                      sx={{
-                        backgroundColor: "#f5f5f5",
-                        "&:hover": {
-                          backgroundColor: "#e0e0e0",
-                        },
-                        borderRadius: "10px",
-                        padding: "5px",
-                      }}
-                    >
-                      {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  }
+                  required={true}
                 />
               </Grid>
             </Stack>

@@ -20,6 +20,7 @@ import { authkey } from "@/constants/authkey";
 import { useClientTypeOption } from "@/hooks/useClientTypeOptions";
 import { TResponseDataObj } from "@/types";
 import { useGetSingleClientTypeQuery } from "@/redux/api/user/settings/clientTypeApi";
+import CMPasswordInput from "../forms/without_form_state_fields/CMPasswordInput";
 
 const clientValidationSchema = z.object({
   owner_name: z.string().min(1, "please enter your name"),
@@ -181,12 +182,12 @@ const RegisterForm = () => {
             />
           </Grid>
           <Grid size={{ xs: 12, lg: 6 }}>
-            <CMInput
+            <CMPasswordInput
               name="password"
-              label="Password *"
-              type="password"
+              label="Password"
               size="small"
               fullWidth={true}
+              required={true}
             />
           </Grid>
         </Grid>
@@ -203,7 +204,7 @@ const RegisterForm = () => {
         </Button>
 
         <Typography textAlign={"center"} py={2}>
-          Already have an account?
+          Already have an account?{" "}
           <Link href={"/login"}>
             <span className="text-blue-500">Login</span>
           </Link>

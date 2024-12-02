@@ -33,8 +33,8 @@ type TSPSPayload = {
   section_name: string;
   section_slug: string;
   files?: any;
-  section_titles?: Array<string>;
-  section_descriptions?: Array<string>;
+  section_title?: string;
+  section_summary?: string;
   section_contents?: string;
 };
 
@@ -60,8 +60,8 @@ const CreateSinglePageSectionForm = () => {
   const [section_name, setSectionName] = useState();
   const [section_slug, setSectionSlug] = useState();
   const [files, setFiles] = useState(null);
-  const [section_titles, setSectionTitles] = useState([""]);
-  const [section_descriptions, setSectionDescriptions] = useState([""]);
+  const [section_title, setSectionTitle] = useState("");
+  const [section_summary, setSectionSummary] = useState("");
   // Get value from text editor
   const [contents, setContents] = useState("");
 
@@ -108,17 +108,17 @@ const CreateSinglePageSectionForm = () => {
       if (!!files) {
         data["files"] = files;
       }
-      if (section_titles?.length > 0) {
-        data["section_titles"] = section_titles;
+      if (section_title?.length > 0) {
+        data["section_title"] = section_title;
       }
-      if (section_descriptions?.length > 0) {
-        data["section_descriptions"] = section_descriptions;
+      if (section_summary?.length > 0) {
+        data["section_summary"] = section_summary;
       }
       if (contents.length > 0) {
         data["section_contents"] = contents;
       }
 
-      //   console.log(data);
+      // console.log(data);
 
       const payload = modifyPayload(data);
       // console.log({ data, payload });
@@ -231,6 +231,7 @@ const CreateSinglePageSectionForm = () => {
                 fullWidth={true}
               />
             </Grid>
+
             <Grid size={12}>
               <CMStateInput
                 name="section_slug"
@@ -239,6 +240,25 @@ const CreateSinglePageSectionForm = () => {
                 fullWidth={true}
               />
             </Grid>
+
+            <Grid size={12}>
+              <CMStateInput
+                name="section_titles"
+                label="Section Titles"
+                setState={setSectionTitle}
+                fullWidth={true}
+              />
+            </Grid>
+
+            <Grid size={12}>
+              <CMStateInput
+                name="section_descriptions"
+                label="Section Descriptions"
+                setState={setSectionSummary}
+                fullWidth={true}
+              />
+            </Grid>
+
             <Grid size={12}>
               <CMStateFileInput
                 name="files"
@@ -248,52 +268,6 @@ const CreateSinglePageSectionForm = () => {
                 state={files}
                 multiple={true}
                 btn_width="100%"
-              />
-            </Grid>
-          </Grid>
-        </Stack>
-
-        {/* Section title & Section descriptions */}
-        <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-          {/* Section title */}
-          <Grid
-            size={{ xs: 12, lg: 6 }}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-            }}
-            p={4}
-          >
-            <Grid size={12}>
-              <CMMultipleInput
-                name="section_titles"
-                label="Section Titles"
-                setState={setSectionTitles}
-                states={section_titles}
-                fullWidth={true}
-              />
-            </Grid>
-          </Grid>
-
-          {/* Section Descriptions */}
-          <Grid
-            size={{ xs: 12, lg: 6 }}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-            }}
-            p={4}
-          >
-            <Grid size={12}>
-              <CMMultipleTextarea
-                name="section_descriptions"
-                label="Section Descriptions"
-                setState={setSectionDescriptions}
-                states={section_descriptions}
               />
             </Grid>
           </Grid>

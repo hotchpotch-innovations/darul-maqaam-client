@@ -150,8 +150,8 @@ const SinglePageSectionTable = () => {
       ),
     },
     {
-      field: "section_slug",
-      headerName: "Section Slug",
+      field: "section_title",
+      headerName: "Section Title",
       flex: 1,
     },
     {

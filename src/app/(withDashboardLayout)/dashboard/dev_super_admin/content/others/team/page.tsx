@@ -6,7 +6,7 @@ import React from "react";
 const TeamPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Team Page" />
+      <TitleDashboard title="Team List" />
       <TeamMembersTable />
     </Box>
   );

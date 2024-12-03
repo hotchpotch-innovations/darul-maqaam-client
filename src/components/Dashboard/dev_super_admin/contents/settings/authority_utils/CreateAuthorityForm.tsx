@@ -1,33 +1,39 @@
 "use client";
 
 import CMForm from "@/components/forms/CMForm";
-import CMInput from "@/components/forms/CMInput";
+import { useCreateAuthorityMutation } from "@/redux/api/content/authorityApi";
+import { customTimeOut } from "@/utils/customTimeOut";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import { FieldValues } from "react-hook-form";
-import { toast } from "sonner";
-import { useCreateMenuMutation } from "@/redux/api/content/menuApi";
 import { useRouter } from "next/navigation";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import Grid from "@mui/material/Grid2";
+import CMInput from "@/components/forms/CMInput";
 
-const CreateMenuForm = () => {
+const validationSchema = z.object({
+  title: z.string().nonempty({ message: "Title is required" }),
+  identifier: z.string().nonempty({ message: "Identifier is required" }),
+});
+
+const CreateAuthorityForm = () => {
   const router = useRouter();
-
   const default_values = {
     title: "",
     identifier: "",
   };
 
-  const [createMenu, { isLoading }] = useCreateMenuMutation();
-  const handleCreateCountry = async (values: FieldValues) => {
-    console.log(values);
-    // const create_country_data = modifyPayload(values);
+  const [createAuthority, { isLoading }] = useCreateAuthorityMutation();
+
+  const createHandler: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await createMenu(values).unwrap();
+      const res = await createAuthority(values).unwrap();
 
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
-        router.push("/dashboard/dev_super_admin/content/menu");
+        router.push("/dashboard/dev_super_admin/content/settings/authority");
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
         console.log(res);
@@ -35,10 +41,15 @@ const CreateMenuForm = () => {
     } catch (error) {
       console.log(error);
       toast.error("something went wrong", { duration: 3000 });
+      customTimeOut(3000).then(() => window?.location?.reload());
     }
   };
   return (
-    <CMForm onSubmit={handleCreateCountry} defaultValues={default_values}>
+    <CMForm
+      onSubmit={createHandler}
+      resolver={zodResolver(validationSchema)}
+      defaultValues={default_values}
+    >
       <Stack justifyContent="center" gap={4}>
         <Grid
           container
@@ -49,8 +60,7 @@ const CreateMenuForm = () => {
           }}
           p={4}
         >
-          <Typography variant="h5">Menu Information </Typography>
-
+          <Typography variant="h5">Authority Information </Typography>
           <Grid size={12}>
             <CMInput name="title" label="Title" fullWidth={true} />
           </Grid>
@@ -74,7 +84,7 @@ const CreateMenuForm = () => {
             }}
             disabled={isLoading}
           >
-            Create Menu
+            Create Authority
           </Button>
         </Box>
       </Stack>
@@ -82,4 +92,4 @@ const CreateMenuForm = () => {
   );
 };
 
-export default CreateMenuForm;
+export default CreateAuthorityForm;

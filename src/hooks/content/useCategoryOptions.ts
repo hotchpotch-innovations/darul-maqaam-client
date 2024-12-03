@@ -1,5 +1,5 @@
 "use client";
-import { useGetAllCategoriesQuery } from "@/redux/api/content/categoryApi";
+import { useGetAllPublicCommonCategoryQuery } from "@/redux/api/content/commonCategoryApi";
 import { TResponseDataObj } from "@/types";
 
 export type TCategoryQueryObj = {
@@ -9,7 +9,7 @@ export type TCategoryQueryObj = {
 };
 
 export const useCategoryOptions = (queryObj: TCategoryQueryObj = {}) => {
-  const { data, isLoading } = useGetAllCategoriesQuery(queryObj);
+  const { data, isLoading } = useGetAllPublicCommonCategoryQuery(queryObj);
 
   const categoryData = data as TResponseDataObj;
   const category_data = categoryData?.data?.data || [];

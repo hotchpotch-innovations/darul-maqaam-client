@@ -1,69 +1,31 @@
+// components/ArticleImagesSection.tsx
 import { Box, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import Image from "next/image";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Image from "next/image";
-import { useState, ChangeEvent } from "react";
-import { useGetSingleArticleQuery } from "@/redux/api/content/articleApi";
+import { useState } from "react";
 
-type ArticleFilesProps = {
+type ArticleImagesSectionProps = {
   article_data: any;
+  images: any[];
+  selectedFiles: any[];
+  remainingSlots: number;
+  handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRemoveImage: (imageKey: string) => void;
+  handleUpdateImage: (updatedImages: any[]) => void;
 };
 
-const ArticleFiles = ({ id }: { id: string }) => {
-  const { data, isLoading } = useGetSingleArticleQuery(id);
-  const article_data = data?.data;
-  // Image update
-  const [images, setImages] = useState(article_data?.images || []);
-  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
-  console.log("Images", images);
-  let remainingSlots = 4 - article_data?.images.length;
-
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
-    console.log("Fiels: ", files);
-
-    // Convert FileList to Array and enforce the limit
-    const fileArray = Array.from(files).slice(0, remainingSlots);
-    console.log("FileArray", fileArray);
-
-    // Generate preview URLs for selected files
-    const newSelectedFiles = fileArray.map((file) => ({
-      url: URL.createObjectURL(file),
-      file,
-      key: Math.random().toString(36).substring(2, 9),
-    }));
-    console.log(newSelectedFiles);
-
-    // Update selected files for preview
-    setSelectedFiles((prev) => [...prev, ...newSelectedFiles]);
-
-    // Update state with the new images for final submission
-    const newImages = newSelectedFiles.map((file) => ({
-      url: file.url,
-      file: file.file,
-      key: file.key,
-    }));
-    setImages((prev) => [...prev, ...newImages]);
-  };
-
-  const handleRemoveImage = (imageKey: string) => {
-    // Remove image from selected files
-    setSelectedFiles((prev) => prev.filter((file) => file.key !== imageKey));
-
-    // Remove image from final images list
-    setImages((prev) => prev.filter((image: any) => image.key !== imageKey));
-
-    // Revoke the object URL to free memory
-    const imageToRemove = selectedFiles.find((file) => file.key === imageKey);
-    if (imageToRemove) {
-      URL.revokeObjectURL(imageToRemove.url);
-    }
-  };
-
-  remainingSlots = remainingSlots - images.length;
+const ArticleImagesSection = ({
+  article_data,
+  images,
+  selectedFiles,
+  remainingSlots,
+  handleFileChange,
+  handleRemoveImage,
+  handleUpdateImage,
+}: ArticleImagesSectionProps) => {
   return (
     <Grid container size={12} sx={{ marginBottom: "26px" }} spacing={2}>
       <Grid size={6}>
@@ -79,29 +41,19 @@ const ArticleFiles = ({ id }: { id: string }) => {
       </Grid>
 
       <Grid size={6} container spacing={2}>
-        {article_data?.images.map((image: any) => (
+        {/* Render existing article images */}
+        {article_data?.images?.map((image: any) => (
           <Grid
-            size={6}
             key={image?.key}
+            size={6}
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Box
-              sx={{
-                position: "relative",
-                width: "100%",
-                height: "auto",
-                "&:hover .removeButton": {
-                  opacity: 1,
-                },
-              }}
-            >
-              {/* Delete button */}
+            <Box sx={{ position: "relative", width: "100%", height: "auto" }}>
               <IconButton
-                // onClick={() => handleRemoveImage(image.key)}
                 className="removeButton"
                 sx={{
                   position: "absolute",
@@ -111,16 +63,13 @@ const ArticleFiles = ({ id }: { id: string }) => {
                   color: "red",
                   fontSize: "20px",
                   padding: "2px",
-                  minWidth: "auto",
-                  height: "auto",
-                  opacity: 0, // Initially hidden
-                  transition: "opacity 0.3s ease", // Smooth transition
+                  opacity: 0,
+                  transition: "opacity 0.3s ease",
                 }}
               >
                 <DeleteIcon fontSize="small" />
               </IconButton>
 
-              {/* Image */}
               <Image
                 src={image?.url}
                 alt="Banner Image"
@@ -133,26 +82,18 @@ const ArticleFiles = ({ id }: { id: string }) => {
           </Grid>
         ))}
 
-        {/* Preview the selected files */}
+        {/* Preview selected files */}
         {selectedFiles.map((file: any) => (
           <Grid
-            size={6}
             key={file?.key}
+            size={6}
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            {/* Image Container with Hover Effect */}
-            <Box
-              sx={{
-                position: "relative",
-                width: "100%",
-                height: "auto",
-              }}
-            >
-              {/* Cross button */}
+            <Box sx={{ position: "relative", width: "100%", height: "auto" }}>
               <IconButton
                 onClick={() => handleRemoveImage(file.key)}
                 sx={{
@@ -163,14 +104,11 @@ const ArticleFiles = ({ id }: { id: string }) => {
                   color: "red",
                   fontSize: "20px",
                   padding: "2px",
-                  minWidth: "auto",
-                  height: "auto",
                 }}
               >
                 <ClearIcon fontSize="small" />
               </IconButton>
 
-              {/* Image */}
               <Image
                 src={file.url}
                 alt="Selected Image Preview"
@@ -187,7 +125,8 @@ const ArticleFiles = ({ id }: { id: string }) => {
           </Grid>
         ))}
 
-        {2 > 0 && (
+        {/* Add more images */}
+        {remainingSlots > 0 && (
           <Grid
             size={6}
             sx={{
@@ -200,12 +139,10 @@ const ArticleFiles = ({ id }: { id: string }) => {
               <Box
                 sx={{
                   width: "100%",
-                  height: "auto",
-                  padding: { xs: "10px 5px" },
+                  padding: "10px 5px",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  // border: "2px dashed #ccc",
                   cursor: "pointer",
                 }}
               >
@@ -221,9 +158,10 @@ const ArticleFiles = ({ id }: { id: string }) => {
             />
           </Grid>
         )}
+        <button onClick={() => handleUpdateImage(images)}>Update</button>
       </Grid>
     </Grid>
   );
 };
 
-export default ArticleFiles;
+export default ArticleImagesSection;

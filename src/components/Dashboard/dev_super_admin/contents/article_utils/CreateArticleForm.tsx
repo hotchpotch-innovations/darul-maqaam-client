@@ -15,8 +15,7 @@ import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMS
 import { article_types_options } from "@/constants/options";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
 import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
-import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
-import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
+import Editor from "@/components/forms/editors/Editor";
 
 type TArticlePayload = {
   type?: string;
@@ -26,8 +25,8 @@ type TArticlePayload = {
   author?: string;
   cover_image?: any;
   files?: any;
-  sub_titles?: Array<string>;
-  descriptions?: Array<string>;
+  summary?: string;
+  contents?: string;
 };
 
 const CreateArticleForm = () => {
@@ -43,20 +42,9 @@ const CreateArticleForm = () => {
   const [yt_video_url, setYtVideoUrl] = useState();
   const [cover_image, setCoverImage] = useState(null);
   const [files, setFiles] = useState(null);
-  const [sub_titles, setSubTitles] = useState([""]);
-  const [descriptions, setDescriptions] = useState([""]);
-
-  // console.log({
-  //   type,
-  //   categoryId,
-  //   title,
-  //   author,
-  //   yt_video_url,
-  //   cover_image,
-  //   files,
-  //   sub_titles,
-  //   descriptions,
-  // });
+  const [summary, setSummary] = useState("");
+  // Get value from text editor
+  const [contents, setContents] = useState("");
 
   if (!!type) {
     categoryQueryObj["type"] = type;
@@ -90,16 +78,14 @@ const CreateArticleForm = () => {
       if (!!files) {
         data["files"] = files;
       }
-      if (sub_titles?.length > 0) {
-        data["sub_titles"] = sub_titles;
-      }
-      if (descriptions?.length > 0) {
-        data["descriptions"] = descriptions;
+
+      if (summary?.length > 0) {
+        data["summary"] = summary;
       }
 
-      // data["section_contents"] = draftToHtml(
-      //   convertToRaw(editorState.getCurrentContent())
-      // );
+      if (contents.length > 0) {
+        data["contents"] = contents;
+      }
 
       const payload = modifyPayload(data);
       // console.log({ payload });
@@ -127,7 +113,7 @@ const CreateArticleForm = () => {
     <>
       <Stack direction={"column"} spacing={4}>
         <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-          {/* 1st Pera */}
+          {/* Type, Category & Title */}
           <Grid
             size={{ xs: 12, lg: 6 }}
             container
@@ -169,7 +155,7 @@ const CreateArticleForm = () => {
             </Grid>
           </Grid>
 
-          {/* 2nd Pera */}
+          {/* Authot, Youtube Video URl, Banner Image & Files(Images) */}
           <Grid
             size={{ xs: 12, lg: 6 }}
             container
@@ -237,9 +223,9 @@ const CreateArticleForm = () => {
         </Stack>
 
         <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-          {/* 1st Pera */}
+          {/* Summary */}
           <Grid
-            size={{ xs: 12, lg: 6 }}
+            size={12}
             container
             gap={2}
             sx={{
@@ -249,19 +235,18 @@ const CreateArticleForm = () => {
             p={4}
           >
             <Grid size={12}>
-              <CMMultipleInput
-                name="sub_titles"
-                label="Sub sub_titles"
-                setState={setSubTitles}
-                states={sub_titles}
+              <CMStateInput
+                name="summary"
+                label="Summary"
+                setState={setSummary}
                 fullWidth={true}
               />
             </Grid>
           </Grid>
 
-          {/* 2nd Pera */}
+          {/* Text Editor */}
           <Grid
-            size={{ xs: 12, lg: 6 }}
+            size={12}
             container
             gap={2}
             sx={{
@@ -271,12 +256,7 @@ const CreateArticleForm = () => {
             p={4}
           >
             <Grid size={12}>
-              <CMMultipleTextarea
-                name="description"
-                label="Descriptions"
-                setState={setDescriptions}
-                states={descriptions}
-              />
+              <Editor setState={setContents} defaultValue={contents} />
             </Grid>
           </Grid>
         </Stack>

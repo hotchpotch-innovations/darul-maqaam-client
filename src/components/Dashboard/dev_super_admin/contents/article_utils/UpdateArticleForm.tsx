@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useArticleAddFilesMutation,
   useGetSingleArticleQuery,
   useUpdateArticleMutation,
 } from "@/redux/api/content/articleApi";
@@ -19,6 +20,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Image from "next/image";
 import { modifyPayload } from "@/utils/modifyPayload";
+import ArticleImagesSection from "./ArticleImagesSection";
 
 type TArticlePayload = {
   title?: string;
@@ -153,9 +155,29 @@ const UpdateArticleForm = ({ id }: TProps) => {
 
   remainingSlots = remainingSlots - images.length;
 
-  const handleUpdateImage = (files: any) => {
-    const payload = modifyPayload({ files });
-    console.log(payload);
+  const [addFiles, { isLoading: isAddFilesLoading }] =
+    useArticleAddFilesMutation();
+
+  const handleUpdateImage = async (files: any) => {
+    const toastId = toast.loading("Please wait...");
+    const values = { files };
+    console.log("Values", values);
+
+    const payload = modifyPayload(values);
+    console.log("Payload", payload);
+    try {
+      const res = await addFiles({ ...payload, id }).unwrap();
+      console.log(res);
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+      console.log(error);
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
   };
 
   if (isLoading) {
@@ -163,165 +185,15 @@ const UpdateArticleForm = ({ id }: TProps) => {
   }
   return (
     <>
-      <Grid container size={12} sx={{ marginBottom: "26px" }} spacing={2}>
-        <Grid size={6}>
-          <Image
-            src={article_data?.cover_image?.url}
-            alt="Banner Image"
-            width={100}
-            height={100}
-            sizes="100vw"
-            style={{ width: "100%", height: "auto" }}
-            priority
-          />
-        </Grid>
-
-        <Grid size={6} container spacing={2}>
-          {article_data?.images.map((image: any) => (
-            <Grid
-              size={6}
-              key={image?.key}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  height: "auto",
-                  "&:hover .removeButton": {
-                    opacity: 1,
-                  },
-                }}
-              >
-                {/* Delete button */}
-                <IconButton
-                  // onClick={() => handleRemoveImage(image.key)}
-                  className="removeButton"
-                  sx={{
-                    position: "absolute",
-                    top: 6,
-                    right: 6,
-                    backgroundColor: "white",
-                    color: "red",
-                    fontSize: "20px",
-                    padding: "2px",
-                    minWidth: "auto",
-                    height: "auto",
-                    opacity: 0, // Initially hidden
-                    transition: "opacity 0.3s ease", // Smooth transition
-                  }}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-
-                {/* Image */}
-                <Image
-                  src={image?.url}
-                  alt="Banner Image"
-                  width={100}
-                  height={100}
-                  sizes="100vw"
-                  style={{ width: "100%", height: "auto" }}
-                />
-              </Box>
-            </Grid>
-          ))}
-
-          {/* Preview the selected files */}
-          {selectedFiles.map((file: any) => (
-            <Grid
-              size={6}
-              key={file?.key}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {/* Image Container with Hover Effect */}
-              <Box
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  height: "auto",
-                }}
-              >
-                {/* Cross button */}
-                <IconButton
-                  onClick={() => handleRemoveImage(file.key)}
-                  sx={{
-                    position: "absolute",
-                    top: 6,
-                    right: 6,
-                    backgroundColor: "white",
-                    color: "red",
-                    fontSize: "20px",
-                    padding: "2px",
-                    minWidth: "auto",
-                    height: "auto",
-                  }}
-                >
-                  <ClearIcon fontSize="small" />
-                </IconButton>
-
-                {/* Image */}
-                <Image
-                  src={file.url}
-                  alt="Selected Image Preview"
-                  width={100}
-                  height={100}
-                  sizes="100vw"
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    objectFit: "cover",
-                  }}
-                />
-              </Box>
-            </Grid>
-          ))}
-
-          {remainingSlots > 0 && (
-            <Grid
-              size={6}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <label htmlFor="upload-button">
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "auto",
-                    padding: { xs: "10px 5px" },
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    // border: "2px dashed #ccc",
-                    cursor: "pointer",
-                  }}
-                >
-                  <AddCircleIcon fontSize="large" color="info" />
-                </Box>
-              </label>
-              <input
-                id="upload-button"
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-              />
-            </Grid>
-          )}
-        </Grid>
-        <button onClick={() => handleUpdateImage(images)}>Update</button>
-      </Grid>
+      <ArticleImagesSection
+        article_data={article_data}
+        images={images}
+        selectedFiles={selectedFiles}
+        remainingSlots={remainingSlots}
+        handleFileChange={handleFileChange}
+        handleRemoveImage={handleRemoveImage}
+        handleUpdateImage={handleUpdateImage}
+      />
 
       <Stack direction={"column"} spacing={4}>
         <Stack direction={"row"} gap={4}>

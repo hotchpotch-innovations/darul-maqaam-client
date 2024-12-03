@@ -17,7 +17,10 @@ import {
   TCategoryQueryObj,
   useCategoryOptions,
 } from "@/hooks/content/useCategoryOptions";
-import { useAuthorityOptions } from "@/hooks/content/useAuthorityOptions";
+import {
+  TAuthorityQueryObj,
+  useAuthorityOptions,
+} from "@/hooks/content/useAuthorityOptions";
 import CMTextarea from "@/components/forms/CMTextarea";
 import CMFileInput from "@/components/forms/CMFileInput";
 import { modifyPayload } from "@/utils/modifyPayload";
@@ -36,7 +39,7 @@ const CreateFormsForm = () => {
     limit: 20,
     page: 1,
   };
-  const authorityQueryObj: TCategoryQueryObj = {
+  const authorityQueryObj: TAuthorityQueryObj = {
     limit: 20,
     page: 1,
   };
@@ -52,7 +55,7 @@ const CreateFormsForm = () => {
     useCategoryOptions(categoryQueryObj);
 
   const { options: authority_options, isLoading: isAuthorityLoading } =
-    useAuthorityOptions(categoryQueryObj);
+    useAuthorityOptions(authorityQueryObj);
 
   const [createFT, { isLoading }] = useCreateFormsMutation();
 

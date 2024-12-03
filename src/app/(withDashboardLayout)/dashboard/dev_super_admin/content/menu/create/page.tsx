@@ -3,7 +3,7 @@ import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboa
 
 import { Box, Stack } from "@mui/material";
 
-const page = () => {
+const CreateMenuPage = () => {
   return (
     <Box>
       <Stack>
@@ -16,4 +16,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreateMenuPage;

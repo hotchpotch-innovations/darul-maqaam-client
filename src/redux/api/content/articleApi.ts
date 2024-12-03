@@ -77,6 +77,23 @@ const articleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.article],
     }),
+
+    articleAddFiles: build.mutation({
+      query: (id) => ({
+        url: `/content/article/add-files/${id}`,
+        contentType: "multipart/form-data",
+        method: "PATCH",
+      }),
+      invalidatesTags: [contentTags?.article],
+    }),
+    articleRemoveFile: build.mutation({
+      query: ({ id, ...payload }) => ({
+        url: `/content/article/remove-files/${id}`,
+        method: "PATCH",
+        data: payload,
+      }),
+      invalidatesTags: [contentTags?.article],
+    }),
   }),
 });
 
@@ -89,4 +106,6 @@ export const {
   useDeleteArticleMutation,
   useChangeArticleStatusMutation,
   useChangePublishedArticleStatusMutation,
+  useArticleAddFilesMutation,
+  useArticleRemoveFileMutation,
 } = articleApi;

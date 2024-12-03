@@ -1,33 +1,40 @@
 "use client";
 
 import CMForm from "@/components/forms/CMForm";
-import CMInput from "@/components/forms/CMInput";
+import { useCreateFaqMutation } from "@/redux/api/content/faqApi";
+import { customTimeOut } from "@/utils/customTimeOut";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import { FieldValues } from "react-hook-form";
-import { toast } from "sonner";
-import { useCreateMenuMutation } from "@/redux/api/content/menuApi";
 import { useRouter } from "next/navigation";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
+import Grid from "@mui/material/Grid2";
+import CMInput from "@/components/forms/CMInput";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const CreateMenuForm = () => {
+const validationSchema = z.object({
+  question: z.string().nonempty({ message: "Question is required" }),
+  answer: z.string().nonempty({ message: "Answer is required" }),
+});
+
+const CreateFAQForm = () => {
   const router = useRouter();
 
   const default_values = {
-    title: "",
-    identifier: "",
+    question: "",
+    answer: "",
   };
 
-  const [createMenu, { isLoading }] = useCreateMenuMutation();
-  const handleCreateCountry = async (values: FieldValues) => {
-    console.log(values);
-    // const create_country_data = modifyPayload(values);
+  const [createFaq, { isLoading }] = useCreateFaqMutation();
+
+  const createHandler: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait...");
     try {
-      const res = await createMenu(values).unwrap();
+      const res = await createFaq(values).unwrap();
 
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
-        router.push("/dashboard/dev_super_admin/content/menu");
+        router.push("/dashboard/dev_super_admin/content/others/faq");
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
         console.log(res);
@@ -35,10 +42,15 @@ const CreateMenuForm = () => {
     } catch (error) {
       console.log(error);
       toast.error("something went wrong", { duration: 3000 });
+      customTimeOut(3000).then(() => window?.location?.reload());
     }
   };
   return (
-    <CMForm onSubmit={handleCreateCountry} defaultValues={default_values}>
+    <CMForm
+      onSubmit={createHandler}
+      resolver={zodResolver(validationSchema)}
+      defaultValues={default_values}
+    >
       <Stack justifyContent="center" gap={4}>
         <Grid
           container
@@ -49,13 +61,13 @@ const CreateMenuForm = () => {
           }}
           p={4}
         >
-          <Typography variant="h5">Menu Information </Typography>
+          <Typography variant="h5">FAQ Information </Typography>
 
           <Grid size={12}>
-            <CMInput name="title" label="Title" fullWidth={true} />
+            <CMInput name="question" label="Question" fullWidth={true} />
           </Grid>
           <Grid size={12}>
-            <CMInput name="identifier" label="Identifier" fullWidth={true} />
+            <CMInput name="answer" label="Answer" fullWidth={true} />
           </Grid>
         </Grid>
       </Stack>
@@ -74,7 +86,7 @@ const CreateMenuForm = () => {
             }}
             disabled={isLoading}
           >
-            Create Menu
+            Create FAQ
           </Button>
         </Box>
       </Stack>
@@ -82,4 +94,4 @@ const CreateMenuForm = () => {
   );
 };
 
-export default CreateMenuForm;
+export default CreateFAQForm;

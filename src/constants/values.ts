@@ -58,3 +58,5 @@ export const default_meta_info: TDefaultMetaInfo = {
   meta_keywords:
     "Hotchpotch Innovations Ltd, IT Firm, Software, Web Application, Mobile App, eCommerce, UI & UX Design, Design, Events, Content, Digital Marketing, Architecture, IT Firm in uttara, IT Firm in Dhaka",
 };
+
+export const formsAndTemplateTypeValue = "forms_&_template";

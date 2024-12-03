@@ -6,7 +6,7 @@ import React from "react";
 const SinglePageSectionPage = () => {
   return (
     <Box>
-      <TitleDashboard title="Page Section (single) Page" />
+      <TitleDashboard title="Page Section (single) List" />
       <SinglePageSectionTable />
     </Box>
   );

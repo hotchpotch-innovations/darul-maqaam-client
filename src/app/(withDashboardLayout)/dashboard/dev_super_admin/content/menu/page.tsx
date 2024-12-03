@@ -2,7 +2,7 @@ import MenuTable from "@/components/Dashboard/dev_super_admin/contents/menus/Men
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 
-const page = () => {
+const MenuListPage = () => {
   return (
     <Box>
       <TitleDashboard title="Menu List" />
@@ -11,4 +11,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default MenuListPage;

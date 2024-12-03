@@ -214,6 +214,11 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
                   path: `/dashboard/${role}/${content}/others/faq`,
                   identifier: "/faq",
                 },
+                {
+                  title: "Forms & Templates",
+                  path: `/dashboard/${role}/${content}/others/forms`,
+                  identifier: "/forms",
+                },
               ],
             },
             // content > settings

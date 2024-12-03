@@ -1,3 +1,5 @@
+import { formsAndTemplateTypeValue } from "./values";
+
 export interface ISelectOption {
   label: string;
   value: string;
@@ -107,6 +109,10 @@ export const multiple_page_section_types_options: ISelectOption[] = [
     label: "Core Value",
     value: "core_value",
   },
+  {
+    label: "Forms & Template",
+    value: formsAndTemplateTypeValue,
+  },
 ];
 
 export const article_types_options: ISelectOption[] = [
@@ -122,6 +128,11 @@ export const article_types_options: ISelectOption[] = [
     label: "Events",
     value: "events",
   },
+];
+
+export const common_category_types_options: ISelectOption[] = [
+  ...multiple_page_section_types_options,
+  ...article_types_options,
 ];
 
 export const webpage_types_options: ISelectOption[] = [

@@ -13,13 +13,13 @@ import Grid from "@mui/material/Grid2";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
 import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
 import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
+import Editor from "@/components/forms/editors/Editor";
 
 type TArticlePayload = {
   title?: string;
   author?: string;
   yt_video_url?: URL;
-  sub_titles?: Array<string>;
-  descriptions?: Array<string>;
+  summary?: string;
   contents?: string;
 };
 
@@ -32,26 +32,29 @@ const UpdateArticleForm = ({ id }: TProps) => {
   const [title, setTitle] = useState();
   const [author, setAuthor] = useState("");
   const [yt_video_url, setYtVideoUrl] = useState();
-  const [sub_titles, setSubTitles] = useState([""]);
-  const [descriptions, setDescriptions] = useState([""]);
+  const [summary, setSummary] = useState("");
+  const [contents, setContents] = useState("");
 
   const { data, isLoading } = useGetSingleArticleQuery(id);
   const article_data = data?.data;
+  console.log(article_data);
+
+  // Article images = article_data?.images
 
   useEffect(() => {
     if (!!article_data) {
       setTitle(article_data?.title);
       setAuthor(article_data?.author);
       setYtVideoUrl(article_data?.yt_video_url);
-      setSubTitles(article_data?.sub_titles);
-      setDescriptions(article_data?.descriptions);
+      setSummary(article_data?.summary);
+      setContents(article_data?.contents);
     }
   }, [article_data]);
 
   const [updateArticle, { isLoading: isUpdateLoading }] =
     useUpdateArticleMutation();
 
-  // create function handler
+  // Article update function
   const submitHandler = async () => {
     const toastId = toast.loading("Please wait ...");
     if (!title) {
@@ -65,11 +68,8 @@ const UpdateArticleForm = ({ id }: TProps) => {
       if (!!yt_video_url) {
         data["yt_video_url"] = yt_video_url;
       }
-      if (sub_titles?.length > 0) {
-        data["sub_titles"] = sub_titles;
-      }
-      if (descriptions?.length > 0) {
-        data["descriptions"] = descriptions;
+      if (summary?.length > 0) {
+        data["summary"] = summary;
       }
 
       // data["section_contents"] = draftToHtml(
@@ -104,7 +104,7 @@ const UpdateArticleForm = ({ id }: TProps) => {
     <>
       <Stack direction={"column"} spacing={4}>
         <Stack direction={"row"} gap={4}>
-          {/* 1st Pera */}
+          {/* Title, Author & Youtube Video URL */}
           <Grid
             size={{ xs: 12 }}
             container
@@ -147,9 +147,9 @@ const UpdateArticleForm = ({ id }: TProps) => {
         </Stack>
 
         <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-          {/* 1st Pera */}
+          {/* Summary */}
           <Grid
-            size={{ xs: 12, lg: 6 }}
+            size={12}
             container
             gap={2}
             sx={{
@@ -159,34 +159,16 @@ const UpdateArticleForm = ({ id }: TProps) => {
             p={4}
           >
             <Grid size={12}>
-              <CMMultipleInput
-                name="sub_titles"
-                label="Sub sub_titles"
-                setState={setSubTitles}
-                states={sub_titles}
+              <CMStateInput
+                name="summary"
+                label="Summary"
+                setState={setSummary}
+                defaultValue={summary}
                 fullWidth={true}
               />
             </Grid>
-          </Grid>
-
-          {/* 2nd Pera */}
-          <Grid
-            size={{ xs: 12, lg: 6 }}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-            }}
-            p={4}
-          >
             <Grid size={12}>
-              <CMMultipleTextarea
-                name="description"
-                label="Descriptions"
-                setState={setDescriptions}
-                states={descriptions}
-              />
+              <Editor setState={setContents} defaultValue={contents} />
             </Grid>
           </Grid>
         </Stack>

@@ -21,6 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Image from "next/image";
 import { modifyPayload } from "@/utils/modifyPayload";
 import ArticleImagesSection from "./ArticleImagesSection";
+import ArticleImageSection2 from "./ArticleImageSection2";
 
 type TArticlePayload = {
   title?: string;
@@ -105,7 +106,7 @@ const UpdateArticleForm = ({ id }: TProps) => {
   // Image update
   const [images, setImages] = useState(article_data?.images || []);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
-  console.log("Images", images);
+  // console.log("Images", images);
   let remainingSlots = 4 - article_data?.images.length;
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -185,7 +186,7 @@ const UpdateArticleForm = ({ id }: TProps) => {
   }
   return (
     <>
-      <ArticleImagesSection
+      {/* <ArticleImagesSection
         article_data={article_data}
         images={images}
         selectedFiles={selectedFiles}
@@ -193,7 +194,9 @@ const UpdateArticleForm = ({ id }: TProps) => {
         handleFileChange={handleFileChange}
         handleRemoveImage={handleRemoveImage}
         handleUpdateImage={handleUpdateImage}
-      />
+      /> */}
+
+      <ArticleImageSection2 id={id} />
 
       <Stack direction={"column"} spacing={4}>
         <Stack direction={"row"} gap={4}>

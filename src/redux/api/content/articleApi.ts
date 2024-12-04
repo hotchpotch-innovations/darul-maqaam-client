@@ -79,12 +79,15 @@ const articleApi = baseApi.injectEndpoints({
     }),
 
     articleAddFiles: build.mutation({
-      query: ({ id, ...payload }) => ({
-        url: `/content/article/add-files/${id}`,
-        contentType: "multipart/form-data",
-        method: "PATCH",
-        data: payload,
-      }),
+      query: (payload) => {
+        const { id, data } = payload;
+        return {
+          url: `/content/article/add-files/${id}`,
+          contentType: "multipart/form-data",
+          method: "PATCH",
+          data,
+        };
+      },
       invalidatesTags: [contentTags?.article],
     }),
     articleRemoveFile: build.mutation({

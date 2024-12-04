@@ -25,6 +25,16 @@ const faqApi = baseApi.injectEndpoints({
       providesTags: [contentTags?.forms],
     }),
 
+    getSingleForm: build.query({
+      query: (id) => {
+        return {
+          url: `/content/ft/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: [contentTags?.forms],
+    }),
+
     createForms: build.mutation({
       query: (data) => ({
         url: `/content/ft/create`,
@@ -71,6 +81,7 @@ const faqApi = baseApi.injectEndpoints({
 export const {
   useGetAllPrivateFormsQuery,
   useGetAllPublicFormsQuery,
+  useGetSingleFormQuery,
   useCreateFormsMutation,
   useUpdateFormsMutation,
   useDeleteFormsMutation,

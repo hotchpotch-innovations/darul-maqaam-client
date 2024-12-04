@@ -62,7 +62,7 @@ instance.interceptors.response.use(
       };
       return responseObject;
     } else {
-      console.log(error);
+      console.log({ error });
       const responseObject = {
         statusCode: error?.response?.data?.statusCode || 500,
         success: error?.response?.data?.success || false,

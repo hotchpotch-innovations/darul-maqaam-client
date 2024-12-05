@@ -1,5 +1,5 @@
 "use client";
-import { Box, IconButton } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -27,6 +27,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
 
   // const [images, setImages] = useState<any[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
+  console.log(selectedFiles);
   const [remainingSlots, setRemainingSlots] = useState(MAX_IMAGE_SLOTS);
 
   useEffect(() => {
@@ -239,7 +240,19 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                 />
               </Grid>
             )}
-            <button onClick={handleUpdateImage}>Update</button>
+            {selectedFiles.length > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%",
+                }}
+              >
+                <Button type="submit" size="small" onClick={handleUpdateImage}>
+                  Update
+                </Button>
+              </Box>
+            )}
           </Grid>
         </Grid>
       )}

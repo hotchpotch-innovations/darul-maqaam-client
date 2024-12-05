@@ -1,5 +1,5 @@
-import CreateDesignation from "@/components/Dashboard/dev_super_admin/settings/designation-uitls/CreateDesignation";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
+import CreateDesignation from "@/components/Dashboard/dev_super_admin/user/settings/designation-uitls/CreateDesignation";
 import { Box } from "@mui/material";
 
 const page = () => {

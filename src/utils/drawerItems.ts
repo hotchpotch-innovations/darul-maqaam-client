@@ -17,10 +17,12 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import GroupsIcon from "@mui/icons-material/Groups";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 
 export const drawerItems = (role: TUserRole): IDrawerItems[] => {
   const users = "users";
   const content = "content";
+  const organization = "organization";
 
   const roleMenus: IDrawerItems[] = [];
 
@@ -33,6 +35,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
           management: "no-management",
           icon: DashboardIcon,
         },
+        // user management
         {
           title: "User Management",
           is_parent: true,
@@ -104,7 +107,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               title: "Settings",
               icon: SettingsIcon,
               state: "UserSettings",
-              identifier: "/settings",
+              identifier: `/${users}/settings`,
               child: [
                 {
                   title: "Address",
@@ -197,7 +200,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               title: "Others",
               icon: DevicesOtherIcon,
               state: "content_others",
-              identifier: "/others",
+              identifier: `/${content}/others`,
               child: [
                 // {
                 //   title: "Hero-Section",
@@ -226,7 +229,7 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               title: "Settings",
               icon: SettingsIcon,
               state: "content_settings",
-              identifier: "/content/settings",
+              identifier: `/${content}/settings`,
               child: [
                 // content > settings > category
                 {
@@ -238,6 +241,36 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
                   title: "Authority",
                   path: `/dashboard/${role}/${content}/settings/authority`,
                   identifier: "/authority",
+                },
+              ],
+            },
+          ],
+        },
+        // Org management
+        {
+          title: "Org. Management",
+          is_parent: true,
+          management: organization,
+          icon: CorporateFareIcon,
+          parent_Id: "CM003",
+          child: [
+            // Org > settings
+            {
+              title: "Settings",
+              icon: SettingsIcon,
+              state: "org_settings",
+              identifier: `/${organization}/settings`,
+              child: [
+                // Org > settings > business
+                {
+                  title: "Manage",
+                  path: `/dashboard/${role}/${organization}/settings/manage`,
+                  identifier: `/manage`,
+                },
+                {
+                  title: "Branch",
+                  path: `/dashboard/${role}/${organization}/settings/branch`,
+                  identifier: "/branch",
                 },
               ],
             },

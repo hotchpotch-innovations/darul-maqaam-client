@@ -6,6 +6,7 @@ import { Box, Button, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -26,6 +27,14 @@ type ArticleImagesSectionProps = {
 
 const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
   // -------- State management --------
+
+  // State for Banner images
+  const [previewSelectedBanner, setPreviewSelectedBanner] = useState<
+    string | null
+  >(null);
+  const [file, setFile] = useState<File | null>(null);
+
+  // State for images
   const MAX_IMAGE_SLOTS = 4;
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [remainingSlots, setRemainingSlots] = useState(MAX_IMAGE_SLOTS);
@@ -44,7 +53,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
     }
   }, [article_images]);
 
-  // -------- Image file handaling function --------
+  // -------- Images file handaling function --------
 
   // Handle file input and limit the number of selected files
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -133,6 +142,21 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
     }
   };
 
+  // -------- Banner image file handling function --------
+  const handleBannerImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files ? event.target.files[0] : null;
+    if (selectedFile) {
+      const selectedFileUrl = URL.createObjectURL(selectedFile);
+      setPreviewSelectedBanner(selectedFileUrl);
+      setFile(selectedFile);
+    }
+  };
+
+  // Handler for banner image update function
+  const handleBannerImageUpload = async () => {
+    console.log(file);
+  };
+
   return (
     <>
       {isAddFilesLoading ? (
@@ -141,15 +165,66 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
         <Grid container size={12} sx={{ marginBottom: "26px" }} spacing={2}>
           {/* Banner image section */}
           <Grid size={6}>
-            <Image
-              src={article_images?.cover_image?.url || ""}
-              alt="Banner Image"
-              width={100}
-              height={100}
-              sizes="100vw"
-              style={{ width: "100%", height: "auto" }}
-              priority
-            />
+            <Box
+              sx={{
+                position: "relative",
+                width: "100%",
+                height: "auto",
+                ":hover .removeButton": {
+                  opacity: 1,
+                },
+              }}
+            >
+              <IconButton
+                className="removeButton"
+                sx={{
+                  position: "absolute",
+                  top: 6,
+                  right: 6,
+                  backgroundColor: "white",
+                  color: "white",
+                  fontSize: "20px",
+                  padding: "2px",
+                  opacity: 0,
+                  transition: "opacity 0.3s ease",
+                }}
+                onClick={() => {
+                  const fileInput = document.getElementById(
+                    "fileInput"
+                  ) as HTMLInputElement;
+                  fileInput.click();
+                }}
+              >
+                <ChangeCircleIcon fontSize="large" color="info" />
+              </IconButton>
+
+              {/* Banner Image */}
+              <Image
+                src={previewSelectedBanner || article_images?.cover_image?.url}
+                alt="Banner Image"
+                width={100}
+                height={100}
+                sizes="100vw"
+                style={{ width: "100%", height: "auto" }}
+                priority
+              />
+              <input
+                type="file"
+                id="fileInput"
+                hidden
+                accept="image/*"
+                onChange={handleBannerImageChange}
+              />
+            </Box>
+            {previewSelectedBanner && (
+              <Button
+                type="submit"
+                // disabled={isUploading || !file}
+                onClick={handleBannerImageUpload}
+              >
+                Save Changes
+              </Button>
+            )}
           </Grid>
 
           <Grid size={6} container spacing={2}>

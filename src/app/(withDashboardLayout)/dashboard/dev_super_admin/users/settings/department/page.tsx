@@ -1,5 +1,5 @@
-import DepartmentTable from "@/components/Dashboard/dev_super_admin/settings/department-utils/DepartmentTable";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
+import DepartmentTable from "@/components/Dashboard/dev_super_admin/user/settings/department-utils/DepartmentTable";
 import { Box } from "@mui/material";
 import React from "react";
 

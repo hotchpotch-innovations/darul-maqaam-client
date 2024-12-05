@@ -27,27 +27,38 @@ export const contentTags = {
   common_authority: "common_authority",
 };
 
+export const organizationTags = {
+  organization: "organization",
+  branch: "branch",
+};
+
 export const tagTypesList = [
-  tagTypes.client_type,
-  tagTypes.user,
-  tagTypes.department,
-  tagTypes.designation,
-  tagTypes.country,
-  tagTypes.division,
-  tagTypes.district,
-  tagTypes.profile,
-  tagTypes.admin,
-  tagTypes.employee,
-  tagTypes.client,
-  contentTags.menu,
-  contentTags.submenu,
-  contentTags.webpage,
-  contentTags.multiple_section,
-  contentTags.single_section,
-  contentTags.article,
-  contentTags.team,
-  contentTags.faq,
-  contentTags.forms,
-  contentTags.common_category,
-  contentTags.common_authority,
+  tagTypes?.client_type,
+  tagTypes?.user,
+  tagTypes?.department,
+  tagTypes?.designation,
+  tagTypes?.country,
+  tagTypes?.division,
+  tagTypes?.district,
+  tagTypes?.profile,
+  tagTypes?.admin,
+  tagTypes?.employee,
+  tagTypes?.client,
+
+  // contents
+  contentTags?.menu,
+  contentTags?.submenu,
+  contentTags?.webpage,
+  contentTags?.multiple_section,
+  contentTags?.single_section,
+  contentTags?.article,
+  contentTags?.team,
+  contentTags?.faq,
+  contentTags?.forms,
+  contentTags?.common_category,
+  contentTags?.common_authority,
+
+  // organizations
+  organizationTags?.organization,
+  organizationTags?.branch,
 ];

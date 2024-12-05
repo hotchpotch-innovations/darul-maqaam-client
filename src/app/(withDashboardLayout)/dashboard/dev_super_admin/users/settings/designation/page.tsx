@@ -1,5 +1,5 @@
-import DesignationTable from "@/components/Dashboard/dev_super_admin/settings/designation-uitls/DesignationTable";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
+import DesignationTable from "@/components/Dashboard/dev_super_admin/user/settings/designation-uitls/DesignationTable";
 import { Box } from "@mui/material";
 import React from "react";
 

@@ -1,5 +1,5 @@
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import CountryTable from "@/components/Dashboard/dev_super_admin/settings/address/country-utils/CountryTable";
+import CountryTable from "@/components/Dashboard/dev_super_admin/user/settings/address/country-utils/CountryTable";
 import { Box } from "@mui/material";
 
 const CountryPage = () => {

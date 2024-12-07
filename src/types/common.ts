@@ -76,6 +76,8 @@ export type TSocialLinkPayload = {
   twitter?: string;
   linkedIn?: string;
   instagram?: string;
+  youtube?: string;
+  website?: string;
 };
 
 // Props types for Address

@@ -1,54 +1,58 @@
 "use client";
 
-import CMForm from "@/components/forms/CMForm";
-import Loading from "@/components/ui/LoadingBar";
-import { useCountryOptions } from "@/hooks/useCountryOptions";
-import {
-  useChangeOrganizationLogoMutation,
-  useGetFirstOrganizationQuery,
-  useUpdateOrganizationMutation,
-} from "@/redux/api/organization/organizationApi";
-import { TAddress, TSocialLinkPayload } from "@/types";
+import { SyntheticEvent, useState } from "react";
+
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
+
+import { toast } from "sonner";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import {
   Box,
   Button,
   Card,
   CardContent,
   Stack,
-  Tab,
-  Tabs,
   Typography,
 } from "@mui/material";
-import { SyntheticEvent, useState } from "react";
-import { FieldValues, SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
 import Grid from "@mui/material/Grid2";
+import CMForm from "@/components/forms/CMForm";
+import Loading from "@/components/ui/LoadingBar";
+import { TAddress, TSocialLinkPayload } from "@/types";
 import ProfilePicture from "@/components/Dashboard/common/profile/ProfilePicture";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import CMInput from "@/components/forms/CMInput";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import InstagramIcon from "@mui/icons-material/Instagram";
 import {
   a11yProps,
   CustomTabPanel,
 } from "@/components/Dashboard/common/profile/ProfileTab";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 
+import TwitterIcon from "@mui/icons-material/Twitter";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import WebAssetIcon from "@mui/icons-material/WebAsset";
+
+import { useCountryOptions } from "@/hooks/useCountryOptions";
+import {
+  useChangeOrganizationLogoMutation,
+  useGetFirstOrganizationQuery,
+  useUpdateOrganizationMutation,
+} from "@/redux/api/organization/organizationApi";
+
 const OrganizationProfileForm = () => {
-  const [value, setValue] = useState(0);
   const [presentCountryId, setPresentCountryId] = useState(null);
-  const [permanentCountryId, setPermanentCountryId] = useState(null);
 
   // Fetching user data from the API
   const { data, isLoading } = useGetFirstOrganizationQuery("");
-  const user_data = data?.data;
+  const business_data = data?.data?.business;
+  console.log(business_data);
+  const business_location = data?.data?.location;
 
   // API hook to update client data
-  const [updateProfile, { isLoading: isUpdateLoading }] =
+  const [updateOrganizationProfile, { isLoading: isUpdateLoading }] =
     useUpdateOrganizationMutation();
 
   // API hook to update profile picture
@@ -58,41 +62,35 @@ const OrganizationProfileForm = () => {
   // Country options
   const { options: country_options } = useCountryOptions();
 
-  // Handle tab changes
-  const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
   // Function to handle profile update
   const handleUpdate: SubmitHandler<FieldValues> = async (values) => {
-    const { present_address, permanent_address, social_links, ...data } =
-      values;
+    const { location, social_links, ...data } = values;
 
     const toastId = toast.loading("Please wait...");
 
     // Filter the address and social link data, only including fields with valid values
-    const presentAddressData: TAddress = filterUndefinedValues(present_address);
-    const permanentAddressData: TAddress =
-      filterUndefinedValues(permanent_address);
+    const business = filterUndefinedValues(data);
+    const businessLocation: TAddress = filterUndefinedValues(location);
     const socialLinkData: TSocialLinkPayload =
       filterUndefinedValues(social_links);
 
     // Construct the final payload, including address and social data only if they are not empty
-    const payload: FieldValues = {
-      ...data,
-      ...(Object.keys(presentAddressData).length > 0 && {
-        present_address: presentAddressData,
-      }),
-      ...(Object.keys(permanentAddressData).length > 0 && {
-        permanent_address: permanentAddressData,
-      }),
-      ...(Object.keys(socialLinkData).length > 0 && {
-        social_links: socialLinkData,
-      }),
+    const payload = {
+      business,
+      location: businessLocation,
+      social_links: socialLinkData,
+      // ...(Object.keys(businessLocation).length > 0 && {
+
+      // }),
+      // ...(Object.keys(socialLinkData).length > 0 && {
+
+      // }),
     };
 
+    // console.log(payload);
+
     try {
-      const res = await updateProfile({ ...payload }).unwrap();
+      const res = await updateOrganizationProfile(payload).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
       } else {
@@ -125,30 +123,32 @@ const OrganizationProfileForm = () => {
 
   // Default form values
   const default_values = {
-    name: user_data?.name,
-    web_mail: user_data?.web_mail,
-    gender: user_data?.gender,
-    phone: user_data?.phone,
+    name: business_data?.name,
+    tag_line: business_data?.tag_line,
+    email: business_data?.email,
+    web_mail: business_data?.web_mail,
+    primary_phone: business_data?.primary_phone,
+    secondary_phone: business_data?.secondary_phone,
+    descriptions: business_data?.descriptions,
+    primary_tel: business_data?.primary_tel,
+    secondary_tel: business_data?.secondary_tel,
+    primary_logo: business_data?.primary_logo,
+    secondary_logo: business_data?.secondary_logo,
 
-    present_address: {
-      countryId: user_data?.presentAddress?.countryId,
-      state: user_data?.presentAddress?.state,
-      city: user_data?.presentAddress?.city,
-      address_line: user_data?.presentAddress?.address_line,
-    },
-
-    permanent_address: {
-      countryId: user_data?.permanentAddress?.countryId,
-      state: user_data?.permanentAddress?.state,
-      city: user_data?.permanentAddress?.city,
-      address_line: user_data?.permanentAddress?.address_line,
+    location: {
+      countryId: business_location?.countryId,
+      state: business_location?.state,
+      city: business_location?.city,
+      address_line: business_location?.address_line,
     },
 
     social_links: {
-      facebook: user_data?.socialLink?.facebook,
-      twitter: user_data?.socialLink?.twitter,
-      linkedIn: user_data?.socialLink?.linkedIn,
-      instagram: user_data?.socialLink?.instagram,
+      facebook: business_data?.socialLinks.facebook,
+      twitter: business_data?.socialLinks.twitter,
+      linkedIn: business_data?.socialLinks.linkedIn,
+      instagram: business_data?.socialLinks.instagram,
+      youtube: business_data?.socialLinks.youtube,
+      website: business_data?.socialLinks.website,
     },
   };
 
@@ -199,18 +199,18 @@ const OrganizationProfileForm = () => {
                       }}
                     >
                       <ProfilePicture
-                        userData={user_data}
+                        userData={business_data}
                         isUploading={isPictureUpdateLoading}
                         onImageUpload={handleImageUpload}
                       />
                     </Box>
                     <CardContent>
                       <Typography variant="h6" component="div">
-                        {user_data?.name}
+                        {business_data?.name}
                       </Typography>
 
                       <Typography variant="body2" color="text.secondary">
-                        {user_data?.designation?.title}
+                        {business_data?.tag_line}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -291,12 +291,48 @@ const OrganizationProfileForm = () => {
                           fullWidth={true}
                         />
                       </Box>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          gap: "16px",
+                        }}
+                      >
+                        <YouTubeIcon fontSize="large" />
+                        <CMInput
+                          name="social_links.youtube"
+                          label={"Youtube"}
+                          size="small"
+                          fullWidth={true}
+                        />
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          gap: "16px",
+                        }}
+                      >
+                        <WebAssetIcon fontSize="large" />
+                        <CMInput
+                          name="social_links.website"
+                          label={"Website"}
+                          size="small"
+                          fullWidth={true}
+                        />
+                      </Box>
                     </Stack>
                   </Box>
                 </Box>
               </Grid>
 
-              {/* Personal details */}
+              {/* Business details */}
               <Grid
                 size={{ xs: 12, lg: 8 }}
                 sx={{
@@ -305,151 +341,123 @@ const OrganizationProfileForm = () => {
                 }}
               >
                 <Box sx={{ width: "100%" }}>
-                  <CustomTabPanel value={value} index={0}>
-                    <Stack spacing={2}>
-                      <Stack
-                        spacing={2}
-                        direction={{ xs: "column", lg: "row" }}
-                      >
-                        <CMInput
-                          name="name"
-                          fullWidth={true}
-                          label="Name"
-                          size="small"
-                        />
-                        <CMInput
-                          name="gender"
-                          fullWidth={true}
-                          label="Gender"
-                          size="small"
-                        />
-                      </Stack>
-
-                      <Stack
-                        spacing={2}
-                        direction={{ xs: "column", lg: "row" }}
-                      >
-                        <CMInput
-                          name="web_mail"
-                          fullWidth={true}
-                          label="Web Mail"
-                          size="small"
-                          readOnly={true}
-                        />
-                        <CMInput
-                          name="phone"
-                          fullWidth={true}
-                          label="Phone"
-                          size="small"
-                        />
-                      </Stack>
-
-                      {/* Present Address Start */}
-                      <Typography pt={2} variant="body1" fontWeight="500">
-                        Present Address:
-                      </Typography>
-                      <Stack
-                        spacing={2}
-                        direction={{ xs: "column", lg: "row" }}
-                      >
-                        <CMSelectWithWatch
-                          name="present_address.countryId"
-                          label={"Country"}
-                          options={country_options}
-                          setState={setPresentCountryId}
-                        />
-                        <CMInput
-                          name="present_address.state"
-                          fullWidth={true}
-                          label="State"
-                          size="small"
-                          required={!!presentCountryId}
-                        />
-                      </Stack>
-                      <Stack
-                        spacing={2}
-                        direction={{ xs: "column", lg: "row" }}
-                      >
-                        <CMInput
-                          name="present_address.city"
-                          fullWidth={true}
-                          label="City"
-                          size="small"
-                          required={!!presentCountryId}
-                        />
-
-                        <CMInput
-                          name="present_address.address_line"
-                          fullWidth={true}
-                          label="Address Line"
-                          size="small"
-                          required={!!presentCountryId}
-                        />
-                      </Stack>
-                      {/* Present Address End */}
-
-                      {/* Permanent Address Start */}
-                      <Typography pt={2} variant="body1" fontWeight="500">
-                        Permanent Address:
-                      </Typography>
-                      <Stack
-                        spacing={2}
-                        direction={{ xs: "column", lg: "row" }}
-                      >
-                        <CMSelectWithWatch
-                          name="permanent_address.countryId"
-                          label={"Country"}
-                          options={country_options}
-                          setState={setPermanentCountryId}
-                        />
-                        <CMInput
-                          name="permanent_address.state"
-                          fullWidth={true}
-                          label="State"
-                          size="small"
-                          required={!!permanentCountryId}
-                        />
-                      </Stack>
-                      <Stack
-                        spacing={2}
-                        direction={{ xs: "column", lg: "row" }}
-                      >
-                        <CMInput
-                          name="permanent_address.city"
-                          fullWidth={true}
-                          label="City"
-                          size="small"
-                          required={!!permanentCountryId}
-                        />
-
-                        <CMInput
-                          name="permanent_address.address_line"
-                          fullWidth={true}
-                          label="Address Line"
-                          size="small"
-                          required={!!permanentCountryId}
-                        />
-                      </Stack>
-                      {/* Permanent Address End */}
+                  <Stack spacing={2}>
+                    {/* Business Name */}
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="name"
+                        fullWidth={true}
+                        label="Name"
+                        size="small"
+                      />
                     </Stack>
 
-                    <Box
+                    {/* Business Emain & Web Mail */}
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="email"
+                        fullWidth={true}
+                        label="Email"
+                        size="small"
+                      />
+                      <CMInput
+                        name="web_mail"
+                        fullWidth={true}
+                        label="Web Mail"
+                        size="small"
+                        readOnly={true}
+                      />
+                    </Stack>
+
+                    {/* Busines Phone & Secondary Phone */}
+                    <Stack spacing={2} direction="row">
+                      <CMInput
+                        name="primary_phone"
+                        fullWidth={true}
+                        label="Primary Phone"
+                        size="small"
+                      />
+                      <CMInput
+                        name="secondary_phone"
+                        fullWidth={true}
+                        label="Secondary Phone"
+                        size="small"
+                      />
+                    </Stack>
+
+                    {/* Busines Telephone & Secondary Telephone */}
+                    <Stack spacing={2} direction="row">
+                      <CMInput
+                        name="primary_tel"
+                        fullWidth={true}
+                        label="Primary Telephone"
+                        size="small"
+                      />
+                      <CMInput
+                        name="secondary_tel"
+                        fullWidth={true}
+                        label="Secondary Telephone"
+                        size="small"
+                      />
+                    </Stack>
+
+                    {/* Business Location*/}
+                    <Typography pt={2} variant="body1" fontWeight="500">
+                      Location:
+                    </Typography>
+                    {/* Address Line & State */}
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="location.address_line"
+                        fullWidth={true}
+                        label="Address Line"
+                        size="small"
+                        required={!!presentCountryId}
+                      />
+
+                      <CMInput
+                        name="location.state"
+                        fullWidth={true}
+                        label="State"
+                        size="small"
+                        required={!!presentCountryId}
+                      />
+                    </Stack>
+
+                    {/* Country & City */}
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="location.city"
+                        fullWidth={true}
+                        label="City"
+                        size="small"
+                        required={!!presentCountryId}
+                      />
+                      <CMSelectWithWatch
+                        name="location.countryId"
+                        label={"Country"}
+                        options={country_options}
+                        setState={setPresentCountryId}
+                      />
+                    </Stack>
+                  </Stack>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      disabled={isUpdateLoading}
                       sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
+                        mt: "30px",
                       }}
                     >
-                      <Button
-                        type="submit"
-                        disabled={isUpdateLoading}
-                        sx={{
-                          mt: "30px",
-                        }}
-                      >
-                        Update
-                      </Button>
-                    </Box>
-                  </CustomTabPanel>
+                      Update
+                    </Button>
+                  </Box>
                 </Box>
               </Grid>
             </Grid>

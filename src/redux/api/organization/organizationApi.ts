@@ -24,12 +24,11 @@ const organizationApi = baseApi.injectEndpoints({
 
     updateOrganization: build.mutation({
       query: (data) => {
-        const { id, ...payload } = data;
         return {
-          url: `/system/business/update/${id}`,
+          url: `/system/business/update`,
           method: "PATCH",
           contentType: "application/json",
-          data: payload,
+          data,
         };
       },
       invalidatesTags: [organizationTags?.organization],
@@ -37,12 +36,11 @@ const organizationApi = baseApi.injectEndpoints({
 
     changeOrganizationLogo: build.mutation({
       query: (data) => {
-        const { id, ...payload } = data;
         return {
-          url: `/system/business/change-logo/${id}`,
+          url: `/system/business/change-logo`,
           contentType: "multipart/form-data",
           method: "PATCH",
-          data: payload,
+          data,
         };
       },
       invalidatesTags: [organizationTags?.organization],

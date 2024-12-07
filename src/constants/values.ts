@@ -50,6 +50,18 @@ export const create_team_member_default_values = {
   socialLink: create_social_link_default_values,
 };
 
+export const create_branch_default_values = {
+  name: "",
+  email: "",
+  web_mail: "",
+  primary_phone: "",
+  secondary_phone: "",
+  primary_tel: "",
+  secondary_tel: "",
+  summary: "",
+  branch_location: create_address_default_values,
+};
+
 export const default_meta_info: TDefaultMetaInfo = {
   og_author: "Hotchpotch Innovations Ltd",
   meta_title: "Hotchpotch Innovations Ltd",

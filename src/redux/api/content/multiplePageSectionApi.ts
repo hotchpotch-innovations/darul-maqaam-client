@@ -76,6 +76,18 @@ const multiplePageSectionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.multiple_section],
     }),
+    changeCoverImage: build.mutation({
+      query: (data) => {
+        const { id, payload } = data;
+        return {
+          url: `/content/multiple-page-section/change-cover-image/${id}`,
+          contentType: "multipart/form-data",
+          method: "PATCH",
+          data: payload,
+        };
+      },
+      invalidatesTags: [contentTags?.multiple_section],
+    }),
   }),
 });
 
@@ -88,4 +100,5 @@ export const {
   useChangeMPSItemStatusMutation,
   useChangePublishedMPSItemStatusMutation,
   useUpdateMPSItemMutation,
+  useChangeCoverImageMutation,
 } = multiplePageSectionApi;

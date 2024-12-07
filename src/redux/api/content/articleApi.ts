@@ -98,6 +98,18 @@ const articleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.article],
     }),
+    changeCoverImage: build.mutation({
+      query: (data) => {
+        const { id, payload } = data;
+        return {
+          url: `/content/article/change-cover-image/${id}`,
+          contentType: "multipart/form-data",
+          method: "PATCH",
+          data: payload,
+        };
+      },
+      invalidatesTags: [contentTags?.article],
+    }),
   }),
 });
 
@@ -112,4 +124,5 @@ export const {
   useChangePublishedArticleStatusMutation,
   useArticleAddFilesMutation,
   useArticleRemoveFileMutation,
+  useChangeCoverImageMutation,
 } = articleApi;

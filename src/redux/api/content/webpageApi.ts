@@ -88,7 +88,7 @@ const webpageApi = baseApi.injectEndpoints({
 
     changeOGImage: build.mutation({
       query: (data) => {
-        const { id, ...payload } = data;
+        const { id, payload } = data;
         return {
           url: `/content/webpage/change-image/${id}`,
           contentType: "multipart/form-data",

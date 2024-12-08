@@ -1,6 +1,6 @@
 "use client";
 
-import { SyntheticEvent, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
@@ -41,8 +41,10 @@ import {
   useGetFirstOrganizationQuery,
   useUpdateOrganizationMutation,
 } from "@/redux/api/organization/organizationApi";
+import UpdateOrganizationLogo from "./UpdateOrganizationLogo";
 
 const OrganizationProfileForm = () => {
+  // Select country options
   const [presentCountryId, setPresentCountryId] = useState(null);
 
   // Fetching user data from the API
@@ -79,37 +81,10 @@ const OrganizationProfileForm = () => {
       business,
       location: businessLocation,
       social_links: socialLinkData,
-      // ...(Object.keys(businessLocation).length > 0 && {
-
-      // }),
-      // ...(Object.keys(socialLinkData).length > 0 && {
-
-      // }),
     };
-
-    // console.log(payload);
 
     try {
       const res = await updateOrganizationProfile(payload).unwrap();
-      if (res?.success) {
-        toast.success(res?.message, { id: toastId, duration: 3000 });
-      } else {
-        toast.error(res?.message, { id: toastId, duration: 3000 });
-      }
-    } catch (error) {
-      toast.error("Something went wrong!", { id: toastId, duration: 3000 });
-      customTimeOut(3000).then(() => window?.location?.reload());
-    }
-  };
-
-  // Function to handle for update user profile picture
-  const handleImageUpload = async (file: File) => {
-    if (!file) return;
-    const toastId = toast.loading("Uploading...");
-    const payload = modifyPayload({ file });
-
-    try {
-      const res = await changeLogo(payload).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
       } else {
@@ -191,19 +166,8 @@ const OrganizationProfileForm = () => {
                         " rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
                     }}
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <ProfilePicture
-                        userData={business_data}
-                        isUploading={isPictureUpdateLoading}
-                        onImageUpload={handleImageUpload}
-                      />
-                    </Box>
+                    {/* Business Logo */}
+                    <UpdateOrganizationLogo business_data={business_data} />
                     <CardContent>
                       <Typography variant="h6" component="div">
                         {business_data?.name}

@@ -1,10 +1,8 @@
 "use client";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -20,7 +18,7 @@ import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
-import RestoreIcon from "@mui/icons-material/Restore";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   designationId?: string;
@@ -58,7 +56,7 @@ const DepartmentTable = () => {
   // Create query object to pass to API call
   const queryObj: TQueryObj = {
     limit,
-    page: currentPage, // Sending current page as 1-based to the API
+    page: currentPage,
   };
 
   if (debouncedTerm) {
@@ -78,54 +76,39 @@ const DepartmentTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    {
+      field: "index",
+      headerName: "SERIAL",
+      width: 100,
+      disableColumnMenu: true,
+    },
     {
       field: "title",
       headerName: "TITLE",
       flex: 1,
+      sortable: false,
     },
 
-    { field: "identifier", headerName: "INDENTIFIER", flex: 1 },
+    {
+      field: "identifier",
+      headerName: "INDENTIFIER",
+      flex: 1,
+      disableColumnMenu: true,
+      sortable: false,
+    },
 
     {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
-      align: "center",
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              onClick={() => handleOpen(row?.id)}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => handleOpen(row?.id)}
+          onDelete={() => handleDelete(row?.id)}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];

@@ -5,15 +5,11 @@ import Loading from "@/components/ui/LoadingBar";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import { useDebounced } from "@/redux/hooks";
-import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Image from "next/image";
-import React, { MouseEvent, useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
 import {
@@ -37,16 +33,6 @@ const AdminTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [departmentId, setDepartment] = useState("");
   const [designationId, setDesignation] = useState("");
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: MouseEvent<HTMLElement>, row: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const router = useRouter();
 

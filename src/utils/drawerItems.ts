@@ -102,52 +102,6 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               identifier: "/client",
               icon: HowToRegIcon,
             },
-            // user > settings
-            {
-              title: "Settings",
-              icon: SettingsIcon,
-              state: "UserSettings",
-              identifier: `/${users}/settings`,
-              child: [
-                {
-                  title: "Address",
-                  state: "user_address",
-                  identifier: "/address",
-                  child: [
-                    {
-                      title: "Country",
-                      path: `/dashboard/${role}/${users}/settings/address/country`,
-                      identifier: "/country",
-                    },
-                    {
-                      title: "Division",
-                      path: `/dashboard/${role}/${users}/settings/address/division`,
-                      identifier: "/division",
-                    },
-                    {
-                      title: "District",
-                      path: `/dashboard/${role}/${users}/settings/address/district`,
-                      identifier: "/district",
-                    },
-                  ],
-                },
-                {
-                  title: "Department",
-                  path: `/dashboard/${role}/${users}/settings/department`,
-                  identifier: "/department",
-                },
-                {
-                  title: "Designation",
-                  path: `/dashboard/${role}/${users}/settings/designation`,
-                  identifier: "/designation",
-                },
-                {
-                  title: "Client Type",
-                  path: `/dashboard/${role}/${users}/settings/c_type`,
-                  identifier: "/c_type",
-                },
-              ],
-            },
           ],
         },
 
@@ -263,14 +217,51 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
               child: [
                 // Org > settings > business
                 {
-                  title: "Manage",
-                  path: `/dashboard/${role}/${organization}/settings/manage`,
-                  identifier: `/manage`,
+                  title: "Address",
+                  state: "user_address",
+                  identifier: "/address",
+                  child: [
+                    {
+                      title: "Country",
+                      path: `/dashboard/${role}/${organization}/settings/address/country`,
+                      identifier: "/country",
+                    },
+                    {
+                      title: "Division",
+                      path: `/dashboard/${role}/${organization}/settings/address/division`,
+                      identifier: "/division",
+                    },
+                    {
+                      title: "District",
+                      path: `/dashboard/${role}/${organization}/settings/address/district`,
+                      identifier: "/district",
+                    },
+                  ],
+                },
+                {
+                  title: "Department",
+                  path: `/dashboard/${role}/${organization}/settings/department`,
+                  identifier: "/department",
+                },
+                {
+                  title: "Designation",
+                  path: `/dashboard/${role}/${organization}/settings/designation`,
+                  identifier: "/designation",
+                },
+                {
+                  title: "Client Type",
+                  path: `/dashboard/${role}/${organization}/settings/c_type`,
+                  identifier: "/c_type",
                 },
                 {
                   title: "Branch",
                   path: `/dashboard/${role}/${organization}/settings/branch`,
                   identifier: "/branch",
+                },
+                {
+                  title: "Manage",
+                  path: `/dashboard/${role}/${organization}/settings/manage`,
+                  identifier: `/manage`,
                 },
               ],
             },

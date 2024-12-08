@@ -1,16 +1,7 @@
 "use client";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Loading from "@/components/ui/LoadingBar";
-import {
-  Box,
-  Button,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
@@ -30,11 +21,10 @@ import {
 import { toast } from "sonner";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import RestoreIcon from "@mui/icons-material/Restore";
 import { user_status_options } from "@/constants/options";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
+
 import { user_status } from "@/constants";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   status?: string;
@@ -100,34 +90,45 @@ const MenuTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    {
+      field: "index",
+      headerName: "SERIAL",
+      width: 100,
+      disableColumnMenu: true,
+    },
     {
       field: "title",
       headerName: "TITLE",
       flex: 1,
+      sortable: false,
     },
 
     {
       field: "identifier",
       headerName: "IDENTIFIER",
       flex: 1,
+      disableColumnMenu: true,
+      sortable: false,
     },
     {
       field: "has_children",
       headerName: "HAS CHILDREN",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params ? "Yes" : "No"),
     },
     {
       field: "slug",
       headerName: "HAS SUBMENU",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
     },
     {
       field: "status",
       headerName: "STATUS",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -157,61 +158,16 @@ const MenuTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
-      align: "center",
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              onClick={() => handleOpen(row)}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip
-            title={row?.status === user_status?.activate ? "Block" : "Activate"}
-          >
-            <Typography
-              sx={{
-                color:
-                  row?.status === user_status?.activate
-                    ? "orangered"
-                    : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => statusHandler(row?.id)}
-            >
-              {row?.status === user_status?.activate ? (
-                <BlockIcon />
-              ) : (
-                <TaskAltIcon />
-              )}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => handleOpen(row)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => statusHandler(row?.id)}
+          isDeleted={row?.isDeleted}
+          isActive={row?.status === user_status?.activate}
+        />
       ),
     },
   ];

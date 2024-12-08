@@ -4,17 +4,23 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import RestoreIcon from "@mui/icons-material/Restore";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import BlockIcon from "@mui/icons-material/Block";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
 type MoreActionsMenuProps = {
   onEdit?: () => void;
   onDelete?: () => void;
+  onStatusChange?: () => void;
   isDeleted?: boolean;
+  isActive?: boolean;
 };
 
 const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
   onEdit,
   onDelete,
+  onStatusChange,
   isDeleted,
+  isActive,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -54,6 +60,20 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
         {onEdit && (
           <MenuItem onClick={onEdit}>
             <EditIcon sx={{ mr: 1 }} /> Edit
+          </MenuItem>
+        )}
+
+        {onStatusChange && (
+          <MenuItem onClick={onStatusChange}>
+            {isActive ? (
+              <>
+                <BlockIcon sx={{ mr: 1, color: "orangered" }} /> Block
+              </>
+            ) : (
+              <>
+                <TaskAltIcon sx={{ mr: 1, color: "greenyellow" }} /> Activate
+              </>
+            )}
           </MenuItem>
         )}
 

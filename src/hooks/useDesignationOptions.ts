@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetAllDesignationQuery } from "@/redux/api/user/settings/designationApi";
+import { useGetAllPublicDesignationQuery } from "@/redux/api/user/settings/designationApi";
 import { TResponseDataObj } from "@/types";
 
 export type TDesignationQueryObj = {
@@ -10,7 +10,7 @@ export type TDesignationQueryObj = {
 };
 
 export const useDesignationOptions = (queryObj: TDesignationQueryObj = {}) => {
-  const { data, isLoading } = useGetAllDesignationQuery(queryObj);
+  const { data, isLoading } = useGetAllPublicDesignationQuery(queryObj);
 
   const designationData = data as TResponseDataObj;
   const designation_data = designationData?.data?.data || [];

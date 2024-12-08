@@ -16,7 +16,7 @@ import CMInput from "@/components/forms/CMInput";
 import { FieldValues } from "react-hook-form";
 import {
   useDeleteDesignationMutation,
-  useGetAllDesignationQuery,
+  useGetAllPrivateDesignationQuery,
   useUpdateDesignationMutation,
 } from "@/redux/api/user/settings/designationApi";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
@@ -80,7 +80,7 @@ const DesignationTable = () => {
   }
 
   // get All Country data
-  const { data, isLoading } = useGetAllDesignationQuery({ ...queryObj });
+  const { data, isLoading } = useGetAllPrivateDesignationQuery({ ...queryObj });
   const designations = data as TResponseDataObj;
 
   // index and also Role field to each user for serial number
@@ -119,7 +119,36 @@ const DesignationTable = () => {
       flex: 1,
       sortable: false,
     },
-
+    {
+      field: "isDeleted",
+      headerName: "Is DELETED",
+      sortable: false,
+      flex: 1,
+      valueGetter: (params: any) => (params === "" ? "No" : params),
+      renderCell: ({ row }) => (
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              alignItems: "left",
+              fontSize: "12px",
+              ...(!row.isDeleted
+                ? { color: "greenyellow" }
+                : { color: "orangered" }),
+            }}
+          >
+            {row?.isDeleted ? "YES" : "NO"}
+          </Box>
+        </Box>
+      ),
+    },
     {
       field: "Action",
       headerName: "ACTIONS",

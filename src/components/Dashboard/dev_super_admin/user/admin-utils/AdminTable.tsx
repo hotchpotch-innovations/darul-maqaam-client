@@ -21,6 +21,7 @@ import {
   useGetAllAdminQuery,
 } from "@/redux/api/user/adminApi";
 import { useRouter } from "next/navigation";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   designationId?: string;
@@ -194,54 +195,11 @@ const AdminTable = () => {
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="More Actions">
-            <IconButton
-              aria-controls="action-menu"
-              aria-haspopup="true"
-              onClick={(event) => handleClick(event, row)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          </Tooltip>
-
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-          >
-            <MenuItem onClick={() => router.push(`${path}/${row?.id}`)}>
-              <EditIcon sx={{ mr: 1 }} /> Edit
-            </MenuItem>
-            <MenuItem onClick={() => handleDelete(row?.id)}>
-              {row.isDeleted ? (
-                <>
-                  <RestoreIcon sx={{ mr: 1, color: "#de2c48" }} /> Restore
-                </>
-              ) : (
-                <>
-                  <DeleteOutlineIcon sx={{ mr: 1, color: "#C7253E" }} /> Delete
-                </>
-              )}
-            </MenuItem>
-          </Menu>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => router.push(`${path}/${row?.id}`)}
+          onDelete={() => handleDelete(row?.id)}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];

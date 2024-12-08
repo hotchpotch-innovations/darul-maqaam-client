@@ -8,14 +8,7 @@ import {
   useGetAllPrivateMPSQuery,
 } from "@/redux/api/content/multiplePageSectionApi";
 import { useDebounced } from "@/redux/hooks";
-import {
-  Box,
-  Button,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -37,6 +30,8 @@ import {
 } from "@/constants/options";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
+import { useRouter } from "next/navigation";
 
 type TMPSQueryObj = {
   status?: string;
@@ -54,6 +49,7 @@ type TCategoryQueryObj = {
 };
 
 const MultiplePageSectionTable = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -243,70 +239,16 @@ const MultiplePageSectionTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
-      align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              component={Link}
-              href={`${path}/${row?.id}`}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isPublished ? "Hide" : "Publish"}>
-            <Typography
-              sx={{
-                color: row?.isPublished ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handlePublishedStatus(row?.id)}
-            >
-              {row?.isPublished ? (
-                <UnpublishedIcon />
-              ) : (
-                <PublishedWithChangesIcon />
-              )}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.status === "ACTIVATED" ? "Block" : "Active"}>
-            <Typography
-              sx={{
-                color:
-                  row?.status === "ACTIVATED" ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handleStatus(row?.id)}
-            >
-              {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
-            </Typography>
-          </Tooltip>
-
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: row?.isDeleted ? "#de2c48" : "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => router.push(`${path}/${row?.id}`)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => statusHandler(row?.id)}
+          onPublishChange={() => handlePublishedStatus(row?.id)}
+          isDeleted={row.isDeleted}
+          isActive={row.status === "ACTIVATED"}
+          isPublished={row.isPublished}
+        />
       ),
     },
   ];
@@ -329,7 +271,7 @@ const MultiplePageSectionTable = () => {
     }
   };
 
-  const handleStatus = async (id: string) => {
+  const statusHandler = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {

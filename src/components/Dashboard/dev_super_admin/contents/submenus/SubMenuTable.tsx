@@ -36,6 +36,7 @@ import {
 import { user_status_options } from "@/constants/options";
 import { useMenubarOptions } from "@/hooks/content/useMenubarOptions";
 import { user_status } from "@/constants";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   menubarId?: string;
@@ -109,16 +110,23 @@ const SubMenuTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    {
+      field: "index",
+      headerName: "SERIAL",
+      width: 100,
+      disableColumnMenu: true,
+    },
     {
       field: "title",
       headerName: "TITLE",
       flex: 1,
+      sortable: false,
     },
     {
       field: "menubar",
       headerName: "MENUBAR",
       flex: 1,
+      sortable: false,
       renderCell: (params) => <Box>{params?.row?.menubar?.title}</Box>,
     },
 
@@ -126,17 +134,21 @@ const SubMenuTable = () => {
       field: "identifier",
       headerName: "IDENTIFIER",
       flex: 1,
+      disableColumnMenu: true,
+      sortable: false,
     },
     {
       field: "has_children",
       headerName: "HAS CHILDREN",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params ? "Yes" : "No"),
     },
     {
       field: "status",
       headerName: "STATUS",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -166,53 +178,16 @@ const SubMenuTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
-      align: "center",
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              onClick={() => handleOpen(row)}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.status === "ACTIVATED" ? "Block" : "Active"}>
-            <Typography
-              sx={{
-                color:
-                  row?.status === "ACTIVATED" ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handleStatus(row?.id)}
-            >
-              {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => handleOpen(row)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => statusHandler(row?.id)}
+          isDeleted={row?.isDeleted}
+          isActive={row?.status === "ACTIVATED"}
+        />
       ),
     },
   ];
@@ -241,7 +216,7 @@ const SubMenuTable = () => {
   // change status
   const [changeSubmenu] = useChangeSubmenuStatusMutation();
 
-  const handleStatus = async (id: string) => {
+  const statusHandler = async (id: string) => {
     const toastId = toast.loading("Please wait...");
     try {
       const res = await changeSubmenu(id);

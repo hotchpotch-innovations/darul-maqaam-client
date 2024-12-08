@@ -33,6 +33,7 @@ import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { user_status_options } from "@/constants/options";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TSPSQueryObj = {
   webpageId?: string;
@@ -129,10 +130,16 @@ const SinglePageSectionTable = () => {
 
   // column
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 80 },
+    {
+      field: "index",
+      headerName: "SERIAL",
+      width: 80,
+      disableColumnMenu: true,
+    },
     {
       field: "section_name",
       headerName: "Section Name",
+      sortable: false,
       flex: 1,
       renderCell: (params) => (
         <Box
@@ -153,11 +160,13 @@ const SinglePageSectionTable = () => {
       field: "section_title",
       headerName: "Section Title",
       flex: 1,
+      sortable: false,
     },
     {
       field: "menubar",
       headerName: "Menu",
       flex: 1,
+      sortable: false,
       renderCell: (params) => (
         <Box>
           {params?.row?.menubar?.title ? params?.row?.menubar?.title : "N/A"}
@@ -168,6 +177,7 @@ const SinglePageSectionTable = () => {
       field: "submenu",
       headerName: "Submenu",
       flex: 1,
+      sortable: false,
       renderCell: (params) => (
         <Box>
           {params?.row?.submenu?.title ? params?.row?.submenu?.title : "N/A"}
@@ -178,12 +188,14 @@ const SinglePageSectionTable = () => {
       field: "webpage",
       headerName: "Webpage",
       flex: 1,
+      disableColumnMenu: true,
       renderCell: (params) => <Box>{params?.row?.webpage?.title}</Box>,
     },
     {
       field: "status",
       headerName: "STATUS",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -213,6 +225,7 @@ const SinglePageSectionTable = () => {
       field: "isDeleted",
       headerName: "Is DELETED",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -242,55 +255,16 @@ const SinglePageSectionTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
-      align: "center",
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              component={Link}
-              href={`${path}/${row?.id}`}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.status === "ACTIVATED" ? "Block" : "Active"}>
-            <Typography
-              sx={{
-                color:
-                  row?.status === "ACTIVATED" ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handleStatus(row?.id)}
-            >
-              {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
-            </Typography>
-          </Tooltip>
-
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: row?.isDeleted ? "#de2c48" : "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => router.push(`${path}/${row?.id}`)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => statusHandler(row?.id)}
+          isDeleted={row?.isDeleted}
+          isActive={row?.status === "ACTIVATED"}
+        />
       ),
     },
   ];
@@ -312,7 +286,7 @@ const SinglePageSectionTable = () => {
     }
   };
 
-  const handleStatus = async (id: string) => {
+  const statusHandler = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {

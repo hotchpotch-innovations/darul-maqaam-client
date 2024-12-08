@@ -1,10 +1,8 @@
 "use client";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
@@ -18,7 +16,7 @@ import {
 } from "@/redux/api/user/settings/countryApi";
 
 import ConutryModla from "@/components/ui/modals/ConutryModla";
-import RestoreIcon from "@mui/icons-material/Restore";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   designationId?: string;
@@ -36,7 +34,6 @@ const CountryTable = () => {
     setOpen(true);
     setObj(row);
   };
-  //Modal Functionality Is End
 
   const path_create_country =
     "/dashboard/dev_super_admin/users/settings/address/country/create";
@@ -54,7 +51,7 @@ const CountryTable = () => {
   // Create query object to pass to API call
   const queryObj: TQueryObj = {
     limit,
-    page: currentPage, // Sending current page as 1-based to the API
+    page: currentPage,
   };
 
   if (debouncedTerm) {
@@ -78,7 +75,7 @@ const CountryTable = () => {
       field: "profile_image",
       headerName: "IMAGE",
       flex: 0.5,
-      headerAlign: "center", // Horizontally center the header
+      headerAlign: "center",
       align: "center",
 
       renderCell: (params) => (
@@ -111,46 +108,18 @@ const CountryTable = () => {
     { field: "code", headerName: "CODE", flex: 1 },
     { field: "phone_code", headerName: "PHONE CODE", flex: 1 },
 
-    // { field: "status", headerName: "STATUS", flex: 1 },
     {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
+      headerAlign: "center",
       align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              onClick={() => handleOpen(row)}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => handleOpen(row)}
+          onDelete={() => handleDelete(row?.id)}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];

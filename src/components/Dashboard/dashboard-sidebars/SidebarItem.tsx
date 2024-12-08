@@ -21,8 +21,12 @@ type TItemProps = {
 };
 
 const SidebarItem = ({ item }: TItemProps) => {
-  const [isChildOpen, setIsChildOpen] = useState(false);
   const pathName = usePathname();
+  const [isChildOpen, setIsChildOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsChildOpen((prev) => !prev);
+  };
 
   return (
     <>
@@ -37,7 +41,7 @@ const SidebarItem = ({ item }: TItemProps) => {
         >
           {/* Management part  */}
           <ListItemButton
-            onClick={() => setIsChildOpen(!isChildOpen)}
+            onClick={handleToggle}
             sx={{
               ...(item?.management !== "no-management" && {
                 cursor: "pointer",

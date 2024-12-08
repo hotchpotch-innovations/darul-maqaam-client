@@ -9,14 +9,9 @@ import {
 } from "@/redux/api/content/authorityApi";
 import { useDebounced } from "@/redux/hooks";
 import { TResponseDataObj } from "@/types";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import Grid from "@mui/material/Grid2";

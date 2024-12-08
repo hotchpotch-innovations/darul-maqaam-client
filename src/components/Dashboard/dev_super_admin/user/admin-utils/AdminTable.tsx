@@ -5,11 +5,12 @@ import Loading from "@/components/ui/LoadingBar";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { MouseEvent, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import RestoreIcon from "@mui/icons-material/Restore";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -19,6 +20,7 @@ import {
   useDeleteAdminMutation,
   useGetAllAdminQuery,
 } from "@/redux/api/user/adminApi";
+import { useRouter } from "next/navigation";
 
 type TQueryObj = {
   designationId?: string;
@@ -34,6 +36,18 @@ const AdminTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [departmentId, setDepartment] = useState("");
   const [designationId, setDesignation] = useState("");
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: MouseEvent<HTMLElement>, row: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const router = useRouter();
 
   const path = "/dashboard/dev_super_admin/users/admin/update";
 
@@ -78,10 +92,17 @@ const AdminTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    {
+      field: "index",
+      headerName: "SERIAL",
+      disableColumnMenu: true,
+      width: 100,
+    },
     {
       field: "profile_image",
       headerName: "IMAGE",
+      disableColumnMenu: true,
+      sortable: false,
       flex: 0.5,
       renderCell: (params) => (
         <Image
@@ -133,15 +154,12 @@ const AdminTable = () => {
     { field: "email", headerName: "EMAIL", flex: 1.5 },
     { field: "role", headerName: "ROLE", flex: 1 },
     { field: "phone", headerName: "PHONE", flex: 1 },
-    // {
-    //   field: "isDeleted",
-    //   headerName: "is_Deleted",
-    //   flex: 0.5,
-    // },
     {
       field: "isDeleted",
       headerName: "Is DELETED",
       flex: 1,
+      disableColumnMenu: true,
+      sortable: false,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -171,8 +189,10 @@ const AdminTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
+      headerAlign: "center",
       align: "center",
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: ({ row }) => (
         <Box
           sx={{
@@ -183,29 +203,44 @@ const AdminTable = () => {
             gap: 2,
           }}
         >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              component={Link}
-              href={`${path}/${row?.id}`}
+          <Tooltip title="More Actions">
+            <IconButton
+              aria-controls="action-menu"
+              aria-haspopup="true"
+              onClick={(event) => handleClick(event, row)}
             >
-              <EditIcon />
-            </Typography>
+              <MoreVertIcon />
+            </IconButton>
           </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: row?.isDeleted ? "#de2c48" : "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <MenuItem onClick={() => router.push(`${path}/${row?.id}`)}>
+              <EditIcon sx={{ mr: 1 }} /> Edit
+            </MenuItem>
+            <MenuItem onClick={() => handleDelete(row?.id)}>
+              {row.isDeleted ? (
+                <>
+                  <RestoreIcon sx={{ mr: 1, color: "#de2c48" }} /> Restore
+                </>
+              ) : (
+                <>
+                  <DeleteOutlineIcon sx={{ mr: 1, color: "#C7253E" }} /> Delete
+                </>
+              )}
+            </MenuItem>
+          </Menu>
         </Box>
       ),
     },
@@ -229,7 +264,7 @@ const AdminTable = () => {
 
   // Pagination handler
   const handlePaginationChange = (newPaginationModel: any) => {
-    setCurrentPage(newPaginationModel.page + 1); // DataGrid uses 0-based indexing, adjust to 1-based
+    setCurrentPage(newPaginationModel.page + 1);
     setLimit(newPaginationModel.pageSize);
   };
   return (

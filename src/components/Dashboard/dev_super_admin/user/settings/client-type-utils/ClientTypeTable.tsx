@@ -21,7 +21,7 @@ import {
   useGetSingleClientTypeQuery,
   useUpdateClientTypeMutation,
 } from "@/redux/api/user/settings/clientTypeApi";
-import RestoreIcon from "@mui/icons-material/Restore";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   designationId?: string;
@@ -35,9 +35,12 @@ const ClientTypeTable = () => {
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
   const [updateId, setUpdateId] = useState("");
-  const handleOpen = (id: string) => {
+  const [clientTypeObj, setClientTypeObj] = useState({});
+  const clientType: any = clientTypeObj;
+  const handleOpen = (row: any) => {
     setOpen(true);
-    setUpdateId(id);
+    setUpdateId(row?.id);
+    setClientTypeObj(row);
   };
   const handleClose = () => setOpen(false);
   //Modal Functionality Is End
@@ -70,12 +73,12 @@ const ClientTypeTable = () => {
   const { data, isLoading } = useGetAllClientTypeQuery({ ...queryObj });
   const client_types = data as TResponseDataObj;
 
-  const { data: client_type_data } = useGetSingleClientTypeQuery(updateId);
-  const client_type_info = client_type_data as {
-    success: boolean;
-    message: string;
-    data: Record<string, any>;
-  };
+  // const { data: client_type_data } = useGetSingleClientTypeQuery(updateId);
+  // const client_type_info = client_type_data as {
+  //   success: boolean;
+  //   message: string;
+  //   data: Record<string, any>;
+  // };
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
@@ -102,38 +105,11 @@ const ClientTypeTable = () => {
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              onClick={() => handleOpen(row?.id)}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => handleOpen(row)}
+          onDelete={() => handleDelete(row?.id)}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];
@@ -240,8 +216,8 @@ const ClientTypeTable = () => {
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              title: client_type_info?.data?.title || "",
-              identifier: client_type_info?.data?.identifier || "",
+              title: clientType?.title || "",
+              identifier: clientType?.identifier || "",
             }}
           >
             <Grid container spacing={3}>

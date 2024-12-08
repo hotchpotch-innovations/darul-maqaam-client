@@ -316,7 +316,7 @@ const OrganizationProfileForm = () => {
                       />
                     </Stack>
 
-                    {/* Business Emain & Web Mail */}
+                    {/* Business Email & Web Mail */}
                     <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
                       <CMInput
                         name="email"
@@ -329,11 +329,10 @@ const OrganizationProfileForm = () => {
                         fullWidth={true}
                         label="Web Mail"
                         size="small"
-                        readOnly={true}
                       />
                     </Stack>
 
-                    {/* Busines Phone & Secondary Phone */}
+                    {/* Business Phone & Secondary Phone */}
                     <Stack spacing={2} direction="row">
                       <CMInput
                         name="primary_phone"

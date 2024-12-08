@@ -1,10 +1,7 @@
 "use client";
-
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
-import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
@@ -23,7 +20,7 @@ import {
 } from "@/redux/api/user/settings/districtApi";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { useDivisionOptions } from "@/hooks/useDivisionOptions";
-import RestoreIcon from "@mui/icons-material/Restore";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   divisionId?: string;
@@ -37,11 +34,13 @@ const DistrictTable = () => {
   const [divisionId, setDivisionId] = useState("");
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
-  const [updateId, setUpdateId] = useState({});
+  const [updateId, setUpdateId] = useState("");
+  const [countryName, setCountryName] = useState("");
   const obj: any = updateId;
   const handleOpen = (row: any) => {
     setOpen(true);
     setUpdateId(row?.id);
+    setCountryName(row?.name);
   };
   const handleClose = () => setOpen(false);
   //Modal Functionality Is End
@@ -78,9 +77,6 @@ const DistrictTable = () => {
   // get All Country data
   const { data, isLoading } = useGetAllDistrictQuery({ ...queryObj });
   const districts = data as TResponseDataObj;
-  console.log({ districts });
-
-  console.log({ districts });
 
   // index and also Role field to each user for serial number
   const rowsWithIndex =
@@ -116,38 +112,11 @@ const DistrictTable = () => {
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              onClick={() => handleOpen(row)}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => handleOpen(row)}
+          onDelete={() => handleDelete(row?.id)}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];
@@ -251,12 +220,12 @@ const DistrictTable = () => {
       <CMModal open={open} id={obj?.id} handleClose={handleClose}>
         <Box>
           <Typography variant="h4" component="h4" mb={4}>
-            Update Department
+            Update District
           </Typography>
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              name: obj?.name,
+              name: countryName,
             }}
           >
             <Grid container spacing={3}>

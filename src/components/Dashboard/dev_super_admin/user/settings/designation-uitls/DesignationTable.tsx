@@ -40,9 +40,13 @@ const DesignationTable = () => {
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
   const [updateId, setUpdateId] = useState("");
-  const handleOpen = (id: string) => {
+  const [designationObj, setDesignationObj] = useState({});
+
+  const designation: any = designationObj;
+  const handleOpen = (row: any) => {
     setOpen(true);
-    setUpdateId(id);
+    setUpdateId(row?.id);
+    setDesignationObj(row);
   };
   const handleClose = () => setOpen(false);
 
@@ -103,7 +107,7 @@ const DesignationTable = () => {
 
     {
       field: "identifier",
-      headerName: "INDENTIFIER",
+      headerName: "IDENTIFIER",
       flex: 1,
       disableColumnMenu: true,
       sortable: false,
@@ -124,7 +128,7 @@ const DesignationTable = () => {
       sortable: false,
       renderCell: ({ row }) => (
         <MoreActionsMenu
-          onEdit={() => handleOpen(row?.id)}
+          onEdit={() => handleOpen(row)}
           onDelete={() => handleDelete(row?.id)}
           isDeleted={row?.isDeleted}
         />
@@ -155,7 +159,7 @@ const DesignationTable = () => {
     }
   };
 
-  // Update Designation Handeler
+  // Update Designation Handler
   const [updateDesignation] = useUpdateDesignationMutation();
   const handleUpdate = async (values: FieldValues) => {
     const toastId = toast.loading("Please wait...");
@@ -242,8 +246,8 @@ const DesignationTable = () => {
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              title: "",
-              identifier: "",
+              title: designation?.title,
+              identifier: designation?.identifier,
             }}
           >
             <Grid container spacing={3}>

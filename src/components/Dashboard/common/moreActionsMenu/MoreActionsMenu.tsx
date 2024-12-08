@@ -53,7 +53,7 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
       >
         {onEdit && (
           <MenuItem onClick={onEdit}>
-            <EditIcon sx={{ mr: 1 }} /> Edit
+            <EditIcon sx={{ mr: 1, color: "primary.main" }} /> Edit
           </MenuItem>
         )}
 

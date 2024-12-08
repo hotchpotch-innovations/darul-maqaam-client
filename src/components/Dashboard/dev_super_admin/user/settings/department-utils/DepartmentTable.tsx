@@ -32,9 +32,13 @@ const DepartmentTable = () => {
   // Modal Functionality Is Start
   const [open, setOpen] = useState(false);
   const [updateId, setUpdateId] = useState("");
-  const handleOpen = (id: string) => {
+  const [departmentObj, setDepartmentObj] = useState({});
+
+  const department: any = departmentObj;
+  const handleOpen = (row: Record<string, any>) => {
     setOpen(true);
-    setUpdateId(id);
+    setUpdateId(row.id);
+    setDepartmentObj(row);
   };
   const handleClose = () => setOpen(false);
   //Modal Functionality Is End
@@ -105,7 +109,7 @@ const DepartmentTable = () => {
       sortable: false,
       renderCell: ({ row }) => (
         <MoreActionsMenu
-          onEdit={() => handleOpen(row?.id)}
+          onEdit={() => handleOpen(row)}
           onDelete={() => handleDelete(row?.id)}
           isDeleted={row?.isDeleted}
         />
@@ -218,8 +222,8 @@ const DepartmentTable = () => {
           <CMForm
             onSubmit={handleUpdate}
             defaultValues={{
-              title: "",
-              identifier: "",
+              title: department?.title,
+              identifier: department?.identifier,
             }}
           >
             <Grid container spacing={3}>

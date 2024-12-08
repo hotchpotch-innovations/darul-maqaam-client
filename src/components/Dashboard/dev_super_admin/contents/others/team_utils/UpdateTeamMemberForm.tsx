@@ -25,6 +25,7 @@ import CMInput from "@/components/forms/CMInput";
 import CMTextarea from "@/components/forms/CMTextarea";
 import { z } from "zod";
 import { social_linksValidationSchema } from "@/constants/zodvalidation";
+import Loading from "@/components/ui/LoadingBar";
 
 const validationSchema = z.object({
   departmentId: z.string().nonempty({ message: "Department is required" }),
@@ -88,7 +89,7 @@ const UpdateTeamMemberForm = ({ id }: TProps) => {
   const team_data = team_obj?.data;
 
   if (isLoading) {
-    return <p className="text-center my-8">Loading...</p>;
+    return <Loading />;
   }
 
   const default_values = {
@@ -98,16 +99,16 @@ const UpdateTeamMemberForm = ({ id }: TProps) => {
     description: team_data?.description,
     socialLink: {
       facebook: team_data?.socialLink?.facebook,
-      twitter: team_data?.socialLink?.twitter,
-      linkedIn: team_data?.socialLink?.linkedIn,
-      instagram: team_data?.socialLink?.instagram,
+      twitter: team_data?.socialLink?.twitter || "",
+      linkedIn: team_data?.socialLink?.linkedIn || "",
+      instagram: team_data?.socialLink?.instagram || "",
     },
   };
 
   return (
     <CMForm
       onSubmit={handleUpdateMember}
-      //   resolver={zodResolver(validationSchema)}
+      resolver={zodResolver(validationSchema)}
       defaultValues={default_values}
     >
       <Stack direction={{ xs: "column", lg: "row" }} gap={4}>

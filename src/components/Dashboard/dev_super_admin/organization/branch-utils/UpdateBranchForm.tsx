@@ -1,9 +1,12 @@
 "use client";
 
 import CMForm from "@/components/forms/CMForm";
-import CMMultipleTwoFieldInput from "@/components/forms/multiple_fields/CMMultipleTwoFieldInput";
+import { addressValidationSchema } from "@/constants/zodvalidation";
 import { useCountryOptions } from "@/hooks/useCountryOptions";
-import { useCreateBranchMutation } from "@/redux/api/organization/branchApi";
+import {
+  useGetSingleBranchQuery,
+  useUpdateBranchMutation,
+} from "@/redux/api/organization/branchApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,11 +17,14 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import Grid from "@mui/material/Grid2";
-import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 import CMInput from "@/components/forms/CMInput";
 import CMTextarea from "@/components/forms/CMTextarea";
-import { addressValidationSchema } from "@/constants/zodvalidation";
-import { create_branch_default_values } from "@/constants/values";
+import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
+import Loading from "@/components/ui/LoadingBar";
+
+type TProps = {
+  id: string;
+};
 
 const validationSchema = z.object({
   name: z.string().nonempty({ message: "Name is required" }),
@@ -37,17 +43,38 @@ const validationSchema = z.object({
   branch_location: addressValidationSchema,
 });
 
-const CreateBranchForm = () => {
+const UpdateBranchForm = ({ id }: TProps) => {
   const router = useRouter();
   const [countryId, setCountryId] = useState(null);
 
-  const [createBranch, { isLoading: isCreateLoading }] =
-    useCreateBranchMutation();
+  const { data: branch_obj, isLoading: isGetLoading } =
+    useGetSingleBranchQuery(id);
+  const branch_info = branch_obj?.data;
+
+  const defaultValues = {
+    name: branch_info?.name,
+    email: branch_info?.email,
+    web_mail: branch_info?.web_mail || "",
+    primary_phone: branch_info?.primary_phone,
+    secondary_phone: branch_info?.secondary_phone || "",
+    primary_tel: branch_info?.primary_tel || "",
+    secondary_tel: branch_info?.secondary_tel || "",
+    summary: branch_info?.summary || "",
+    branch_location: {
+      countryId: branch_info?.location?.countryId,
+      state: branch_info?.location?.state,
+      city: branch_info?.location?.city,
+      address_line: branch_info?.location?.address_line,
+    },
+  };
+
+  const [updateBranch, { isLoading: isUpdateLoading }] =
+    useUpdateBranchMutation();
 
   const { options: country_options, isLoading: isCountryLoading } =
     useCountryOptions();
 
-  const createHandler: SubmitHandler<FieldValues> = async (values) => {
+  const updateHandler: SubmitHandler<FieldValues> = async (values) => {
     const { branch_location, ...formValue } = values;
     const branch = filterUndefinedValues(formValue);
     const location = filterUndefinedValues(branch_location);
@@ -59,7 +86,7 @@ const CreateBranchForm = () => {
     const toastId = toast.loading("Please wait...", { duration: 3000 });
 
     try {
-      const res = await createBranch(payload).unwrap();
+      const res = await updateBranch({ id, ...payload }).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
         router.push("/dashboard/dev_super_admin/organization/settings/branch");
@@ -73,11 +100,15 @@ const CreateBranchForm = () => {
     }
   };
 
+  if (!!isGetLoading) {
+    return <Loading />;
+  }
+
   return (
     <CMForm
-      onSubmit={createHandler}
+      onSubmit={updateHandler}
       resolver={zodResolver(validationSchema)}
-      defaultValues={create_branch_default_values}
+      defaultValues={defaultValues}
     >
       <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
         {/* 1st Pera */}
@@ -91,9 +122,7 @@ const CreateBranchForm = () => {
           }}
           p={4}
         >
-          <Typography variant="h5" sx={{ marginBottom: "8px" }}>
-            Basic Information
-          </Typography>
+          <Typography variant="h5">Basic Information</Typography>
           <Grid size={12}>
             <CMInput name="name" label="Name*" fullWidth={true} />
           </Grid>
@@ -142,7 +171,9 @@ const CreateBranchForm = () => {
           </Grid>
 
           <Grid size={12}>
-            <Typography variant="h6">Telephone</Typography>
+            <Typography variant="h6" sx={{ marginBottom: "8px" }}>
+              Telephone
+            </Typography>
             <Grid
               container
               size={{ xs: 12, lg: 6 }}
@@ -234,13 +265,13 @@ const CreateBranchForm = () => {
           sx={{
             mt: "30px",
           }}
-          disabled={isCreateLoading}
+          disabled={isUpdateLoading}
         >
-          Create Branch
+          update Branch
         </Button>
       </Box>
     </CMForm>
   );
 };
 
-export default CreateBranchForm;
+export default UpdateBranchForm;

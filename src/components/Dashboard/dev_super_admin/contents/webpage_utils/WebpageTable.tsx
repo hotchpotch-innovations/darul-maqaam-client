@@ -22,19 +22,12 @@ import {
   useGetAllPrivateWebpageQuery,
 } from "@/redux/api/content/webpageApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import EditIcon from "@mui/icons-material/Edit";
-import UnpublishedIcon from "@mui/icons-material/Unpublished";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useState } from "react";
 import { toast } from "sonner";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";

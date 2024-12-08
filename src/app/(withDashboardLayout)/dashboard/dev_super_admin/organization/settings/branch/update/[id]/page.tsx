@@ -1,10 +1,27 @@
+import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
+import { Box } from "@mui/material";
+import dynamic from "next/dynamic";
 import React from "react";
 
-const UpdateBranchPage = () => {
+type TProps = {
+  params: Record<string, any>;
+};
+const UpdateBranchPage = ({ params }: TProps) => {
+  const id = params?.id;
+  const UpdateBranchForm = dynamic(
+    () =>
+      import(
+        "@/components/Dashboard/dev_super_admin/organization/branch-utils/UpdateBranchForm"
+      ),
+    {
+      ssr: false,
+    }
+  );
   return (
-    <div>
-      <p>Update branch page</p>
-    </div>
+    <Box>
+      <TitleDashboard title="Update Branch" />
+      <UpdateBranchForm id={id} />
+    </Box>
   );
 };
 

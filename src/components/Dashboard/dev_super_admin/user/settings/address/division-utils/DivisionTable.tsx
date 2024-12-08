@@ -14,12 +14,12 @@ import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
-import RestoreIcon from "@mui/icons-material/Restore";
 import {
   useDeleteDivisionMutation,
   useGetAllDivisionQuery,
   useUpdateDivisionMutation,
 } from "@/redux/api/user/settings/divisionApi";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   designationId?: string;
@@ -34,7 +34,6 @@ const DivisionTable = () => {
   const [open, setOpen] = useState(false);
   const [obj, setObj] = useState({});
   const division: any = obj;
-  console.log({ division });
   const handleOpen = (obj: any) => {
     setOpen(true);
     setObj(obj);
@@ -107,38 +106,11 @@ const DivisionTable = () => {
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              onClick={() => handleOpen(row)}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Typography
-              sx={{
-                color: "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => handleOpen(row)}
+          onDelete={() => handleDelete(row?.id)}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];

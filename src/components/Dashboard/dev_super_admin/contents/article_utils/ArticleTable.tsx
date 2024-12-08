@@ -26,10 +26,8 @@ import {
   useDeleteArticleMutation,
   useGetAllPrivateArticlesQuery,
 } from "@/redux/api/content/articleApi";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import UnpublishedIcon from "@mui/icons-material/Unpublished";
+import { useRouter } from "next/navigation";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TArticleQueryObj = {
   status?: string;
@@ -46,6 +44,7 @@ type TCategoryQueryObj = {
   limit?: number;
 };
 const ArticleTable = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -108,11 +107,18 @@ const ArticleTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    {
+      field: "index",
+      headerName: "SERIAL",
+      width: 100,
+      disableColumnMenu: true,
+    },
     {
       field: "profile_image",
       headerName: "IMAGE",
       flex: 0.5,
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: (params) => (
         <Box>
           <Image
@@ -128,6 +134,7 @@ const ArticleTable = () => {
       field: "title",
       headerName: "TITLE",
       flex: 1,
+      sortable: false,
       renderCell: (params) => (
         <Box
           component={Link}
@@ -147,22 +154,26 @@ const ArticleTable = () => {
       field: "type",
       headerName: "TYPE",
       flex: 1,
+      disableColumnMenu: true,
     },
     {
       field: "category",
       headerName: "Category",
       flex: 1,
+      disableColumnMenu: true,
       renderCell: (params) => <Box>{params?.row?.common_category?.title}</Box>,
     },
     {
       field: "author",
       headerName: "Author",
       flex: 1,
+      sortable: false,
     },
     {
       field: "published_date",
       headerName: "Published Date",
       flex: 1,
+      disableColumnMenu: true,
       renderCell: (params: Record<string, any>) => {
         const date = dayjs(params?.published_date).format("DD MMM YYYY");
         return <Box>{date}</Box>;
@@ -171,6 +182,7 @@ const ArticleTable = () => {
     {
       field: "isPublished",
       headerName: "Is PUBLISHED",
+      disableColumnMenu: true,
       flex: 1,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
@@ -200,6 +212,7 @@ const ArticleTable = () => {
     {
       field: "isDeleted",
       headerName: "Is DELETED",
+      disableColumnMenu: true,
       flex: 1,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
@@ -230,70 +243,18 @@ const ArticleTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
-      align: "center",
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              component={Link}
-              href={`${path}/${row?.id}`}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isPublished ? "Hide" : "Publish"}>
-            <Typography
-              sx={{
-                color: row?.isPublished ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handlePublishedStatus(row?.id)}
-            >
-              {row?.isPublished ? (
-                <UnpublishedIcon />
-              ) : (
-                <PublishedWithChangesIcon />
-              )}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.status === "ACTIVATED" ? "Block" : "Active"}>
-            <Typography
-              sx={{
-                color:
-                  row?.status === "ACTIVATED" ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handleStatus(row?.id)}
-            >
-              {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
-            </Typography>
-          </Tooltip>
-
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: row?.isDeleted ? "#de2c48" : "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => router.push(`${path}/${row?.id}`)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => statusHandler(row?.id)}
+          onPublishChange={() => handlePublishedStatus(row?.id)}
+          isDeleted={row.isDeleted}
+          isActive={row.status === "ACTIVATED"}
+          isPublished={row.isPublished}
+        />
       ),
     },
   ];
@@ -316,7 +277,7 @@ const ArticleTable = () => {
     }
   };
 
-  const handleStatus = async (id: string) => {
+  const statusHandler = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {

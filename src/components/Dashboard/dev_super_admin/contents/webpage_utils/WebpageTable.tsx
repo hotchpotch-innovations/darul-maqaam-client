@@ -128,11 +128,18 @@ const WebpageTable = () => {
 
   // assign column
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 60 },
+    {
+      field: "index",
+      headerName: "SERIAL",
+      width: 60,
+      disableColumnMenu: true,
+    },
     {
       field: "og_image",
       headerName: "IMAGE",
       flex: 0.5,
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: (params) => (
         <Box>
           <Image
@@ -148,6 +155,7 @@ const WebpageTable = () => {
       field: "title",
       headerName: "TITLE",
       flex: 1,
+      sortable: false,
       renderCell: (params) => (
         <Box
           component={Link}
@@ -167,6 +175,7 @@ const WebpageTable = () => {
       field: "menubar",
       headerName: "Menubar",
       flex: 1,
+      sortable: false,
       renderCell: (params) => (
         <Box>
           {params?.row?.menubar?.title ? params?.row?.menubar?.title : "N/A"}
@@ -177,6 +186,7 @@ const WebpageTable = () => {
       field: "submenu",
       headerName: "Submenu",
       flex: 1,
+      sortable: false,
       renderCell: (params) => (
         <Box>
           {params?.row?.submenu?.title ? params?.row?.submenu?.title : "N/A"}
@@ -187,11 +197,13 @@ const WebpageTable = () => {
       field: "og_author",
       headerName: "OG Author",
       flex: 1,
+      sortable: false,
     },
     {
       field: "published_date",
       headerName: "Published Date",
       flex: 1,
+      disableColumnMenu: true,
       renderCell: (params: Record<string, any>) => {
         const date = dayjs(params?.published_date).format("DD MMM YYYY");
         return <Box>{date}</Box>;
@@ -201,6 +213,7 @@ const WebpageTable = () => {
       field: "isPublished",
       headerName: "Is PUBLISHED",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -230,6 +243,7 @@ const WebpageTable = () => {
       field: "isDeleted",
       headerName: "Is DELETED",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -259,6 +273,8 @@ const WebpageTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: ({ row }) => (
         <MoreActionsMenu
           onEdit={() => router.push(`${path}/${row?.slug}`)}

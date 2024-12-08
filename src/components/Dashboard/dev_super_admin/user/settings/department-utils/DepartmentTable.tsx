@@ -11,7 +11,7 @@ import { useDebounced } from "@/redux/hooks";
 import { TResponseDataObj } from "@/types";
 import {
   useDeleteDepartmentMutation,
-  useGetAllDepartmentQuery,
+  useGetAllPrivateDepartmentQuery,
   useUpdateDepartmentMutation,
 } from "@/redux/api/user/settings/departmentApi";
 import CMModal from "@/components/ui/CMModal";
@@ -68,7 +68,7 @@ const DepartmentTable = () => {
   }
 
   // get All Country data
-  const { data, isLoading } = useGetAllDepartmentQuery({ ...queryObj });
+  const { data, isLoading } = useGetAllPrivateDepartmentQuery({ ...queryObj });
   const departments = data as TResponseDataObj;
 
   // index and also Role field to each user for serial number
@@ -95,12 +95,41 @@ const DepartmentTable = () => {
 
     {
       field: "identifier",
-      headerName: "INDENTIFIER",
+      headerName: "IDENTIFIER",
       flex: 1,
       disableColumnMenu: true,
       sortable: false,
     },
-
+    {
+      field: "isDeleted",
+      headerName: "Is DELETED",
+      sortable: false,
+      flex: 1,
+      valueGetter: (params: any) => (params === "" ? "No" : params),
+      renderCell: ({ row }) => (
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              alignItems: "left",
+              fontSize: "12px",
+              ...(!row.isDeleted
+                ? { color: "greenyellow" }
+                : { color: "orangered" }),
+            }}
+          >
+            {row?.isDeleted ? "YES" : "NO"}
+          </Box>
+        </Box>
+      ),
+    },
     {
       field: "Action",
       headerName: "ACTIONS",

@@ -1,10 +1,10 @@
 "use client";
 
-import { useGetAllDepartmentQuery } from "@/redux/api/user/settings/departmentApi";
+import { useGetAllPublicDepartmentQuery } from "@/redux/api/user/settings/departmentApi";
 import { TResponseDataObj } from "@/types";
 
 export const useDepartmentOptions = () => {
-  const { data, isLoading } = useGetAllDepartmentQuery(null);
+  const { data, isLoading } = useGetAllPublicDepartmentQuery(null);
 
   const departmentsData = data as TResponseDataObj;
   const department_data = departmentsData?.data?.data || [];
@@ -18,6 +18,7 @@ export const useDepartmentOptions = () => {
       };
     });
   }
+
   return {
     options: department_options,
     isLoading,

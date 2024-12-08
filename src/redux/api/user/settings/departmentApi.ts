@@ -3,9 +3,16 @@ import { baseApi } from "../../baseApi";
 
 const departmentApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getAllDepartment: build.query({
+    getAllPrivateDepartment: build.query({
       query: () => ({
-        url: "/system/department",
+        url: "/system/department/private",
+        method: "GET",
+      }),
+      providesTags: [tagTypes.department],
+    }),
+    getAllPublicDepartment: build.query({
+      query: () => ({
+        url: "/system/department/public",
         method: "GET",
       }),
       providesTags: [tagTypes.department],
@@ -45,7 +52,8 @@ const departmentApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useGetAllDepartmentQuery,
+  useGetAllPrivateDepartmentQuery,
+  useGetAllPublicDepartmentQuery,
   useCreateDepartmentMutation,
   useDeleteDepartmentMutation,
   useUpdateDepartmentMutation,

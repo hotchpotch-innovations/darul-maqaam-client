@@ -22,6 +22,8 @@ import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { user_status_options } from "@/constants/options";
 import Loading from "@/components/ui/LoadingBar";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
+import { useRouter } from "next/navigation";
 
 type TQueryObj = {
   status?: string;
@@ -30,6 +32,7 @@ type TQueryObj = {
   limit?: number;
 };
 const BranchTable = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -170,51 +173,13 @@ const BranchTable = () => {
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              component={Link}
-              href={`${path}/${row?.id}`}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.status === "ACTIVATED" ? "Block" : "Active"}>
-            <Typography
-              sx={{
-                color:
-                  row?.status === "ACTIVATED" ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handleStatus(row?.id)}
-            >
-              {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: row?.isDeleted ? "#de2c48" : "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => router.push(`${path}/${row?.id}`)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => statusHandler(row.id)}
+          isActive={row?.status === "ACTIVATED"}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];
@@ -236,7 +201,7 @@ const BranchTable = () => {
     }
   };
 
-  const handleStatus = async (id: string) => {
+  const statusHandler = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {

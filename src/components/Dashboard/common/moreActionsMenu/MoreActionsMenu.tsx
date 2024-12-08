@@ -6,21 +6,27 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import BlockIcon from "@mui/icons-material/Block";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import UnpublishedIcon from "@mui/icons-material/Unpublished";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 
 type MoreActionsMenuProps = {
   onEdit?: () => void;
   onDelete?: () => void;
   onStatusChange?: () => void;
+  onPublishChange?: () => void;
   isDeleted?: boolean;
   isActive?: boolean;
+  isPublished?: boolean;
 };
 
 const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
   onEdit,
   onDelete,
   onStatusChange,
+  onPublishChange,
   isDeleted,
   isActive,
+  isPublished,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -72,6 +78,23 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
             ) : (
               <>
                 <TaskAltIcon sx={{ mr: 1, color: "greenyellow" }} /> Activate
+              </>
+            )}
+          </MenuItem>
+        )}
+
+        {onPublishChange && (
+          <MenuItem onClick={onPublishChange}>
+            {isPublished ? (
+              <>
+                <UnpublishedIcon sx={{ mr: 1, color: "orangered" }} /> Unpublish
+              </>
+            ) : (
+              <>
+                <PublishedWithChangesIcon
+                  sx={{ mr: 1, color: "greenyellow" }}
+                />
+                Publish
               </>
             )}
           </MenuItem>

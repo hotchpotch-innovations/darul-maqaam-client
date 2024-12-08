@@ -37,6 +37,8 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useState } from "react";
 import { toast } from "sonner";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
+import { useRouter } from "next/navigation";
 
 type TWebpageQueryObj = {
   status?: string;
@@ -50,6 +52,7 @@ type TWebpageQueryObj = {
 };
 
 const WebpageTable = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -160,11 +163,6 @@ const WebpageTable = () => {
         </Box>
       ),
     },
-    // {
-    //   field: "type",
-    //   headerName: "TYPE",
-    //   flex: 1,
-    // },
     {
       field: "menubar",
       headerName: "Menubar",
@@ -261,70 +259,16 @@ const WebpageTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
-      align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              component={Link}
-              href={`${path}/${row?.slug}`}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isPublished ? "Hide" : "Publish"}>
-            <Typography
-              sx={{
-                color: row?.isPublished ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handlePublishedStatus(row?.id)}
-            >
-              {row?.isPublished ? (
-                <UnpublishedIcon />
-              ) : (
-                <PublishedWithChangesIcon />
-              )}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.status === "ACTIVATED" ? "Block" : "Active"}>
-            <Typography
-              sx={{
-                color:
-                  row?.status === "ACTIVATED" ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handleStatus(row?.id)}
-            >
-              {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
-            </Typography>
-          </Tooltip>
-
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: row?.isDeleted ? "#de2c48" : "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => router.push(`${path}/${row?.slug}`)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => handleStatus(row?.id)}
+          onPublishChange={() => handlePublishedStatus(row?.id)}
+          isDeleted={row.isDeleted}
+          isActive={row.status === "ACTIVATED"}
+          isPublished={row.isPublished}
+        />
       ),
     },
   ];

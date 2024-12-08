@@ -28,6 +28,7 @@ import Loading from "@/components/ui/LoadingBar";
 import CMModal from "@/components/ui/CMModal";
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {
   status?: string;
@@ -174,58 +175,13 @@ const AuthorityTable = () => {
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              onClick={() => handleOpen(row)}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip
-            title={row?.status === user_status?.activate ? "Block" : "Activate"}
-          >
-            <Typography
-              sx={{
-                color:
-                  row?.status === user_status?.activate
-                    ? "orangered"
-                    : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => statusHandler(row?.id)}
-            >
-              {row?.status === user_status?.activate ? (
-                <BlockIcon />
-              ) : (
-                <TaskAltIcon />
-              )}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => handleOpen(row)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => statusHandler(row.id)}
+          isActive={row?.status === "ACTIVATED"}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];

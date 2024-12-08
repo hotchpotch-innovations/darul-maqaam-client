@@ -12,14 +12,13 @@ import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/ui/LoadingBar";
 import Link from "next/link";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
+import { useRouter } from "next/navigation";
 
 type TQueryObj = {
   designationId?: string;
@@ -30,6 +29,7 @@ type TQueryObj = {
 };
 
 const EmployeeTable = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
 
   const [limit, setLimit] = useState(10);
@@ -79,10 +79,17 @@ const EmployeeTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    {
+      field: "index",
+      headerName: "SERIAL",
+      disableColumnMenu: true,
+      width: 100,
+    },
     {
       field: "profile_image",
       headerName: "IMAGE",
+      disableColumnMenu: true,
+      sortable: false,
       flex: 0.5,
       renderCell: (params) => (
         <Image
@@ -96,6 +103,8 @@ const EmployeeTable = () => {
     {
       field: "gu_id",
       headerName: "USER ID",
+      disableColumnMenu: true,
+      sortable: false,
       flex: 1,
       renderCell: (params) => (
         <Box
@@ -132,16 +141,20 @@ const EmployeeTable = () => {
         </Box>
       ),
     },
-    { field: "email", headerName: "EMAIL", flex: 1.5 },
-    { field: "phone", headerName: "PHONE", flex: 1 },
-    // {
-    //   field: "isDeleted",
-    //   headerName: "is_Deleted",
-    //   flex: 0.5,
-    // },
+    { field: "email", headerName: "EMAIL", flex: 1.5, sortable: false },
+    {
+      field: "phone",
+      headerName: "PHONE",
+      flex: 1,
+      disableColumnMenu: true,
+      sortable: false,
+    },
+
     {
       field: "isDeleted",
       headerName: "Is DELETED",
+      disableColumnMenu: true,
+      sortable: false,
       flex: 1,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
@@ -172,42 +185,14 @@ const EmployeeTable = () => {
       field: "Action",
       headerName: "ACTIONS",
       flex: 1,
-      headerAlign: "center", // Horizontally center the header
-      align: "center",
+      disableColumnMenu: true,
+      sortable: false,
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              component={Link}
-              href={`${path}/${row?.id}`}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: row?.isDeleted ? "#de2c48" : "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => router.push(`${path}/${row?.id}`)}
+          onDelete={() => handleDelete(row?.id)}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];

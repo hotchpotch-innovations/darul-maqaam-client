@@ -272,7 +272,7 @@ const WebpageTable = () => {
         <MoreActionsMenu
           onEdit={() => router.push(`${path}/${row?.slug}`)}
           onDelete={() => handleDelete(row?.id)}
-          onStatusChange={() => handleStatus(row?.id)}
+          onStatusChange={() => statusHandler(row?.id)}
           onPublishChange={() => handlePublishedStatus(row?.id)}
           isDeleted={row.isDeleted}
           isActive={row.status === "ACTIVATED"}
@@ -300,7 +300,7 @@ const WebpageTable = () => {
     }
   };
 
-  const handleStatus = async (id: string) => {
+  const statusHandler = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {

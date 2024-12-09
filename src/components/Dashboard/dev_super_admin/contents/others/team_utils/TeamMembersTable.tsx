@@ -27,6 +27,9 @@ import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { isPublished_options, user_status_options } from "@/constants/options";
 import Loading from "@/components/ui/LoadingBar";
+import { useRouter } from "next/navigation";
+import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
+import { user_status } from "@/constants";
 
 type TQueryObj = {
   designationId?: string;
@@ -39,6 +42,7 @@ type TQueryObj = {
 };
 
 const TeamMembersTable = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -170,6 +174,35 @@ const TeamMembersTable = () => {
       ),
     },
     {
+      field: "status",
+      headerName: "STATUS",
+      flex: 1,
+      valueGetter: (params: any) => (params === "" ? "No" : params),
+      renderCell: ({ row }) => (
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            gap: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              alignItems: "left",
+              fontSize: "12px",
+              ...(row.status === user_status?.activate
+                ? { color: "greenyellow" }
+                : { color: "orangered" }),
+            }}
+          >
+            {row?.status}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
       field: "isDeleted",
       headerName: "Is DELETED",
       flex: 1,
@@ -205,66 +238,13 @@ const TeamMembersTable = () => {
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="Update">
-            <Typography
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-              }}
-              component={Link}
-              href={`${path}/${row?.id}`}
-            >
-              <EditIcon />
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isPublished ? "Hide" : "Publish"}>
-            <Typography
-              sx={{
-                color: row?.isPublished ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handlePublishedStatus(row?.id)}
-            >
-              {row?.isPublished ? (
-                <UnpublishedIcon />
-              ) : (
-                <PublishedWithChangesIcon />
-              )}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.status === "ACTIVATED" ? "Block" : "Active"}>
-            <Typography
-              sx={{
-                color:
-                  row?.status === "ACTIVATED" ? "orangered" : "greenyellow",
-                cursor: "pointer",
-              }}
-              onClick={() => handleStatus(row?.id)}
-            >
-              {row?.status === "ACTIVATED" ? <BlockIcon /> : <TaskAltIcon />}
-            </Typography>
-          </Tooltip>
-          <Tooltip title={row?.isDeleted ? "Restore" : "Delete"}>
-            <Typography
-              sx={{
-                color: row?.isDeleted ? "#de2c48" : "#C7253E",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(row?.id)}
-            >
-              {row?.isDeleted ? <RestoreIcon /> : <DeleteOutlineIcon />}
-            </Typography>
-          </Tooltip>
-        </Box>
+        <MoreActionsMenu
+          onEdit={() => router.push(`${path}/${row?.id}`)}
+          onDelete={() => handleDelete(row?.id)}
+          onStatusChange={() => statusHandler(row.id)}
+          isActive={row?.status === "ACTIVATED"}
+          isDeleted={row?.isDeleted}
+        />
       ),
     },
   ];
@@ -287,7 +267,7 @@ const TeamMembersTable = () => {
     }
   };
 
-  const handleStatus = async (id: string) => {
+  const statusHandler = async (id: string) => {
     console.log({ id });
     const toastId = toast.loading("Please wait...");
     try {

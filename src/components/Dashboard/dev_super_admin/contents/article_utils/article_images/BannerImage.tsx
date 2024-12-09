@@ -116,16 +116,22 @@ const BannerImage = ({
           onChange={handleBannerImageChange}
         />
       </Box>
-      {previewSelectedBanner && (
+
+      <Box sx={{ height: { xs: "42px", lg: "60px" } }}>
         <Button
-          sx={{ marginTop: "5px" }}
+          sx={{
+            marginY: "8px",
+            ...(previewSelectedBanner
+              ? { visibility: "visible" }
+              : { visibility: "hidden" }),
+          }}
           type="submit"
           disabled={isBannerImageChanging || !file}
           onClick={handleBannerImageUpload}
         >
           Save Changes
         </Button>
-      )}
+      </Box>
     </>
   );
 };

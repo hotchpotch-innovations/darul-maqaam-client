@@ -18,6 +18,7 @@ import Loading from "@/components/ui/LoadingBar";
 import {
   useArticleAddFilesMutation,
   useArticleRemoveFileMutation,
+  useChangeCoverImageMutation,
   useGetSingleArticleQuery,
 } from "@/redux/api/content/articleApi";
 
@@ -45,6 +46,9 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
     useArticleAddFilesMutation();
   const [deleteFile, { isLoading: isFileDeleting }] =
     useArticleRemoveFileMutation();
+
+  const [bannerImageChange, { isLoading: isBannerImageChanging }] =
+    useChangeCoverImageMutation();
 
   const article_images = imagesData?.data;
   useEffect(() => {
@@ -90,6 +94,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
 
   // Handler for images update function
   const handleUpdateImage = async () => {
+    const toastId = toast.loading("Please wait...");
     const selectedImage = selectedFiles
       ?.filter((item) => item.file)
       .map((item) => item.file);
@@ -104,7 +109,6 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
       id,
       data: updatedFiles,
     };
-    const toastId = toast.loading("Please wait...");
     try {
       const res = await addFiles(payload).unwrap();
       if (res?.success) {
@@ -154,12 +158,32 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
 
   // Handler for banner image update function
   const handleBannerImageUpload = async () => {
-    console.log(file);
+    if (!file) return;
+    const toastId = toast.loading("Please wait...");
+    const updatedBannerImage = modifyPayload({ file });
+
+    const payload = {
+      id,
+      payload: updatedBannerImage,
+    };
+    try {
+      const res = await bannerImageChange(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        setPreviewSelectedBanner("");
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
   };
 
   return (
     <>
-      {isAddFilesLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Grid container size={12} sx={{ marginBottom: "26px" }} spacing={2}>
@@ -199,15 +223,21 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
               </IconButton>
 
               {/* Banner Image */}
-              <Image
-                src={previewSelectedBanner || article_images?.cover_image?.url}
-                alt="Banner Image"
-                width={100}
-                height={100}
-                sizes="100vw"
-                style={{ width: "100%", height: "auto" }}
-                priority
-              />
+              {isBannerImageChanging || isLoading ? (
+                <Loading />
+              ) : (
+                <Image
+                  src={
+                    previewSelectedBanner || article_images?.cover_image?.url
+                  }
+                  alt="Banner Image"
+                  width={100}
+                  height={100}
+                  sizes="100vw"
+                  style={{ width: "100%", height: "auto" }}
+                  priority
+                />
+              )}
               <input
                 type="file"
                 id="fileInput"
@@ -218,8 +248,9 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
             </Box>
             {previewSelectedBanner && (
               <Button
+                sx={{ marginTop: "5px" }}
                 type="submit"
-                // disabled={isUploading || !file}
+                disabled={isBannerImageChanging || !file}
                 onClick={handleBannerImageUpload}
               >
                 Save Changes
@@ -369,7 +400,12 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                   maxHeight: "34px",
                 }}
               >
-                <Button type="submit" size="small" onClick={handleUpdateImage}>
+                <Button
+                  disabled={isAddFilesLoading || !file}
+                  type="submit"
+                  size="small"
+                  onClick={handleUpdateImage}
+                >
                   Update
                 </Button>
               </Box>

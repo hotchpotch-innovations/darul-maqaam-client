@@ -21,7 +21,7 @@ import {
   useChangeArticleCoverImageMutation,
   useGetSingleArticleQuery,
 } from "@/redux/api/content/articleApi";
-import BannerImage from "./article_images/BannerImage";
+import BannerImage from "@/components/Dashboard/common/bannerImage/BannerImage";
 
 type ArticleImagesSectionProps = {
   id: string;
@@ -31,20 +31,18 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
   // -------- State management --------
 
   // State for Banner images
-  const [previewSelectedBanner, setPreviewSelectedBanner] = useState<
-    string | null
-  >(null);
+  const [previewSelectedBanner, setPreviewSelectedBanner] =
+    useState<string>("");
   const [file, setFile] = useState<File | null>(null);
 
   // State for images
   const MAX_IMAGE_SLOTS = 4;
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
-  console.log(selectedFiles);
   const [remainingSlots, setRemainingSlots] = useState(MAX_IMAGE_SLOTS);
 
   // -------- API hook --------
   const { data: imagesData, isLoading } = useGetSingleArticleQuery(id);
-  console.log(imagesData);
+  // console.log(imagesData.data.videos);
   const [addFiles, { isLoading: isAddFilesLoading }] =
     useArticleAddFilesMutation();
   const [deleteFile, { isLoading: isFileDeleting }] =
@@ -192,7 +190,13 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
           Banner Image
         */}
         <Grid size={{ xs: 12, lg: 6 }}>
-          <BannerImage id={id} article_images={article_images} />
+          <BannerImage
+            isLoading={isBannerImageChanging}
+            selectedBanner={previewSelectedBanner}
+            bannerImage={article_images?.cover_image?.url}
+            handleChange={handleBannerImageChange}
+            handleUpload={handleBannerImageUpload}
+          />
         </Grid>
 
         {/*
@@ -372,20 +376,15 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
               )}
             </Grid>
 
-            {/* Bottom Section */}
-            <h1>Video</h1>
-            {imagesData?.data?.videos?.map((video: any) => {
-              console.log(video);
-              return (
-                <video
-                  height="auto"
-                  width="45%"
-                  key={video.key}
-                  src={video?.url}
-                  controls
-                />
-              );
-            })}
+            {/* Video Section */}
+
+            {/* {imagesData?.data?.videos}
+            <video
+              height="auto"
+              width="45%"
+              src={imagesData?.data?.videos[0].url}
+              controls
+            /> */}
           </Box>
         </Grid>
       </Grid>

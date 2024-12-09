@@ -88,7 +88,6 @@ const CreateArticleForm = () => {
       }
 
       const payload = modifyPayload(data);
-      // console.log({ payload });
       try {
         const res = await createArticle(payload).unwrap();
 

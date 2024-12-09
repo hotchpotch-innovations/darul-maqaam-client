@@ -22,6 +22,7 @@ type ProfilePictureProps = {
   onImageUpload: (file: File) => Promise<void>;
 };
 
+// modal
 const ModalContent: React.FC<{
   previewImage: string | null;
   userData: UserData;
@@ -100,6 +101,7 @@ const ModalContent: React.FC<{
   );
 };
 
+// component
 const ProfilePicture: React.FC<ProfilePictureProps> = ({
   userData,
   isUploading,
@@ -109,12 +111,14 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
+  // For modal open and close
   const handleOpen = () => setOpen(true);
   const handleClose = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     setOpen(false);
   };
 
+  // For local image preview
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null;
     if (selectedFile) {
@@ -124,6 +128,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
     }
   };
 
+  // For Image upload into db
   const handleImageUpload = async () => {
     if (file) {
       await onImageUpload(file);

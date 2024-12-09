@@ -1,9 +1,7 @@
 "use client";
 
-import { ChangeEvent, SyntheticEvent, useState } from "react";
-
+import { useState } from "react";
 import { customTimeOut } from "@/utils/customTimeOut";
-import { modifyPayload } from "@/utils/modifyPayload";
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
 
 import { toast } from "sonner";
@@ -20,7 +18,6 @@ import Grid from "@mui/material/Grid2";
 import CMForm from "@/components/forms/CMForm";
 import Loading from "@/components/ui/LoadingBar";
 import { TAddress, TSocialLinkPayload } from "@/types";
-import ProfilePicture from "@/components/Dashboard/common/profile/ProfilePicture";
 import CMInput from "@/components/forms/CMInput";
 import {
   a11yProps,
@@ -41,7 +38,15 @@ import {
   useGetFirstOrganizationQuery,
   useUpdateOrganizationMutation,
 } from "@/redux/api/organization/organizationApi";
-import UpdateOrganizationLogo from "./UpdateOrganizationLogo";
+import { modifyPayload } from "@/utils/modifyPayload";
+import OrganizationLogoField, { TOrgData } from "./OrganizationLogoField";
+
+export type TLogoPayload = {
+  previous_primary_key?: string;
+  previous_secondary_key?: string;
+  primary_logo?: File;
+  secondary_logo?: File;
+};
 
 const OrganizationProfileForm = () => {
   // Select country options
@@ -50,7 +55,6 @@ const OrganizationProfileForm = () => {
   // Fetching user data from the API
   const { data, isLoading } = useGetFirstOrganizationQuery("");
   const business_data = data?.data?.business;
-  console.log(business_data);
   const business_location = data?.data?.location;
 
   // API hook to update client data
@@ -58,8 +62,27 @@ const OrganizationProfileForm = () => {
     useUpdateOrganizationMutation();
 
   // API hook to update profile picture
-  const [changeLogo, { isLoading: isPictureUpdateLoading }] =
+  const [changeLogo, { isLoading: isLogoUpdateLoading }] =
     useChangeOrganizationLogoMutation();
+
+  // Function to handle for update user profile picture
+  const handleImageUpload = async (data: TLogoPayload) => {
+    if (!data) return;
+    const toastId = toast.loading("Please wait...");
+    const payload = modifyPayload(data);
+
+    try {
+      const res = await changeLogo(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error) {
+      toast.error("Something went wrong!", { id: toastId, duration: 3000 });
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
+  };
 
   // Country options
   const { options: country_options } = useCountryOptions();
@@ -107,8 +130,6 @@ const OrganizationProfileForm = () => {
     descriptions: business_data?.descriptions,
     primary_tel: business_data?.primary_tel,
     secondary_tel: business_data?.secondary_tel,
-    primary_logo: business_data?.primary_logo,
-    secondary_logo: business_data?.secondary_logo,
 
     location: {
       countryId: business_location?.countryId,
@@ -127,306 +148,336 @@ const OrganizationProfileForm = () => {
     },
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  const primary_logo_Field_data: TOrgData = {
+    label: "Primary",
+    logo: business_data?.primary_logo,
+    name: business_data?.name,
+    tag_line: business_data?.tag_line,
+    type: "primary_logo",
+  };
+
+  const secondary_logo_Field_data: TOrgData = {
+    label: "Secondary",
+    logo: business_data?.secondary_logo,
+    name: business_data?.name,
+    tag_line: business_data?.tag_line,
+    type: "secondary_logo",
+  };
+
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Box mt={6}>
-          <CMForm onSubmit={handleUpdate} defaultValues={default_values}>
+      <Box mt={6}>
+        <CMForm onSubmit={handleUpdate} defaultValues={default_values}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              p: 2,
+              display: "flex",
+              flexDirection: {
+                xs: "column",
+                lg: "row",
+              },
+            }}
+          >
+            {/* Avatar and social */}
             <Grid
-              container
-              spacing={2}
+              size={{ xs: 12, lg: 4 }}
               sx={{
                 p: 2,
-                display: "flex",
-                flexDirection: {
-                  xs: "column",
-                  lg: "row",
-                },
+                borderRadius: "8px",
               }}
             >
-              {/* Avatar and social */}
-              <Grid
-                size={{ xs: 12, lg: 4 }}
-                sx={{
-                  p: 2,
-                  borderRadius: "8px",
-                }}
-              >
-                <Box>
-                  <Card
-                    sx={{
-                      width: { xs: "100%" },
-                      textAlign: "center",
-                      borderRadius: 1,
-                      padding: [4, 4, 0, 4],
-                      backgroundColor: "#f5f5f5",
-                      boxShadow:
-                        " rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
-                    }}
-                  >
-                    {/* Business Logo */}
-                    <UpdateOrganizationLogo business_data={business_data} />
-                    <CardContent>
-                      <Typography variant="h6" component="div">
-                        {business_data?.name}
-                      </Typography>
+              <Box>
+                <Card
+                  sx={{
+                    width: { xs: "100%" },
+                    textAlign: "center",
+                    borderRadius: 1,
+                    padding: [4, 4, 0, 4],
+                    backgroundColor: "#f5f5f5",
+                    boxShadow:
+                      " rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
+                  }}
+                >
+                  {/* Business Logo */}
 
-                      <Typography variant="body2" color="text.secondary">
-                        {business_data?.tag_line}
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                  {/* Primary Logo Field  */}
+                  <OrganizationLogoField
+                    org_data={primary_logo_Field_data}
+                    onImageUpload={handleImageUpload}
+                    isUploading={isLogoUpdateLoading}
+                  />
 
-                  <Box mt={4} mb={2}>
-                    <Typography mb={2} variant="h6">
-                      Social
+                  {/* Secondary Logo Field  */}
+                  <OrganizationLogoField
+                    org_data={secondary_logo_Field_data}
+                    onImageUpload={handleImageUpload}
+                    isUploading={isLogoUpdateLoading}
+                  />
+
+                  <CardContent>
+                    <Typography variant="h6" component="div">
+                      {business_data?.name}
                     </Typography>
 
-                    <Stack spacing={2}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: "16px",
-                        }}
-                      >
-                        <FacebookIcon fontSize="large" />
-                        <CMInput
-                          name="social_links.facebook"
-                          label={"Facebook *"}
-                          size="small"
-                          fullWidth={true}
-                        />
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: "16px",
-                        }}
-                      >
-                        <TwitterIcon fontSize="large" />
-                        <CMInput
-                          name="social_links.twitter"
-                          label={"Twitter"}
-                          size="small"
-                          fullWidth={true}
-                        />
-                      </Box>
+                    <Typography variant="body2" color="text.secondary">
+                      {business_data?.tag_line}
+                    </Typography>
+                  </CardContent>
+                </Card>
 
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: "16px",
-                        }}
-                      >
-                        <LinkedInIcon fontSize="large" />
-                        <CMInput
-                          name="social_links.linkedIn"
-                          label={"LinkedIn"}
-                          size="small"
-                          fullWidth={true}
-                        />
-                      </Box>
+                <Box mt={4} mb={2}>
+                  <Typography mb={2} variant="h6">
+                    Social
+                  </Typography>
 
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: "16px",
-                        }}
-                      >
-                        <InstagramIcon fontSize="large" />
-                        <CMInput
-                          name="social_links.instagram"
-                          label={"Instagram"}
-                          size="small"
-                          fullWidth={true}
-                        />
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: "16px",
-                        }}
-                      >
-                        <YouTubeIcon fontSize="large" />
-                        <CMInput
-                          name="social_links.youtube"
-                          label={"Youtube"}
-                          size="small"
-                          fullWidth={true}
-                        />
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: "16px",
-                        }}
-                      >
-                        <WebAssetIcon fontSize="large" />
-                        <CMInput
-                          name="social_links.website"
-                          label={"Website"}
-                          size="small"
-                          fullWidth={true}
-                        />
-                      </Box>
-                    </Stack>
-                  </Box>
-                </Box>
-              </Grid>
-
-              {/* Business details */}
-              <Grid
-                size={{ xs: 12, lg: 8 }}
-                sx={{
-                  mt: { xs: 0, lg: 6.5 },
-                  borderRadius: "8px",
-                }}
-              >
-                <Box sx={{ width: "100%" }}>
                   <Stack spacing={2}>
-                    {/* Business Name */}
-                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                      <CMInput
-                        name="name"
-                        fullWidth={true}
-                        label="Name"
-                        size="small"
-                      />
-                    </Stack>
-
-                    {/* Business Email & Web Mail */}
-                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                      <CMInput
-                        name="email"
-                        fullWidth={true}
-                        label="Email"
-                        size="small"
-                      />
-                      <CMInput
-                        name="web_mail"
-                        fullWidth={true}
-                        label="Web Mail"
-                        size="small"
-                      />
-                    </Stack>
-
-                    {/* Business Phone & Secondary Phone */}
-                    <Stack spacing={2} direction="row">
-                      <CMInput
-                        name="primary_phone"
-                        fullWidth={true}
-                        label="Primary Phone"
-                        size="small"
-                      />
-                      <CMInput
-                        name="secondary_phone"
-                        fullWidth={true}
-                        label="Secondary Phone"
-                        size="small"
-                      />
-                    </Stack>
-
-                    {/* Busines Telephone & Secondary Telephone */}
-                    <Stack spacing={2} direction="row">
-                      <CMInput
-                        name="primary_tel"
-                        fullWidth={true}
-                        label="Primary Telephone"
-                        size="small"
-                      />
-                      <CMInput
-                        name="secondary_tel"
-                        fullWidth={true}
-                        label="Secondary Telephone"
-                        size="small"
-                      />
-                    </Stack>
-
-                    {/* Business Location*/}
-                    <Typography pt={2} variant="body1" fontWeight="500">
-                      Location:
-                    </Typography>
-                    {/* Address Line & State */}
-                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                      <CMInput
-                        name="location.address_line"
-                        fullWidth={true}
-                        label="Address Line"
-                        size="small"
-                        required={!!presentCountryId}
-                      />
-
-                      <CMInput
-                        name="location.state"
-                        fullWidth={true}
-                        label="State"
-                        size="small"
-                        required={!!presentCountryId}
-                      />
-                    </Stack>
-
-                    {/* Country & City */}
-                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                      <CMInput
-                        name="location.city"
-                        fullWidth={true}
-                        label="City"
-                        size="small"
-                        required={!!presentCountryId}
-                      />
-                      <CMSelectWithWatch
-                        name="location.countryId"
-                        label={"Country"}
-                        options={country_options}
-                        setState={setPresentCountryId}
-                      />
-                    </Stack>
-                  </Stack>
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <Button
-                      type="submit"
-                      disabled={isUpdateLoading}
+                    <Box
                       sx={{
-                        mt: "30px",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: "16px",
                       }}
                     >
-                      Update
-                    </Button>
-                  </Box>
+                      <FacebookIcon fontSize="large" />
+                      <CMInput
+                        name="social_links.facebook"
+                        label={"Facebook *"}
+                        size="small"
+                        fullWidth={true}
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: "16px",
+                      }}
+                    >
+                      <TwitterIcon fontSize="large" />
+                      <CMInput
+                        name="social_links.twitter"
+                        label={"Twitter"}
+                        size="small"
+                        fullWidth={true}
+                      />
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: "16px",
+                      }}
+                    >
+                      <LinkedInIcon fontSize="large" />
+                      <CMInput
+                        name="social_links.linkedIn"
+                        label={"LinkedIn"}
+                        size="small"
+                        fullWidth={true}
+                      />
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: "16px",
+                      }}
+                    >
+                      <InstagramIcon fontSize="large" />
+                      <CMInput
+                        name="social_links.instagram"
+                        label={"Instagram"}
+                        size="small"
+                        fullWidth={true}
+                      />
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: "16px",
+                      }}
+                    >
+                      <YouTubeIcon fontSize="large" />
+                      <CMInput
+                        name="social_links.youtube"
+                        label={"Youtube"}
+                        size="small"
+                        fullWidth={true}
+                      />
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: "16px",
+                      }}
+                    >
+                      <WebAssetIcon fontSize="large" />
+                      <CMInput
+                        name="social_links.website"
+                        label={"Website"}
+                        size="small"
+                        fullWidth={true}
+                      />
+                    </Box>
+                  </Stack>
                 </Box>
-              </Grid>
+              </Box>
             </Grid>
-          </CMForm>
-        </Box>
-      )}
+
+            {/* Business details */}
+            <Grid
+              size={{ xs: 12, lg: 8 }}
+              sx={{
+                mt: { xs: 0, lg: 6.5 },
+                borderRadius: "8px",
+              }}
+            >
+              <Box sx={{ width: "100%" }}>
+                <Stack spacing={2}>
+                  {/* Business Name */}
+                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                    <CMInput
+                      name="name"
+                      fullWidth={true}
+                      label="Name"
+                      size="small"
+                    />
+                  </Stack>
+
+                  {/* Business Email & Web Mail */}
+                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                    <CMInput
+                      name="email"
+                      fullWidth={true}
+                      label="Email"
+                      size="small"
+                    />
+                    <CMInput
+                      name="web_mail"
+                      fullWidth={true}
+                      label="Web Mail"
+                      size="small"
+                    />
+                  </Stack>
+
+                  {/* Business Phone & Secondary Phone */}
+                  <Stack spacing={2} direction="row">
+                    <CMInput
+                      name="primary_phone"
+                      fullWidth={true}
+                      label="Primary Phone"
+                      size="small"
+                    />
+                    <CMInput
+                      name="secondary_phone"
+                      fullWidth={true}
+                      label="Secondary Phone"
+                      size="small"
+                    />
+                  </Stack>
+
+                  {/* Busines Telephone & Secondary Telephone */}
+                  <Stack spacing={2} direction="row">
+                    <CMInput
+                      name="primary_tel"
+                      fullWidth={true}
+                      label="Primary Telephone"
+                      size="small"
+                    />
+                    <CMInput
+                      name="secondary_tel"
+                      fullWidth={true}
+                      label="Secondary Telephone"
+                      size="small"
+                    />
+                  </Stack>
+
+                  {/* Business Location*/}
+                  <Typography pt={2} variant="body1" fontWeight="500">
+                    Location:
+                  </Typography>
+                  {/* Address Line & State */}
+                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                    <CMInput
+                      name="location.address_line"
+                      fullWidth={true}
+                      label="Address Line"
+                      size="small"
+                      required={!!presentCountryId}
+                    />
+
+                    <CMInput
+                      name="location.state"
+                      fullWidth={true}
+                      label="State"
+                      size="small"
+                      required={!!presentCountryId}
+                    />
+                  </Stack>
+
+                  {/* Country & City */}
+                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                    <CMInput
+                      name="location.city"
+                      fullWidth={true}
+                      label="City"
+                      size="small"
+                      required={!!presentCountryId}
+                    />
+                    <CMSelectWithWatch
+                      name="location.countryId"
+                      label={"Country"}
+                      options={country_options}
+                      setState={setPresentCountryId}
+                    />
+                  </Stack>
+                </Stack>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Button
+                    type="submit"
+                    disabled={isUpdateLoading}
+                    sx={{
+                      mt: "30px",
+                    }}
+                  >
+                    Update
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </CMForm>
+      </Box>
     </>
   );
 };

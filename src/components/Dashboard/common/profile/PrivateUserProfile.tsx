@@ -65,7 +65,7 @@ const PrivateUserProfile = () => {
     setValue(newValue);
   };
 
-  // Function to handle profile update
+  // Private type user data update handler
   const handleUpdate = async (values: FieldValues) => {
     const { present_address, permanent_address, social_links, ...data } =
       values;
@@ -182,6 +182,7 @@ const PrivateUserProfile = () => {
                 }}
               >
                 <Box>
+                  {/* Profile Image Field  */}
                   <Card
                     sx={{
                       width: { xs: "100%" },
@@ -217,6 +218,7 @@ const PrivateUserProfile = () => {
                     </CardContent>
                   </Card>
 
+                  {/* Social Links Fields  */}
                   <Box mt={4} mb={2}>
                     <Typography mb={2} variant="h6">
                       Social

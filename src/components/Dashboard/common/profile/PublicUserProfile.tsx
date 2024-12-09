@@ -66,7 +66,7 @@ const PublicUserProfile = () => {
     setValue(newValue);
   };
 
-  // Function to handle form submission for profile update
+  // Public type user data update handler
   const handleUpdate = async (values: FieldValues) => {
     const { present_address, permanent_address, register_address, ...data } =
       values;

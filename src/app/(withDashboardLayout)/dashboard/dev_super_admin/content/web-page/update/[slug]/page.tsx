@@ -8,6 +8,15 @@ type TProps = {
 const UpdateWebpage = async ({ params }: TProps) => {
   const slug = params?.slug;
 
+  const WebpageImageSection = dynamic(
+    () =>
+      import(
+        "@/components/Dashboard/dev_super_admin/contents/webpage_utils/WebpageImageSection"
+      ),
+    {
+      ssr: false,
+    }
+  );
   const UpdateWebpageForm = dynamic(
     () =>
       import(
@@ -21,6 +30,9 @@ const UpdateWebpage = async ({ params }: TProps) => {
     <Box>
       <Stack>
         <TitleDashboard title="Update Webpage" />
+      </Stack>
+      <Stack>
+        <WebpageImageSection slug={slug} />
       </Stack>
       <Stack>
         <UpdateWebpageForm slug={slug} />

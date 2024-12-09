@@ -86,7 +86,7 @@ const webpageApi = baseApi.injectEndpoints({
       invalidatesTags: [contentTags?.webpage],
     }),
 
-    changeOGImage: build.mutation({
+    changeWebpageOGImage: build.mutation({
       query: (data) => {
         const { id, payload } = data;
         return {
@@ -111,5 +111,5 @@ export const {
   useDeleteWebpageMutation,
   useChangeWebpageStatusMutation,
   useChangePublishedWebpageStatusMutation,
-  useChangeOGImageMutation,
+  useChangeWebpageOGImageMutation,
 } = webpageApi;

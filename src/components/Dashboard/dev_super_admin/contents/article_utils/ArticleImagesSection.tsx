@@ -18,7 +18,7 @@ import Loading from "@/components/ui/LoadingBar";
 import {
   useArticleAddFilesMutation,
   useArticleRemoveFileMutation,
-  useChangeCoverImageMutation,
+  useChangeArticleCoverImageMutation,
   useGetSingleArticleQuery,
 } from "@/redux/api/content/articleApi";
 import BannerImage from "./article_images/BannerImage";
@@ -50,7 +50,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
     useArticleRemoveFileMutation();
 
   const [bannerImageChange, { isLoading: isBannerImageChanging }] =
-    useChangeCoverImageMutation();
+    useChangeArticleCoverImageMutation();
 
   const article_images = imagesData?.data;
   useEffect(() => {

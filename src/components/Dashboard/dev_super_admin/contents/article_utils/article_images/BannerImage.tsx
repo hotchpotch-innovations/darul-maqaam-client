@@ -3,10 +3,10 @@ import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import Loading from "@/components/ui/LoadingBar";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
-import { useChangeCoverImageMutation } from "@/redux/api/content/articleApi";
 import { toast } from "sonner";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { customTimeOut } from "@/utils/customTimeOut";
+import { useChangeArticleCoverImageMutation } from "@/redux/api/content/articleApi";
 
 const BannerImage = ({
   id,
@@ -22,7 +22,7 @@ const BannerImage = ({
   const [file, setFile] = useState<File | null>(null);
 
   const [bannerImageChange, { isLoading: isBannerImageChanging }] =
-    useChangeCoverImageMutation();
+    useChangeArticleCoverImageMutation();
 
   // -------- Banner image file handling function --------
   const handleBannerImageChange = (event: ChangeEvent<HTMLInputElement>) => {

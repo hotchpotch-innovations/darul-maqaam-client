@@ -98,7 +98,7 @@ const articleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.article],
     }),
-    changeCoverImage: build.mutation({
+    changeArticleCoverImage: build.mutation({
       query: (data) => {
         const { id, payload } = data;
         return {
@@ -124,5 +124,5 @@ export const {
   useChangePublishedArticleStatusMutation,
   useArticleAddFilesMutation,
   useArticleRemoveFileMutation,
-  useChangeCoverImageMutation,
+  useChangeArticleCoverImageMutation,
 } = articleApi;

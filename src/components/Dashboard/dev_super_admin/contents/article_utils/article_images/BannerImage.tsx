@@ -121,9 +121,7 @@ const BannerImage = ({
         <Button
           sx={{
             marginY: "8px",
-            ...(previewSelectedBanner
-              ? { visibility: "visible" }
-              : { visibility: "hidden" }),
+            visibility: previewSelectedBanner ? "visible" : "hidden",
           }}
           type="submit"
           disabled={isBannerImageChanging || !file}

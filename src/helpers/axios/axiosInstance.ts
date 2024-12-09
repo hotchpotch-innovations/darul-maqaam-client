@@ -10,7 +10,7 @@ import { getNewAccessToken } from "@/services/getNewAccessToken";
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.defaults.headers["Accept"] = "application/json";
-instance.defaults.timeout = 60000;
+instance.defaults.timeout = 600000;
 
 // Add a request interceptor
 instance.interceptors.request.use(

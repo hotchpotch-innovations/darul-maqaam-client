@@ -21,6 +21,7 @@ import {
   useChangeCoverImageMutation,
   useGetSingleArticleQuery,
 } from "@/redux/api/content/articleApi";
+import BannerImage from "./article_images/BannerImage";
 
 type ArticleImagesSectionProps = {
   id: string;
@@ -38,6 +39,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
   // State for images
   const MAX_IMAGE_SLOTS = 4;
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
+  console.log(selectedFiles);
   const [remainingSlots, setRemainingSlots] = useState(MAX_IMAGE_SLOTS);
 
   // -------- API hook --------
@@ -182,94 +184,19 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
   };
 
   return (
-    <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Grid container size={12} sx={{ marginBottom: "26px" }} spacing={2}>
-          {/* Banner image section */}
-          <Grid size={6}>
-            <Box
-              sx={{
-                position: "relative",
-                width: "100%",
-                height: "auto",
-                ":hover .removeButton": {
-                  opacity: 1,
-                },
-              }}
-            >
-              <IconButton
-                className="removeButton"
-                sx={{
-                  position: "absolute",
-                  top: 6,
-                  right: 6,
-                  backgroundColor: "white",
-                  color: "white",
-                  fontSize: "20px",
-                  padding: "2px",
-                  opacity: 0,
-                  transition: "opacity 0.3s ease",
-                }}
-                onClick={() => {
-                  const fileInput = document.getElementById(
-                    "fileInput"
-                  ) as HTMLInputElement;
-                  fileInput.click();
-                }}
-              >
-                <ChangeCircleIcon fontSize="large" color="info" />
-              </IconButton>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2}>
+        {/* Left Section */}
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <BannerImage id={id} article_images={article_images} />
+        </Grid>
 
+        {/* Right Section */}
+        <Grid size={{ xs: 12, lg: 6 }} spacing={2}>
+          <Box>
+            <Grid container spacing={2}>
               {/* Banner Image */}
-              {isBannerImageChanging || isLoading ? (
-                <Loading />
-              ) : (
-                <Image
-                  src={
-                    previewSelectedBanner || article_images?.cover_image?.url
-                  }
-                  alt="Banner Image"
-                  width={100}
-                  height={100}
-                  sizes="100vw"
-                  style={{ width: "100%", height: "auto" }}
-                  priority
-                />
-              )}
-              <input
-                type="file"
-                id="fileInput"
-                hidden
-                accept="image/*"
-                onChange={handleBannerImageChange}
-              />
-            </Box>
-            {previewSelectedBanner && (
-              <Button
-                sx={{ marginTop: "5px" }}
-                type="submit"
-                disabled={isBannerImageChanging || !file}
-                onClick={handleBannerImageUpload}
-              >
-                Save Changes
-              </Button>
-            )}
-          </Grid>
-
-          <Grid size={6} container spacing={2}>
-            {/* Render existing article images */}
-            {article_images?.images?.map((image: any) => (
-              <Grid
-                key={image?.key}
-                size={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              <Grid size={8}>
                 <Box
                   sx={{
                     position: "relative",
@@ -281,139 +208,223 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                   }}
                 >
                   <IconButton
-                    onClick={() => handleDeleteImages(image?.key)}
                     className="removeButton"
                     sx={{
                       position: "absolute",
                       top: 6,
                       right: 6,
                       backgroundColor: "white",
-                      color: "red",
+                      color: "white",
                       fontSize: "20px",
                       padding: "2px",
                       opacity: 0,
                       transition: "opacity 0.3s ease",
                     }}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-
-                  <Image
-                    src={image?.url}
-                    alt="Banner Image"
-                    width={100}
-                    height={100}
-                    sizes="100vw"
-                    style={{ width: "100%", height: "auto" }}
-                  />
-                </Box>
-              </Grid>
-            ))}
-
-            {/* Preview selected images files */}
-            {selectedFiles.map((file: any) => (
-              <Grid
-                key={file?.key}
-                size={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{ position: "relative", width: "100%", height: "auto" }}
-                >
-                  <IconButton
-                    onClick={() => handleRemoveImage(file.key)}
-                    sx={{
-                      position: "absolute",
-                      top: 6,
-                      right: 6,
-                      backgroundColor: "white",
-                      color: "red",
-                      fontSize: "20px",
-                      padding: "2px",
+                    onClick={() => {
+                      const fileInput = document.getElementById(
+                        "fileInput"
+                      ) as HTMLInputElement;
+                      fileInput.click();
                     }}
                   >
-                    <ClearIcon fontSize="small" />
+                    <ChangeCircleIcon fontSize="large" color="info" />
                   </IconButton>
 
-                  <Image
-                    src={file.url}
-                    alt="Selected Image Preview"
-                    width={100}
-                    height={100}
-                    sizes="100vw"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      objectFit: "cover",
-                    }}
+                  {/* Banner Image */}
+                  {isBannerImageChanging || isLoading ? (
+                    <Loading />
+                  ) : (
+                    <Image
+                      src={
+                        previewSelectedBanner ||
+                        article_images?.cover_image?.url
+                      }
+                      alt="Banner Image"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{ width: "100%", height: "70%" }}
+                      priority
+                    />
+                  )}
+                  <input
+                    type="file"
+                    id="fileInput"
+                    hidden
+                    accept="image/*"
+                    onChange={handleBannerImageChange}
                   />
                 </Box>
+                {previewSelectedBanner && (
+                  <Button
+                    sx={{ marginTop: "5px" }}
+                    type="submit"
+                    disabled={isBannerImageChanging || !file}
+                    onClick={handleBannerImageUpload}
+                  >
+                    Save Changes
+                  </Button>
+                )}
               </Grid>
-            ))}
 
-            {/* Add image button*/}
-            {remainingSlots > 0 && (
-              <Grid
-                size={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <label htmlFor="upload-button">
-                  <Box
+              <Grid size={4}>
+                {/* Render existing article images */}
+                {article_images?.images?.map((image: any) => (
+                  <Grid key={image?.key}>
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        height: "auto",
+                        ":hover .removeButton": {
+                          opacity: 1,
+                        },
+                      }}
+                    >
+                      <IconButton
+                        onClick={() => handleDeleteImages(image?.key)}
+                        className="removeButton"
+                        sx={{
+                          position: "absolute",
+                          top: 6,
+                          right: 6,
+                          backgroundColor: "white",
+                          color: "red",
+                          fontSize: "20px",
+                          padding: "2px",
+                          opacity: 0,
+                          transition: "opacity 0.3s ease",
+                        }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+
+                      <Image
+                        src={image?.url}
+                        alt="Banner Image"
+                        width={100}
+                        height={100}
+                        sizes="100vw"
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          margin: "8px 0",
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                ))}
+
+                {/* Preview selected images files */}
+                {selectedFiles.map((file: any) => (
+                  <Grid
+                    key={file?.key}
+                    size={6}
                     sx={{
-                      width: "100%",
-                      padding: "10px 5px",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      cursor: "pointer",
                     }}
                   >
-                    <AddCircleIcon fontSize="large" color="info" />
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        height: "auto",
+                      }}
+                    >
+                      <IconButton
+                        onClick={() => handleRemoveImage(file.key)}
+                        sx={{
+                          position: "absolute",
+                          top: 6,
+                          right: 6,
+                          backgroundColor: "white",
+                          color: "red",
+                          fontSize: "20px",
+                          padding: "2px",
+                        }}
+                      >
+                        <ClearIcon fontSize="small" />
+                      </IconButton>
+
+                      <Image
+                        src={file.url}
+                        alt="Selected Image Preview"
+                        width={100}
+                        height={100}
+                        sizes="100vw"
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                ))}
+
+                {/* Add image button*/}
+                {remainingSlots > 0 && (
+                  <Grid
+                    size={6}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <label htmlFor="upload-button">
+                      <Box
+                        sx={{
+                          width: "100%",
+                          padding: "10px 5px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <AddCircleIcon fontSize="large" color="info" />
+                      </Box>
+                    </label>
+                    <input
+                      id="upload-button"
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
+                  </Grid>
+                )}
+
+                {/* Update button */}
+                {selectedFiles.length > 0 && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      marginTop: "8px",
+                      width: "100%",
+                      maxHeight: "34px",
+                    }}
+                  >
+                    <Button
+                      disabled={isAddFilesLoading}
+                      type="submit"
+                      size="small"
+                      onClick={handleUpdateImage}
+                    >
+                      Update
+                    </Button>
                   </Box>
-                </label>
-                <input
-                  id="upload-button"
-                  type="file"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={handleFileChange}
-                />
+                )}
               </Grid>
-            )}
-
-            {/* Update button */}
-            {selectedFiles.length > 0 && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-
-                  width: "100%",
-                  maxHeight: "34px",
-                }}
-              >
-                <Button
-                  disabled={isAddFilesLoading || !file}
-                  type="submit"
-                  size="small"
-                  onClick={handleUpdateImage}
-                >
-                  Update
-                </Button>
-              </Box>
-            )}
-          </Grid>
+            </Grid>
+          </Box>
         </Grid>
-      )}
-    </>
+      </Grid>
+    </Box>
   );
 };
 

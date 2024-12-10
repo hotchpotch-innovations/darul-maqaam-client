@@ -23,7 +23,7 @@ type ArticleImagesSectionProps = {
   id: string;
 };
 
-const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
+const ArticleFilesSection = ({ id }: ArticleImagesSectionProps) => {
   // -------- State management --------
 
   // States
@@ -302,7 +302,6 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
               remainingSlots={remainingSlots}
             />
 
-
             {/* Video Section */}
             <Typography>Video Section:</Typography>
             <Grid container>
@@ -326,4 +325,4 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
   );
 };
 
-export default ArticleImagesSection;
+export default ArticleFilesSection;

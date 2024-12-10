@@ -9,13 +9,10 @@ import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
 import {
-  useArticleAddFilesMutation,
-  useArticleRemoveFileMutation,
-} from "@/redux/api/content/articleApi";
-import {
   useSinglePSAddFilesMutation,
   useSinglePSRemoveFileMutation,
 } from "@/redux/api/content/singlePageSectionApi";
+import VideoSection from "@/components/Dashboard/common/videoSection/VideoSection";
 
 type TImageProps = {
   key: string;
@@ -25,13 +22,21 @@ type TImageProps = {
 const SinglePageImages = ({
   id,
   images,
+  videos,
 }: {
   id: string;
   images: TImageProps[];
+  videos: TImageProps[];
 }) => {
+  // -------- State Management --------
+
+  // Images state
   const MAX_IMAGE_SLOTS = 4;
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [remainingSlots, setRemainingSlots] = useState(MAX_IMAGE_SLOTS);
+
+  // Videos state
+  const [videoFile, setVideoFile] = useState<any | null>(null);
 
   useEffect(() => {
     if (images?.length) {
@@ -73,7 +78,39 @@ const SinglePageImages = ({
     }
   };
 
-  //  -------- API call functions --------
+  // -------- Videos file handling function --------
+
+  // Handle file input and limit the number of selected files
+  const handleVideoFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event?.target?.files;
+    if (!file) return;
+    const bytes = 1000000;
+    const selectedFileSize = file[0]?.size;
+    const fileMBSize = selectedFileSize / bytes;
+
+    if (fileMBSize > 10) {
+      return toast.error(
+        "File is too much large. You can access to upload maximum 10 mb file.",
+        { duration: 5000 }
+      );
+    }
+
+    const newSelectedFile = {
+      url: URL.createObjectURL(file[0]),
+      file,
+      key: Math.random().toString(36).substring(2, 9),
+    };
+    console.log(newSelectedFile);
+    setVideoFile(newSelectedFile);
+    console.log({ file, fileMBSize, newSelectedFile });
+  };
+
+  // Remove selected video file from preview
+  const handleRemoveSelectedVideo = () => {
+    setVideoFile(null);
+  };
+
+  //  -------- API call functions for images --------
 
   // Handler for images update function
   const handleUpdateImage = async () => {
@@ -127,31 +164,79 @@ const SinglePageImages = ({
     }
   };
 
+  //  -------- API call functions for videos --------
+  // Handler for video update function
+  const handleUpdateVideo = async () => {
+    const toastId = toast.loading("Please wait...");
+    const selectedVideo = videoFile?.file[0];
+
+    const article_data = {
+      files: [selectedVideo],
+    };
+
+    const updatedFiles = modifyPayload(article_data);
+    const payload = {
+      id,
+      data: updatedFiles,
+    };
+
+    try {
+      const res = await addFiles(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        setVideoFile(null);
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
+  };
+
+  // Handler for video delete function
+  const handleDeleteVideo = async (key: string) => {
+    const toastId = toast.loading("Please wait...");
+    const payload = {
+      id,
+      previous_section_video_key: key,
+    };
+    try {
+      const res = await deleteFile(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        setVideoFile(null);
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
+  };
+
   return (
     <Box sx={{ padding: 2 }}>
       <Grid container spacing={2}>
-        {/* Left Section */}
-        <Grid
-          size={{ xs: 12, lg: 6 }}
-          sx={{
-            border: "1px solid #fff",
-            borderRadius: 2,
-            padding: 2,
-            height: { xs: "30vh", lg: "40vh" },
-            backgroundColor: "#000",
-          }}
-        >
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              border: "1px solid #fff",
-              borderRadius: 2,
+        {/* Video Section */}
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <VideoSection
+            data={{
+              url: videos[0]?.url,
+              key: videos[0]?.key,
             }}
+            selectedFile={videoFile}
+            removeHandler={handleRemoveSelectedVideo}
+            deleteHandler={handleDeleteVideo}
+            fileChangeHandler={handleVideoFileChange}
+            isUploadLoading={isFileDeleting}
+            uploadHandler={handleUpdateVideo}
           />
         </Grid>
 
-        {/* Right Section */}
+        {/* images Section */}
         <Grid size={{ xs: 12, lg: 6 }}>
           <Grid container spacing={2}>
             {/* Render Existing Images */}

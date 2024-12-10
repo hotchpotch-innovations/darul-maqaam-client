@@ -1,8 +1,6 @@
 "use client";
 
 import Editor from "@/components/forms/editors/Editor";
-import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
-import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
 import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
 import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
@@ -14,6 +12,7 @@ import {
 import { useCreateMultipleSectionMutation } from "@/redux/api/content/multiplePageSectionApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { videoFileLimitation } from "@/utils/videoFileLimitation";
 import { Box, Button, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
@@ -46,23 +45,10 @@ const CreateMultiplePageSectionForm = () => {
   const [discount_rate, setDiscountRate] = useState("");
   const [yt_video_url, setYtVideoUrl] = useState();
   const [cover_image, setCoverImage] = useState(null);
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
   const [summary, setSummary] = useState("");
   // Get value from text editor
   const [editorValue, setEditorValue] = useState("");
-
-  // console.log({
-  //   type,
-  //   categoryId,
-  //   title,
-  //   price,
-  //   discount_rate,
-  //   yt_video_url,
-  //   cover_image,
-  //   files,
-  //   sub_titles,
-  //   descriptions,
-  // });
 
   if (!!type) {
     categoryQueryObj["type"] = type;
@@ -80,6 +66,13 @@ const CreateMultiplePageSectionForm = () => {
     if (!type || !categoryId || !title) {
       toast.error("Data does not found!", { id: toastId, duration: 2000 });
     } else {
+      const videoFileValidation = videoFileLimitation(files);
+      if (!videoFileValidation?.status) {
+        return toast.error(videoFileValidation?.message, {
+          id: toastId,
+          duration: 3000,
+        });
+      }
       const data: TMultiplePageSectionPayload = {};
 
       data["type"] = type;
@@ -97,7 +90,7 @@ const CreateMultiplePageSectionForm = () => {
       if (!!cover_image) {
         data["cover_image"] = cover_image;
       }
-      if (!!files) {
+      if (files?.length > 0) {
         data["files"] = files;
       }
 

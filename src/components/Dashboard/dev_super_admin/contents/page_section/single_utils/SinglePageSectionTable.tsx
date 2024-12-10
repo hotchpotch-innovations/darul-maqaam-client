@@ -141,20 +141,6 @@ const SinglePageSectionTable = () => {
       headerName: "Section Name",
       sortable: false,
       flex: 1,
-      renderCell: (params) => (
-        <Box
-          component={Link}
-          href={`/dashboard/dev_super_admin/content/page-section/single/details/${params?.row?.id}`}
-          sx={{
-            ":hover": {
-              textDecoration: "underline",
-              color: "#1f68de",
-            },
-          }}
-        >
-          {params?.row?.section_name}
-        </Box>
-      ),
     },
     {
       field: "section_title",

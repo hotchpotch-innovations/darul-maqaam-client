@@ -133,20 +133,6 @@ const MultiplePageSectionTable = () => {
       field: "title",
       headerName: "TITLE",
       flex: 1,
-      renderCell: (params) => (
-        <Box
-          component={Link}
-          href={`/dashboard/dev_super_admin/content/page-section/multiple/details/${params?.row?.id}`}
-          sx={{
-            ":hover": {
-              textDecoration: "underline",
-              color: "#1f68de",
-            },
-          }}
-        >
-          {params?.row?.title}
-        </Box>
-      ),
     },
     {
       field: "type",

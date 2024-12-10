@@ -70,23 +70,37 @@ const singlePageSectionApi = baseApi.injectEndpoints({
       invalidatesTags: [contentTags?.single_section],
     }),
 
-    //     changePublishedArticleStatus: build.mutation({
-    //       query: (id) => ({
-    //         url: `/content/page-section/published/${id}`,
-    //         method: "PATCH",
-    //       }),
-    //       invalidatesTags: [contentTags?.single_section],
-    //     }),
+    singlePSAddFiles: build.mutation({
+      query: (payload) => {
+        const { id, data } = payload;
+        return {
+          url: `/content/page-section/add-files/${id}`,
+          contentType: "multipart/form-data",
+          method: "PATCH",
+          data,
+        };
+      },
+      invalidatesTags: [contentTags?.single_section],
+    }),
+
+    singlePSRemoveFile: build.mutation({
+      query: ({ id, ...payload }) => ({
+        url: `/content/page-section/remove-files/${id}`,
+        method: "PATCH",
+        data: payload,
+      }),
+      invalidatesTags: [contentTags?.single_section],
+    }),
   }),
 });
 
 export const {
   useCreateSPSectionMutation,
-  //   useGetAllPublicArticlesQuery,
   useGetAllPrivateSPSQuery,
   useGetSinglePageSectionQuery,
   useUpdateSPSMutation,
   useDeleteSPSMutation,
   useChangeSPSStatusMutation,
-  //   useChangePublishedArticleStatusMutation,
+  useSinglePSAddFilesMutation,
+  useSinglePSRemoveFileMutation,
 } = singlePageSectionApi;

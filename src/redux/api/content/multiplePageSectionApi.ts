@@ -76,7 +76,7 @@ const multiplePageSectionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [contentTags?.multiple_section],
     }),
-    changeCoverImage: build.mutation({
+    changeMPSCoverImage: build.mutation({
       query: (data) => {
         const { id, payload } = data;
         return {
@@ -86,6 +86,28 @@ const multiplePageSectionApi = baseApi.injectEndpoints({
           data: payload,
         };
       },
+      invalidatesTags: [contentTags?.multiple_section],
+    }),
+
+    multiplePSAddFiles: build.mutation({
+      query: (payload) => {
+        const { id, data } = payload;
+        return {
+          url: `/content/multiple-page-section/add-files/${id}`,
+          contentType: "multipart/form-data",
+          method: "PATCH",
+          data,
+        };
+      },
+      invalidatesTags: [contentTags?.multiple_section],
+    }),
+
+    multiplePSRemoveFile: build.mutation({
+      query: ({ id, ...payload }) => ({
+        url: `/content/multiple-page-section/remove-files/${id}`,
+        method: "PATCH",
+        data: payload,
+      }),
       invalidatesTags: [contentTags?.multiple_section],
     }),
   }),
@@ -100,5 +122,7 @@ export const {
   useChangeMPSItemStatusMutation,
   useChangePublishedMPSItemStatusMutation,
   useUpdateMPSItemMutation,
-  useChangeCoverImageMutation,
+  useChangeMPSCoverImageMutation,
+  useMultiplePSAddFilesMutation,
+  useMultiplePSRemoveFileMutation,
 } = multiplePageSectionApi;

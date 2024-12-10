@@ -1,4 +1,5 @@
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
+import MultipleFilesSection from "@/components/Dashboard/dev_super_admin/contents/page_section/multiple_utils/MultipleFilesSection";
 import { Box } from "@mui/material";
 import dynamic from "next/dynamic";
 import React from "react";
@@ -21,6 +22,7 @@ const MPSUpdatePage = async ({ params }: TProps) => {
   return (
     <Box>
       <TitleDashboard title="Update Page Section (multiple)" />
+      <MultipleFilesSection id={id} />
       <UpdateMultiplePageSectionForm id={id} />
     </Box>
   );

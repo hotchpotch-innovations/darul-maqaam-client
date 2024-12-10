@@ -8,6 +8,14 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
+import {
+  useArticleAddFilesMutation,
+  useArticleRemoveFileMutation,
+} from "@/redux/api/content/articleApi";
+import {
+  useSinglePSAddFilesMutation,
+  useSinglePSRemoveFileMutation,
+} from "@/redux/api/content/singlePageSectionApi";
 
 type TImageProps = {
   key: string;
@@ -21,8 +29,8 @@ const SinglePageImages = ({
   id: string;
   images: TImageProps[];
 }) => {
-  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const MAX_IMAGE_SLOTS = 4;
+  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [remainingSlots, setRemainingSlots] = useState(MAX_IMAGE_SLOTS);
 
   useEffect(() => {
@@ -31,6 +39,15 @@ const SinglePageImages = ({
     }
   }, [images]);
 
+  const [addFiles, { isLoading: isAddFilesLoading }] =
+    useSinglePSAddFilesMutation();
+
+  const [deleteFile, { isLoading: isFileDeleting }] =
+    useSinglePSRemoveFileMutation();
+
+  // -------- Images file handling function --------
+
+  // Handle file input and limit the number of selected files
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
@@ -46,19 +63,68 @@ const SinglePageImages = ({
     setRemainingSlots((prev) => prev - newSelectedFiles.length);
   };
 
+  // Remove selected image file from preview
   const handleRemoveImage = (imageKey: string) => {
     setSelectedFiles((prev) => prev.filter((file) => file.key !== imageKey));
     setRemainingSlots((prev) => prev + 1);
+    const imageToRemove = selectedFiles.find((file) => file.key === imageKey);
+    if (imageToRemove) {
+      URL.revokeObjectURL(imageToRemove.url);
+    }
   };
 
+  //  -------- API call functions --------
+
+  // Handler for images update function
   const handleUpdateImage = async () => {
-    // Simulate API call
-    toast.success("Images updated!");
+    const toastId = toast.loading("Please wait...");
+    const selectedImage = selectedFiles
+      ?.filter((item) => item.file)
+      .map((item) => item.file);
+
+    const updatedFiles = modifyPayload({ files: selectedImage });
+
+    const payload = {
+      id,
+      data: updatedFiles,
+    };
+    try {
+      const res = await addFiles(payload).unwrap();
+
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        setSelectedFiles([]);
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
   };
 
+  // Handler for image delete function
   const handleDeleteImages = async (key: string) => {
-    // Simulate API call
-    toast.success("Image deleted!");
+    const toastId = toast.loading("Deleting...");
+    const payload = {
+      id,
+      previous_section_image_key: key,
+    };
+
+    try {
+      const res = await deleteFile(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        setSelectedFiles([]);
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
   };
 
   return (

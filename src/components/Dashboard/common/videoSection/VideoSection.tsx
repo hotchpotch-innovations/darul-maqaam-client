@@ -46,7 +46,7 @@ const VideoSection = ({
             display: "flex",
             justifyContent: "center",
             width: "100%",
-            height: "250px",
+            height: "200px",
             ":hover .removeButton": {
               opacity: 1,
             },
@@ -81,50 +81,44 @@ const VideoSection = ({
 
       {/* Preview selected images files */}
       {selectedFile?.url && (
-        <Grid2
+        <Box
           sx={{
+            position: "relative",
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
+            width: "100%",
+            height: "200px",
+            ":hover .removeButton": {
+              opacity: 1,
+            },
           }}
         >
-          <Box
+          <video
+            style={{ objectFit: "cover" }}
+            height="100%"
+            width="90%"
+            src={selectedFile?.url || ""}
+            controls
+          />
+          <IconButton
+            className="videoRemoveButton"
+            onClick={() => removeHandler()}
             sx={{
-              position: "relative",
-              width: "100%",
-              height: "200px",
-              ":hover .videoRemoveButton": {
-                opacity: 1,
-              },
+              position: "absolute",
+              top: 6,
+              right: 75,
+              backgroundColor: "white",
+              color: "red",
+              fontSize: "20px",
+              padding: "2px",
+              cursor: "pointer",
+              opacity: 0,
+              transition: "opacity 0.3s ease",
             }}
           >
-            <video
-              style={{ objectFit: "cover" }}
-              height="100%"
-              width="90%"
-              src={selectedFile?.url || ""}
-              controls
-            />
-            <IconButton
-              className="videoRemoveButton"
-              onClick={() => removeHandler()}
-              sx={{
-                position: "absolute",
-                top: 6,
-                right: 75,
-                backgroundColor: "white",
-                color: "red",
-                fontSize: "20px",
-                padding: "2px",
-                cursor: "pointer",
-                opacity: 0,
-                transition: "opacity 0.3s ease",
-              }}
-            >
-              <ClearIcon fontSize="small" />
-            </IconButton>
-          </Box>
-        </Grid2>
+            <ClearIcon fontSize="small" />
+          </IconButton>
+        </Box>
       )}
 
       {/* Add video button*/}

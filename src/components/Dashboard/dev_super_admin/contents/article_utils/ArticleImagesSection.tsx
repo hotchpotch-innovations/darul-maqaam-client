@@ -302,6 +302,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
               remainingSlots={remainingSlots}
             />
 
+
             {/* Video Section */}
             <Typography>Video Section:</Typography>
             <Grid container>

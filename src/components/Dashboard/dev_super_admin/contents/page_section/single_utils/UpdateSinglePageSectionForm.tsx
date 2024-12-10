@@ -14,6 +14,7 @@ import CMStateInput from "@/components/forms/without_form_state_fields/CMStateIn
 import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
 import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
 import Editor from "@/components/forms/editors/Editor";
+import SinglePageImages from "./SinglePageImages";
 
 type TSPSPayload = {
   section_name: string;
@@ -98,6 +99,7 @@ const UpdateSinglePageSectionForm = ({ id }: TProps) => {
 
   return (
     <>
+      <SinglePageImages id={id} images={sps_data?.section_images} />
       <Stack direction={"column"} spacing={4}>
         <Stack direction={"row"} gap={4}>
           {/* 1st Pera */}

@@ -99,7 +99,11 @@ const UpdateSinglePageSectionForm = ({ id }: TProps) => {
 
   return (
     <>
-      <SinglePageImages id={id} images={sps_data?.section_images} />
+      <SinglePageImages
+        id={id}
+        images={sps_data?.section_images}
+        videos={sps_data?.section_videos}
+      />
       <Stack direction={"column"} spacing={4}>
         <Stack direction={"row"} gap={4}>
           {/* 1st Pera */}

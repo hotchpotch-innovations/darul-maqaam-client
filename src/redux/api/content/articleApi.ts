@@ -8,7 +8,7 @@ const articleApi = baseApi.injectEndpoints({
         url: "/content/article/create",
         method: "POST",
         contentType: "multipart/form-data",
-        data, // This will contain the data needed for password change
+        data,
       }),
       invalidatesTags: [contentTags?.article],
     }),
@@ -81,6 +81,7 @@ const articleApi = baseApi.injectEndpoints({
     articleAddFiles: build.mutation({
       query: (payload) => {
         const { id, data } = payload;
+        console.log(id, data);
         return {
           url: `/content/article/add-files/${id}`,
           contentType: "multipart/form-data",

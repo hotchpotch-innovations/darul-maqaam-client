@@ -19,10 +19,10 @@ const UpdateArticlePage = async ({ params }: TProps) => {
     }
   );
 
-  const ArticleImagesSection = dynamic(
+  const ArticleFilesSection = dynamic(
     () =>
       import(
-        "@/components/Dashboard/dev_super_admin/contents/article_utils/ArticleImagesSection"
+        "@/components/Dashboard/dev_super_admin/contents/article_utils/ArticleFilesSection"
       ),
     {
       ssr: false,
@@ -31,7 +31,7 @@ const UpdateArticlePage = async ({ params }: TProps) => {
   return (
     <Box>
       <TitleDashboard title="Update Article" />
-      <ArticleImagesSection id={id} />
+      <ArticleFilesSection id={id} />
       <UpdateArticleForm id={id} />
     </Box>
   );

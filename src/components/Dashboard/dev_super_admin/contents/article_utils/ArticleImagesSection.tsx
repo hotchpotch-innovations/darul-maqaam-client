@@ -312,6 +312,9 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                       position: "relative",
                       width: "100%",
                       height: "150px",
+                      border: "1px solid #fff",
+                      borderRadius: 2,
+                      overflow: "hidden",
                       ":hover .removeButton": {
                         opacity: 1,
                       },
@@ -367,6 +370,9 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                       position: "relative",
                       width: "100%",
                       height: "150px",
+                      border: "1px solid #fff",
+                      borderRadius: 2,
+                      overflow: "hidden",
                     }}
                   >
                     <IconButton
@@ -389,7 +395,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                       alt="Selected Image Preview"
                       width={150}
                       height={150}
-                      sizes="100vw"
+                      // sizes="100vw"
                       style={{
                         width: "100%",
                         height: "100%",

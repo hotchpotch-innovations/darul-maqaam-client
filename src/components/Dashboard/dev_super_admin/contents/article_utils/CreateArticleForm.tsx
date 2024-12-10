@@ -16,6 +16,7 @@ import { article_types_options } from "@/constants/options";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
 import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
 import Editor from "@/components/forms/editors/Editor";
+import { videoFileLimitation } from "@/utils/videoFileLimitation";
 
 type TArticlePayload = {
   type?: string;
@@ -41,7 +42,7 @@ const CreateArticleForm = () => {
   const [author, setAuthor] = useState("");
   const [yt_video_url, setYtVideoUrl] = useState();
   const [cover_image, setCoverImage] = useState(null);
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
   const [summary, setSummary] = useState("");
   // Get value from text editor
   const [contents, setContents] = useState("");
@@ -62,10 +63,20 @@ const CreateArticleForm = () => {
     if (!type || !categoryId || !title) {
       toast.error("Data does not found!", { id: toastId, duration: 2000 });
     } else {
+      // video validation
+      const videoFileValidation = videoFileLimitation(files);
+      if (!videoFileValidation?.status) {
+        return toast.error(videoFileValidation?.message, {
+          id: toastId,
+          duration: 3000,
+        });
+      }
+      // data assign to payload
       const data: TArticlePayload = {};
       data["type"] = type;
       data["categoryId"] = categoryId;
       data["title"] = title;
+
       if (!!author) {
         data["author"] = author;
       }
@@ -75,7 +86,7 @@ const CreateArticleForm = () => {
       if (!!cover_image) {
         data["cover_image"] = cover_image;
       }
-      if (!!files) {
+      if (files.length > 0) {
         data["files"] = files;
       }
 

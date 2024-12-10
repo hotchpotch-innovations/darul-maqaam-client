@@ -1,15 +1,14 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 import { toast } from "sonner";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
-
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
 
@@ -22,6 +21,7 @@ import {
   useGetSingleArticleQuery,
 } from "@/redux/api/content/articleApi";
 import BannerImage from "@/components/Dashboard/common/bannerImage/BannerImage";
+import VideoSection from "@/components/Dashboard/common/videoSection/VideoSection";
 
 type ArticleImagesSectionProps = {
   id: string;
@@ -34,6 +34,8 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
   const [previewSelectedBanner, setPreviewSelectedBanner] =
     useState<string>("");
   const [file, setFile] = useState<File | null>(null);
+
+  const [videoFile, setVideoFile] = useState<any | null>(null);
 
   // State for images
   const MAX_IMAGE_SLOTS = 4;
@@ -51,17 +53,17 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
   const [bannerImageChange, { isLoading: isBannerImageChanging }] =
     useChangeArticleCoverImageMutation();
 
-  const article_images = imagesData?.data;
+  const article_data = imagesData?.data;
   useEffect(() => {
-    if (article_images?.images?.length) {
-      setRemainingSlots(MAX_IMAGE_SLOTS - article_images.images.length);
+    if (article_data?.images?.length) {
+      setRemainingSlots(MAX_IMAGE_SLOTS - article_data.images.length);
     }
-  }, [article_images]);
+  }, [article_data]);
 
-  // -------- Images file handaling function --------
+  // -------- Images file handling function --------
 
   // Handle file input and limit the number of selected files
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleImageFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
 
@@ -80,15 +82,44 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
     setRemainingSlots((prev) => prev - newSelectedFiles.length);
   };
 
-  // Remove selected file from preview
-  const handleRemoveImage = (imageKey: string) => {
+  // Handle file input and limit the number of selected files
+  const handleVideoFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event?.target?.files;
+    if (!file) return;
+    const bytes = 1000000;
+    const selectedFileSize = file[0]?.size;
+    const fileMBSize = selectedFileSize / bytes;
+
+    if (fileMBSize > 10) {
+      return toast.error(
+        "File is too much large. You can access to upload maximum 10 mb file.",
+        { duration: 5000 }
+      );
+    }
+
+    const newSelectedFile = {
+      url: URL.createObjectURL(file[0]),
+      file,
+      key: Math.random().toString(36).substring(2, 9),
+    };
+    console.log(newSelectedFile);
+    setVideoFile(newSelectedFile);
+    console.log({ file, fileMBSize, newSelectedFile });
+  };
+
+  // Remove selected image file from preview
+  const handleRemoveSelectedImage = (imageKey: string) => {
     setSelectedFiles((prev) => prev.filter((file) => file.key !== imageKey));
     setRemainingSlots((prev) => prev + 1);
-
     const imageToRemove = selectedFiles.find((file) => file.key === imageKey);
     if (imageToRemove) {
       URL.revokeObjectURL(imageToRemove.url);
     }
+  };
+
+  // Remove selected video file from preview
+  const handleRemoveSelectedVideo = () => {
+    setVideoFile(null);
   };
 
   //  -------- API call functions --------
@@ -125,6 +156,36 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
     }
   };
 
+  // Handler for video update function
+  const handleUpdateVideo = async () => {
+    const toastId = toast.loading("Please wait...");
+    const selectedVideo = videoFile?.file[0];
+    console.log("Video", { selectedVideo });
+    const article_data = {
+      files: [selectedVideo],
+    };
+
+    const updatedFiles = modifyPayload(article_data);
+    const payload = {
+      id,
+      data: updatedFiles,
+    };
+
+    try {
+      const res = await addFiles(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        setVideoFile(null);
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
+  };
+
   // Handler for image delete function
   const handleDeleteImages = async (key: string) => {
     const toastId = toast.loading("Deleting...");
@@ -137,6 +198,28 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
         setSelectedFiles([]);
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 3000 });
+      }
+    } catch (error: any) {
+      toast.error(error?.message, { id: toastId, duration: 3000 });
+
+      customTimeOut(3000).then(() => window?.location?.reload());
+    }
+  };
+
+  // Handler for video delete function
+  const handleDeleteVideo = async (key: string) => {
+    const toastId = toast.loading("Please wait...");
+    const payload = {
+      id,
+      previous_video_key: key,
+    };
+    try {
+      const res = await deleteFile(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 3000 });
+        setVideoFile(null);
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
       }
@@ -186,23 +269,20 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         {/*
-          Left Section
           Banner Image
         */}
         <Grid size={{ xs: 12, lg: 6 }}>
           <BannerImage
             isLoading={isBannerImageChanging}
             selectedBanner={previewSelectedBanner}
-            bannerImage={article_images?.cover_image?.url}
+            bannerImage={article_data?.cover_image?.url}
             handleChange={handleBannerImageChange}
             handleUpload={handleBannerImageUpload}
           />
         </Grid>
 
         {/*
-          Right Section
           Post Images
-          Video
         */}
         <Grid size={{ xs: 12, lg: 6 }}>
           <Box
@@ -213,6 +293,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
               justifyContent: "center",
             }}
           >
+            <Typography>Images Section:</Typography>
             {/* Post Images */}
             <Grid
               container
@@ -224,13 +305,13 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
               }}
             >
               {/* Render existing article images */}
-              {article_images?.images?.map((image: any) => (
+              {article_data?.images?.map((image: any) => (
                 <Grid size={3} key={image?.key}>
                   <Box
                     sx={{
                       position: "relative",
                       width: "100%",
-                      height: "auto",
+                      height: "150px",
                       ":hover .removeButton": {
                         opacity: 1,
                       },
@@ -257,13 +338,13 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                     <Image
                       src={image?.url}
                       alt="Banner Image"
-                      width={100}
-                      height={100}
+                      width={150}
+                      height={150}
                       sizes="100vw"
                       style={{
                         width: "100%",
-                        height: "auto",
-                        margin: "8px 0",
+                        height: "100%",
+                        objectFit: "cover",
                       }}
                     />
                   </Box>
@@ -285,11 +366,11 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                     sx={{
                       position: "relative",
                       width: "100%",
-                      height: "auto",
+                      height: "150px",
                     }}
                   >
                     <IconButton
-                      onClick={() => handleRemoveImage(file.key)}
+                      onClick={() => handleRemoveSelectedImage(file.key)}
                       sx={{
                         position: "absolute",
                         top: 6,
@@ -306,12 +387,12 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                     <Image
                       src={file.url}
                       alt="Selected Image Preview"
-                      width={100}
-                      height={100}
+                      width={150}
+                      height={150}
                       sizes="100vw"
                       style={{
                         width: "100%",
-                        height: "auto",
+                        height: "100%",
                         objectFit: "cover",
                       }}
                     />
@@ -348,7 +429,7 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
                     type="file"
                     accept="image/*"
                     style={{ display: "none" }}
-                    onChange={handleFileChange}
+                    onChange={handleImageFileChange}
                   />
                 </Grid>
               )}
@@ -377,14 +458,21 @@ const ArticleImagesSection = ({ id }: ArticleImagesSectionProps) => {
             </Grid>
 
             {/* Video Section */}
-
-            {/* {imagesData?.data?.videos}
-            <video
-              height="auto"
-              width="45%"
-              src={imagesData?.data?.videos[0].url}
-              controls
-            /> */}
+            <Typography>Video Section:</Typography>
+            <Grid container>
+              <VideoSection
+                data={{
+                  url: article_data?.videos[0]?.url,
+                  key: article_data?.videos[0]?.key,
+                }}
+                selectedFile={videoFile}
+                removeHandler={handleRemoveSelectedVideo}
+                deleteHandler={handleDeleteVideo}
+                fileChangeHandler={handleVideoFileChange}
+                isUploadLoading={isFileDeleting}
+                uploadHandler={handleUpdateVideo}
+              />
+            </Grid>
           </Box>
         </Grid>
       </Grid>

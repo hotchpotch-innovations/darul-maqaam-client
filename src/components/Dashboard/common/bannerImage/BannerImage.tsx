@@ -1,7 +1,7 @@
 "use client";
 import { Box, Button, IconButton } from "@mui/material";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import Loading from "@/components/ui/LoadingBar";
 import Image from "next/image";
 

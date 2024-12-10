@@ -21,10 +21,9 @@ import Grid from "@mui/material/Grid2";
 import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
 import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
-import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
-import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
 import Editor from "@/components/forms/editors/Editor";
 import CMStateCheckbox from "@/components/forms/without_form_state_fields/CMStateCheckbox";
+import { videoFileLimitation } from "@/utils/videoFileLimitation";
 
 type TSPSPayload = {
   webpageId: string;
@@ -59,7 +58,7 @@ const CreateSinglePageSectionForm = () => {
   const [webpageId, setWebpageId] = useState("");
   const [section_name, setSectionName] = useState();
   const [section_slug, setSectionSlug] = useState();
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
   const [section_title, setSectionTitle] = useState("");
   const [section_summary, setSectionSummary] = useState("");
   // Get value from text editor
@@ -94,6 +93,13 @@ const CreateSinglePageSectionForm = () => {
     if (!webpageId || !section_name || !section_slug) {
       toast.error("Data does not found!", { id: toastId, duration: 2000 });
     } else {
+      const videoFileValidation = videoFileLimitation(files);
+      if (!videoFileValidation?.status) {
+        return toast.error(videoFileValidation?.message, {
+          id: toastId,
+          duration: 3000,
+        });
+      }
       const data: TSPSPayload = {
         webpageId: webpageId,
         section_name: section_name,
@@ -105,7 +111,7 @@ const CreateSinglePageSectionForm = () => {
       if (!!submenuId) {
         data["submenuId"] = submenuId;
       }
-      if (!!files) {
+      if (files?.length > 0) {
         data["files"] = files;
       }
       if (section_title?.length > 0) {

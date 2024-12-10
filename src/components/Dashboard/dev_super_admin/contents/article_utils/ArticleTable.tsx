@@ -135,20 +135,6 @@ const ArticleTable = () => {
       headerName: "TITLE",
       flex: 1,
       sortable: false,
-      renderCell: (params) => (
-        <Box
-          component={Link}
-          href={`/dashboard/dev_super_admin/content/articles/details/${params?.row?.id}`}
-          sx={{
-            ":hover": {
-              textDecoration: "underline",
-              color: "#1f68de",
-            },
-          }}
-        >
-          {params?.row?.title}
-        </Box>
-      ),
     },
     {
       field: "type",

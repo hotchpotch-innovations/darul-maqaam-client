@@ -1,14 +1,12 @@
 "use client";
-
-import useUserInfo from "@/hooks/other/useUserInfo";
 import { logOutUser } from "@/services/actions/logoutUser";
-import { Button } from "@mui/material";
+import { getUserInfoFromCookie } from "@/utils/getUserInfoFromCookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const AuthButton = () => {
   const router = useRouter();
-  const userInfo = useUserInfo();
+  const userInfo = getUserInfoFromCookie();
 
   const handleLoutOut = () => {
     logOutUser();
@@ -16,27 +14,20 @@ const AuthButton = () => {
   };
   return (
     <>
-      {userInfo?.role ? (
-        <Button
+      {!!userInfo ? (
+        <li
           onClick={handleLoutOut}
-          variant="text"
-          sx={{
+          style={{
             color: "red",
+            cursor: "pointer",
           }}
         >
           Logout
-        </Button>
+        </li>
       ) : (
-        <Button
-          component={Link}
-          href="/login"
-          variant="text"
-          sx={{
-            color: "white",
-          }}
-        >
-          Login
-        </Button>
+        <li>
+          <Link href={"/login"}>Login</Link>
+        </li>
       )}
     </>
   );

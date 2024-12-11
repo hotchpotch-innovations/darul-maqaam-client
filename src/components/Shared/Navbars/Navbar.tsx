@@ -9,11 +9,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import logo from "../../../../public/Darul Maqaam_Logo-01.png";
 import { usePathname } from "next/navigation";
+import AuthButton from "./AuthButton";
+import { getUserInfoFromCookie } from "@/utils/getUserInfoFromCookie";
+import DashboardButton from "./DashboardButton";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const pathNameDM = usePathname();
+  const userInfo = getUserInfoFromCookie();
+
+  const userRole = userInfo?.role;
 
   useEffect(() => {
     setIsMounted(true);
@@ -52,6 +58,9 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
+
+              {!!userRole && <DashboardButton role={userRole} />}
+              <AuthButton />
             </ul>
             <span
               onClick={() => setShowMenu(!showMenu)}
@@ -73,6 +82,10 @@ const Navbar = () => {
                         </Link>
                       </li>
                     ))}
+
+                    {!!userRole && <DashboardButton role={userRole} />}
+
+                    <AuthButton />
                   </ul>
                   <span
                     onClick={() => setShowMenu(false)}

@@ -1,7 +1,7 @@
 "use client";
 
 import { navbarItem } from "../../../../public/data/NavbarData";
-import { Container, Stack, Typography } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -33,15 +33,16 @@ const Navbar = () => {
           <div>
             <ul className=" hidden gap-6 lg:gap-6 lg:inline-flex">
               {navbarItem.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.path}
-                  className={`link ${
-                    item.path === pathNameDM ? "text-green-500" : ""
-                  }`}
-                >
-                  {item.name}{" "}
-                </Link>
+                <li key={item?.id}>
+                  <Link
+                    href={item.path}
+                    className={`link ${
+                      item.path === pathNameDM ? "text-green-500" : ""
+                    }`}
+                  >
+                    {item?.name}{" "}
+                  </Link>
+                </li>
               ))}
             </ul>
             <span
@@ -55,13 +56,14 @@ const Navbar = () => {
                 <div className="relative flex flex-col gap-8 py-2">
                   <ul className="flex flex-col gap-4">
                     {navbarItem.map((item) => (
-                      <Link
-                        key={item.id}
-                        className="capitalize text-white"
-                        href={item.path}
-                      >
-                        {item.name}{" "}
-                      </Link>
+                      <li key={item?.id}>
+                        <Link
+                          className="capitalize text-white"
+                          href={item?.path}
+                        >
+                          {item?.name}{" "}
+                        </Link>
+                      </li>
                     ))}
                   </ul>
                   <span

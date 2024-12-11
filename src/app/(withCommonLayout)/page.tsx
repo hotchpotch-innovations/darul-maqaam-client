@@ -1,6 +1,7 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const HomePage = () => {
+  // hp
   return (
     <Box
       sx={{

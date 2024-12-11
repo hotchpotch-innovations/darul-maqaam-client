@@ -3,7 +3,7 @@
 import { navbarItem } from "../../../../public/data/NavbarData";
 import { Container, Stack } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
@@ -12,8 +12,16 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const pathNameDM = usePathname();
-  console.log(pathNameDM);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
   return (
     <Stack
       bgcolor={"secondary.main"}

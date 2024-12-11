@@ -14,7 +14,8 @@ instance.defaults.timeout = 60000;
 
 // Add a request interceptor
 instance.interceptors.request.use(
-  function (config) {
+  function (config: any) {
+    //  const token = config?.token as string;
     const accessToken = getFromLocalStorage(authkey);
     if (!!accessToken) {
       config.headers.Authorization = accessToken;

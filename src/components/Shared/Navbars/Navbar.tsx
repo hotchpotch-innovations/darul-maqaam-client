@@ -1,165 +1,82 @@
 "use client";
 
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import AdbIcon from "@mui/icons-material/Adb";
-import MenuIcon from "@mui/icons-material/Menu";
+import { navbarItem } from "../../../../public/data/NavbarData";
+import { Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
+import { useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import Image from "next/image";
+import logo from "../../../../public/Darul Maqaam_Logo-01.png";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  const [userRole, setUserRole] = useState("");
-  const user_info = getUserInfoFromLocalStorage();
-  const user_role = user_info?.role?.toLowerCase();
-
-  useEffect(() => {
-    setUserRole(user_role);
-  }, [user_role]);
-
-  const pages = [
-    { pathName: "Login", path: "/login", _id: "01" },
-    { pathName: "Register", path: "/register", _id: "02" },
-    {
-      pathName: "Dashboard",
-      path: `/dashboard/${userRole && userRole}`,
-      _id: "03",
-    },
-  ];
-
-  const AuthButton = dynamic(() => import("./AuthButton"), { ssr: false });
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
+  const [showMenu, setShowMenu] = useState(false);
+  const pathNameDM = usePathname();
+  console.log(pathNameDM);
   return (
-    <AppBar
-      position="static"
-      sx={{
-        height: "80px",
-        display: "flex",
-
-        justifyContent: "center",
-      }}
+    <Stack
+      bgcolor={"secondary.main"}
+      borderColor={"white"}
+      py={2}
+      zIndex={1500}
     >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              {pages.map((page) => (
-                <Link key={page._id} href={page.path}>
-                  <MenuItem key={page._id} onClick={handleCloseNavMenu}>
-                    <Typography sx={{ textAlign: "center" }}>
-                      {page.pathName}
-                    </Typography>
-                  </MenuItem>
+      <Container>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems={"center"}
+        >
+          <Link href={"/"}>
+            <Image src={logo} alt="Website Logo" height={200} width={200} />
+          </Link>
+          <div>
+            <ul className=" hidden gap-6 lg:gap-6 lg:inline-flex">
+              {navbarItem.map((item) => (
+                <Link
+                  key={item.id}
+                  href={item.path}
+                  className={`link ${
+                    item.path === pathNameDM ? "text-green-500" : ""
+                  }`}
+                >
+                  {item.name}{" "}
                 </Link>
               ))}
-            </Menu>
-          </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Link
-                href={page.path}
-                key={page._id}
-                onClick={handleCloseNavMenu}
-              >
-                <Button
-                  variant="text"
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.pathName}
-                </Button>
-              </Link>
-            ))}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <AuthButton />
-          </Box>
-        </Toolbar>
+            </ul>
+            <span
+              onClick={() => setShowMenu(!showMenu)}
+              className="inline-flex items-center justify-center w-10 h-10 text-xl rounded-full cursor-pointer lg:hidden text-designColor"
+            >
+              <MenuIcon />
+            </span>
+            {showMenu && (
+              <div className="w-[80%] h-screen overflow-scroll z-[999] absolute top-0 left-0 bg-[#00712D] opacity-95 p-4 scrollbar-hide">
+                <div className="relative flex flex-col gap-8 py-2">
+                  <ul className="flex flex-col gap-4">
+                    {navbarItem.map((item) => (
+                      <Link
+                        key={item.id}
+                        className="capitalize text-white"
+                        href={item.path}
+                      >
+                        {item.name}{" "}
+                      </Link>
+                    ))}
+                  </ul>
+                  <span
+                    onClick={() => setShowMenu(false)}
+                    className="absolute text-2xl text-white duration-300 cursor-pointer top-4 right-4 "
+                  >
+                    <CloseIcon />
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </Stack>
       </Container>
-    </AppBar>
+    </Stack>
   );
 };
 

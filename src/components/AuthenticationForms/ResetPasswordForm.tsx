@@ -9,15 +9,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import CMInput from "@/components/forms/CMInput";
-import { useResetPasswordMutation } from "@/redux/api/auth/authApi";
 import CMForm from "@/components/forms/CMForm";
+import { resetPassword } from "@/services/actions/resetPassword";
 
 const validationSchema = z.object({
-  password: z.string().min(6, "passrword must be at least 6 character"),
+  password: z
+    .string()
+    .nonempty()
+    .min(6, "passrword must be at least 6 character"),
 });
 
 const ResetPasswordForm = () => {
@@ -26,7 +28,6 @@ const ResetPasswordForm = () => {
   const token = searchParams.get("token");
 
   const router = useRouter();
-  const [resetPasswordRequest] = useResetPasswordMutation();
 
   useEffect(() => {
     if (token) {
@@ -40,12 +41,12 @@ const ResetPasswordForm = () => {
     const payload = {
       id,
       token,
-      ...values,
+      password: values?.password,
     };
     try {
-      const res = await resetPasswordRequest(payload).unwrap();
-      if (res?.data?.success) {
-        toast.success(res?.data?.message, { id: toastId, duration: 5000 });
+      const res = await resetPassword(payload);
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId, duration: 5000 });
         removeFromLocalStorage(refreshToken);
         router.push("/login");
       }

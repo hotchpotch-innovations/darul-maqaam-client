@@ -43,7 +43,7 @@ const menuStyles = {
 
 export default function AccountMenu() {
   const userInfo = getUserInfoFromLocalStorage();
-  const userProfilePath = userInfo?.role.toLowerCase();
+  const userProfilePath = userInfo?.role?.toLowerCase();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function AccountMenu() {
   const handleLogout = () => {
     setAnchorEl(null);
     logOutUser();
-    router.push("/login");
+    router.push("/");
   };
 
   return (

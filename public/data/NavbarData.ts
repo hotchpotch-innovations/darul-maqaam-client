@@ -18,7 +18,7 @@ const loginItem: TNavbarItem = {
 };
 
 const dashboardItem: TNavbarItem = {
-  id: "11",
+  id: "12",
   name: "Dashboard",
   path: `/dashboard/${user_role}`,
 };
@@ -69,5 +69,5 @@ export const navbarItem: TNavbarItem[] = [
     name: "contact",
     path: "/contact",
   },
-  user_info && user_role ? dashboardItem : loginItem,
+  user_role ? dashboardItem : loginItem,
 ];

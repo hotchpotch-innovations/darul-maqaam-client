@@ -1,15 +1,14 @@
 "use client";
-
-import { useChangePasswordMutation } from "@/redux/api/auth/authApi";
 import { logOutUser } from "@/services/actions/logoutUser";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-import CMForm from "../forms/CMForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Box, Button, Grid } from "@mui/material";
+import CMForm from "../forms/CMForm";
 import CMInput from "../forms/CMInput";
+import { useChangePasswordMutation } from "@/redux/api/auth/authApi";
 
 const validationSchema = z.object({
   oldPassword: z.string().min(6, "Please enter a valid password"),

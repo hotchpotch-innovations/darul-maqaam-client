@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import CMForm from "@/components/forms/CMForm";
@@ -12,7 +12,6 @@ import { toast } from "sonner";
 import { setToLocalStorage } from "@/utils/local-starage";
 import { authkey } from "@/constants/authkey";
 import { userSignIn } from "@/services/actions/userSignIn";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import CMPasswordInput from "../forms/without_form_state_fields/CMPasswordInput";
 
@@ -24,9 +23,10 @@ const validationSchema = z.object({
 const LoginForm = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const toggolePasswordVisibility = () => {
-    setIsPasswordVisible((prev) => !prev);
-  };
+  // const toggolePasswordVisibility = () => {
+  //   setIsPasswordVisible((prev) => !prev);
+  // };
+
   const handleLogin: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait...");
     const data = {

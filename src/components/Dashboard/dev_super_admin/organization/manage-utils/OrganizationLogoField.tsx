@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState, ChangeEvent, MouseEvent } from "react";
-import CameraAltSharpIcon from "@mui/icons-material/CameraAltSharp";
 import EditIcon from "@mui/icons-material/Edit";
 import { TLogoPayload } from "./OrganizationProfileForm";
 import Image from "next/image";
@@ -78,7 +77,7 @@ const ModalContent: React.FC<{
         placement="right-start"
       >
         <Avatar
-          src={previewImage || org_data?.logo?.url}
+          src={previewImage ? previewImage : org_data?.logo?.url}
           alt={org_data.name || "Organization Logo"}
           sx={{
             width: 200,

@@ -1,7 +1,8 @@
 "use client";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import loginImage from "../../../public/images/login-blue-logo.png";
+// import loginImage from "../../../public/images/login-blue-logo.png";
+
 import dynamic from "next/dynamic";
 
 const RegisterPage = () => {
@@ -31,7 +32,7 @@ const RegisterPage = () => {
             }}
           >
             <Image
-              src={loginImage}
+              src={"/images/login-blue-logo.png"}
               alt="Login Logo Image "
               height={60}
               width={60}

@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
   const accessToken = await cookies().get(authkey)?.value;
 
   if (!accessToken) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   let decodedData = null;
@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!decodedData) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   if (accessToken && commonPrivateRoutes.includes(pathname)) {

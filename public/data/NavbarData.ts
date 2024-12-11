@@ -1,3 +1,5 @@
+"use client";
+
 import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
 
 const user_info = getUserInfoFromLocalStorage();
@@ -10,7 +12,7 @@ type TNavbarItem = {
 };
 
 const loginItem: TNavbarItem = {
-  id: "11",
+  id: "12",
   name: "Login",
   path: "/login",
 };

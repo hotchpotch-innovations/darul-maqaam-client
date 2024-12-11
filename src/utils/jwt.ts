@@ -1,6 +1,14 @@
 import { jwtDecode } from "jwt-decode";
 
-export const decodedToken = (token: string) => {
+type TResponse = {
+  email: string;
+  exp: number;
+  gu_id: string;
+  iat: number;
+  role: string;
+};
+
+export const decodedToken = (token: string): TResponse | null => {
   if (!token) {
     return null;
   }

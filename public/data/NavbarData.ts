@@ -1,73 +1,55 @@
 "use client";
 
-import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
-
-const user_info = getUserInfoFromLocalStorage();
-const user_role = user_info?.role?.toLowerCase();
-
 type TNavbarItem = {
   id: string;
   name: string;
   path: string;
 };
 
-const loginItem: TNavbarItem = {
-  id: "12",
-  name: "Login",
-  path: "/login",
-};
-
-const dashboardItem: TNavbarItem = {
-  id: "12",
-  name: "Dashboard",
-  path: `/dashboard/${user_role}`,
-};
-
 export const navbarItem: TNavbarItem[] = [
   {
     id: "1",
-    name: "home",
+    name: "Home",
     path: "/",
   },
   {
     id: "2",
-    name: "about",
+    name: "About",
     path: "/about",
   },
   {
     id: "3",
-    name: "projects",
+    name: "Projects",
     path: "/projects",
   },
   {
     id: "4",
-    name: "ongoing projects",
+    name: "Ongoing Projects",
     path: "/ongoing-projects",
   },
   {
     id: "6",
-    name: "gallery",
+    name: "Gallery",
     path: "/gallery",
   },
   {
     id: "7",
-    name: "video",
+    name: "Video",
     path: "/video",
   },
   {
     id: "8",
-    name: "volunteer registration",
+    name: "Volunteer Registration",
     path: "/volunteer",
   },
   {
     id: "9",
-    name: "news",
+    name: "News",
     path: "/news",
   },
   {
     id: "10",
-    name: "contact",
+    name: "Contact",
     path: "/contact",
   },
-  user_role ? dashboardItem : loginItem,
 ];

@@ -33,6 +33,7 @@ const validationSchema = z.object({
 });
 
 const UpdateWebpageForm = ({ slug }: TProps) => {
+  console.log(slug);
   const router = useRouter();
   const [id, setId] = useState();
 
@@ -75,11 +76,11 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
     title: webpage_info?.title,
     slug: webpage_info?.slug,
     meta_title: webpage_info?.meta_title || default_meta_info?.meta_title,
-    og_author: webpage_info.og_author || default_meta_info?.og_author,
+    og_author: webpage_info?.og_author || default_meta_info?.og_author,
     meta_description:
       webpage_info?.meta_description || default_meta_info?.meta_description,
     meta_keywords:
-      webpage_info?.meta_keywords || default_meta_info.meta_keywords,
+      webpage_info?.meta_keywords || default_meta_info?.meta_keywords,
   };
 
   return (

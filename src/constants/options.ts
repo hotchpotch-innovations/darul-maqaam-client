@@ -92,41 +92,49 @@ export const user_status_options: ISelectOption[] = [
   },
 ];
 
+export const MPS_Types = {
+  about: "about",
+  project: "project",
+  ongoing_project: "ongoing-project",
+  gallery: "gallery",
+  hero_section: "hero-section",
+};
+
 export const multiple_page_section_types_options: ISelectOption[] = [
   {
+    label: "About",
+    value: MPS_Types?.about,
+  },
+  {
+    label: "Project",
+    value: MPS_Types?.project,
+  },
+  {
+    label: "Ongoing Project",
+    value: MPS_Types?.ongoing_project,
+  },
+  {
+    label: "Gallery",
+    value: MPS_Types?.gallery,
+  },
+  {
     label: "Hero Section",
-    value: "hero_section",
+    value: MPS_Types?.hero_section,
   },
-  {
-    label: "Service",
-    value: "service",
-  },
-  {
-    label: "Product",
-    value: "product",
-  },
-  {
-    label: "Core Value",
-    value: "core_value",
-  },
-  {
-    label: "Forms & Template",
-    value: formsAndTemplateTypeValue,
-  },
+  // {
+  //   label: "Forms & Template",
+  //   value: formsAndTemplateTypeValue,
+  // },
 ];
 
 export const article_types_options: ISelectOption[] = [
   {
-    label: "Blog",
-    value: "blog",
+    label: "Video",
+    value: "video",
   },
   {
     label: "News",
     value: "news",
-  },
-  {
-    label: "Events",
-    value: "events",
   },
 ];
 

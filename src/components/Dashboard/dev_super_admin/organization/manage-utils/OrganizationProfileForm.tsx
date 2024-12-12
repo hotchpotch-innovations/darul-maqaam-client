@@ -367,6 +367,14 @@ const OrganizationProfileForm = () => {
                       size="small"
                     />
                   </Stack>
+                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                    <CMInput
+                      name="tag_line"
+                      fullWidth={true}
+                      label="Tag Line"
+                      size="small"
+                    />
+                  </Stack>
 
                   {/* Business Email & Web Mail */}
                   <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>

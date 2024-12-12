@@ -403,7 +403,7 @@ const WebpageTable = () => {
             pagination
             paginationMode="server"
             pageSizeOptions={[10, 25, 50]}
-            rowCount={data?.meta?.total}
+            rowCount={data?.data?.meta?.total}
             paginationModel={{ page: currentPage - 1, pageSize: limit }}
             onPaginationModelChange={handlePaginationChange}
             hideFooterPagination={

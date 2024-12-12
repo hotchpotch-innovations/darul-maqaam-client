@@ -1,7 +1,23 @@
 import ContactDeatils from "@/components/UI/Contact/ContactDeatils";
 import ContactForm from "@/components/UI/Contact/ContactForm";
 import Title from "@/components/UI/Title";
+import { webpageSlugs } from "@/constants/webpageSlugs";
+import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";
 import { Box, Container } from "@mui/material";
+
+// Dynamic metadata generation function
+export async function generateMetadata() {
+  const page_slug = webpageSlugs?.contact;
+  const url = process.env.NEXT_PUBLIC_WEBSITE_URL;
+  const redirect_url = `${url}`;
+
+  const result = await generateDynamicMetadataHandler({
+    redirect_url,
+    slug: page_slug,
+  });
+
+  return result;
+}
 
 const ContactPage = () => {
   return (

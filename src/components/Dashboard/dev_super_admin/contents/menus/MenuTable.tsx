@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
 import { TResponseDataObj } from "@/types";
-import CMModal from "@/components/ui/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
@@ -25,6 +24,7 @@ import { user_status_options } from "@/constants/options";
 
 import { user_status } from "@/constants";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
+import CMModal from "@/components/UI/CMModal";
 
 type TQueryObj = {
   status?: string;
@@ -95,6 +95,12 @@ const MenuTable = () => {
       headerName: "SERIAL",
       width: 100,
       disableColumnMenu: true,
+    },
+    {
+      field: "id",
+      headerName: "Id",
+      flex: 1,
+      sortable: false,
     },
     {
       field: "title",

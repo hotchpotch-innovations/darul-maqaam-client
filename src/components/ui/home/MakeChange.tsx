@@ -1,12 +1,17 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
-import { makeChange } from "../../../../public/HomePageData/makeChange";
 import MakeChangeCard from "../MakeChangeCard";
-import { time } from "console";
-import { TMakeChange } from "@/app/(withCommonLayout)/Types";
 import Link from "next/link";
 
-const MakeChange = () => {
-  const data = makeChange;
+const MakeChange = async () => {
+  const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const res = await fetch(
+    `${backend_api}/content/webpage/public?menubarId=caedb2db-aa25-4edd-a15e-0b9006ab9779&isPublished=true`,
+    {
+      cache: "no-store",
+    }
+  );
+  const { data: webpage = {} } = await res.json();
+  const donation_data = webpage?.data || [];
   return (
     <Box bgcolor={"secondary.main"}>
       <Container
@@ -15,11 +20,11 @@ const MakeChange = () => {
         }}
       >
         <Typography variant="h4" className="text-center pb-8">
-          Together Let’s make a change
+          Together Let make a change
         </Typography>
         <Grid className="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-          {data?.slice(0, 6).map((item: TMakeChange) => (
-            <MakeChangeCard key={item._id} data={item} />
+          {donation_data?.slice(0, 6).map((item: Record<string, any>) => (
+            <MakeChangeCard key={item?.id} data={item} />
           ))}
         </Grid>
         <Stack justifyContent={"center"} alignItems={"center"} pt={4}>

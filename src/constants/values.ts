@@ -63,12 +63,11 @@ export const create_branch_default_values = {
 };
 
 export const default_meta_info: TDefaultMetaInfo = {
-  og_author: "Hotchpotch Innovations Ltd",
-  meta_title: "Hotchpotch Innovations Ltd",
+  og_author: "Md. Arman",
+  meta_title: "Darul Maqaam Foundation",
   meta_description:
-    "Hotchpotch Innovations is a leading IT, design, and software development company based in Bangladesh. Established in 2016, we deliver high-quality software and services guided by the principles of consultancy, brainstorming, continuous innovation, and precise execution. Our service models include hiring individual specialists, assembling complete teams, and managing projects. Our company is known for its technological expertise and collaborative approach to project management, specializing in creating bespoke technology solutions and innovative digital experiences for clients worldwide.",
-  meta_keywords:
-    "Hotchpotch Innovations Ltd, IT Firm, Software, Web Application, Mobile App, eCommerce, UI & UX Design, Design, Events, Content, Digital Marketing, Architecture, IT Firm in uttara, IT Firm in Dhaka",
+    "Darul Maqaam Foundation is a non-profit, non-political, and entirely charitable organization dedicated to human welfare. Following the ideals and footsteps of the teacher of humanity, liberator of mankind, and role model of generosity Prophet Muhammad (Saw), this organization is engaged in social reform, inculcation of great morality, establishing employment, poverty alleviation, low cost or free health care, expansion of Islamic teachings and culture, conducting multidisciplinary education projects, continuous program in building a clean mindset, above all using oral, written and modern media to make people obey Allah and abide by His Messenger (Saw).",
+  meta_keywords: "Darul Maqaam Foundation, Foundation Organization, Donate",
 };
 
 export const formsAndTemplateTypeValue = "forms_&_template";

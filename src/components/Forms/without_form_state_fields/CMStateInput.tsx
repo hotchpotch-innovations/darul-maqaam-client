@@ -28,7 +28,6 @@ const CMStateInput = ({
     <TextField
       sx={{
         ...sx,
-        // border: "1px solid lightgray",
         borderRadius: "3px",
       }}
       name={name}

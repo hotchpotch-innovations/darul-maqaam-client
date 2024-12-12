@@ -51,7 +51,9 @@ const Navbar = () => {
                   <Link
                     href={item.path}
                     className={`link ${
-                      item.path === pathNameDM ? "text-green-500" : ""
+                      item?.path === pathNameDM
+                        ? "text-green-500"
+                        : " hover:text-green-500"
                     }`}
                   >
                     {item?.name}{" "}

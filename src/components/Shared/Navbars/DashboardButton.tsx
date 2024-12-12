@@ -8,7 +8,7 @@ type TProps = {
 const DashboardButton = ({ role }: TProps) => {
   const user_role = role.toLowerCase();
   return (
-    <li>
+    <li className="hover:text-green-500">
       <Link href={`/dashboard/${user_role}`}>Dashboard</Link>
     </li>
   );

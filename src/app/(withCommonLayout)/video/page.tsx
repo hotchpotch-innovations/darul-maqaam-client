@@ -1,5 +1,21 @@
 import Title from "@/components/UI/Title";
+import { webpageSlugs } from "@/constants/webpageSlugs";
+import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";
 import { Box, Container, Grid, Typography } from "@mui/material";
+
+// Dynamic metadata generation function
+export async function generateMetadata() {
+  const page_slug = webpageSlugs?.video;
+  const url = process.env.NEXT_PUBLIC_WEBSITE_URL;
+  const redirect_url = `${url}`;
+
+  const result = await generateDynamicMetadataHandler({
+    redirect_url,
+    slug: page_slug,
+  });
+
+  return result;
+}
 
 const VideoPage = () => {
   return (

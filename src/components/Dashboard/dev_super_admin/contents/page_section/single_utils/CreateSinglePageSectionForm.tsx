@@ -24,12 +24,14 @@ import CMStateFileInput from "@/components/forms/without_form_state_fields/CMSta
 import Editor from "@/components/forms/editors/Editor";
 import CMStateCheckbox from "@/components/forms/without_form_state_fields/CMStateCheckbox";
 import { videoFileLimitation } from "@/utils/videoFileLimitation";
+import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
 
 type TSPSPayload = {
   webpageId: string;
   menubarId?: string;
   submenuId?: string;
   section_name: string;
+  yt_video_url?: string;
   section_slug: string;
   files?: any;
   section_title?: string;
@@ -58,6 +60,7 @@ const CreateSinglePageSectionForm = () => {
   const [webpageId, setWebpageId] = useState("");
   const [section_name, setSectionName] = useState();
   const [section_slug, setSectionSlug] = useState();
+  const [yt_video_url, setYtVideoUrl] = useState();
   const [files, setFiles] = useState([]);
   const [section_title, setSectionTitle] = useState("");
   const [section_summary, setSectionSummary] = useState("");
@@ -110,6 +113,9 @@ const CreateSinglePageSectionForm = () => {
       }
       if (!!submenuId) {
         data["submenuId"] = submenuId;
+      }
+      if (!!yt_video_url) {
+        data["yt_video_url"] = yt_video_url;
       }
       if (files?.length > 0) {
         data["files"] = files;
@@ -213,6 +219,24 @@ const CreateSinglePageSectionForm = () => {
                 isDisabled={isWebpageLoading}
               />
             </Grid>
+
+            <Grid size={12}>
+              <CMStateInput
+                name="section_name"
+                label="Section Name"
+                setState={setSectionName}
+                fullWidth={true}
+              />
+            </Grid>
+
+            <Grid size={12}>
+              <CMStateInput
+                name="section_slug"
+                label="Section Slug"
+                setState={setSectionSlug}
+                fullWidth={true}
+              />
+            </Grid>
           </Grid>
 
           {/* Section name, Section Slug */}
@@ -231,37 +255,28 @@ const CreateSinglePageSectionForm = () => {
           >
             <Grid size={12}>
               <CMStateInput
-                name="section_name"
-                label="Section Name"
-                setState={setSectionName}
+                name="yt_video_url"
+                label="Youtube Video URL (embedded)"
+                setState={setYtVideoUrl}
+                type="url"
                 fullWidth={true}
               />
             </Grid>
 
             <Grid size={12}>
               <CMStateInput
-                name="section_slug"
-                label="Section Slug"
-                setState={setSectionSlug}
-                fullWidth={true}
-              />
-            </Grid>
-
-            <Grid size={12}>
-              <CMStateInput
-                name="section_titles"
-                label="Section Titles"
+                name="section_title"
+                label="Section Title"
                 setState={setSectionTitle}
                 fullWidth={true}
               />
             </Grid>
 
             <Grid size={12}>
-              <CMStateInput
-                name="section_descriptions"
-                label="Section Descriptions"
+              <CMStateTextarea
+                name="section_summery"
+                label="Section Summary"
                 setState={setSectionSummary}
-                fullWidth={true}
               />
             </Grid>
 

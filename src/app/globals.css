@@ -15,3 +15,28 @@
 .mui-14mgmha-MuiTypography-root {
   font-size: small !important;
 }
+
+.text-editor > h1 {
+ font-size: 2rem;
+}
+.text-editor > h2 {
+ font-size: 1.75rem;
+}
+.text-editor > h3 {
+ font-size: 1.5rem;
+}
+.text-editor > h4 {
+ font-size: 1.25rem;
+}
+.text-editor > h5 {
+ font-size: 1rem;
+}
+.text-editor > h6 {
+ font-size: 0.75rem;
+}
+.text-editor > ul {
+ list-style:  disc;
+}
+.text-editor > ul > li {
+ margin-left: 28px;
+}

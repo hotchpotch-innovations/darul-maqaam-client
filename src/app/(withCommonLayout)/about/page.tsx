@@ -1,8 +1,9 @@
 import { Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import { aboutData } from "../../../../public/data/AboutData";
-import { webpageSlugs } from "@/constants/webpageSlugs";
 import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";
+import { MPS_Types } from "@/constants/options";
+import { webpageSlugs } from "@/constants/webpageSlugs";
 
 // Dynamic metadata generation function
 export async function generateMetadata() {
@@ -18,14 +19,23 @@ export async function generateMetadata() {
   return result;
 }
 
-const AboutPage = () => {
+const AboutPage = async () => {
   const Title = dynamic(() => import("@/components/UI/Title"));
   const Drawer = dynamic(() => import("@/components/UI/Drawer"));
+  const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const res = await fetch(
+    `${backend_api}/content/multiple-page-section/public?type=${MPS_Types?.about}&sortBy=createdAt&sortOrder=asc`,
+    {
+      cache: "no-store",
+    }
+  );
+  const { data: about_obj = {} } = await res.json();
+  const about_data = about_obj?.data || [];
   return (
     <div>
       <Title title="about" />
       <Stack bgcolor={"secondary.main"}>
-        <Drawer firstMenu="Introduction" drawerData={aboutData} />
+        <Drawer drawerData={about_data} />
       </Stack>
     </div>
   );

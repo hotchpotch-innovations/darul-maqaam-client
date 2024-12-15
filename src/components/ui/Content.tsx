@@ -1,27 +1,21 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { AboutDataItem, TGalleray } from "@/app/(withCommonLayout)/Types";
-import { aboutData } from "../../../public/data/AboutData";
-import { GallerytData } from "../../../public/data/GalleryData";
+// import { aboutData } from "../../../public/data/AboutData";
+// import { GallerytData } from "../../../public/data/GalleryData";
 import Image from "next/image";
+import CustomListTag from "../Dashboard/common/content/CustomListTag";
 
 type DrawerProps = {
-  menu?: string | undefined;
-  contantData?: AboutDataItem | undefined;
-  isGallery?: boolean | undefined;
+  selectedData: Record<string, any>;
+  // contantData?: AboutDataItem | undefined;
+  // isGallery?: boolean | undefined;
 };
 
-const Contant = ({ menu, isGallery }: DrawerProps) => {
-  let dataInContant;
-  if (isGallery) {
-    dataInContant = GallerytData;
-  } else {
-    dataInContant = aboutData;
-  }
+const Content = ({ selectedData }: DrawerProps) => {
+  // const data = dataInContant.find((item: any) => item.menu === menu);
 
-  const data = dataInContant.find((item: any) => item.menu === menu);
-
-  if (!data) {
+  if (!selectedData) {
     // Handle the case where data is not found
     return (
       <section className="bg-white text-slate-600 py-12 px-8">
@@ -34,19 +28,28 @@ const Contant = ({ menu, isGallery }: DrawerProps) => {
 
   return (
     <section className="bg-white text-slate-600 py-12 px-2 lg:px-8">
-      <Typography
+      {/* <Typography
         fontSize={27}
         mb={2}
         color={"green"}
         fontWeight={500}
-        className={`${menu === data.menu ? "text-green-500" : ""}`}
+        // className={`${selectedData.id === data.menu ? "text-green-500" : ""}`}
       >
-        {data.menu}
-      </Typography>
+        {selectedData?.title}
+      </Typography> */}
 
-      {data?.content?.map((item, index) => (
+      {/* <div
+        className="text-editor"
+        dangerouslySetInnerHTML={{ __html: selectedData?.contents }}
+      ></div> */}
+
+      <div className="text-editor">
+        <CustomListTag htmlContent={selectedData?.contents} />
+      </div>
+
+      {/* {data?.content?.map((item, index) => (
         <Box key={index}>
-          {item.data.map((dataItem, itemIndex) => (
+          {item?.data.map((dataItem, itemIndex) => (
             <Box
               justifyItems={"center"}
               key={itemIndex}
@@ -60,9 +63,9 @@ const Contant = ({ menu, isGallery }: DrawerProps) => {
             </Box>
           ))}
         </Box>
-      ))}
+      ))} */}
     </section>
   );
 };
 
-export default Contant;
+export default Content;

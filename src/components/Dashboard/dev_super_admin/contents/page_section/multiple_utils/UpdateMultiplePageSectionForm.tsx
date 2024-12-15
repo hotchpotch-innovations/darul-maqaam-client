@@ -75,7 +75,7 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
         data["summary"] = summary;
       }
 
-      if (editorValue.length > 0) {
+      if (editorValue?.length > 0) {
         data["contents"] = editorValue;
       }
 

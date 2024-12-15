@@ -1,15 +1,17 @@
 "use client";
-
 import { Container, Stack, Typography } from "@mui/material";
-import { useState } from "react";
-import Content from "./Content";
+import React, { useState } from "react";
+import CategoryContent from "./CategoryContent";
 
-type DrawerProps = {
-  drawerData: Record<string, any>[];
+type TProps = {
+  categoryData: Record<string, any>[];
 };
 
-const Drawer = ({ drawerData }: DrawerProps) => {
-  const [selectedDrawerData, setSelectedDrawerData] = useState(drawerData[0]);
+const CategoryDrawer = ({ categoryData }: TProps) => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState(
+    categoryData[0]?.id
+  );
+
   return (
     <Container>
       <Stack
@@ -36,27 +38,26 @@ const Drawer = ({ drawerData }: DrawerProps) => {
             },
           }}
         >
-          {drawerData?.map((item: Record<string, any>) => (
+          {categoryData?.map((item: Record<string, any>) => (
             <Typography
               className={`cursor-pointer sm:text-sx text-sm overflow-hidden ${
-                selectedDrawerData?.id == item?.id
+                selectedCategoryId == item?.id
                   ? "text-green-500 border-e-2 border-green-500 pe-4 font-bold transition-all"
                   : ""
               }`}
               key={item?.id}
             >
-              <span onClick={() => setSelectedDrawerData(item)}>
+              <span onClick={() => setSelectedCategoryId(item?.id)}>
                 {item?.title}
               </span>
             </Typography>
           ))}
         </Stack>
         <Stack className="flex-grow mt-6 md:mt-0">
-          <Content selectedData={selectedDrawerData} />
+          <CategoryContent categoryId={selectedCategoryId} />
         </Stack>
       </Stack>
     </Container>
   );
 };
-
-export default Drawer;
+export default CategoryDrawer;

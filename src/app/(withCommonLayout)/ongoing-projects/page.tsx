@@ -1,9 +1,8 @@
-import Drawer from "@/components/UI/Drawer";
-import Title from "@/components/UI/Title";
 import { Stack } from "@mui/material";
-import { aboutData } from "../../../../public/data/AboutData";
 import { webpageSlugs } from "@/constants/webpageSlugs";
 import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";
+import dynamic from "next/dynamic";
+import { MPS_Types } from "@/constants/options";
 
 // Dynamic metadata generation function
 export async function generateMetadata() {
@@ -19,12 +18,23 @@ export async function generateMetadata() {
   return result;
 }
 
-const OngoingPage = () => {
+const OngoingPage = async () => {
+  const Title = dynamic(() => import("@/components/UI/Title"));
+  const Drawer = dynamic(() => import("@/components/UI/Drawer"));
+  const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const res = await fetch(
+    `${backend_api}/content/multiple-page-section/public?type=${MPS_Types?.ongoing_project}&sortBy=createdAt&sortOrder=asc`,
+    {
+      cache: "no-store",
+    }
+  );
+  const { data: ongoing_project_obj = {} } = await res.json();
+  const ongoingProjectData = ongoing_project_obj?.data || [];
   return (
     <>
       <Title title="ongoing projects" />
       <Stack bgcolor={"secondary.main"}>
-        <Drawer firstMenu="Introduction" drawerData={aboutData} />
+        <Drawer drawerData={ongoingProjectData} />
       </Stack>
     </>
   );

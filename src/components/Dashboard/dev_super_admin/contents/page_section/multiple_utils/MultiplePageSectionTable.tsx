@@ -29,7 +29,7 @@ import {
   user_status_options,
 } from "@/constants/options";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 import { useRouter } from "next/navigation";
 

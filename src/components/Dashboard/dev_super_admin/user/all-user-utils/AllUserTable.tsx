@@ -25,7 +25,7 @@ import {
   dev_super_admin_user_role_options,
   user_status_options,
 } from "@/constants/options";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { user_status } from "@/constants";
 
 type TQueryObj = {

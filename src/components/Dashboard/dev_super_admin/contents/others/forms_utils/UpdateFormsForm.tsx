@@ -20,7 +20,7 @@ import {
   useAuthorityOptions,
 } from "@/hooks/content/useAuthorityOptions";
 import { formsAndTemplateTypeValue } from "@/constants/values";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { customTimeOut } from "@/utils/customTimeOut";

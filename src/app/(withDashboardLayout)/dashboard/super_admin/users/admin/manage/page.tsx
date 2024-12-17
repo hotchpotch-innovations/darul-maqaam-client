@@ -14,7 +14,7 @@ import React from "react";
 import Image from "next/image";
 import { useDepartmentOptions } from "@/hooks/useDepartmentOptions";
 import { useDesignationOptions } from "@/hooks/useDesignationOptions";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import Link from "next/link";
 import {
   useDeleteAdminMutation,

@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { useDebounced } from "@/redux/hooks";
 import React from "react";
 import Image from "next/image";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import Link from "next/link";
 import {
   useDeleteClientMutation,

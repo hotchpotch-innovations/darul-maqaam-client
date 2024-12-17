@@ -3,7 +3,7 @@
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import {
   Box,
   Button,
@@ -18,7 +18,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
 import { TResponseDataObj } from "@/types";
-import CMModal from "@/components/ui/CMModal";
+import CMModal from "@/components/UI/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";

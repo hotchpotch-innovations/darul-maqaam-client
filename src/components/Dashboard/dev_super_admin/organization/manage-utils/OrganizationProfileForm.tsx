@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import CMForm from "@/components/forms/CMForm";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { TAddress, TSocialLinkPayload } from "@/types";
 import CMInput from "@/components/forms/CMInput";
 import {

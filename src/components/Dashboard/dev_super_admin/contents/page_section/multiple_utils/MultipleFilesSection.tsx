@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid2";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
 
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import BannerImage from "@/components/Dashboard/common/bannerImage/BannerImage";
 import VideoSection from "@/components/Dashboard/common/videoSection/VideoSection";
 import MultipleImage from "@/components/Dashboard/common/multipleImage/MultipleImage";

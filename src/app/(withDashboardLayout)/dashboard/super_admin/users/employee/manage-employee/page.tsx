@@ -5,7 +5,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { Box, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";

@@ -26,7 +26,7 @@ import Grid from "@mui/material/Grid2";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { isPublished_options, user_status_options } from "@/constants/options";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { useRouter } from "next/navigation";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 import { user_status } from "@/constants";

@@ -1,7 +1,7 @@
 "use client";
 
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { Box, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -14,7 +14,7 @@ import {
   useDeleteCountryMutation,
   useGetAllCountryQuery,
 } from "@/redux/api/user/settings/countryApi";
-import ConutryModla from "@/components/ui/modals/ConutryModla";
+import ConutryModla from "@/components/UI/modals/ConutryModla";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {

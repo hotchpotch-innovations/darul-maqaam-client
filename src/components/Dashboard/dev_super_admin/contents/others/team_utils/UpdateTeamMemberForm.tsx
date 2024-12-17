@@ -25,7 +25,7 @@ import CMInput from "@/components/forms/CMInput";
 import CMTextarea from "@/components/forms/CMTextarea";
 import { z } from "zod";
 import { social_linksValidationSchema } from "@/constants/zodvalidation";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 
 const validationSchema = z.object({
   departmentId: z.string().nonempty({ message: "Department is required" }),

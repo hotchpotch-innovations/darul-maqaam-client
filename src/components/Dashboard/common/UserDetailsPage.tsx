@@ -13,7 +13,7 @@ import {
   Stack,
   Grid2,
 } from "@mui/material";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 
 type TInfoRowProps = {
   label: string;

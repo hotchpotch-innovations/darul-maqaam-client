@@ -24,7 +24,7 @@ import { FieldValues } from "react-hook-form";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 
 import {
   useChangeProfileImageMutation,

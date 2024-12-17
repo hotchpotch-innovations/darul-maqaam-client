@@ -1,7 +1,7 @@
 "use client";
 
 import BannerImage from "@/components/Dashboard/common/bannerImage/BannerImage";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import {
   useChangeWebpageOGImageMutation,
   useGetSingleWebpageQuery,

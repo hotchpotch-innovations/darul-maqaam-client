@@ -4,10 +4,11 @@ import { useCategoryOptions } from "@/hooks/content/useCategoryOptions";
 import {
   useChangeMPSItemStatusMutation,
   useChangePublishedMPSItemStatusMutation,
+  useDeleteMPSItemMutation,
   useGetAllPrivateMPSQuery,
 } from "@/redux/api/content/multiplePageSectionApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -24,6 +25,7 @@ import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/UI/LoadingBar";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 import { useRouter } from "next/navigation";
+import { user_status } from "@/constants";
 
 type TMPSQueryObj = {
   status?: string;
@@ -104,7 +106,7 @@ const MultiplePageSectionTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 0.5 },
     {
       field: "profile_image",
       headerName: "IMAGE",
@@ -123,36 +125,18 @@ const MultiplePageSectionTable = () => {
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 1.5,
+    },
+    {
+      field: "category",
+      headerName: "Category",
+      flex: 1.5,
+      renderCell: (params) => <Box>{params?.row?.common_category?.title}</Box>,
     },
     {
       field: "type",
       headerName: "TYPE",
       flex: 1,
-    },
-    {
-      field: "category",
-      headerName: "Category",
-      flex: 1,
-      renderCell: (params) => <Box>{params?.row?.common_category?.title}</Box>,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      flex: 1,
-      renderCell: (params) => (
-        <Box>{params?.row?.price > 0 ? params?.row?.price : "N/A"}</Box>
-      ),
-    },
-    {
-      field: "discount_rate",
-      headerName: "Discount Rate",
-      flex: 1,
-      renderCell: (params) => (
-        <Box>
-          {params?.row?.discount_rate > 0 ? params?.row?.discount_rate : "N/A"}
-        </Box>
-      ),
     },
     {
       field: "isPublished",
@@ -184,9 +168,10 @@ const MultiplePageSectionTable = () => {
       ),
     },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
+      field: "status",
+      headerName: "STATUS",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -198,27 +183,28 @@ const MultiplePageSectionTable = () => {
             gap: 2,
           }}
         >
-          <Box
+          <Typography
             sx={{
               alignItems: "left",
               fontSize: "12px",
-              ...(!row.isDeleted
+              ...(row.status === user_status?.activate
                 ? { color: "greenyellow" }
                 : { color: "orangered" }),
             }}
           >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
+            {row?.status}
+          </Typography>
         </Box>
       ),
     },
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       renderCell: ({ row }) => (
         <MoreActionsMenu
           onEdit={() => router.push(`${path}/${row?.id}`)}
+          onDelete={() => handleDelete(row?.id)}
           onStatusChange={() => statusHandler(row?.id)}
           onPublishChange={() => handlePublishedStatus(row?.id)}
           isDeleted={row.isDeleted}
@@ -230,8 +216,22 @@ const MultiplePageSectionTable = () => {
   ];
 
   // Handle user status change
+  const [deleteMPSItem] = useDeleteMPSItemMutation();
   const [changeStatus] = useChangeMPSItemStatusMutation();
   const [changePublishedStatus] = useChangePublishedMPSItemStatusMutation();
+
+  const handleDelete = async (id: string) => {
+    console.log({ id });
+    const toastId = toast.loading("Please wait...");
+    try {
+      const res = await deleteMPSItem(id);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message, { id: toastId, duration: 5000 });
+      }
+    } catch (err: any) {
+      toast.error(err?.message);
+    }
+  };
 
   const statusHandler = async (id: string) => {
     console.log({ id });

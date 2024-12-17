@@ -96,23 +96,9 @@ const MenuTable = () => {
       disableColumnMenu: true,
     },
     {
-      field: "id",
-      headerName: "Id",
-      flex: 1,
-      sortable: false,
-    },
-    {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
-      sortable: false,
-    },
-
-    {
-      field: "identifier",
-      headerName: "IDENTIFIER",
-      flex: 1,
-      disableColumnMenu: true,
+      flex: 2,
       sortable: false,
     },
     {
@@ -121,13 +107,6 @@ const MenuTable = () => {
       flex: 1,
       disableColumnMenu: true,
       valueGetter: (params: any) => (params ? "Yes" : "No"),
-    },
-    {
-      field: "slug",
-      headerName: "HAS SUBMENU",
-      flex: 1,
-      disableColumnMenu: true,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
     },
     {
       field: "status",
@@ -162,7 +141,7 @@ const MenuTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (
@@ -225,26 +204,6 @@ const MenuTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Main Row */}
       <Grid container spacing={2} alignItems="center">
-        {/* Create Button */}
-        <Grid
-          size={{ xs: 12, md: 3 }}
-          textAlign={{ xs: "center", sm: "left" }}
-          mt={4}
-        >
-          <Button
-            component={Link}
-            href={path_create_country}
-            sx={{
-              width: {
-                xs: "100%",
-                md: "80%",
-              },
-            }}
-          >
-            Create
-          </Button>
-        </Grid>
-
         <Grid container size={{ xs: 12, md: 9 }} sx={{ alignItems: "center" }}>
           {/* Filter Field */}
           <Grid size={{ xs: 12, md: 6 }}>

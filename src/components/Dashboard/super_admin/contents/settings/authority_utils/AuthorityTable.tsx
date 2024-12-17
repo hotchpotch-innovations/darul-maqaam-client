@@ -1,5 +1,4 @@
 "use client";
-
 import { user_status } from "@/constants";
 import {
   useChangeAuthorityStatusMutation,
@@ -97,13 +96,7 @@ const AuthorityTable = () => {
     {
       field: "title",
       headerName: "Title",
-      flex: 1,
-    },
-
-    {
-      field: "identifier",
-      headerName: "Identifier",
-      flex: 1,
+      flex: 3,
     },
     {
       field: "status",
@@ -135,38 +128,9 @@ const AuthorityTable = () => {
       ),
     },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      flex: 1,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Box
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
-        </Box>
-      ),
-    },
-    {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (
@@ -248,27 +212,6 @@ const AuthorityTable = () => {
       {/* Main Row */}
       <Grid container spacing={2} alignItems="center">
         <Grid container size={{ xs: 12, md: 9 }} sx={{ alignItems: "center" }}>
-          {/* create Field */}
-
-          <Grid
-            size={{ xs: 12, md: 3 }}
-            textAlign={{ xs: "center", sm: "left" }}
-            mt={4}
-          >
-            <Button
-              component={Link}
-              href={path_create_country}
-              sx={{
-                width: {
-                  xs: "100%",
-                  md: "80%",
-                },
-              }}
-            >
-              Create
-            </Button>
-          </Grid>
-
           {/* Search Field  */}
           <Grid size={{ xs: 12, md: 6 }}>
             <SearchFiled setSearchText={setSearchTerm} />
@@ -319,15 +262,11 @@ const AuthorityTable = () => {
             onSubmit={handleUpdate}
             defaultValues={{
               title: item?.title,
-              identifier: item?.identifier,
             }}
           >
             <Grid container spacing={3}>
               <Grid size={12}>
                 <CMInput name="title" label="Title" fullWidth />
-              </Grid>
-              <Grid size={12}>
-                <CMInput name="identifier" label="Identifier" fullWidth />
               </Grid>
             </Grid>
             <Box

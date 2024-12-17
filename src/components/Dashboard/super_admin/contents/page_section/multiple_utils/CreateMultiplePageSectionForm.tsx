@@ -23,8 +23,8 @@ type TMultiplePageSectionPayload = {
   type?: string;
   categoryId?: string;
   title?: string;
-  price?: number;
-  discount_rate?: number;
+  // price?: number;
+  // discount_rate?: number;
   yt_video_url?: URL;
   cover_image?: any;
   files?: any;
@@ -41,8 +41,8 @@ const CreateMultiplePageSectionForm = () => {
   const [type, setType] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [title, setTitle] = useState();
-  const [price, setPrice] = useState("");
-  const [discount_rate, setDiscountRate] = useState("");
+  // const [price, setPrice] = useState("");
+  // const [discount_rate, setDiscountRate] = useState("");
   const [yt_video_url, setYtVideoUrl] = useState();
   const [cover_image, setCoverImage] = useState(null);
   const [files, setFiles] = useState([]);
@@ -78,12 +78,12 @@ const CreateMultiplePageSectionForm = () => {
       data["type"] = type;
       data["categoryId"] = categoryId;
       data["title"] = title;
-      if (!!price) {
-        data["price"] = parseFloat(price);
-      }
-      if (!!discount_rate) {
-        data["discount_rate"] = parseFloat(discount_rate);
-      }
+      // if (!!price) {
+      //   data["price"] = parseFloat(price);
+      // }
+      // if (!!discount_rate) {
+      //   data["discount_rate"] = parseFloat(discount_rate);
+      // }
       if (!!yt_video_url) {
         data["yt_video_url"] = yt_video_url;
       }
@@ -186,7 +186,7 @@ const CreateMultiplePageSectionForm = () => {
             }}
             p={4}
           >
-            <Grid size={12}>
+            {/* <Grid size={12}>
               <CMStateInput
                 name="price"
                 label="Price"
@@ -203,7 +203,7 @@ const CreateMultiplePageSectionForm = () => {
                 type="number"
                 fullWidth={true}
               />
-            </Grid>
+            </Grid> */}
             <Grid size={12}>
               <CMStateInput
                 name="yt_video_url"

@@ -102,11 +102,11 @@ const FormsTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (
         <Box
           component={Link}
@@ -125,7 +125,7 @@ const FormsTable = () => {
     {
       field: "description",
       headerName: "DESCRIPTION",
-      flex: 1.5,
+      flex: 2,
       renderCell: (params: Record<string, any>) => {
         return <Box>{params?.row?.description}</Box>;
       },
@@ -133,7 +133,7 @@ const FormsTable = () => {
     {
       field: "category",
       headerName: "Category",
-      flex: 1.5,
+      flex: 1,
       renderCell: (params: Record<string, any>) => {
         return <Box>{params?.row?.category?.title}</Box>;
       },
@@ -141,7 +141,7 @@ const FormsTable = () => {
     {
       field: "authority",
       headerName: "Authority",
-      flex: 1.5,
+      flex: 1,
       renderCell: (params: Record<string, any>) => {
         return <Box>{params?.row?.authority?.title}</Box>;
       },
@@ -176,38 +176,9 @@ const FormsTable = () => {
       ),
     },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      flex: 1,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Box
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
-        </Box>
-      ),
-    },
-    {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

@@ -80,7 +80,7 @@ const ClientTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "profile_image",
       headerName: "IMAGE",
@@ -142,40 +142,6 @@ const ClientTable = () => {
     },
     { field: "gender", headerName: "GENDER", flex: 0.8 },
     { field: "phone", headerName: "PHONE", flex: 1 },
-    // {
-    //   field: "isDeleted",
-    //   headerName: "is_Deleted",
-    //   flex: 0.5,
-    // },
-    {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      flex: 1,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Typography
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Typography>
-        </Box>
-      ),
-    },
     {
       field: "Action",
       headerName: "ACTIONS",

@@ -83,7 +83,7 @@ const EmployeeTable = () => {
       field: "index",
       headerName: "SERIAL",
       disableColumnMenu: true,
-      width: 100,
+      width: 80,
     },
     {
       field: "profile_image",
@@ -143,43 +143,24 @@ const EmployeeTable = () => {
     },
     { field: "email", headerName: "EMAIL", flex: 1.5, sortable: false },
     {
+      field: "department",
+      headerName: "DEPARTMENT",
+      flex: 1,
+
+      renderCell: (params) => <Box>{params?.row?.department?.title}</Box>,
+    },
+    {
+      field: "designation",
+      headerName: "DESIGNATION",
+      flex: 1,
+      renderCell: (params) => <Box>{params?.row?.designation?.title}</Box>,
+    },
+    {
       field: "phone",
       headerName: "PHONE",
       flex: 1,
       disableColumnMenu: true,
       sortable: false,
-    },
-
-    {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      disableColumnMenu: true,
-      sortable: false,
-      flex: 1,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Typography
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Typography>
-        </Box>
-      ),
     },
     {
       field: "Action",

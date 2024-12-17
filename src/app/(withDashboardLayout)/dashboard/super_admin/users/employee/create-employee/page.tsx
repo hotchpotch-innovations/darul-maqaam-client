@@ -1,8 +1,17 @@
-import CreateEmployeeForm from "@/components/Dashboard/dev_super_admin/user/employee-utils/CreateEmployeeForm";
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
+import dynamic from "next/dynamic";
 
-const page = () => {
+const CreateEmployeePage = () => {
+  const CreateEmployeeForm = dynamic(
+    () =>
+      import(
+        "@/components/Dashboard/super_admin/user/employee-utils/CreateEmployeeForm"
+      ),
+    {
+      ssr: false,
+    }
+  );
   return (
     <Box>
       <TitleDashboard title="Create Employee" />
@@ -11,4 +20,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreateEmployeePage;

@@ -1,7 +1,7 @@
 "use client";
 
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
@@ -14,7 +14,7 @@ import {
   useGetAllPrivateDepartmentQuery,
   useUpdateDepartmentMutation,
 } from "@/redux/api/user/settings/departmentApi";
-import CMModal from "@/components/ui/CMModal";
+import CMModal from "@/components/UI/CMModal";
 import CMInput from "@/components/forms/CMInput";
 import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";

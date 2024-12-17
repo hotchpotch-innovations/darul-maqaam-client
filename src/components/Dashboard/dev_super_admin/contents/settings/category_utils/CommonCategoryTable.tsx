@@ -26,8 +26,8 @@ import {
   user_status_options,
 } from "@/constants/options";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import Loading from "@/components/ui/LoadingBar";
-import CMModal from "@/components/ui/CMModal";
+import Loading from "@/components/UI/LoadingBar";
+import CMModal from "@/components/UI/CMModal";
 import CMForm from "@/components/forms/CMForm";
 import CMSelect from "@/components/forms/CMSelect";
 import CMInput from "@/components/forms/CMInput";

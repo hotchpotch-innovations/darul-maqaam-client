@@ -275,115 +275,201 @@ export const drawerItems = (role: TUserRole): IDrawerItems[] => {
       roleMenus.push(
         {
           title: "Dashboard",
-          path: `${role}`,
+          path: `/dashboard/${role}`,
+          management: "no-management",
           icon: DashboardIcon,
         },
+        // user management
         {
           title: "User Management",
           is_parent: true,
-        },
-        {
-          title: "All Users",
-          management: "users",
-          path: `${role}/${users}/all-users`,
-          icon: GroupsIcon,
-        },
-        {
-          title: "Admin",
-          icon: AdminPanelSettingsIcon,
-          child: [
-            {
-              title: "Create Admin",
-              parentPath: `dashboard/${role}/users/admin`,
-              path: "create-admin",
-            },
-            {
-              title: "Manage",
-              parentPath: `dashboard/${role}/users/admin`,
-              path: "manage",
-            },
-          ],
-        },
-        {
-          title: "Employee",
+          management: users,
           icon: GroupIcon,
+          parent_Id: "CM001",
           child: [
             {
-              title: "Create Employee",
-              parentPath: `dashboard/${role}/users/employee`,
-              path: "create-employee",
+              title: "All Users",
+              management: users,
+              path: `/dashboard/${role}/${users}/all-users`,
+              // path: `all-users`,
+              icon: GroupsIcon,
+              identifier: "/all-users",
+              parent_Id: "CM001",
             },
+            // user > admin
             {
-              title: "Manage",
-              parentPath: `dashboard/${role}/users/employee`,
-              path: "manage-employee",
-            },
-          ],
-        },
-        {
-          title: "Client",
-          path: `${role}/users/client`,
-          icon: HowToRegIcon,
-        },
-        {
-          title: "Settings",
-          icon: SettingsIcon,
-          child: [
-            {
-              title: "Department",
-              parentPath: `dashboard/${role}/users/settings`,
-              path: "department",
-            },
-            {
-              title: "Designation",
-              parentPath: `dashboard/${role}/users/settings`,
-              path: "designation",
-            },
-          ],
-        },
-        {
-          title: "Contant Management",
-          is_parent: true,
-        },
-        {
-          title: "Contant Settings",
-          icon: SettingsIcon,
-          child: [
-            {
-              title: "Address",
-              icon: DashboardIcon,
+              title: "Admin",
+              icon: AdminPanelSettingsIcon,
+              state: "user_admin",
+              identifier: "/admin",
               child: [
                 {
-                  title: "Country",
-                  parentPath: `dashboard/${role}/users/settings/address`,
-                  path: "country",
+                  title: "Create Admin",
+                  path: `/dashboard/${role}/${users}/admin/create-admin`,
+                  identifier: "/create-admin",
                 },
                 {
-                  title: "Divisition",
-                  parentPath: `dashboard/${role}/users/settings/address`,
-                  path: "division",
-                },
-                {
-                  title: "District",
-                  parentPath: `dashboard/${role}/users/settings/address`,
-                  path: "district",
+                  title: "Manage",
+                  path: `/dashboard/${role}/${users}/admin/manage`,
+                  identifier: "/admin/manage",
                 },
               ],
             },
+            // user > employee
             {
-              title: "department",
-              parentPath: `dashboard/${role}/users/settings`,
-              path: "Department",
+              title: "Employee",
+              icon: GroupIcon,
+              state: "user_employee",
+              identifier: "/employee",
+              child: [
+                {
+                  title: "Create Employee",
+                  path: `/dashboard/${role}/${users}/employee/create-employee`,
+                  identifier: "/create-employee",
+                },
+                {
+                  title: "Manage",
+                  path: `/dashboard/${role}/${users}/employee/manage`,
+                  identifier: "/employee/manage",
+                },
+              ],
+            },
+            // user > client
+            {
+              title: "Client",
+              path: `/dashboard/${role}/${users}/client`,
+              identifier: "/client",
+              icon: HowToRegIcon,
+            },
+          ],
+        },
+
+        // content management
+        {
+          title: "Content Management",
+          is_parent: true,
+          management: content,
+          icon: MenuBookIcon,
+          parent_Id: "CM002",
+          child: [
+            {
+              title: "Menu",
+              path: `/dashboard/${role}/${content}/menu`,
+              identifier: "/menu",
+              icon: MenuIcon,
             },
             {
-              title: "Designation",
-              parentPath: `dashboard/${role}/users/settings`,
-              path: "designation",
+              title: "Submenu",
+              path: `/dashboard/${role}/${content}/submenu`,
+              icon: MenuOpenIcon,
+              identifier: "/submenu",
             },
             {
-              title: "Clinet Type",
-              parentPath: `dashboard/${role}/users/settings`,
-              path: "client-type",
+              title: "Webpage",
+              path: `/dashboard/${role}/${content}/web-page`,
+              icon: WebIcon,
+              identifier: "/web-page",
+            },
+            {
+              title: "W.P Section (single)",
+              path: `/dashboard/${role}/${content}/page-section/single`,
+              icon: WebAssetIcon,
+              identifier: "/page-section/single",
+            },
+            {
+              title: "W.P Section (multiple)",
+              path: `/dashboard/${role}/${content}/page-section/multiple`,
+              icon: WebAssetIcon,
+              identifier: "/page-section/multiple",
+            },
+            {
+              title: "Articles",
+              path: `/dashboard/${role}/${content}/articles`,
+              icon: RateReviewIcon,
+              identifier: "/articles",
+            },
+            // content > others
+            {
+              title: "Others",
+              icon: DevicesOtherIcon,
+              state: "content_others",
+              identifier: `/${content}/others`,
+              child: [
+                {
+                  title: "Team",
+                  path: `/dashboard/${role}/${content}/others/team`,
+                  identifier: "/team",
+                },
+                {
+                  title: "FAQ",
+                  path: `/dashboard/${role}/${content}/others/faq`,
+                  identifier: "/faq",
+                },
+                {
+                  title: "Forms & Templates",
+                  path: `/dashboard/${role}/${content}/others/forms`,
+                  identifier: "/forms",
+                },
+              ],
+            },
+            // content > settings
+            {
+              title: "Settings",
+              icon: SettingsIcon,
+              state: "content_settings",
+              identifier: `/${content}/settings`,
+              child: [
+                // content > settings > category
+                {
+                  title: "Category",
+                  path: `/dashboard/${role}/${content}/settings/category`,
+                  identifier: "/category",
+                },
+                {
+                  title: "Authority",
+                  path: `/dashboard/${role}/${content}/settings/authority`,
+                  identifier: "/authority",
+                },
+              ],
+            },
+          ],
+        },
+        // Org management
+        {
+          title: "Org. Management",
+          is_parent: true,
+          management: organization,
+          icon: CorporateFareIcon,
+          parent_Id: "CM003",
+          child: [
+            // Org > settings
+            {
+              title: "Settings",
+              icon: SettingsIcon,
+              state: "org_settings",
+              identifier: `/${organization}/settings`,
+              child: [
+                {
+                  title: "Department",
+                  path: `/dashboard/${role}/${organization}/settings/department`,
+                  identifier: "/department",
+                },
+                {
+                  title: "Designation",
+                  path: `/dashboard/${role}/${organization}/settings/designation`,
+                  identifier: "/designation",
+                },
+                {
+                  title: "Branch",
+                  path: `/dashboard/${role}/${organization}/settings/branch`,
+                  identifier: "/branch",
+                },
+                {
+                  title: "Manage",
+                  path: `/dashboard/${role}/${organization}/settings/manage`,
+                  identifier: `/manage`,
+                },
+              ],
             },
           ],
         }

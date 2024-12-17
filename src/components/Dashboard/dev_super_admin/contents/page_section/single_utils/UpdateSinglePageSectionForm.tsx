@@ -16,7 +16,7 @@ import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTex
 import Editor from "@/components/forms/editors/Editor";
 import SinglePageImages from "./SinglePageImages";
 import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 
 type TSPSPayload = {
   section_name: string;

@@ -20,7 +20,7 @@ import Grid from "@mui/material/Grid2";
 import CMInput from "@/components/forms/CMInput";
 import CMTextarea from "@/components/forms/CMTextarea";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 
 type TProps = {
   id: string;

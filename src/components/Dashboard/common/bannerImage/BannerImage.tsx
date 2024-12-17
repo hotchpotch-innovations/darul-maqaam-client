@@ -2,7 +2,7 @@
 import { Box, Button, IconButton } from "@mui/material";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import React from "react";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import Image from "next/image";
 
 type TBannerImage = {

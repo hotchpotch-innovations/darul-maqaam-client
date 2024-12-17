@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid2";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
 
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 
 import {
   useArticleAddFilesMutation,

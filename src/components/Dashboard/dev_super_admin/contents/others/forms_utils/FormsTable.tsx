@@ -28,7 +28,7 @@ import Grid from "@mui/material/Grid2";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { user_status_options } from "@/constants/options";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { toast } from "sonner";
 import { user_status } from "@/constants";
 import { useRouter } from "next/navigation";

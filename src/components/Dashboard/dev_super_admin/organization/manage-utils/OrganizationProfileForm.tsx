@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
 
@@ -12,6 +12,8 @@ import {
   Card,
   CardContent,
   Stack,
+  Tab,
+  Tabs,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
@@ -19,10 +21,6 @@ import CMForm from "@/components/forms/CMForm";
 import Loading from "@/components/UI/LoadingBar";
 import { TAddress, TSocialLinkPayload } from "@/types";
 import CMInput from "@/components/forms/CMInput";
-import {
-  a11yProps,
-  CustomTabPanel,
-} from "@/components/Dashboard/common/profile/ProfileTab";
 import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
 
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -40,6 +38,7 @@ import {
 } from "@/redux/api/organization/organizationApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import OrganizationLogoField, { TOrgData } from "./OrganizationLogoField";
+import { a11yProps, OrganizationTabPanel } from "./OrganizationTabPanel";
 
 export type TLogoPayload = {
   previous_primary_key?: string;
@@ -51,6 +50,9 @@ export type TLogoPayload = {
 const OrganizationProfileForm = () => {
   // Select country options
   const [presentCountryId, setPresentCountryId] = useState(null);
+
+  // Tab change
+  const [value, setValue] = useState(0);
 
   // Fetching user data from the API
   const { data, isLoading } = useGetFirstOrganizationQuery("");
@@ -64,6 +66,11 @@ const OrganizationProfileForm = () => {
   // API hook to update profile picture
   const [changeLogo, { isLoading: isLogoUpdateLoading }] =
     useChangeOrganizationLogoMutation();
+
+  // Handle tab changes
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   // Function to handle for update user profile picture
   const handleImageUpload = async (data: TLogoPayload) => {
@@ -230,7 +237,7 @@ const OrganizationProfileForm = () => {
                     </Typography>
                   </CardContent>
                 </Card>
-
+                {/* Social */}
                 <Box mt={4} mb={2}>
                   <Typography mb={2} variant="h6">
                     Social
@@ -357,130 +364,147 @@ const OrganizationProfileForm = () => {
               }}
             >
               <Box sx={{ width: "100%" }}>
-                <Stack spacing={2}>
-                  {/* Business Name */}
-                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                    <CMInput
-                      name="name"
-                      fullWidth={true}
-                      label="Name"
-                      size="small"
-                    />
-                  </Stack>
-                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                    <CMInput
-                      name="tag_line"
-                      fullWidth={true}
-                      label="Tag Line"
-                      size="small"
-                    />
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="basic tabs example"
+                  >
+                    <Tab label="Business Details" {...a11yProps(0)} />
+                    <Tab label="Footer Section" {...a11yProps(1)} />
+                  </Tabs>
+                </Box>
+
+                <OrganizationTabPanel value={value} index={0}>
+                  <Stack spacing={2}>
+                    {/* Business Name */}
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="name"
+                        fullWidth={true}
+                        label="Name"
+                        size="small"
+                      />
+                    </Stack>
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="tag_line"
+                        fullWidth={true}
+                        label="Tag Line"
+                        size="small"
+                      />
+                    </Stack>
+
+                    {/* Business Email & Web Mail */}
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="email"
+                        fullWidth={true}
+                        label="Email"
+                        size="small"
+                      />
+                      <CMInput
+                        name="web_mail"
+                        fullWidth={true}
+                        label="Web Mail"
+                        size="small"
+                      />
+                    </Stack>
+
+                    {/* Business Phone & Secondary Phone */}
+                    <Stack spacing={2} direction="row">
+                      <CMInput
+                        name="primary_phone"
+                        fullWidth={true}
+                        label="Primary Phone"
+                        size="small"
+                      />
+                      <CMInput
+                        name="secondary_phone"
+                        fullWidth={true}
+                        label="Secondary Phone"
+                        size="small"
+                      />
+                    </Stack>
+
+                    {/* Busines Telephone & Secondary Telephone */}
+                    <Stack spacing={2} direction="row">
+                      <CMInput
+                        name="primary_tel"
+                        fullWidth={true}
+                        label="Primary Telephone"
+                        size="small"
+                      />
+                      <CMInput
+                        name="secondary_tel"
+                        fullWidth={true}
+                        label="Secondary Telephone"
+                        size="small"
+                      />
+                    </Stack>
+
+                    {/* Business Location*/}
+                    <Typography pt={2} variant="body1" fontWeight="500">
+                      Location:
+                    </Typography>
+                    {/* Address Line & State */}
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="location.address_line"
+                        fullWidth={true}
+                        label="Address Line"
+                        size="small"
+                        required={!!presentCountryId}
+                      />
+
+                      <CMInput
+                        name="location.state"
+                        fullWidth={true}
+                        label="State"
+                        size="small"
+                        required={!!presentCountryId}
+                      />
+                    </Stack>
+
+                    {/* Country & City */}
+                    <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
+                      <CMInput
+                        name="location.city"
+                        fullWidth={true}
+                        label="City"
+                        size="small"
+                        required={!!presentCountryId}
+                      />
+                      <CMSelectWithWatch
+                        name="location.countryId"
+                        label={"Country"}
+                        options={country_options}
+                        setState={setPresentCountryId}
+                      />
+                    </Stack>
                   </Stack>
 
-                  {/* Business Email & Web Mail */}
-                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                    <CMInput
-                      name="email"
-                      fullWidth={true}
-                      label="Email"
-                      size="small"
-                    />
-                    <CMInput
-                      name="web_mail"
-                      fullWidth={true}
-                      label="Web Mail"
-                      size="small"
-                    />
-                  </Stack>
-
-                  {/* Business Phone & Secondary Phone */}
-                  <Stack spacing={2} direction="row">
-                    <CMInput
-                      name="primary_phone"
-                      fullWidth={true}
-                      label="Primary Phone"
-                      size="small"
-                    />
-                    <CMInput
-                      name="secondary_phone"
-                      fullWidth={true}
-                      label="Secondary Phone"
-                      size="small"
-                    />
-                  </Stack>
-
-                  {/* Busines Telephone & Secondary Telephone */}
-                  <Stack spacing={2} direction="row">
-                    <CMInput
-                      name="primary_tel"
-                      fullWidth={true}
-                      label="Primary Telephone"
-                      size="small"
-                    />
-                    <CMInput
-                      name="secondary_tel"
-                      fullWidth={true}
-                      label="Secondary Telephone"
-                      size="small"
-                    />
-                  </Stack>
-
-                  {/* Business Location*/}
-                  <Typography pt={2} variant="body1" fontWeight="500">
-                    Location:
-                  </Typography>
-                  {/* Address Line & State */}
-                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                    <CMInput
-                      name="location.address_line"
-                      fullWidth={true}
-                      label="Address Line"
-                      size="small"
-                      required={!!presentCountryId}
-                    />
-
-                    <CMInput
-                      name="location.state"
-                      fullWidth={true}
-                      label="State"
-                      size="small"
-                      required={!!presentCountryId}
-                    />
-                  </Stack>
-
-                  {/* Country & City */}
-                  <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
-                    <CMInput
-                      name="location.city"
-                      fullWidth={true}
-                      label="City"
-                      size="small"
-                      required={!!presentCountryId}
-                    />
-                    <CMSelectWithWatch
-                      name="location.countryId"
-                      label={"Country"}
-                      options={country_options}
-                      setState={setPresentCountryId}
-                    />
-                  </Stack>
-                </Stack>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    disabled={isUpdateLoading}
+                  <Box
                     sx={{
-                      mt: "30px",
+                      display: "flex",
+                      justifyContent: "flex-end",
                     }}
                   >
-                    Update
-                  </Button>
-                </Box>
+                    <Button
+                      type="submit"
+                      disabled={isUpdateLoading}
+                      sx={{
+                        mt: "30px",
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </Box>
+                </OrganizationTabPanel>
+
+                <OrganizationTabPanel value={value} index={1}>
+                  Footer Section
+                </OrganizationTabPanel>
               </Box>
             </Grid>
           </Grid>

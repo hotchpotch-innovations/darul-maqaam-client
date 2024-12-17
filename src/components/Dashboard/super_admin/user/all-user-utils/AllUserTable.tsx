@@ -47,19 +47,19 @@ const AllUserTable = () => {
     page: currentPage, // Sending current page as 1-based to the API
   };
 
-  if (debouncedTerm) {
+  if (!!debouncedTerm) {
     queryObj["searchTerm"] = debouncedTerm;
   }
 
-  if (accountType) {
+  if (!!accountType) {
     queryObj["account_type"] = accountType;
   }
 
-  if (userRole) {
+  if (!!userRole) {
     queryObj["role"] = userRole;
   }
 
-  if (userStatus) {
+  if (!!userStatus) {
     queryObj["status"] = userStatus;
   }
 

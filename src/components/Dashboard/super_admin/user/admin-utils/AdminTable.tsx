@@ -82,7 +82,7 @@ const AdminTable = () => {
       field: "index",
       headerName: "SERIAL",
       disableColumnMenu: true,
-      width: 100,
+      width: 80,
     },
     {
       field: "profile_image",
@@ -139,38 +139,13 @@ const AdminTable = () => {
     },
     { field: "email", headerName: "EMAIL", flex: 1.5 },
     { field: "role", headerName: "ROLE", flex: 1 },
-    { field: "phone", headerName: "PHONE", flex: 1 },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
+      field: "department",
+      headerName: "DEPARTMENT",
       flex: 1,
-      disableColumnMenu: true,
-      sortable: false,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Box
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
-        </Box>
-      ),
+      renderCell: (params) => <Box>{params?.row?.department?.title}</Box>,
     },
+    { field: "phone", headerName: "PHONE", flex: 1 },
     {
       field: "Action",
       headerName: "ACTIONS",

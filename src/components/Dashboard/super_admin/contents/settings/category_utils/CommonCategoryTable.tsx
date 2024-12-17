@@ -65,9 +65,6 @@ const CommonCategoryTable = () => {
   // modal close handler
   const handleClose = () => setOpen(false);
 
-  const path_create_country =
-    "/dashboard/super_admin/content/settings/category/create";
-
   // Debounced search term to avoid too many API requests
   const debouncedTerm: any = useDebounced({
     searchQuery: searchTerm,
@@ -116,15 +113,7 @@ const CommonCategoryTable = () => {
     {
       field: "title",
       headerName: "Title",
-      flex: 1,
-      sortable: false,
-    },
-
-    {
-      field: "identifier",
-      headerName: "Identifier",
-      flex: 1,
-      disableColumnMenu: true,
+      flex: 3,
       sortable: false,
     },
     {
@@ -164,45 +153,14 @@ const CommonCategoryTable = () => {
       ),
     },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      flex: 1,
-      disableColumnMenu: true,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Box
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
-        </Box>
-      ),
-    },
-    {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (
         <MoreActionsMenu
           onEdit={() => handleOpen(row)}
-          onDelete={() => handleDelete(row?.id)}
           onStatusChange={() => statusHandler(row.id)}
           isActive={row?.status === user_status?.activate}
           isDeleted={row?.isDeleted}
@@ -210,24 +168,6 @@ const CommonCategoryTable = () => {
       ),
     },
   ];
-
-  // Delete category
-
-  const [deleteCategory] = useDeleteCommonCategoryMutation();
-
-  const handleDelete = async (id: string) => {
-    const toastId = toast.loading("Please wait...");
-    try {
-      const res = await deleteCategory(id).unwrap();
-      if (res?.success) {
-        toast.success(res?.message, { id: toastId, duration: 3000 });
-      } else {
-        toast.error(res?.message, { id: toastId, duration: 5000 });
-      }
-    } catch (error: any) {
-      toast.error(error?.message, { id: toastId, duration: 5000 });
-    }
-  };
 
   const [changeStatus] = useChangeCommonCategoryStatusMutation();
 
@@ -277,27 +217,6 @@ const CommonCategoryTable = () => {
       {/* Main Row */}
       <Grid container spacing={2} alignItems="center">
         <Grid container size={{ xs: 12, md: 9 }} sx={{ alignItems: "center" }}>
-          {/* create Field */}
-
-          <Grid
-            size={{ xs: 12, md: 3 }}
-            textAlign={{ xs: "center", sm: "left" }}
-            mt={4}
-          >
-            <Button
-              component={Link}
-              href={path_create_country}
-              sx={{
-                width: {
-                  xs: "100%",
-                  md: "80%",
-                },
-              }}
-            >
-              Create
-            </Button>
-          </Grid>
-
           {/* Search Field  */}
           <Grid size={{ xs: 12, md: 6 }}>
             <SearchFiled setSearchText={setSearchTerm} />
@@ -358,7 +277,6 @@ const CommonCategoryTable = () => {
             defaultValues={{
               type: item?.type,
               title: item?.title,
-              identifier: item?.identifier,
             }}
           >
             <Grid container spacing={3}>
@@ -372,9 +290,6 @@ const CommonCategoryTable = () => {
               </Grid>
               <Grid size={12}>
                 <CMInput name="title" label="Title" fullWidth />
-              </Grid>
-              <Grid size={12}>
-                <CMInput name="identifier" label="Identifier" fullWidth />
               </Grid>
             </Grid>
             <Box

@@ -25,7 +25,6 @@ type TProps = {
 
 const validationSchema = z.object({
   title: z.string().nonempty("Webpage Title is required"),
-  slug: z.string().nonempty("Slug is required"),
   meta_title: z.string().nonempty("Meta Title is required"),
   og_author: z.string().nonempty("OG Author is required"),
   meta_description: z.string().optional(),
@@ -33,7 +32,6 @@ const validationSchema = z.object({
 });
 
 const UpdateWebpageForm = ({ slug }: TProps) => {
-  console.log(slug);
   const router = useRouter();
   const [id, setId] = useState();
 
@@ -44,8 +42,6 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
   useEffect(() => {
     setId(webpage_info?.id);
   }, [webpage_info]);
-
-  // console.log(webpage_info);
 
   const [updateWebpage] = useUpdateWebpageMutation();
 
@@ -74,7 +70,7 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
 
   const default_values = {
     title: webpage_info?.title,
-    slug: webpage_info?.slug,
+    // slug: webpage_info?.slug,
     meta_title: webpage_info?.meta_title || default_meta_info?.meta_title,
     og_author: webpage_info?.og_author || default_meta_info?.og_author,
     meta_description:
@@ -90,20 +86,12 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
       defaultValues={default_values}
     >
       <Box sx={{ p: 2 }}>
-        <Grid container spacing={6} alignItems="center">
+        <Grid container spacing={6}>
           <Grid container spacing={2} size={{ xs: 12, lg: 6 }}>
             <Grid size={12}>
               <CMInput
                 name="title"
                 label="Webpage Title"
-                size="medium"
-                fullWidth={true}
-              />
-            </Grid>
-            <Grid size={12}>
-              <CMInput
-                name="slug"
-                label="Webpage Slug"
                 size="medium"
                 fullWidth={true}
               />

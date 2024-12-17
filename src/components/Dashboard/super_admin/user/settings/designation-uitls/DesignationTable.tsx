@@ -51,7 +51,7 @@ const DesignationTable = () => {
   const handleClose = () => setOpen(false);
 
   const path_create_country =
-    "/dashboard/super_admin/users/settings/designation/create";
+    "/dashboard/super_admin/organization/settings/designation/create";
 
   const [currentPage, setCurrentPage] = useState(1);
   const [departmentId, setDepartmentId] = useState("");
@@ -102,7 +102,7 @@ const DesignationTable = () => {
       field: "title",
       headerName: "TITLE",
       sortable: false,
-      flex: 1,
+      flex: 2,
     },
 
     {
@@ -120,39 +120,9 @@ const DesignationTable = () => {
       sortable: false,
     },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      sortable: false,
-      flex: 1,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Box
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
-        </Box>
-      ),
-    },
-    {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

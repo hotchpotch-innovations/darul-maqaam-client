@@ -83,12 +83,12 @@ const BranchTable = () => {
     {
       field: "primary_phone",
       headerName: "PHONE",
-      flex: 1.5,
+      flex: 1,
     },
     {
       field: "primary_tel",
       headerName: "TELEPHONE",
-      flex: 1.5,
+      flex: 1,
     },
 
     {
@@ -121,38 +121,9 @@ const BranchTable = () => {
       ),
     },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      flex: 1,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Box
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
-        </Box>
-      ),
-    },
-    {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

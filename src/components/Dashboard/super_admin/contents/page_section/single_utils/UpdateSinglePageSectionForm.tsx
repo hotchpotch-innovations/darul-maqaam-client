@@ -18,7 +18,6 @@ import Loading from "@/components/UI/LoadingBar";
 
 type TSPSPayload = {
   section_name: string;
-  section_slug: string;
   section_title?: string;
   section_summary?: string;
   yt_video_url?: string;
@@ -32,7 +31,7 @@ type TProps = {
 const UpdateSinglePageSectionForm = ({ id }: TProps) => {
   const router = useRouter();
   const [section_name, setSectionName] = useState();
-  const [section_slug, setSectionSlug] = useState();
+  // const [section_slug, setSectionSlug] = useState();
   const [section_title, setSectionTitle] = useState("");
   const [section_summary, setSectionSummary] = useState("");
   const [yt_video_url, setYtVideoUrl] = useState("");
@@ -44,7 +43,7 @@ const UpdateSinglePageSectionForm = ({ id }: TProps) => {
   useEffect(() => {
     if (!!sps_data) {
       setSectionName(sps_data?.section_name);
-      setSectionSlug(sps_data?.section_slug);
+      // setSectionSlug(sps_data?.section_slug);
       setSectionTitle(sps_data?.section_title);
       setSectionSummary(sps_data?.section_summary);
       setYtVideoUrl(sps_data?.yt_video_url);
@@ -57,12 +56,11 @@ const UpdateSinglePageSectionForm = ({ id }: TProps) => {
   // create function handler
   const submitHandler = async () => {
     const toastId = toast.loading("Please wait ...");
-    if (!section_name || !section_slug) {
+    if (!section_name) {
       toast.error("Title is required!", { id: toastId, duration: 2000 });
     } else {
       const data: TSPSPayload = {
         section_name: section_name,
-        section_slug: section_slug,
       };
       if (section_title?.length > 0) {
         data["section_title"] = section_title;
@@ -129,15 +127,6 @@ const UpdateSinglePageSectionForm = ({ id }: TProps) => {
                 label="Section Name"
                 setState={setSectionName}
                 defaultValue={section_name}
-                fullWidth={true}
-              />
-            </Grid>
-            <Grid size={12}>
-              <CMStateInput
-                name="section_slug"
-                label="Section Slug"
-                setState={setSectionSlug}
-                defaultValue={section_slug}
                 fullWidth={true}
               />
             </Grid>

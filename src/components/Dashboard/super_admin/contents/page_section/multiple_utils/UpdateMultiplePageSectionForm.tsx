@@ -28,8 +28,8 @@ type TProps = {
 const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
   const router = useRouter();
   const [title, setTitle] = useState();
-  const [price, setPrice] = useState("");
-  const [discount_rate, setDiscountRate] = useState("");
+  // const [price, setPrice] = useState("");
+  // const [discount_rate, setDiscountRate] = useState("");
   const [yt_video_url, setYtVideoUrl] = useState();
   const [summary, setSummary] = useState("");
   // Get updated value from text editor
@@ -41,8 +41,8 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
   useEffect(() => {
     if (!!mps_data) {
       setTitle(mps_data?.title);
-      setPrice(mps_data?.price);
-      setDiscountRate(mps_data?.discount_rate);
+      // setPrice(mps_data?.price);
+      // setDiscountRate(mps_data?.discount_rate);
       setYtVideoUrl(mps_data?.yt_video_url);
       setSummary(mps_data?.summary);
       setEditorValue(mps_data?.contents);
@@ -60,12 +60,12 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
     } else {
       const data: TMultiplePageSectionPayload = {};
       data["title"] = title;
-      if (!!price) {
-        data["price"] = parseFloat(price);
-      }
-      if (!!discount_rate) {
-        data["discount_rate"] = parseFloat(discount_rate);
-      }
+      // if (!!price) {
+      //   data["price"] = parseFloat(price);
+      // }
+      // if (!!discount_rate) {
+      //   data["discount_rate"] = parseFloat(discount_rate);
+      // }
       if (!!yt_video_url) {
         data["yt_video_url"] = yt_video_url;
       }
@@ -126,7 +126,7 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
                 fullWidth={true}
               />
             </Grid>
-            <Grid size={12}>
+            {/* <Grid size={12}>
               <CMStateInput
                 name="price"
                 label="Price"
@@ -145,7 +145,7 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
                 defaultValue={discount_rate}
                 fullWidth={true}
               />
-            </Grid>
+            </Grid> */}
             <Grid size={12}>
               <CMStateInput
                 name="yt_video_url"

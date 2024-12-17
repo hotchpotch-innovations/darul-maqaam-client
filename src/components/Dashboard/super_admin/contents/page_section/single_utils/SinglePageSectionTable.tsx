@@ -134,13 +134,20 @@ const SinglePageSectionTable = () => {
       field: "section_name",
       headerName: "Section Name",
       sortable: false,
-      flex: 1,
+      flex: 1.5,
     },
     {
       field: "section_title",
       headerName: "Section Title",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
+    },
+    {
+      field: "webpage",
+      headerName: "Webpage",
+      flex: 1,
+      disableColumnMenu: true,
+      renderCell: (params) => <Box>{params?.row?.webpage?.title}</Box>,
     },
     {
       field: "menubar",
@@ -164,13 +171,7 @@ const SinglePageSectionTable = () => {
         </Box>
       ),
     },
-    {
-      field: "webpage",
-      headerName: "Webpage",
-      flex: 1,
-      disableColumnMenu: true,
-      renderCell: (params) => <Box>{params?.row?.webpage?.title}</Box>,
-    },
+
     {
       field: "status",
       headerName: "STATUS",
@@ -202,39 +203,9 @@ const SinglePageSectionTable = () => {
       ),
     },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      flex: 1,
-      disableColumnMenu: true,
-      valueGetter: (params: any) => (params === "" ? "No" : params),
-      renderCell: ({ row }) => (
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            gap: 2,
-          }}
-        >
-          <Box
-            sx={{
-              alignItems: "left",
-              fontSize: "12px",
-              ...(!row.isDeleted
-                ? { color: "greenyellow" }
-                : { color: "orangered" }),
-            }}
-          >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
-        </Box>
-      ),
-    },
-    {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (
@@ -274,21 +245,6 @@ const SinglePageSectionTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Top Row: Search and Create Button */}
       <Grid container spacing={2} alignItems="center">
-        <Grid size={4} textAlign={{ xs: "center", md: "left" }}>
-          <Button
-            component={Link}
-            href={"/dashboard/super_admin/content/page-section/single/create"}
-            sx={{
-              maxHeight: "40px",
-              width: {
-                xs: "100%",
-                md: "60%",
-              },
-            }}
-          >
-            Create
-          </Button>
-        </Grid>
         <Grid size={8}>
           <SearchFiled setSearchText={setSearchTerm} />
         </Grid>

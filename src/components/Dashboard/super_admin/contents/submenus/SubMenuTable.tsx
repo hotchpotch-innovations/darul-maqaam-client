@@ -106,7 +106,7 @@ const SubMenuTable = () => {
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 2,
       sortable: false,
     },
     {
@@ -115,14 +115,6 @@ const SubMenuTable = () => {
       flex: 1,
       sortable: false,
       renderCell: (params) => <Box>{params?.row?.menubar?.title}</Box>,
-    },
-
-    {
-      field: "identifier",
-      headerName: "IDENTIFIER",
-      flex: 1,
-      disableColumnMenu: true,
-      sortable: false,
     },
     {
       field: "has_children",
@@ -164,7 +156,7 @@ const SubMenuTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (
@@ -226,21 +218,6 @@ const SubMenuTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Top Row: Search and Create Button */}
       <Grid container spacing={2} alignItems="center">
-        <Grid size={{ xs: 12, lg: 4 }} textAlign={{ xs: "center", md: "left" }}>
-          <Button
-            component={Link}
-            href={"/dashboard/super_admin/content/submenu/create"}
-            sx={{
-              width: {
-                xs: "100%",
-                lg: "80%",
-              },
-            }}
-          >
-            Create
-          </Button>
-        </Grid>
-
         <Grid size={{ xs: 12, lg: 8 }}>
           <SearchFiled setSearchText={setSearchTerm} />
         </Grid>

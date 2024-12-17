@@ -4,15 +4,12 @@ import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/UI/LoadingBar";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import {
   article_types_options,
@@ -28,6 +25,7 @@ import {
 } from "@/redux/api/content/articleApi";
 import { useRouter } from "next/navigation";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
+import { user_status } from "@/constants";
 
 type TArticleQueryObj = {
   status?: string;
@@ -110,7 +108,7 @@ const ArticleTable = () => {
     {
       field: "index",
       headerName: "SERIAL",
-      width: 100,
+      width: 60,
       disableColumnMenu: true,
     },
     {
@@ -133,14 +131,8 @@ const ArticleTable = () => {
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
-    },
-    {
-      field: "type",
-      headerName: "TYPE",
-      flex: 1,
-      disableColumnMenu: true,
     },
     {
       field: "category",
@@ -148,6 +140,12 @@ const ArticleTable = () => {
       flex: 1,
       disableColumnMenu: true,
       renderCell: (params) => <Box>{params?.row?.common_category?.title}</Box>,
+    },
+    {
+      field: "type",
+      headerName: "TYPE",
+      flex: 1,
+      disableColumnMenu: true,
     },
     {
       field: "author",
@@ -196,10 +194,10 @@ const ArticleTable = () => {
       ),
     },
     {
-      field: "isDeleted",
-      headerName: "Is DELETED",
-      disableColumnMenu: true,
+      field: "status",
+      headerName: "STATUS",
       flex: 1,
+      disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box
@@ -211,24 +209,24 @@ const ArticleTable = () => {
             gap: 2,
           }}
         >
-          <Box
+          <Typography
             sx={{
               alignItems: "left",
               fontSize: "12px",
-              ...(!row.isDeleted
+              ...(row.status === user_status?.activate
                 ? { color: "greenyellow" }
                 : { color: "orangered" }),
             }}
           >
-            {row?.isDeleted ? "YES" : "NO"}
-          </Box>
+            {row?.status}
+          </Typography>
         </Box>
       ),
     },
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

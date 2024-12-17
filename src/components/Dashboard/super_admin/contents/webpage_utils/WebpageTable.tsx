@@ -124,7 +124,7 @@ const WebpageTable = () => {
     {
       field: "index",
       headerName: "SERIAL",
-      width: 60,
+      width: 80,
       disableColumnMenu: true,
     },
     {
@@ -147,7 +147,7 @@ const WebpageTable = () => {
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 2,
       sortable: false,
     },
     {
@@ -171,12 +171,6 @@ const WebpageTable = () => {
           {params?.row?.submenu?.title ? params?.row?.submenu?.title : "N/A"}
         </Box>
       ),
-    },
-    {
-      field: "og_author",
-      headerName: "OG Author",
-      flex: 1,
-      sortable: false,
     },
     {
       field: "published_date",
@@ -251,7 +245,7 @@ const WebpageTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (
@@ -307,19 +301,6 @@ const WebpageTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Button and search field */}
       <Grid container spacing={2} alignItems="center">
-        <Grid size={4}>
-          <Button
-            component={Link}
-            href={"/dashboard/super_admin/content/web-page/create"}
-            sx={{
-              maxHeight: "40px",
-              width: "60%",
-            }}
-          >
-            Create
-          </Button>
-        </Grid>
-
         <Grid size={8}>
           <SearchFiled setSearchText={setSearchTerm} />
         </Grid>

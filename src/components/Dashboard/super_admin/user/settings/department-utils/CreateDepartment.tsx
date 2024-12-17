@@ -7,8 +7,17 @@ import Grid from "@mui/material/Grid2";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreateDepartmentMutation } from "@/redux/api/user/settings/departmentApi";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+
+const validationSchema = z.object({
+  title: z.string().nonempty({ message: "Title is required" }),
+  identifier: z.string().nonempty({ message: "Identifier is required" }),
+});
 
 const CreateDepartmentForm = () => {
+  const router = useRouter();
   const default_values = {
     title: "",
     identifier: "",
@@ -21,6 +30,7 @@ const CreateDepartmentForm = () => {
       const res = await CreateDepartment(values).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId, duration: 3000 });
+        router.push("/dashboard/super_admin/organization/settings/department");
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
         console.log(res);
@@ -31,7 +41,11 @@ const CreateDepartmentForm = () => {
     }
   };
   return (
-    <CMForm onSubmit={handleCreateCountry} defaultValues={default_values}>
+    <CMForm
+      onSubmit={handleCreateCountry}
+      defaultValues={default_values}
+      resolver={zodResolver(validationSchema)}
+    >
       <Grid
         container
         gap={2}

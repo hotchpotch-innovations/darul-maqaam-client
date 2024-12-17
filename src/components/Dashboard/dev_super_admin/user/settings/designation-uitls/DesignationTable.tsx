@@ -51,7 +51,7 @@ const DesignationTable = () => {
   const handleClose = () => setOpen(false);
 
   const path_create_country =
-    "/dashboard/dev_super_admin/users/settings/designation/create";
+    "/dashboard/dev_super_admin/organization/settings/designation/create";
 
   const [currentPage, setCurrentPage] = useState(1);
   const [departmentId, setDepartmentId] = useState("");

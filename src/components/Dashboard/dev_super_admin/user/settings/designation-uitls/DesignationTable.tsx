@@ -1,7 +1,7 @@
 "use client";
 
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
 import { TResponseDataObj } from "@/types";
-import CMModal from "@/components/ui/CMModal";
+import CMModal from "@/components/UI/CMModal";
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import { FieldValues } from "react-hook-form";

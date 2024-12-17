@@ -7,6 +7,7 @@ import {
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -15,6 +16,7 @@ type TProps = {
 };
 
 const UpdateClientForm = ({ client_id }: TProps) => {
+  const router = useRouter();
   const { data: client_obj, isLoading } = useGetSingleClientQuery(client_id);
   const client_data = client_obj?.data;
   const [updateClient] = useUpdateClientMutation();
@@ -44,6 +46,7 @@ const UpdateClientForm = ({ client_id }: TProps) => {
       console.log(res);
       if (res.data.success) {
         toast.success(res?.data?.message, { id: toastId, duration: 3000 });
+        router.push("/dashboard/dev_super_admin/users/client");
       }
     } catch (err) {
       console.log(err);

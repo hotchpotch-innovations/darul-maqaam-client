@@ -2,7 +2,7 @@
 import CMForm from "@/components/forms/CMForm";
 import CMInput from "@/components/forms/CMInput";
 import CMTextarea from "@/components/forms/CMTextarea";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { default_meta_info } from "@/constants/values";
 import {
   useGetSingleWebpageQuery,

@@ -31,7 +31,7 @@ import {
 
 // API hook to fetch country options
 import { useCountryOptions } from "@/hooks/useCountryOptions";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { toast } from "sonner";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { TAddress } from "@/types";

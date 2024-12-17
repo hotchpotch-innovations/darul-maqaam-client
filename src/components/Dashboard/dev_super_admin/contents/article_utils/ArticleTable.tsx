@@ -2,7 +2,7 @@
 import dayjs from "dayjs";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
-import Loading from "@/components/ui/LoadingBar";
+import Loading from "@/components/UI/LoadingBar";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Button, TextField, Tooltip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";

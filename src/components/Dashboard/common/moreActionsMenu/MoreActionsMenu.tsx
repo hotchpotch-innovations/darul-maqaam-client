@@ -69,20 +69,6 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
           </MenuItem>
         )}
 
-        {onStatusChange && (
-          <MenuItem onClick={onStatusChange}>
-            {isActive ? (
-              <>
-                <BlockIcon sx={{ mr: 1, color: "orangered" }} /> Block
-              </>
-            ) : (
-              <>
-                <TaskAltIcon sx={{ mr: 1, color: "greenyellow" }} /> Activate
-              </>
-            )}
-          </MenuItem>
-        )}
-
         {onPublishChange && (
           <MenuItem onClick={onPublishChange}>
             {isPublished ? (
@@ -95,6 +81,20 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
                   sx={{ mr: 1, color: "greenyellow" }}
                 />
                 Publish
+              </>
+            )}
+          </MenuItem>
+        )}
+
+        {onStatusChange && (
+          <MenuItem onClick={onStatusChange}>
+            {isActive ? (
+              <>
+                <BlockIcon sx={{ mr: 1, color: "orangered" }} /> Block
+              </>
+            ) : (
+              <>
+                <TaskAltIcon sx={{ mr: 1, color: "greenyellow" }} /> Activate
               </>
             )}
           </MenuItem>

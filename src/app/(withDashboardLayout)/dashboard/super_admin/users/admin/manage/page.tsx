@@ -1,6 +1,7 @@
 import TitleDashboard from "@/components/Dashboard/dashboard-titles/TitleDashboard";
 import { Box } from "@mui/material";
 import dynamic from "next/dynamic";
+import React from "react";
 
 const AdminManagePage = () => {
   const AdminTable = dynamic(

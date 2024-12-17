@@ -14,7 +14,7 @@ import {
   useDeleteCountryMutation,
   useGetAllCountryQuery,
 } from "@/redux/api/user/settings/countryApi";
-import ConutryModla from "@/components/ui/modals/ConutryModla";
+import ConutryModla from "@/components/UI/modals/ConutryModla";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 
 type TQueryObj = {

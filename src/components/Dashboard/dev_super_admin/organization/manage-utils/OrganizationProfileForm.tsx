@@ -38,7 +38,10 @@ import {
 } from "@/redux/api/organization/organizationApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import OrganizationLogoField, { TOrgData } from "./OrganizationLogoField";
-import { a11yProps, OrganizationTabPanel } from "./OrganizationTabPanel";
+import {
+  a11yProps,
+  TabPanel,
+} from "@/components/Dashboard/common/tabPanel/TabPanel";
 
 export type TLogoPayload = {
   previous_primary_key?: string;
@@ -375,7 +378,7 @@ const OrganizationProfileForm = () => {
                   </Tabs>
                 </Box>
 
-                <OrganizationTabPanel value={value} index={0}>
+                <TabPanel value={value} index={0}>
                   <Stack spacing={2}>
                     {/* Business Name */}
                     <Stack spacing={2} direction={{ xs: "column", lg: "row" }}>
@@ -500,11 +503,11 @@ const OrganizationProfileForm = () => {
                       Update
                     </Button>
                   </Box>
-                </OrganizationTabPanel>
+                </TabPanel>
 
-                <OrganizationTabPanel value={value} index={1}>
+                <TabPanel value={value} index={1}>
                   Footer Section
-                </OrganizationTabPanel>
+                </TabPanel>
               </Box>
             </Grid>
           </Grid>

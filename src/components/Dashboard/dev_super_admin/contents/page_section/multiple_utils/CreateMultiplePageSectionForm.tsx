@@ -4,6 +4,7 @@ import Editor from "@/components/forms/editors/Editor";
 import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
 import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
+import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
 import { multiple_page_section_types_options } from "@/constants/options";
 import {
   TCategoryQueryObj,
@@ -263,11 +264,10 @@ const CreateMultiplePageSectionForm = () => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateInput
-                name="summary"
+              <CMStateTextarea
                 label="Summary"
+                name="summary"
                 setState={setSummary}
-                fullWidth={true}
               />
             </Grid>
           </Grid>

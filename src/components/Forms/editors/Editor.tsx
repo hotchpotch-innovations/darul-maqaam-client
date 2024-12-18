@@ -4,9 +4,10 @@ import "react-quill/dist/quill.snow.css";
 type Tprops = {
   setState: any;
   defaultValue?: any;
+  contents?: string;
 };
 
-const Editor = ({ setState, defaultValue }: Tprops) => {
+const Editor = ({ setState, defaultValue, contents = "Contents" }: Tprops) => {
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
@@ -28,17 +29,22 @@ const Editor = ({ setState, defaultValue }: Tprops) => {
   };
 
   return (
-    <Box sx={{ width: "100%", height: "500px" }}>
-      <ReactQuill
-        style={{ height: "400px" }}
-        modules={modules}
-        theme="snow"
-        onChange={(newValue: any) => {
-          setState(newValue);
-        }}
-        value={defaultValue}
-      />
-    </Box>
+    <>
+      <Box sx={{ marginBottom: "4px" }}>
+        <label className="text-gray-500">{contents}</label>
+      </Box>
+      <Box sx={{ width: "100%", height: "500px" }}>
+        <ReactQuill
+          style={{ height: "400px" }}
+          modules={modules}
+          theme="snow"
+          onChange={(newValue: any) => {
+            setState(newValue);
+          }}
+          value={defaultValue}
+        />
+      </Box>
+    </>
   );
 };
 

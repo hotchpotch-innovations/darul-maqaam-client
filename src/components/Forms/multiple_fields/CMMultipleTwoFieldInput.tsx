@@ -43,7 +43,7 @@ const CMMultipleTwoFieldInput = ({
         </div>
         <div>
           <button
-            className="border border-gray-300 px-4 text-blue-500 hover:text-white bg-white hover:bg-blue-500 duration-500 rounded-sm"
+            className="border-2 border-gray-300 px-4 text-green-600 rounded-[4px] hover:text-white bg-white hover:bg-green-600 duration-500 py-[2px] "
             onClick={addHandler}
           >
             Add
@@ -63,7 +63,7 @@ const CMMultipleTwoFieldInput = ({
                 </div>
                 <div>
                   <button
-                    className="px-2 py-1 border border-gray-300 text-red-400 hover:text-white font-medium bg-white hover:bg-red-500 duration-500 rounded-sm"
+                    className="px-4  border-2 border-gray-300 text-red-400 hover:text-white font-medium bg-white hover:bg-red-500 duration-500 rounded-[4px]"
                     onClick={() => deleteHandler(i)}
                   >
                     x
@@ -72,7 +72,7 @@ const CMMultipleTwoFieldInput = ({
               </div>
               <div className="flex space-x-1">
                 <input
-                  className="w-full border py-1 rounded-sm text-gray-500 pl-2"
+                  className="w-full border py-1 rounded-sm text-gray-500 pl-2 focus:outline-none focus:ring focus:ring-green-200"
                   name={firstFieldName}
                   value={data[firstFieldName] || ""}
                   onChange={(e) => changeHandler(e, i)}
@@ -81,7 +81,7 @@ const CMMultipleTwoFieldInput = ({
                   }
                 />
                 <input
-                  className="w-full border py-1 rounded-sm text-gray-500 pl-2"
+                  className="w-full border py-1 rounded-sm text-gray-500 pl-2 focus:outline-none focus:ring focus:ring-green-200"
                   name={secondFieldName}
                   value={data[secondFieldName] || ""}
                   onChange={(e) => changeHandler(e, i)}

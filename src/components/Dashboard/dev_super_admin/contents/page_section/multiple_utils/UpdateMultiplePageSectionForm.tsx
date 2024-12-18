@@ -14,6 +14,7 @@ import CMStateInput from "@/components/forms/without_form_state_fields/CMStateIn
 import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
 import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
 import Editor from "@/components/forms/editors/Editor";
+import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
 
 type TMultiplePageSectionPayload = {
   title?: string;
@@ -176,12 +177,11 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateInput
-                name="summary"
+              <CMStateTextarea
                 label="Summary"
+                name="summary"
                 setState={setSummary}
                 defaultValue={summary}
-                fullWidth={true}
               />
             </Grid>
           </Grid>

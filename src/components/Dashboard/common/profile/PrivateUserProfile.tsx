@@ -5,10 +5,6 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import {
-  a11yProps,
-  CustomTabPanel,
-} from "@/components/Dashboard/common/profile/ProfileTab";
-import {
   Box,
   Button,
   Card,
@@ -38,6 +34,7 @@ import { TAddress, TSocialLinkPayload } from "@/types";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import ProfilePicture from "./ProfilePicture";
+import { a11yProps, TabPanel } from "../tabPanel/TabPanel";
 
 const PrivateUserProfile = () => {
   // State variables for handling active tab and country IDs
@@ -319,7 +316,7 @@ const PrivateUserProfile = () => {
                       <Tab label="Change Password" {...a11yProps(1)} />
                     </Tabs>
                   </Box>
-                  <CustomTabPanel value={value} index={0}>
+                  <TabPanel value={value} index={0}>
                     <Stack spacing={2}>
                       <Stack
                         spacing={2}
@@ -463,10 +460,10 @@ const PrivateUserProfile = () => {
                         Update
                       </Button>
                     </Box>
-                  </CustomTabPanel>
-                  <CustomTabPanel value={value} index={1}>
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
                     Item Two
-                  </CustomTabPanel>
+                  </TabPanel>
                 </Box>
               </Grid>
             </Grid>

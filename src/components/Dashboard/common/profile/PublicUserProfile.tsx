@@ -1,10 +1,5 @@
 "use client";
 
-// Importing custom components and utilities
-import {
-  a11yProps,
-  CustomTabPanel,
-} from "@/components/Dashboard/common/profile/ProfileTab";
 import {
   Box,
   Button,
@@ -38,6 +33,7 @@ import { TAddress } from "@/types";
 import ProfilePicture from "./ProfilePicture";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { filterUndefinedValues } from "@/utils/sanitizeObject";
+import { a11yProps, TabPanel } from "../tabPanel/TabPanel";
 
 const PublicUserProfile = () => {
   // State variables for handling active tab and country IDs
@@ -248,7 +244,7 @@ const PublicUserProfile = () => {
 
                 {/* Form for updating personal details and address */}
                 <CMForm onSubmit={handleUpdate} defaultValues={default_values}>
-                  <CustomTabPanel value={value} index={0}>
+                  <TabPanel value={value} index={0}>
                     <Stack spacing={2}>
                       {/* Entity Name */}
                       <Stack>
@@ -353,9 +349,9 @@ const PublicUserProfile = () => {
                         />
                       </Stack>
                     </Stack>
-                  </CustomTabPanel>
+                  </TabPanel>
 
-                  <CustomTabPanel value={value} index={1}>
+                  <TabPanel value={value} index={1}>
                     <Stack spacing={2}>
                       {/* Present Address Section */}
                       <Typography pt={2} variant="body1" fontWeight="500">
@@ -486,7 +482,7 @@ const PublicUserProfile = () => {
                         />
                       </Stack>
                     </Stack>
-                  </CustomTabPanel>
+                  </TabPanel>
                   {/* Submit button to update both tabs */}
                   <Box
                     sx={{

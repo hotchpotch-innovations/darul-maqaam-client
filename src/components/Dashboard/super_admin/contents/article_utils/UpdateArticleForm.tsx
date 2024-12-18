@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
 import Editor from "@/components/forms/editors/Editor";
+import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
 
 type TArticlePayload = {
   title?: string;
@@ -153,12 +154,11 @@ const UpdateArticleForm = ({ id }: TProps) => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateInput
-                name="summary"
+              <CMStateTextarea
                 label="Summary"
+                name="summary"
                 setState={setSummary}
                 defaultValue={summary}
-                fullWidth={true}
               />
             </Grid>
             <Grid size={12}>

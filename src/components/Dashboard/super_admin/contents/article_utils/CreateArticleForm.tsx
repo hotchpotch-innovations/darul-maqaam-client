@@ -17,6 +17,7 @@ import CMStateInput from "@/components/forms/without_form_state_fields/CMStateIn
 import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
 import Editor from "@/components/forms/editors/Editor";
 import { videoFileLimitation } from "@/utils/videoFileLimitation";
+import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
 
 type TArticlePayload = {
   type?: string;
@@ -245,11 +246,10 @@ const CreateArticleForm = () => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateInput
-                name="summary"
+              <CMStateTextarea
                 label="Summary"
+                name="summary"
                 setState={setSummary}
-                fullWidth={true}
               />
             </Grid>
           </Grid>

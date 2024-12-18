@@ -31,8 +31,8 @@ const MakeChangeCard = ({ data }: Record<string, any>) => {
             {data?.title}
           </Typography>
           <Typography fontSize={14} className="text-justify pb-8 text-gray-500">
-            {data?.meta_description?.length > 245
-              ? data?.meta_description?.slice(0, 240) + "..."
+            {data?.meta_description?.length > 230
+              ? data?.meta_description?.slice(0, 230) + "..."
               : data?.meta_description}
           </Typography>
         </div>

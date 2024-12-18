@@ -99,6 +99,10 @@ export const MPS_Types = {
   gallery: "gallery",
   hero_section: "hero-section",
 };
+export const Article_Types = {
+  video: "video",
+  news: "news",
+};
 
 export const multiple_page_section_types_options: ISelectOption[] = [
   {
@@ -130,11 +134,11 @@ export const multiple_page_section_types_options: ISelectOption[] = [
 export const article_types_options: ISelectOption[] = [
   {
     label: "Video",
-    value: "video",
+    value: Article_Types?.video,
   },
   {
     label: "News",
-    value: "news",
+    value: Article_Types?.news,
   },
 ];
 

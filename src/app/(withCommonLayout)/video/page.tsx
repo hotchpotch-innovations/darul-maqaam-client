@@ -1,7 +1,9 @@
 import Title from "@/components/UI/Title";
+import VideoCard from "@/components/UI/VideoCard";
+import { Article_Types } from "@/constants/options";
 import { webpageSlugs } from "@/constants/webpageSlugs";
 import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 
 // Dynamic metadata generation function
 export async function generateMetadata() {
@@ -17,7 +19,16 @@ export async function generateMetadata() {
   return result;
 }
 
-const VideoPage = () => {
+const VideoPage = async () => {
+  const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const res = await fetch(
+    `${backend_api}/content/article/public?type=${Article_Types?.video}&sortBy=createdAt&sortOrder=asc&isPublished=true`,
+    {
+      cache: "no-store",
+    }
+  );
+  const { data: video_obj = {} } = await res.json();
+  const video_data = video_obj?.data || [];
   return (
     <Box bgcolor={"secondary.main"}>
       <Title title="videos" />
@@ -37,20 +48,8 @@ const VideoPage = () => {
           paddingY={4}
           bgcolor={"white"}
         >
-          {Array.from({ length: 24 }).map((_, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index} paddingY={2}>
-              <Box>
-                <iframe
-                  width="100%"
-                  height="315"
-                  src="https://www.youtube.com/embed/tgbNymZ7vqY"
-                  style={{ border: "none", borderRadius: "6px" }} // Ensures iframe takes full width without borders
-                ></iframe>
-                <Typography variant="h6" fontSize={18} textAlign={"center"}>
-                  Video Title here
-                </Typography>
-              </Box>
-            </Grid>
+          {video_data.map((item: Record<string, any>) => (
+            <VideoCard key={item?.id} data={item} />
           ))}
         </Grid>
       </Container>

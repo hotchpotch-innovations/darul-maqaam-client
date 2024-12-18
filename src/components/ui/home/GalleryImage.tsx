@@ -12,11 +12,6 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
 
-export type TGalleryImage = {
-  _id: string;
-  image: string;
-};
-
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any>;
@@ -26,7 +21,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const GalleryImage = ({ data }: { data: TGalleryImage }) => {
+const GalleryImage = ({ data }: { data: Record<string, any> }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -41,19 +36,20 @@ const GalleryImage = ({ data }: { data: TGalleryImage }) => {
     <>
       {/* <Button onClick={handleClickOpen}> */}
       <Grid item xs={12} sm={12} md={5} lg={4} width={"33%"}>
-        <div className="hover:relative group transition-all duration-1000">
+        <div className="hover:relative group transition-all duration-1000 h-[300px]">
           <Image
-            src={data?.image}
-            alt="Gallery Image"
+            src={data?.cover_image?.url || ""}
+            alt={data?.title || ""}
             height={500}
             width={500}
-            className="z-10"
+            objectFit="cover"
+            className="z-10 h-[300px] w-full"
           />
           <Typography
             onClick={handleClickOpen}
             className="group-hover:absolute hidden transition-all duration-10.00  inset-0 group-hover:flex items-center justify-center z-[999] bg-black opacity-70 text-white"
           >
-            Prewiew
+            Preview
           </Typography>
         </div>
       </Grid>
@@ -88,9 +84,9 @@ const GalleryImage = ({ data }: { data: TGalleryImage }) => {
         <Grid item xs={12} sm={12} md={6} lg={4}>
           <div className="w-screen " onClick={handleClose}>
             <Image
-              src={data?.image}
+              src={data?.cover_image?.url}
               className="w-[80%] mx-auto max-h-[calc(100vh)] object-cover z-10"
-              alt="Gallery Image"
+              alt={data?.title || ""}
               height={1900}
               width={2400}
             />

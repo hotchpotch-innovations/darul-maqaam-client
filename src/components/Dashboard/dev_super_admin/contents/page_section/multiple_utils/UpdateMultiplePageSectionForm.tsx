@@ -10,105 +10,95 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Grid from "@mui/material/Grid2";
-import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
-import CMMultipleInput from "@/components/forms/multiple_fields/CMMultipleInput";
-import CMMultipleTextarea from "@/components/forms/multiple_fields/CMMultipleTextarea";
 import Editor from "@/components/forms/editors/Editor";
-import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
-
-type TMultiplePageSectionPayload = {
-  title?: string;
-  price?: number;
-  discount_rate?: number;
-  yt_video_url?: URL;
-  summary?: string;
-  contents?: string;
-};
+import Loading from "@/components/UI/LoadingBar";
+import { z } from "zod";
+import { filterUndefinedValues } from "@/utils/sanitizeObject";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import CMForm from "@/components/forms/CMForm";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CMInput from "@/components/forms/CMInput";
+import CMTextarea from "@/components/forms/CMTextarea";
 
 type TProps = {
   id: string;
 };
+
+const validationSchema = z.object({
+  title: z.string().nonempty({ message: "Title is required." }),
+  summary: z.string().nonempty({ message: "Summary is required." }),
+  yt_video_url: z.string().optional(),
+  price: z.number({ message: "Price must be number type" }).optional(),
+  discount_rate: z
+    .number({ message: "Discount rate is must be number type" })
+    .optional(),
+});
+
 const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
   const router = useRouter();
-  const [title, setTitle] = useState();
-  const [price, setPrice] = useState("");
-  const [discount_rate, setDiscountRate] = useState("");
-  const [yt_video_url, setYtVideoUrl] = useState();
-  const [summary, setSummary] = useState("");
   // Get updated value from text editor
   const [editorValue, setEditorValue] = useState("");
-
-  const { data, isLoading } = useGetSingleMPSQuery(id);
-  const mps_data = data?.data;
-
-  useEffect(() => {
-    if (!!mps_data) {
-      setTitle(mps_data?.title);
-      setPrice(mps_data?.price);
-      setDiscountRate(mps_data?.discount_rate);
-      setYtVideoUrl(mps_data?.yt_video_url);
-      setSummary(mps_data?.summary);
-      setEditorValue(mps_data?.contents);
-    }
-  }, [mps_data]);
 
   const [updateMultipleSection, { isLoading: isUpdateLoading }] =
     useUpdateMPSItemMutation();
 
   // create function handler
-  const submitHandler = async () => {
+  const submitHandler: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait ...");
-    if (!title) {
-      toast.error("Title is required!", { id: toastId, duration: 2000 });
-    } else {
-      const data: TMultiplePageSectionPayload = {};
-      data["title"] = title;
-      if (!!price) {
-        data["price"] = parseFloat(price);
-      }
-      if (!!discount_rate) {
-        data["discount_rate"] = parseFloat(discount_rate);
-      }
-      if (!!yt_video_url) {
-        data["yt_video_url"] = yt_video_url;
-      }
-      if (summary?.length > 0) {
-        data["summary"] = summary;
-      }
+    const data = filterUndefinedValues(values);
 
-      if (editorValue?.length > 0) {
-        data["contents"] = editorValue;
-      }
+    if (editorValue?.length > 0) {
+      data["contents"] = editorValue;
+    }
 
-      try {
-        const res = await updateMultipleSection({ id, ...data }).unwrap();
+    try {
+      const res = await updateMultipleSection({ id, ...data }).unwrap();
 
-        if (res?.success) {
-          toast.success(res.message, { id: toastId, duration: 2000 });
-          router.push(
-            "/dashboard/dev_super_admin/content/page-section/multiple"
-          );
-        } else {
-          toast.error(res?.message, { id: toastId, duration: 2000 });
-          console.log(res);
-        }
-      } catch (error: any) {
-        console.log(error);
-        toast.error(
-          error?.message || "something went wrong. please try again",
-          { id: toastId, duration: 2000 }
-        );
-        customTimeOut(3000).then(() => window.location.reload());
+      if (res?.success) {
+        toast.success(res.message, { id: toastId, duration: 2000 });
+        router.push("/dashboard/dev_super_admin/content/page-section/multiple");
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 2000 });
+        console.log(res);
       }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.message || "something went wrong. please try again", {
+        id: toastId,
+        duration: 2000,
+      });
+      customTimeOut(3000).then(() => window.location.reload());
     }
   };
 
-  if (isLoading) {
-    return <p className="text-center my-8">Loading...</p>;
+  const { data, isLoading: isGetSingleMPSLoading } = useGetSingleMPSQuery(id);
+  const mps_data = data?.data;
+
+  useEffect(() => {
+    if (!!mps_data) {
+      setEditorValue(mps_data?.contents);
+    }
+  }, [mps_data]);
+
+  if (isGetSingleMPSLoading) {
+    return <Loading />;
   }
 
+  const defaultValues = {
+    title: mps_data?.title || "",
+    price: mps_data?.price || undefined,
+    discount: mps_data?.price || undefined,
+    yt_video_url: mps_data?.yt_video_url || "",
+    summary: mps_data?.summary || "",
+    contents: mps_data?.contents || "",
+  };
+
   return (
-    <>
+    <CMForm
+      onSubmit={submitHandler}
+      defaultValues={defaultValues}
+      resolver={zodResolver(validationSchema)}
+    >
       <Stack direction={"column"} spacing={4}>
         <Stack direction={"row"} gap={4}>
           {/* Title, Price, Discount(Price) & Youtube URL */}
@@ -123,41 +113,29 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateInput
-                name="title"
-                label="Title"
-                setState={setTitle}
-                defaultValue={title}
-                fullWidth={true}
-              />
+              <CMInput name="title" label="Title" fullWidth={true} />
             </Grid>
             <Grid size={12}>
-              <CMStateInput
+              <CMInput
                 name="price"
                 label="Price"
-                setState={setPrice}
                 type="number"
-                defaultValue={price}
                 fullWidth={true}
               />
             </Grid>
             <Grid size={12}>
-              <CMStateInput
+              <CMInput
                 name="discount_rate"
                 label="Discount (Rate)"
-                setState={setDiscountRate}
                 type="number"
-                defaultValue={discount_rate}
                 fullWidth={true}
               />
             </Grid>
             <Grid size={12}>
-              <CMStateInput
+              <CMInput
                 name="yt_video_url"
                 label="Youtube Video URL (embedded)"
-                setState={setYtVideoUrl}
                 type="url"
-                defaultValue={yt_video_url}
                 fullWidth={true}
               />
             </Grid>
@@ -177,12 +155,7 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateTextarea
-                label="Summary"
-                name="summary"
-                setState={setSummary}
-                defaultValue={summary}
-              />
+              <CMTextarea label="Summary" name="summary" />
             </Grid>
           </Grid>
         </Stack>
@@ -213,7 +186,6 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
       >
         <Button
           type="submit"
-          onClick={() => submitHandler()}
           disabled={isUpdateLoading}
           sx={{
             mt: "30px",
@@ -222,7 +194,7 @@ const UpdateMultiplePageSectionForm = ({ id }: TProps) => {
           Update Item
         </Button>
       </Box>
-    </>
+    </CMForm>
   );
 };
 

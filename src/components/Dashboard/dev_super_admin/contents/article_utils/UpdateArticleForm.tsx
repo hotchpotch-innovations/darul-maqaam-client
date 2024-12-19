@@ -5,99 +5,94 @@ import {
   useUpdateArticleMutation,
 } from "@/redux/api/content/articleApi";
 import { customTimeOut } from "@/utils/customTimeOut";
-
 import { Box, Button, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
 import Editor from "@/components/forms/editors/Editor";
-import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
-
-type TArticlePayload = {
-  title?: string;
-  author?: string;
-  yt_video_url?: URL;
-  summary?: string;
-  contents?: string;
-};
+import { z } from "zod";
+import Loading from "@/components/UI/LoadingBar";
+import { filterUndefinedValues } from "@/utils/sanitizeObject";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import CMForm from "@/components/forms/CMForm";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CMInput from "@/components/forms/CMInput";
+import CMTextarea from "@/components/forms/CMTextarea";
 
 type TProps = {
   id: string;
 };
 
+const validationSchema = z.object({
+  title: z.string().nonempty({ message: "Title is required." }),
+  author: z.string().optional(),
+  yt_video_url: z.string().optional(),
+  summary: z.string().nonempty({ message: "Summary is required." }),
+  cover_image: z.instanceof(File).optional(),
+});
+
 const UpdateArticleForm = ({ id }: TProps) => {
   const router = useRouter();
-  const [title, setTitle] = useState();
-  const [author, setAuthor] = useState("");
-  const [yt_video_url, setYtVideoUrl] = useState();
-  const [summary, setSummary] = useState("");
   const [contents, setContents] = useState("");
-
-  const { data, isLoading } = useGetSingleArticleQuery(id);
-  const article_data = data?.data;
-
-  useEffect(() => {
-    if (!!article_data) {
-      setTitle(article_data?.title);
-      setAuthor(article_data?.author);
-      setYtVideoUrl(article_data?.yt_video_url);
-      setSummary(article_data?.summary);
-      setContents(article_data?.contents);
-    }
-  }, [article_data]);
 
   const [updateArticle, { isLoading: isUpdateLoading }] =
     useUpdateArticleMutation();
 
   // Article update function
-  const submitHandler = async () => {
+  const submitHandler: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Please wait ...");
-    if (!title) {
-      toast.error("Title is required!", { id: toastId, duration: 2000 });
-    } else {
-      const data: TArticlePayload = {};
-      data["title"] = title;
-      if (!!author) {
-        data["author"] = author;
-      }
-      if (!!yt_video_url) {
-        data["yt_video_url"] = yt_video_url;
-      }
-      if (summary?.length > 0) {
-        data["summary"] = summary;
-      }
+    const data = filterUndefinedValues(values);
 
-      if (contents?.length > 0) {
-        data["contents"] = contents;
-      }
+    if (contents?.length > 0) {
+      data["contents"] = contents;
+    }
 
-      try {
-        const res = await updateArticle({ id, ...data }).unwrap();
+    try {
+      const res = await updateArticle({ id, ...data }).unwrap();
 
-        if (res?.success) {
-          toast.success(res.message, { id: toastId, duration: 2000 });
-          router.push("/dashboard/dev_super_admin/content/articles/");
-        } else {
-          toast.error(res?.message, { id: toastId, duration: 2000 });
-        }
-      } catch (error: any) {
-        console.log(error);
-        toast.error(
-          error?.message || "something went wrong. please try again",
-          { id: toastId, duration: 2000 }
-        );
-        customTimeOut(3000).then(() => window.location.reload());
+      if (res?.success) {
+        toast.success(res.message, { id: toastId, duration: 2000 });
+        router.push("/dashboard/dev_super_admin/content/articles/");
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 2000 });
       }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.message || "something went wrong. please try again", {
+        id: toastId,
+        duration: 2000,
+      });
+      customTimeOut(3000).then(() => window.location.reload());
     }
   };
 
-  if (isLoading) {
-    return <p className="text-center my-8">Loading...</p>;
+  const { data, isLoading: isGetSingleArticleLoading } =
+    useGetSingleArticleQuery(id);
+  const article_data = data?.data;
+
+  useEffect(() => {
+    if (!!article_data) {
+      setContents(article_data?.contents);
+    }
+  }, [article_data]);
+
+  if (isGetSingleArticleLoading) {
+    return <Loading />;
   }
+  const defaultValues = {
+    title: article_data?.title || "",
+    author: article_data?.author || "",
+    yt_video_url: article_data?.yt_video_url || "",
+    summary: article_data?.summary || "",
+    contents: article_data.contents || "",
+  };
   return (
-    <>
+    <CMForm
+      onSubmit={submitHandler}
+      defaultValues={defaultValues}
+      resolver={zodResolver(validationSchema)}
+    >
       <Stack direction={"column"} spacing={4}>
         <Stack direction={"row"} gap={4}>
           {/* Title, Author & Youtube Video URL */}
@@ -112,30 +107,16 @@ const UpdateArticleForm = ({ id }: TProps) => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateInput
-                name="title"
-                label="Title"
-                setState={setTitle}
-                defaultValue={title}
-                fullWidth={true}
-              />
+              <CMInput name="title" label="Title" fullWidth={true} />
             </Grid>
             <Grid size={12}>
-              <CMStateInput
-                name="author"
-                label="Author"
-                setState={setAuthor}
-                defaultValue={author}
-                fullWidth={true}
-              />
+              <CMInput name="author" label="Author" fullWidth={true} />
             </Grid>
             <Grid size={12}>
-              <CMStateInput
+              <CMInput
                 name="yt_video_url"
                 label="Youtube Video URL (embedded)"
-                setState={setYtVideoUrl}
                 type="url"
-                defaultValue={yt_video_url}
                 fullWidth={true}
               />
             </Grid>
@@ -155,12 +136,7 @@ const UpdateArticleForm = ({ id }: TProps) => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateTextarea
-                label="Summary"
-                name="summary"
-                setState={setSummary}
-                defaultValue={summary}
-              />
+              <CMTextarea label="Summary" name="summary" />
             </Grid>
             <Grid size={12}>
               <Editor setState={setContents} defaultValue={contents} />
@@ -170,7 +146,6 @@ const UpdateArticleForm = ({ id }: TProps) => {
       </Stack>
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
-          onClick={() => submitHandler()}
           type="submit"
           sx={{
             mt: "30px",
@@ -180,7 +155,7 @@ const UpdateArticleForm = ({ id }: TProps) => {
           Update Article
         </Button>
       </Box>
-    </>
+    </CMForm>
   );
 };
 

@@ -69,7 +69,7 @@ TInputProps) => {
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
             sx={{
-              width: "50%",
+              width: "100%",
               ...sx,
             }}
           >

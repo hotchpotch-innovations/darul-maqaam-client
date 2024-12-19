@@ -62,6 +62,31 @@ export const create_branch_default_values = {
   branch_location: create_address_default_values,
 };
 
+export const create_single_wp_section_default_values = {
+  webpageId: "",
+  menubarId: "",
+  submenuId: "",
+  section_name: "",
+  yt_video_url: "",
+  section_slug: "",
+  section_title: "",
+  section_summary: "",
+};
+
+export const create_multiple_wp_section_default_values = {
+  type: "",
+  categoryId: "",
+  title: "",
+  summary: "",
+};
+
+export const create_article_default_values = {
+  type: "",
+  categoryId: "",
+  title: "",
+  summary: "",
+};
+
 export const default_meta_info: TDefaultMetaInfo = {
   og_author: "Md. Arman",
   meta_title: "Darul Maqaam Foundation",

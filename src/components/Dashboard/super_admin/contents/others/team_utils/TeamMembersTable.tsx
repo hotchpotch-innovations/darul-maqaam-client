@@ -290,7 +290,7 @@ const TeamMembersTable = () => {
         <Grid size={12}>
           <Box>
             <Grid container spacing={2}>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                 <SelectFilter
                   filter_title="Filter by Department"
                   options={department_options}
@@ -299,7 +299,7 @@ const TeamMembersTable = () => {
                   fullWidth={true}
                 />
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                 <SelectFilter
                   filter_title="Filter by designation"
                   options={designation_options}
@@ -310,7 +310,7 @@ const TeamMembersTable = () => {
                 />
               </Grid>
 
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                 <SelectFilter
                   filter_title="Filter by publish status"
                   options={isPublished_options}
@@ -319,7 +319,7 @@ const TeamMembersTable = () => {
                   fullWidth={true}
                 />
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                 <SelectFilter
                   filter_title="Filter by status"
                   options={user_status_options}

@@ -165,7 +165,10 @@ const AllUserTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Bottom Row: Filters */}
       <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid size={{ xs: 12, lg: 4 }}>
+        <Grid size={{ xs: 12, md: 6, lg: 12 }} mt={4}>
+          <SearchFiled setSearchText={setSearchTerm} />
+        </Grid>
+        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <SelectFilter
             filter_title="Search by account type"
             options={account_type_options}
@@ -174,7 +177,7 @@ const AllUserTable = () => {
             fullWidth
           />
         </Grid>
-        <Grid size={{ xs: 12, lg: 4 }}>
+        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <SelectFilter
             filter_title="Search by user role"
             options={dev_super_admin_user_role_options}
@@ -183,7 +186,7 @@ const AllUserTable = () => {
             fullWidth
           />
         </Grid>
-        <Grid size={{ xs: 12, lg: 4 }}>
+        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <SelectFilter
             filter_title="Search by user status"
             options={user_status_options}
@@ -191,12 +194,6 @@ const AllUserTable = () => {
             setValue={setUserStatus}
             fullWidth
           />
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} alignItems="center" mt={2}>
-        <Grid size={12}>
-          <SearchFiled setSearchText={setSearchTerm} />
         </Grid>
       </Grid>
 

@@ -320,7 +320,7 @@ const ArticleTable = () => {
         <Grid size={12}>
           <Box>
             <Grid container spacing={2}>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                 <SelectFilter
                   filter_title="Filter by Type"
                   options={article_types_options}
@@ -329,7 +329,7 @@ const ArticleTable = () => {
                   fullWidth={true}
                 />
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                 <SelectFilter
                   filter_title="Filter by category"
                   options={category_options}
@@ -340,7 +340,7 @@ const ArticleTable = () => {
                 />
               </Grid>
 
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                 <SelectFilter
                   filter_title="Filter by publish status"
                   options={isPublished_options}
@@ -349,7 +349,7 @@ const ArticleTable = () => {
                   fullWidth={true}
                 />
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                 <SelectFilter
                   filter_title="Filter by status"
                   options={user_status_options}

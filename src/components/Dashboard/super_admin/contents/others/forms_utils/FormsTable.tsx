@@ -241,7 +241,7 @@ const FormsTable = () => {
               maxHeight: "40px",
               width: {
                 xs: "100%",
-                md: "50%",
+                md: "70%",
               },
             }}
           >
@@ -257,7 +257,7 @@ const FormsTable = () => {
         <Grid size={12}>
           <Box>
             <Grid container spacing={2}>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <SelectFilter
                   filter_title="Filter by Category"
                   options={category_options}
@@ -267,7 +267,7 @@ const FormsTable = () => {
                   fullWidth={true}
                 />
               </Grid>
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <SelectFilter
                   filter_title="Filter by Authority"
                   options={authority_options}
@@ -278,7 +278,7 @@ const FormsTable = () => {
                 />
               </Grid>
 
-              <Grid size={6}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <SelectFilter
                   filter_title="Filter by status"
                   options={user_status_options}

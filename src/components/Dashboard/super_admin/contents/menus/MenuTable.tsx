@@ -204,9 +204,9 @@ const MenuTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Main Row */}
       <Grid container spacing={2} alignItems="center">
-        <Grid container size={{ xs: 12, md: 9 }} sx={{ alignItems: "center" }}>
+        <Grid container size={12} sx={{ alignItems: "center" }}>
           {/* Filter Field */}
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={4}>
             <SelectFilter
               filter_title="Filter by Status"
               options={user_status_options}
@@ -217,7 +217,7 @@ const MenuTable = () => {
           </Grid>
 
           {/* Search Field */}
-          <Grid size={{ xs: 12, md: 6 }} mt={4}>
+          <Grid size={8} mt={4}>
             <SearchFiled setSearchText={setSearchTerm} />
           </Grid>
         </Grid>

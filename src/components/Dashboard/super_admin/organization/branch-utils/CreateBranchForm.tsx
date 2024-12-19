@@ -79,8 +79,12 @@ const CreateBranchForm = () => {
       resolver={zodResolver(validationSchema)}
       defaultValues={create_branch_default_values}
     >
-      <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-        {/* 1st Pera */}
+      <Stack
+        direction={{ xs: "column", lg: "row" }}
+        gap={4}
+        alignItems="flex-start"
+      >
+        {/* Name, Email, Web mail, Phone, Telephone, Summary */}
         <Grid
           size={{ xs: 12, lg: 6 }}
           container
@@ -91,87 +95,71 @@ const CreateBranchForm = () => {
           }}
           p={4}
         >
-          <Typography variant="h5" sx={{ marginBottom: "8px" }}>
+          <Typography variant="h5" sx={{ marginBottom: "4px" }}>
             Basic Information
           </Typography>
           <Grid size={12}>
             <CMInput name="name" label="Name*" fullWidth={true} />
           </Grid>
           <Grid size={12}>
-            <CMInput
-              name="email"
-              label="Email*"
-              //   size="medium"
-              fullWidth={true}
-            />
+            <CMInput name="email" label="Email*" fullWidth={true} />
           </Grid>
           <Grid size={12}>
-            <CMInput
-              name="web_mail"
-              label="Web mail"
-              //   size="medium"
-              fullWidth={true}
-            />
+            <CMInput name="web_mail" label="Web mail" fullWidth={true} />
           </Grid>
           <Grid size={12}>
-            <Typography variant="h6" sx={{ marginBottom: "8px" }}>
+            <Typography variant="h6" sx={{ marginBottom: "4px" }}>
               Phone
             </Typography>
-            <Grid
-              container
-              size={{ xs: 12, lg: 6 }}
-              justifyContent={"space-between"}
-            >
-              <Grid size={12}>
-                <CMInput
-                  name="primary_phone"
-                  label="Primary*"
-                  //   size="medium"
-                  fullWidth={true}
-                />
+            <Box>
+              <Grid container justifyContent={"space-between"} spacing={2}>
+                <Grid size={6}>
+                  <CMInput
+                    name="primary_phone"
+                    label="Primary*"
+                    fullWidth={true}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <CMInput
+                    name="secondary_phone"
+                    label="Secondary"
+                    fullWidth={true}
+                  />
+                </Grid>
               </Grid>
-              <Grid size={12}>
-                <CMInput
-                  name="secondary_phone"
-                  label="Secondary"
-                  //   size="medium"
-                  fullWidth={true}
-                />
-              </Grid>
-            </Grid>
+            </Box>
           </Grid>
 
           <Grid size={12}>
-            <Typography variant="h6">Telephone</Typography>
-            <Grid
-              container
-              size={{ xs: 12, lg: 6 }}
-              justifyContent={"space-between"}
-            >
-              <Grid size={12}>
-                <CMInput
-                  name="primary_tel"
-                  label="Primary"
-                  //   size="medium"
-                  fullWidth={true}
-                />
+            <Typography variant="h6" sx={{ marginBottom: "4px" }}>
+              Telephone
+            </Typography>
+            <Box>
+              <Grid container justifyContent={"space-between"} spacing={2}>
+                <Grid size={6}>
+                  <CMInput
+                    name="primary_tel"
+                    label="Primary"
+                    fullWidth={true}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <CMInput
+                    name="secondary_tel"
+                    label="Secondary"
+                    fullWidth={true}
+                  />
+                </Grid>
               </Grid>
-              <Grid size={12}>
-                <CMInput
-                  name="secondary_tel"
-                  label="Secondary"
-                  //   size="medium"
-                  fullWidth={true}
-                />
-              </Grid>
-            </Grid>
+            </Box>
           </Grid>
           <Grid size={12}>
             <CMTextarea name="summary" label="Summary" />
           </Grid>
         </Grid>
 
-        {/* 2nd Pera */}
+        {/* Branch Location */}
         <Grid
           size={{ xs: 12, lg: 6 }}
           container
@@ -187,7 +175,6 @@ const CreateBranchForm = () => {
             <CMSelectWithWatch
               name="branch_location.countryId"
               label="Country *"
-              //   size="medium"
               options={country_options}
               setState={setCountryId}
             />
@@ -197,7 +184,6 @@ const CreateBranchForm = () => {
             <CMInput
               name="branch_location.state"
               label="State *"
-              //   size="medium"
               fullWidth={true}
               readOnly={!countryId}
             />
@@ -206,7 +192,6 @@ const CreateBranchForm = () => {
             <CMInput
               name="branch_location.city"
               label="City *"
-              //   size="medium"
               fullWidth={true}
               readOnly={!countryId}
             />
@@ -216,7 +201,6 @@ const CreateBranchForm = () => {
             <CMInput
               name="branch_location.address_line"
               label="Address Line *"
-              //   size="medium"
               fullWidth={true}
               readOnly={!countryId}
             />

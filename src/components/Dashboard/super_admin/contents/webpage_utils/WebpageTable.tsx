@@ -299,16 +299,9 @@ const WebpageTable = () => {
 
   return (
     <Box sx={{ p: 2 }}>
-      {/* Button and search field */}
-      <Grid container spacing={2} alignItems="center">
-        <Grid size={8}>
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Grid>
-      </Grid>
-
       {/* Filter (Type & Menu) */}
       <Grid container spacing={2} alignItems="center" mt={2}>
-        <Grid size={6}>
+        <Grid size={4}>
           <SelectFilter
             filter_title="Content Type"
             options={webpage_types_options}
@@ -318,7 +311,7 @@ const WebpageTable = () => {
           />
         </Grid>
 
-        <Grid size={6}>
+        <Grid size={4}>
           <SelectFilter
             filter_title="Menu Selection"
             options={menubar_options}
@@ -327,6 +320,10 @@ const WebpageTable = () => {
             isDisable={menubar_isLoading}
             fullWidth
           />
+        </Grid>
+
+        <Grid size={4} mt={4}>
+          <SearchFiled setSearchText={setSearchTerm} />
         </Grid>
       </Grid>
 

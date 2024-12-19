@@ -245,7 +245,7 @@ const SinglePageSectionTable = () => {
     <Box sx={{ p: 2 }}>
       {/* Top Row: Search and Create Button */}
       <Grid container spacing={2} alignItems="center">
-        <Grid size={8}>
+        <Grid size={12}>
           <SearchFiled setSearchText={setSearchTerm} />
         </Grid>
       </Grid>

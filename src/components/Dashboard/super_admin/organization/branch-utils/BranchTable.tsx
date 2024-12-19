@@ -177,7 +177,7 @@ const BranchTable = () => {
     <Box sx={{ p: 2 }}>
       <Grid container spacing={2}>
         {/* Create button */}
-        <Grid size={4}>
+        <Grid size={{ xs: 4, lg: 2 }} mt={4}>
           <Button
             component={Link}
             href={"/dashboard/super_admin/organization/settings/branch/create"}
@@ -185,7 +185,7 @@ const BranchTable = () => {
               maxHeight: "40px",
               width: {
                 xs: "100%",
-                md: "50%",
+                md: "70%",
               },
             }}
           >
@@ -193,25 +193,19 @@ const BranchTable = () => {
           </Button>
         </Grid>
         {/* Search box */}
-        <Grid size={8}>
+        <Grid size={{ xs: 8, lg: 5 }} mt={4}>
           <SearchFiled setSearchText={setSearchTerm} />
         </Grid>
 
         {/* Filtering */}
-        <Grid size={12}>
-          <Box>
-            <Grid container spacing={2}>
-              <Grid size={6}>
-                <SelectFilter
-                  filter_title="Filter by status"
-                  options={user_status_options}
-                  value={status}
-                  setValue={setStatus}
-                  fullWidth={true}
-                />
-              </Grid>
-            </Grid>
-          </Box>
+        <Grid size={{ xs: 12, lg: 5 }}>
+          <SelectFilter
+            filter_title="Filter by status"
+            options={user_status_options}
+            value={status}
+            setValue={setStatus}
+            fullWidth={true}
+          />
         </Grid>
       </Grid>
 

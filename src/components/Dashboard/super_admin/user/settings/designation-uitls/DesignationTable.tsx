@@ -189,6 +189,10 @@ const DesignationTable = () => {
                     href={path_create_country}
                     sx={{
                       maxHeight: "40px",
+                      width: {
+                        xs: "100%",
+                        md: "70%",
+                      },
                     }}
                   >
                     Create

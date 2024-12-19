@@ -216,16 +216,9 @@ const SubMenuTable = () => {
 
   return (
     <Box sx={{ p: 2 }}>
-      {/* Top Row: Search and Create Button */}
-      <Grid container spacing={2} alignItems="center">
-        <Grid size={{ xs: 12, lg: 8 }}>
-          <SearchFiled setSearchText={setSearchTerm} />
-        </Grid>
-      </Grid>
-
       {/* Bottom Row: Filters */}
       <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid size={{ xs: 12, lg: 6 }}>
+        <Grid size={{ xs: 6, lg: 4 }}>
           <SelectFilter
             filter_title="Filter by menubar"
             options={menubar_options}
@@ -234,7 +227,7 @@ const SubMenuTable = () => {
             fullWidth
           />
         </Grid>
-        <Grid size={{ xs: 12, lg: 6 }}>
+        <Grid size={{ xs: 6, lg: 4 }}>
           <SelectFilter
             filter_title="Filter by status"
             options={user_status_options}
@@ -242,6 +235,10 @@ const SubMenuTable = () => {
             setValue={setStatus}
             fullWidth
           />
+        </Grid>
+
+        <Grid size={{ xs: 12, lg: 4 }} mt={{ xs: 0, lg: 4 }}>
+          <SearchFiled setSearchText={setSearchTerm} />
         </Grid>
       </Grid>
 

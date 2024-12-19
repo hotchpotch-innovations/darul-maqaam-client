@@ -38,6 +38,13 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
     setAnchorEl(null);
   };
 
+  const handleAction = (action?: () => void) => {
+    if (action) {
+      action();
+    }
+    handleClose();
+  };
+
   return (
     <Box>
       <Tooltip title="More Actions">
@@ -64,13 +71,13 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
         }}
       >
         {onEdit && (
-          <MenuItem onClick={onEdit}>
+          <MenuItem onClick={() => handleAction(onEdit)}>
             <EditIcon sx={{ mr: 1, color: "primary.main" }} /> Edit
           </MenuItem>
         )}
 
         {onPublishChange && (
-          <MenuItem onClick={onPublishChange}>
+          <MenuItem onClick={() => handleAction(onPublishChange)}>
             {isPublished ? (
               <>
                 <UnpublishedIcon sx={{ mr: 1, color: "orangered" }} /> Unpublish
@@ -87,7 +94,7 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
         )}
 
         {onStatusChange && (
-          <MenuItem onClick={onStatusChange}>
+          <MenuItem onClick={() => handleAction(onStatusChange)}>
             {isActive ? (
               <>
                 <BlockIcon sx={{ mr: 1, color: "orangered" }} /> Block
@@ -101,7 +108,7 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
         )}
 
         {onDelete && (
-          <MenuItem onClick={onDelete}>
+          <MenuItem onClick={() => handleAction(onDelete)}>
             {isDeleted ? (
               <>
                 <RestoreIcon sx={{ mr: 1, color: "#de2c48" }} /> Restore

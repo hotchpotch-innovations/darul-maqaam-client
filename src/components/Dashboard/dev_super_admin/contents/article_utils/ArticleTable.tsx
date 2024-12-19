@@ -110,7 +110,7 @@ const ArticleTable = () => {
     {
       field: "index",
       headerName: "SERIAL",
-      width: 100,
+      width: 80,
       disableColumnMenu: true,
     },
     {
@@ -133,7 +133,7 @@ const ArticleTable = () => {
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 2,
       sortable: false,
     },
     {
@@ -228,7 +228,7 @@ const ArticleTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

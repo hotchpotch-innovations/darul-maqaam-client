@@ -14,13 +14,6 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import UnpublishedIcon from "@mui/icons-material/Unpublished";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import Grid from "@mui/material/Grid2";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
@@ -100,7 +93,7 @@ const TeamMembersTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "image",
       headerName: "IMAGE",
@@ -112,7 +105,7 @@ const TeamMembersTable = () => {
     {
       field: "name",
       headerName: "NAME",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (
         <Box
           component={Link}
@@ -234,7 +227,7 @@ const TeamMembersTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

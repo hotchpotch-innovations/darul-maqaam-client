@@ -117,7 +117,7 @@ const ClientTable = () => {
     {
       field: "owner_name",
       headerName: "NAME",
-      flex: 1,
+      flex: 2,
       renderCell: (params) => (
         <Box
           component={Link}
@@ -145,7 +145,7 @@ const ClientTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

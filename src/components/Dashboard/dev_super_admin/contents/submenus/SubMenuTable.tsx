@@ -1,17 +1,8 @@
 "use client";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/UI/LoadingBar";
-import {
-  Box,
-  Button,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
@@ -24,9 +15,6 @@ import CMForm from "@/components/forms/CMForm";
 import { FieldValues } from "react-hook-form";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { toast } from "sonner";
-import RestoreIcon from "@mui/icons-material/Restore";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import {
   useChangeSubmenuStatusMutation,
   useDeleteSubmenuMutation,
@@ -63,9 +51,6 @@ const SubMenuTable = () => {
   //Modal Functionality Is End
 
   //Filter District
-
-  const create_path = "/dashboard/dev_super_admin/content/submenu/create";
-
   const [currentPage, setCurrentPage] = useState(1);
   const [menubarId, setMenubarId] = useState("");
   const [status, setStatus] = useState("");
@@ -113,13 +98,13 @@ const SubMenuTable = () => {
     {
       field: "index",
       headerName: "SERIAL",
-      width: 100,
+      width: 80,
       disableColumnMenu: true,
     },
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 2,
       sortable: false,
     },
     {
@@ -177,7 +162,7 @@ const SubMenuTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

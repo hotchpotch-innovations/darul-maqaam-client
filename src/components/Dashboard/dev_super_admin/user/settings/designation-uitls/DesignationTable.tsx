@@ -95,14 +95,14 @@ const DesignationTable = () => {
     {
       field: "index",
       headerName: "SERIAL",
-      width: 100,
+      width: 80,
       disableColumnMenu: true,
     },
     {
       field: "title",
       headerName: "TITLE",
       sortable: false,
-      flex: 1,
+      flex: 2,
     },
 
     {
@@ -152,7 +152,7 @@ const DesignationTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (
@@ -172,7 +172,7 @@ const DesignationTable = () => {
     setCurrentPage(newPaginationModel.page + 1);
     setLimit(newPaginationModel.pageSize);
   };
-  // Delete Designation Handeler
+  // Delete Designation Handler
   const [deleteDesignation] = useDeleteDesignationMutation();
 
   const handleDelete = async (id: string) => {

@@ -69,7 +69,7 @@ const CountryTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "profile_image",
       headerName: "IMAGE",
@@ -96,7 +96,7 @@ const CountryTable = () => {
       ),
     },
 
-    { field: "name", headerName: "NAME", flex: 1 },
+    { field: "name", headerName: "NAME", flex: 2.5 },
     { field: "currency", headerName: "CURRENCY", flex: 1 },
     {
       field: "iso3",
@@ -110,7 +110,7 @@ const CountryTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center",
       align: "center",
       renderCell: ({ row }) => (

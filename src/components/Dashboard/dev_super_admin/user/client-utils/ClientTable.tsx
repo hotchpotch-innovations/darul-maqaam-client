@@ -80,7 +80,7 @@ const ClientTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "profile_image",
       headerName: "IMAGE",
@@ -117,7 +117,7 @@ const ClientTable = () => {
     {
       field: "owner_name",
       headerName: "NAME",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (
         <Box
           component={Link}
@@ -179,7 +179,7 @@ const ClientTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

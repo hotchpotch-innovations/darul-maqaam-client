@@ -93,11 +93,11 @@ const AuthorityTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "title",
       headerName: "Title",
-      flex: 1,
+      flex: 2,
     },
 
     {
@@ -166,7 +166,7 @@ const AuthorityTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

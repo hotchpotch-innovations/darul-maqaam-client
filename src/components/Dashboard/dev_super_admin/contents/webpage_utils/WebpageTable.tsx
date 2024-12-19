@@ -124,7 +124,7 @@ const WebpageTable = () => {
     {
       field: "index",
       headerName: "SERIAL",
-      width: 60,
+      width: 80,
       disableColumnMenu: true,
     },
     {
@@ -147,7 +147,7 @@ const WebpageTable = () => {
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 2,
       sortable: false,
     },
     {
@@ -251,7 +251,7 @@ const WebpageTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

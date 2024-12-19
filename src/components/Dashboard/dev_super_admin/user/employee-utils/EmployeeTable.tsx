@@ -7,7 +7,7 @@ import {
   useGetAllEmployeeQuery,
 } from "@/redux/api/user/employeeApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -83,7 +83,7 @@ const EmployeeTable = () => {
       field: "index",
       headerName: "SERIAL",
       disableColumnMenu: true,
-      width: 100,
+      width: 80,
     },
     {
       field: "profile_image",
@@ -124,7 +124,7 @@ const EmployeeTable = () => {
     {
       field: "name",
       headerName: "NAME",
-      flex: 1,
+      flex: 1.5,
 
       renderCell: (params) => (
         <Box
@@ -184,7 +184,7 @@ const EmployeeTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

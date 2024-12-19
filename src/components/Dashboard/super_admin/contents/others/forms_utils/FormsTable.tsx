@@ -149,7 +149,7 @@ const FormsTable = () => {
     {
       field: "status",
       headerName: "STATUS",
-      flex: 1,
+      flex: 0.5,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (
         <Box

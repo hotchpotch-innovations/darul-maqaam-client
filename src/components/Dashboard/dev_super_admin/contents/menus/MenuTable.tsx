@@ -21,7 +21,6 @@ import { toast } from "sonner";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import { user_status_options } from "@/constants/options";
-
 import { user_status } from "@/constants";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
 import CMModal from "@/components/UI/CMModal";
@@ -93,19 +92,19 @@ const MenuTable = () => {
     {
       field: "index",
       headerName: "SERIAL",
-      width: 100,
+      width: 80,
       disableColumnMenu: true,
     },
     {
       field: "id",
       headerName: "Id",
-      flex: 1,
+      flex: 2,
       sortable: false,
     },
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
     },
 
@@ -163,7 +162,7 @@ const MenuTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

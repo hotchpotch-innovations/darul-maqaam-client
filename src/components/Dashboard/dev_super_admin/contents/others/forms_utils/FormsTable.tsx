@@ -15,15 +15,10 @@ import {
   useGetAllPrivateFormsQuery,
 } from "@/redux/api/content/formsApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Grid from "@mui/material/Grid2";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
@@ -107,11 +102,11 @@ const FormsTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 2,
       renderCell: (params) => (
         <Box
           component={Link}
@@ -130,7 +125,7 @@ const FormsTable = () => {
     {
       field: "description",
       headerName: "DESCRIPTION",
-      flex: 1.5,
+      flex: 2,
       renderCell: (params: Record<string, any>) => {
         return <Box>{params?.row?.description}</Box>;
       },
@@ -138,7 +133,7 @@ const FormsTable = () => {
     {
       field: "category",
       headerName: "Category",
-      flex: 1.5,
+      flex: 1,
       renderCell: (params: Record<string, any>) => {
         return <Box>{params?.row?.category?.title}</Box>;
       },
@@ -146,7 +141,7 @@ const FormsTable = () => {
     {
       field: "authority",
       headerName: "Authority",
-      flex: 1.5,
+      flex: 1,
       renderCell: (params: Record<string, any>) => {
         return <Box>{params?.row?.authority?.title}</Box>;
       },
@@ -212,7 +207,7 @@ const FormsTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

@@ -17,17 +17,12 @@ import {
   useGetAllPrivateSPSQuery,
 } from "@/redux/api/content/singlePageSectionApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import { user_status_options } from "@/constants/options";
@@ -140,12 +135,12 @@ const SinglePageSectionTable = () => {
       field: "section_name",
       headerName: "Section Name",
       sortable: false,
-      flex: 1,
+      flex: 1.5,
     },
     {
       field: "section_title",
       headerName: "Section Title",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
     },
     {
@@ -240,7 +235,7 @@ const SinglePageSectionTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

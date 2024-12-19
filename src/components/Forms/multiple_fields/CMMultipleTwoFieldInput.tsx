@@ -15,7 +15,7 @@ const CMMultipleTwoFieldInput = ({
   setStates,
   firstFieldName = "first",
   secondFieldName = "second",
-  label = "Properties",
+  label,
   labelStyle = "text-gray-500",
 }: TProps) => {
   const addHandler = () => {
@@ -37,13 +37,13 @@ const CMMultipleTwoFieldInput = ({
 
   return (
     <>
-      <div className="mb-2 flex justify-between items-center">
+      <div className=" flex justify-between items-center">
         <div>
           <p className={`font-medium text-base ${labelStyle}`}>{label}</p>
         </div>
         <div>
           <button
-            className="border-2 border-gray-300 px-4 text-green-600 rounded-[4px] hover:text-white bg-white hover:bg-green-600 duration-500 py-[2px] "
+            className="border-2 mb-2 border-gray-300 px-4 text-green-600 rounded-[4px] hover:text-white bg-white hover:bg-green-600 duration-500 py-[2px] "
             onClick={addHandler}
           >
             Add
@@ -55,21 +55,13 @@ const CMMultipleTwoFieldInput = ({
         {states.map((data: any, i: number) => {
           return (
             <div key={i} className="space-y-2">
-              <div className={"flex justify-between items-start"}>
+              {/* <div className={"flex justify-between items-start"}>
                 <div>
                   <p className="text-gray-500 text-sm font-medium">
                     Property - {i + 1}
                   </p>
                 </div>
-                <div>
-                  <button
-                    className="px-4  border-2 border-gray-300 text-red-400 hover:text-white font-medium bg-white hover:bg-red-500 duration-500 rounded-[4px]"
-                    onClick={() => deleteHandler(i)}
-                  >
-                    x
-                  </button>
-                </div>
-              </div>
+              </div> */}
               <div className="flex space-x-1">
                 <input
                   className="w-full border py-1 rounded-sm text-gray-500 pl-2 focus:outline-none focus:ring focus:ring-green-200"
@@ -89,6 +81,15 @@ const CMMultipleTwoFieldInput = ({
                     secondFieldName === "url" ? "URL" : "Second Field"
                   }
                 />
+
+                <div>
+                  <button
+                    className="px-6 py-[3px] text-xl border-2 border-gray-300 text-red-400 hover:text-white font-medium bg-white hover:bg-red-500 duration-500 rounded-[4px]"
+                    onClick={() => deleteHandler(i)}
+                  >
+                    x
+                  </button>
+                </div>
               </div>
             </div>
           );

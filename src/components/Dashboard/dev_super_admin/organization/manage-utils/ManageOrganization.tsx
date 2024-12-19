@@ -3,26 +3,18 @@ import {
   a11yProps,
   TabPanel,
 } from "@/components/Dashboard/common/tabPanel/TabPanel";
-import {
-  Box,
-  Card,
-  CardContent,
-  Stack,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React, { SyntheticEvent, useState } from "react";
 import OrganizationBuisness from "./OrganizationBuisness";
 import OrganizationSocial from "./OrganizationSocial";
 import OrganizationFooter from "./OrganizationFooter";
 import OrganizationLogo from "./OrganizationLogo";
+import OrganizationGetUs from "./OrganizationGetUs";
 
 const ManageOrganization = () => {
   // Tab change
   const [value, setValue] = useState(0);
-  const [footerLinks, setFooterLinks] = useState([{}]);
   // Handle tab changes
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -71,6 +63,7 @@ const ManageOrganization = () => {
                 <Tab label="Business Details" {...a11yProps(0)} />
                 <Tab label="Socail Links" {...a11yProps(1)} />
                 <Tab label="Footer Links" {...a11yProps(2)} />
+                <Tab label="Footer Get Us" {...a11yProps(3)} />
               </Tabs>
             </Box>
 
@@ -87,6 +80,11 @@ const ManageOrganization = () => {
             {/* Footer Links */}
             <TabPanel value={value} index={2}>
               <OrganizationFooter />
+            </TabPanel>
+
+            {/* Footer Get Us */}
+            <TabPanel value={value} index={3}>
+              <OrganizationGetUs />
             </TabPanel>
           </Box>
         </Grid>

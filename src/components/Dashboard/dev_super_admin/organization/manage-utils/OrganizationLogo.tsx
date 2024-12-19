@@ -95,11 +95,11 @@ const OrganizationLogo = () => {
           }}
         >
           <Typography variant="h6" component="div">
-            {business_data?.name} Darul Maaqam
+            {business_data?.name}
           </Typography>
 
           <Typography variant="body2" color="text.secondary">
-            {business_data?.tag_line} Darul Maaqam
+            {business_data?.tag_line}
           </Typography>
         </CardContent>
       </Card>

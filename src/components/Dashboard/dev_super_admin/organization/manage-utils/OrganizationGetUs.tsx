@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { customTimeOut } from "@/utils/customTimeOut";
+
 import { toast } from "sonner";
 import { Box, Button } from "@mui/material";
 import Loading from "@/components/UI/LoadingBar";
@@ -11,15 +12,15 @@ import {
 } from "@/redux/api/organization/organizationApi";
 import CMMultipleTwoFieldInput from "@/components/forms/multiple_fields/CMMultipleTwoFieldInput";
 
-const OrganizationFooter = () => {
+const OrganizationGetUs = () => {
   // Fetching user data from the API
   const { data, isLoading } = useGetFirstOrganizationQuery("");
   const business_data = data?.data?.business;
 
-  const [footerLinks, setFooterLinks] = useState<any>([{}]);
+  const [footerGetUs, setFooterGetUs] = useState<any>([{}]);
   useEffect(() => {
-    if (!!business_data?.footer_links) {
-      setFooterLinks(business_data?.footer_links);
+    if (!!business_data?.footer_get_us) {
+      setFooterGetUs(business_data?.footer_get_us);
     }
   }, [business_data]);
 
@@ -32,7 +33,7 @@ const OrganizationFooter = () => {
     const toastId = toast.loading("Please wait...");
 
     const payload = {
-      business: { footer_links: footerLinks },
+      business: { footer_get_us: footerGetUs },
     };
 
     try {
@@ -56,8 +57,8 @@ const OrganizationFooter = () => {
     <>
       <Box sx={{ width: "100%" }}>
         <CMMultipleTwoFieldInput
-          states={footerLinks}
-          setStates={setFooterLinks}
+          states={footerGetUs}
+          setStates={setFooterGetUs}
           firstFieldName="label"
           secondFieldName="url"
         />
@@ -83,4 +84,4 @@ const OrganizationFooter = () => {
   );
 };
 
-export default OrganizationFooter;
+export default OrganizationGetUs;

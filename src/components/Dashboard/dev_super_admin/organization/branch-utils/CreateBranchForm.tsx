@@ -34,6 +34,7 @@ const validationSchema = z.object({
   secondary_tel: z
     .string({ required_error: "Secondary telephone number is required" })
     .optional(),
+  summary: z.string({ required_error: "Summary is required" }).optional(),
   branch_location: addressValidationSchema,
 });
 

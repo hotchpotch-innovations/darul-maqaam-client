@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import React, { useState, ChangeEvent, MouseEvent } from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import { TLogoPayload } from "./OrganizationProfileForm";
 import Image from "next/image";
 
 type TLogo = {
@@ -25,6 +24,13 @@ export type TOrgData = {
   type: "primary_logo" | "secondary_logo";
   name: string;
   tag_line: string;
+};
+
+export type TLogoPayload = {
+  previous_primary_key?: string;
+  previous_secondary_key?: string;
+  primary_logo?: File;
+  secondary_logo?: File;
 };
 
 type TOrganizationLogoProps = {
@@ -163,60 +169,6 @@ const OrganizationLogoField: React.FC<TOrganizationLogoProps> = ({
   };
 
   return (
-    // <Box sx={{ position: "relative" }}>
-    //   <Avatar
-    //     src={org_data?.logo?.url}
-    //     alt={org_data?.name || "Organization Logo"}
-    //     sx={{
-    //       width: 100,
-    //       height: 100,
-    //       borderRadius: "50%",
-    //       border: "2px solid black",
-    //     }}
-    //   />
-
-    //   <IconButton
-    //     sx={{
-    //       position: "absolute",
-    //       right: 5,
-    //       bottom: -2,
-    //       backgroundColor: "#dce0dd",
-    //       border: "1px solid #bbb",
-    //       borderRadius: "50%",
-    //       boxShadow: "none",
-    //       width: 30,
-    //       height: 30,
-    //       zIndex: 1,
-    //       "&:hover": {
-    //         backgroundColor: "#f0f0f0",
-    //         borderColor: "#bbb",
-    //         boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-    //       },
-    //     }}
-    //     component="label"
-    //     onClick={handleOpen}
-    //   >
-    //     <CameraAltSharpIcon fontSize="small" />
-
-    //     <Modal
-    //       open={open}
-    //       onClose={handleClose}
-    //       aria-labelledby="modal-modal-title"
-    //       aria-describedby="modal-modal-description"
-    //     >
-    //       <ModalContent
-    //         previewImage={previewImage}
-    //         org_data={org_data}
-    //         file={file}
-    //         isUploading={isUploading}
-    //         handleImageChange={handleImageChange}
-    //         handleImageUpload={handleImageUpload}
-    //         handleClose={handleClose}
-    //       />
-    //     </Modal>
-    //   </IconButton>
-    // </Box>
-
     <Grid2
       sx={{
         border: "1px solid block",
@@ -235,7 +187,6 @@ const OrganizationLogoField: React.FC<TOrganizationLogoProps> = ({
 
       <Box
         component="div"
-        // onClick={onClick}
         onClick={handleOpen}
         sx={{
           position: "relative",
@@ -243,7 +194,6 @@ const OrganizationLogoField: React.FC<TOrganizationLogoProps> = ({
           width: "100px",
           height: "100px",
           marginTop: "10px",
-          "&:hover": { backgroundColor: "black" },
         }}
       >
         <Image
@@ -261,7 +211,6 @@ const OrganizationLogoField: React.FC<TOrganizationLogoProps> = ({
           sx={{
             position: "absolute",
             top: "40%",
-            // left: "50%",
             backgroundColor: "#dce0dd",
             border: "1px solid #bbb",
             borderRadius: "50%",
@@ -270,11 +219,6 @@ const OrganizationLogoField: React.FC<TOrganizationLogoProps> = ({
             height: 30,
             zIndex: 1,
             opacity: 0,
-            // "&:hover": {
-            //   backgroundColor: "#f0f0f0",
-            //   borderColor: "#bbb",
-            //   boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-            // },
           }}
         >
           <EditIcon color="info" fontSize="small" />

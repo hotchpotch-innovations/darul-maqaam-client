@@ -86,6 +86,7 @@ const UpdateSinglePageSectionForm = ({ id }: TProps) => {
     section_summary: sps_data?.section_summary || "",
     section_contents: sps_data.section_contents || "",
   };
+
   return (
     <>
       <SinglePageImages

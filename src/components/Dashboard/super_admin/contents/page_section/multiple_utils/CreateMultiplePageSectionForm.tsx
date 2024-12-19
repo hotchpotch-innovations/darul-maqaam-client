@@ -1,11 +1,15 @@
 "use client";
 
+import CMFileInput from "@/components/forms/CMFileInput";
+import CMForm from "@/components/forms/CMForm";
+import CMInput from "@/components/forms/CMInput";
+import CMSelect from "@/components/forms/CMSelect";
+import CMSelectWithWatch from "@/components/forms/CMSelectWithWatch";
+import CMTextarea from "@/components/forms/CMTextarea";
 import Editor from "@/components/forms/editors/Editor";
-import CMSelectStateInput from "@/components/forms/without_form_state_fields/CMSelectStateInput";
 import CMStateFileInput from "@/components/forms/without_form_state_fields/CMStateFileInput";
-import CMStateInput from "@/components/forms/without_form_state_fields/CMStateInput";
-import CMStateTextarea from "@/components/forms/without_form_state_fields/CMStateTextarea";
 import { multiple_page_section_types_options } from "@/constants/options";
+import { create_multiple_wp_section_default_values } from "@/constants/values";
 import {
   TCategoryQueryObj,
   useCategoryOptions,
@@ -13,25 +17,25 @@ import {
 import { useCreateMultipleSectionMutation } from "@/redux/api/content/multiplePageSectionApi";
 import { customTimeOut } from "@/utils/customTimeOut";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { filterUndefinedValues } from "@/utils/sanitizeObject";
 import { videoFileLimitation } from "@/utils/videoFileLimitation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
-type TMultiplePageSectionPayload = {
-  type?: string;
-  categoryId?: string;
-  title?: string;
-  // price?: number;
-  // discount_rate?: number;
-  yt_video_url?: URL;
-  cover_image?: any;
-  files?: any;
-  summary?: string;
-  contents?: string;
-};
+const validationSchema = z.object({
+  type: z.string().nonempty({ message: "Type is required." }),
+  categoryId: z.string().nonempty({ message: "Category is required." }),
+  title: z.string().nonempty({ message: "Title is required." }),
+  cover_image: z.instanceof(File).optional(),
+  summary: z.string().nonempty({ message: "Summary is required." }),
+  yt_video_url: z.string().optional(),
+});
 
 const CreateMultiplePageSectionForm = () => {
   const router = useRouter();
@@ -40,14 +44,7 @@ const CreateMultiplePageSectionForm = () => {
     limit: 50,
   };
   const [type, setType] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [title, setTitle] = useState();
-  // const [price, setPrice] = useState("");
-  // const [discount_rate, setDiscountRate] = useState("");
-  const [yt_video_url, setYtVideoUrl] = useState();
-  const [cover_image, setCoverImage] = useState(null);
   const [files, setFiles] = useState([]);
-  const [summary, setSummary] = useState("");
   // Get value from text editor
   const [editorValue, setEditorValue] = useState("");
 
@@ -62,73 +59,52 @@ const CreateMultiplePageSectionForm = () => {
     useCreateMultipleSectionMutation();
 
   // create function handler
-  const submitHandler = async () => {
+  const submitHandler: SubmitHandler<FieldValues> = async (values) => {
+    const data = filterUndefinedValues(values);
     const toastId = toast.loading("Please wait ...");
-    if (!type || !categoryId || !title) {
-      toast.error("Data does not found!", { id: toastId, duration: 2000 });
-    } else {
+    if (files?.length > 0) {
       const videoFileValidation = videoFileLimitation(files);
       if (!videoFileValidation?.status) {
         return toast.error(videoFileValidation?.message, {
           id: toastId,
           duration: 3000,
         });
-      }
-      const data: TMultiplePageSectionPayload = {};
-
-      data["type"] = type;
-      data["categoryId"] = categoryId;
-      data["title"] = title;
-      // if (!!price) {
-      //   data["price"] = parseFloat(price);
-      // }
-      // if (!!discount_rate) {
-      //   data["discount_rate"] = parseFloat(discount_rate);
-      // }
-      if (!!yt_video_url) {
-        data["yt_video_url"] = yt_video_url;
-      }
-      if (!!cover_image) {
-        data["cover_image"] = cover_image;
-      }
-      if (files?.length > 0) {
+      } else {
         data["files"] = files;
       }
+    }
 
-      if (summary?.length > 0) {
-        data["summary"] = summary;
+    if (!!editorValue) {
+      data["contents"] = editorValue;
+    }
+
+    const payload = modifyPayload(data);
+    try {
+      const res = await createMultipleSection(payload).unwrap();
+
+      if (res?.success) {
+        toast.success(res.message, { id: toastId, duration: 2000 });
+        router.push("/dashboard/super_admin/content/page-section/multiple");
+      } else {
+        toast.error(res?.message, { id: toastId, duration: 2000 });
+        console.log(res);
       }
-
-      if (editorValue.length > 0) {
-        data["contents"] = editorValue;
-      }
-      // console.log(data);
-
-      const payload = modifyPayload(data);
-      // console.log(data?.contents);
-      try {
-        const res = await createMultipleSection(payload).unwrap();
-
-        if (res?.success) {
-          toast.success(res.message, { id: toastId, duration: 2000 });
-          router.push("/dashboard/super_admin/content/page-section/multiple");
-        } else {
-          toast.error(res?.message, { id: toastId, duration: 2000 });
-          console.log(res);
-        }
-      } catch (error: any) {
-        console.log(error);
-        toast.error(
-          error?.message || "something went wrong. please try again",
-          { id: toastId, duration: 2000 }
-        );
-        customTimeOut(3000).then(() => window.location.reload());
-      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.message || "something went wrong. please try again", {
+        id: toastId,
+        duration: 2000,
+      });
+      customTimeOut(3000).then(() => window.location.reload());
     }
   };
 
   return (
-    <>
+    <CMForm
+      onSubmit={submitHandler}
+      defaultValues={create_multiple_wp_section_default_values}
+      resolver={zodResolver(validationSchema)}
+    >
       <Stack direction={"column"} spacing={4}>
         <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
           {/* Type & Category */}
@@ -143,37 +119,28 @@ const CreateMultiplePageSectionForm = () => {
             p={4}
           >
             <Grid size={12}>
-              <CMSelectStateInput
+              <CMSelectWithWatch
                 name="type"
                 label="Type"
                 setState={setType}
-                state={type}
-                fullWidth={true}
-                items={multiple_page_section_types_options}
+                options={multiple_page_section_types_options}
               />
             </Grid>
             <Grid size={12}>
-              <CMSelectStateInput
+              <CMSelect
                 name="categoryId"
                 label="Category"
-                setState={setCategoryId}
-                state={categoryId}
                 fullWidth={true}
                 items={category_options}
                 isDisabled={!type}
               />
             </Grid>
             <Grid size={12}>
-              <CMStateInput
-                name="title"
-                label="Title"
-                setState={setTitle}
-                fullWidth={true}
-              />
+              <CMInput name="title" label="Title" fullWidth={true} />
             </Grid>
           </Grid>
 
-          {/* Price, Discouint Price, Youtube URL, Banner Image & Files(Images) */}
+          {/* Price, Discount Price, Youtube URL, Banner Image & Files(Images) */}
           <Grid
             size={{ xs: 12, lg: 6 }}
             container
@@ -181,35 +148,13 @@ const CreateMultiplePageSectionForm = () => {
             sx={{
               border: "1px solid lightgray",
               boxShadow: 1,
-              // display: "flex",
-              // justifyContent: "center",
-              // alignItems: "center",
             }}
             p={4}
           >
-            {/* <Grid size={12}>
-              <CMStateInput
-                name="price"
-                label="Price"
-                setState={setPrice}
-                type="number"
-                fullWidth={true}
-              />
-            </Grid>
             <Grid size={12}>
-              <CMStateInput
-                name="discount_rate"
-                label="Discount (Rate)"
-                setState={setDiscountRate}
-                type="number"
-                fullWidth={true}
-              />
-            </Grid> */}
-            <Grid size={12}>
-              <CMStateInput
+              <CMInput
                 name="yt_video_url"
                 label="Youtube Video URL (embedded)"
-                setState={setYtVideoUrl}
                 type="url"
                 fullWidth={true}
               />
@@ -225,13 +170,10 @@ const CreateMultiplePageSectionForm = () => {
                 }}
               >
                 <Grid size={6}>
-                  <CMStateFileInput
+                  <CMFileInput
                     name="cover_image"
                     label="Banner Image"
                     accept="image/*"
-                    setState={setCoverImage}
-                    btn_width="100%"
-                    state={cover_image}
                   />
                 </Grid>
                 <Grid size={6}>
@@ -262,11 +204,7 @@ const CreateMultiplePageSectionForm = () => {
             p={4}
           >
             <Grid size={12}>
-              <CMStateTextarea
-                label="Summary"
-                name="summary"
-                setState={setSummary}
-              />
+              <CMTextarea label="Summary" name="summary" />
             </Grid>
           </Grid>
         </Stack>
@@ -297,7 +235,6 @@ const CreateMultiplePageSectionForm = () => {
       >
         <Button
           type="submit"
-          onClick={() => submitHandler()}
           disabled={isCreateLoading}
           sx={{
             mt: "30px",
@@ -306,7 +243,7 @@ const CreateMultiplePageSectionForm = () => {
           Create Item
         </Button>
       </Box>
-    </>
+    </CMForm>
   );
 };
 

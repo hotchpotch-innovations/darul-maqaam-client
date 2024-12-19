@@ -83,7 +83,11 @@ const CreateTeamMemberForm = () => {
       resolver={zodResolver(validationSchema)}
       defaultValues={create_team_member_default_values}
     >
-      <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
+      <Stack
+        direction={{ xs: "column", lg: "row" }}
+        gap={4}
+        alignItems="flex-start"
+      >
         {/* 1st Pera */}
         <Grid
           size={{ xs: 12, lg: 6 }}

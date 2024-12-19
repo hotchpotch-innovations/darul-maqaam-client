@@ -200,8 +200,8 @@ const CreateArticleForm = () => {
           </Grid>
         </Stack>
 
+        {/* Summary & Contents */}
         <Stack direction={{ xs: "column", lg: "row" }} gap={4}>
-          {/* Summary */}
           <Grid
             size={12}
             container
@@ -215,19 +215,6 @@ const CreateArticleForm = () => {
             <Grid size={12}>
               <CMTextarea label="Summary" name="summary" />
             </Grid>
-          </Grid>
-
-          {/* Text Editor */}
-          <Grid
-            size={12}
-            container
-            gap={2}
-            sx={{
-              border: "1px solid lightgray",
-              boxShadow: 1,
-            }}
-            p={4}
-          >
             <Grid size={12}>
               <Editor setState={setContents} defaultValue={contents} />
             </Grid>

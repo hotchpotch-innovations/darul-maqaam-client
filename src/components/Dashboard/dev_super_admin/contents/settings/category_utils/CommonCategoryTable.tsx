@@ -9,13 +9,8 @@ import {
 } from "@/redux/api/content/commonCategoryApi";
 import { useDebounced } from "@/redux/hooks";
 import { TResponseDataObj } from "@/types";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import EditIcon from "@mui/icons-material/Edit";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import Grid from "@mui/material/Grid2";
@@ -110,13 +105,13 @@ const CommonCategoryTable = () => {
     {
       field: "index",
       headerName: "SERIAL",
-      width: 100,
+      width: 80,
       disableColumnMenu: true,
     },
     {
       field: "title",
       headerName: "Title",
-      flex: 1,
+      flex: 2,
       sortable: false,
     },
 
@@ -196,7 +191,7 @@ const CommonCategoryTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       sortable: false,
       renderCell: ({ row }) => (

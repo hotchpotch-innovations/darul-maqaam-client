@@ -8,19 +8,12 @@ import {
   useGetAllPrivateMPSQuery,
 } from "@/redux/api/content/multiplePageSectionApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import UnpublishedIcon from "@mui/icons-material/Unpublished";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import SelectFilter from "@/components/Dashboard/DashboardFilters/SclectFilter";
 import {
@@ -113,7 +106,7 @@ const MultiplePageSectionTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "profile_image",
       headerName: "IMAGE",
@@ -132,7 +125,7 @@ const MultiplePageSectionTable = () => {
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 2,
     },
     {
       field: "type",
@@ -224,7 +217,7 @@ const MultiplePageSectionTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       renderCell: ({ row }) => (
         <MoreActionsMenu
           onEdit={() => router.push(`${path}/${row?.id}`)}

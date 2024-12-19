@@ -12,11 +12,6 @@ import { TResponseDataObj } from "@/types";
 import { Box, Button, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import BlockIcon from "@mui/icons-material/Block";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import RestoreIcon from "@mui/icons-material/Restore";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import Grid from "@mui/material/Grid2";
@@ -96,17 +91,17 @@ const FAQTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "question",
       headerName: "QUESTION",
-      flex: 1,
+      flex: 2,
     },
 
     {
       field: "answer",
       headerName: "ANSWER",
-      flex: 1,
+      flex: 2,
     },
     {
       field: "status",
@@ -169,7 +164,7 @@ const FAQTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

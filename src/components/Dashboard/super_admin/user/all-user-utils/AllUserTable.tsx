@@ -112,7 +112,7 @@ const AllUserTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       renderCell: ({ row }) => {
         return (
           <Box

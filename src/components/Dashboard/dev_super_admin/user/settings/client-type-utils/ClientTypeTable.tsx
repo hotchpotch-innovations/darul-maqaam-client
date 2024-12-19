@@ -1,10 +1,8 @@
 "use client";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
 import Loading from "@/components/UI/LoadingBar";
-import { Box, Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -18,7 +16,6 @@ import { FieldValues } from "react-hook-form";
 import {
   useDeleteClientTypeMutation,
   useGetAllClientTypeQuery,
-  useGetSingleClientTypeQuery,
   useUpdateClientTypeMutation,
 } from "@/redux/api/user/settings/clientTypeApi";
 import MoreActionsMenu from "@/components/Dashboard/common/moreActionsMenu/MoreActionsMenu";
@@ -73,13 +70,6 @@ const ClientTypeTable = () => {
   const { data, isLoading } = useGetAllClientTypeQuery({ ...queryObj });
   const client_types = data as TResponseDataObj;
 
-  // const { data: client_type_data } = useGetSingleClientTypeQuery(updateId);
-  // const client_type_info = client_type_data as {
-  //   success: boolean;
-  //   message: string;
-  //   data: Record<string, any>;
-  // };
-
   // index and also Role field to each user for serial number
   const rowsWithIndex =
     client_types?.data?.map((row: any, index: number) => ({
@@ -89,11 +79,11 @@ const ClientTypeTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "title",
       headerName: "TITLE",
-      flex: 1,
+      flex: 3,
     },
 
     { field: "identifier", headerName: "IDENTIFIER", flex: 1 },
@@ -101,7 +91,7 @@ const ClientTypeTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

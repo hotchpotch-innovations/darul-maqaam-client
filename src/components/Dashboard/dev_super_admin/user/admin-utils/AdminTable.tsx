@@ -83,7 +83,7 @@ const AdminTable = () => {
       field: "index",
       headerName: "SERIAL",
       disableColumnMenu: true,
-      width: 100,
+      width: 80,
     },
     {
       field: "profile_image",
@@ -122,7 +122,7 @@ const AdminTable = () => {
     {
       field: "name",
       headerName: "NAME",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (
         <Box
           component={Link}
@@ -175,7 +175,7 @@ const AdminTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center",
       align: "center",
       disableColumnMenu: true,

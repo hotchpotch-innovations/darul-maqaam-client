@@ -170,7 +170,7 @@ const MultiplePageSectionTable = () => {
     {
       field: "status",
       headerName: "STATUS",
-      flex: 1,
+      flex: 0.5,
       disableColumnMenu: true,
       valueGetter: (params: any) => (params === "" ? "No" : params),
       renderCell: ({ row }) => (

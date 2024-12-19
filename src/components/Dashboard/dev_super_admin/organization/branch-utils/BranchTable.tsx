@@ -7,15 +7,10 @@ import {
   useGetAllPrivateBranchQuery,
 } from "@/redux/api/organization/branchApi";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import BlockIcon from "@mui/icons-material/Block";
-import RestoreIcon from "@mui/icons-material/Restore";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "sonner";
 import Grid from "@mui/material/Grid2";
 import SearchFiled from "@/components/Dashboard/DashboardFilters/SearchFiled";
@@ -74,7 +69,7 @@ const BranchTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     {
       field: "name",
       headerName: "NAME",
@@ -169,7 +164,7 @@ const BranchTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center", // Horizontally center the header
       align: "center",
       renderCell: ({ row }) => (

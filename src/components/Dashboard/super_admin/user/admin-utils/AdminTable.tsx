@@ -149,7 +149,7 @@ const AdminTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       headerAlign: "center",
       align: "center",
       disableColumnMenu: true,

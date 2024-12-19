@@ -6,14 +6,7 @@ import {
   useGetAllUsersQuery,
 } from "@/redux/api/user/userApi";
 import { useDebounced } from "@/redux/hooks";
-import {
-  Box,
-  Button,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useState } from "react";
@@ -81,12 +74,11 @@ const AllUserTable = () => {
     })) || [];
 
   const columns: GridColDef[] = [
-    { field: "index", headerName: "SERIAL", width: 100 },
+    { field: "index", headerName: "SERIAL", width: 80 },
     { field: "gu_id", headerName: "USER ID", flex: 1 },
     { field: "email", headerName: "EMAIL", flex: 2 },
     { field: "role", headerName: "ROLE", flex: 1 },
     { field: "account_type", headerName: "ACCOUNT TYPE", flex: 1 },
-    // { field: "status", headerName: "STATUS", flex: 1 },
     {
       field: "status",
       headerName: "STATUS",
@@ -119,7 +111,7 @@ const AllUserTable = () => {
     {
       field: "Action",
       headerName: "ACTIONS",
-      flex: 1,
+      flex: 0.5,
       renderCell: ({ row }) => {
         return (
           <Box

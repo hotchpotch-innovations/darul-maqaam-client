@@ -33,7 +33,7 @@ const validationSchema = z.object({
   categoryId: z.string().nonempty({ message: "Category is required." }),
   title: z.string().nonempty({ message: "Title is required." }),
   cover_image: z.instanceof(File).optional(),
-  summary: z.string().nonempty({ message: "Summary is required." }),
+  summary: z.string().nonempty({ message: "Summary is required." }).optional(),
   yt_video_url: z.string().optional(),
   price: z.number({ message: "Price must be number type" }).optional(),
   discount_rate: z

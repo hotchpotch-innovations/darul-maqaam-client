@@ -35,11 +35,6 @@ const GalleryPage = async () => {
     <>
       <Title title="gallery" />
       <Box bgcolor={"secondary.main"}>
-        {/* <GalleryDrawer
-          firstMenu="Bonna "
-          drawerData={GallerytData}
-          isGallery={true}
-        /> */}
         <CategoryDrawer categoryData={categoryData} />
       </Box>
     </>

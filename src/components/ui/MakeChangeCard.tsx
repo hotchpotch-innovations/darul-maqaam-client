@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const MakeChangeCard = ({ data }: Record<string, any>) => {
+  // console.log(data);
   return (
     <Grid
       item
@@ -31,9 +32,9 @@ const MakeChangeCard = ({ data }: Record<string, any>) => {
             {data?.title}
           </Typography>
           <Typography fontSize={14} className="text-justify pb-8 text-gray-500">
-            {data?.meta_description?.length > 230
-              ? data?.meta_description?.slice(0, 230) + "..."
-              : data?.meta_description}
+            {data?.description?.length > 230
+              ? data?.description?.slice(0, 230) + "..."
+              : data?.description}
           </Typography>
         </div>
 

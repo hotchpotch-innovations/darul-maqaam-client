@@ -4,8 +4,9 @@ import Link from "next/link";
 
 const MakeChange = async () => {
   const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const menubarId = process.env.NEXT_PUBLIC_DONATE_MENUBAR_ID;
   const res = await fetch(
-    `${backend_api}/content/webpage/public?menubarId=caedb2db-aa25-4edd-a15e-0b9006ab9779&isPublished=true`,
+    `${backend_api}/content/webpage/public?menubarId=${menubarId}&isPublished=true`,
     {
       cache: "no-store",
     }

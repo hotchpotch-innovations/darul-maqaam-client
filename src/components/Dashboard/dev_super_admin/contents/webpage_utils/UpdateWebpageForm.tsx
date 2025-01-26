@@ -25,6 +25,7 @@ type TProps = {
 
 const validationSchema = z.object({
   title: z.string().nonempty("Webpage Title is required"),
+  description: z.string().optional(),
   slug: z.string().nonempty("Slug is required"),
   meta_title: z.string().nonempty("Meta Title is required"),
   og_author: z.string().nonempty("OG Author is required"),
@@ -33,7 +34,7 @@ const validationSchema = z.object({
 });
 
 const UpdateWebpageForm = ({ slug }: TProps) => {
-  console.log(slug);
+  // console.log(slug);
   const router = useRouter();
   const [id, setId] = useState();
 
@@ -74,6 +75,7 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
 
   const default_values = {
     title: webpage_info?.title,
+    description: webpage_info?.description,
     slug: webpage_info?.slug,
     meta_title: webpage_info?.meta_title || default_meta_info?.meta_title,
     og_author: webpage_info?.og_author || default_meta_info?.og_author,
@@ -100,6 +102,11 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
                 fullWidth={true}
               />
             </Grid>
+
+            <Grid size={12}>
+              <CMTextarea name="description" label="Description" />
+            </Grid>
+
             <Grid size={12}>
               <CMInput
                 name="slug"

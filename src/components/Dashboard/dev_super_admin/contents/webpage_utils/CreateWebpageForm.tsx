@@ -30,6 +30,7 @@ const validationSchema = z.object({
   menubarId: z.string().optional(),
   submenuId: z.string().optional(),
   title: z.string().nonempty("Webpage Title is required"),
+  description: z.string().optional(),
   slug: z.string().nonempty("Slug is required"),
   identifier: z.string().nonempty("Identifier is required"),
   meta_title: z.string().nonempty("Meta Title is required"),
@@ -44,6 +45,7 @@ const default_values = {
   menubarId: undefined,
   submenuId: undefined,
   title: "",
+  description: "",
   slug: "",
   identifier: "",
   meta_title: "",
@@ -163,6 +165,11 @@ const CreateWebpageForm = () => {
                       size="medium"
                       fullWidth={true}
                     />
+                  </Grid>
+
+                  {/* Webpage descriptions */}
+                  <Grid size={12}>
+                    <CMTextarea name="description" label="Description" />
                   </Grid>
 
                   {/* Web page identifier */}

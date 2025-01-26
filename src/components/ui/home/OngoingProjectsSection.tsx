@@ -13,6 +13,7 @@ const OnProject = async () => {
   );
   const { data: ongoing_project_obj = {} } = await res.json();
   const ongoingProjectData = ongoing_project_obj?.data || [];
+  console.log({ ongoingProjectData });
   return (
     <Box bgcolor={"white"}>
       <Container

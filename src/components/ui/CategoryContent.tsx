@@ -1,9 +1,16 @@
 "use client";
 import { useGetAllPublicMPSQuery } from "@/redux/api/content/multiplePageSectionApi";
-import { Box, Container, Stack } from "@mui/material";
+import {
+  Box,
+  Container,
+  ImageList,
+  ImageListItem,
+  Stack,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import Loading from "./LoadingBar";
-import { useEffect } from "react";
 
 type TProps = {
   categoryId: string;
@@ -34,24 +41,36 @@ const CategoryContent = ({ categoryId }: TProps) => {
 
   const contents = contents_data_obj?.data?.data || [];
 
-  console.log(contents);
+  // console.log(contents);
 
   return (
     <Container>
       <Stack>
-        {contents?.map((item: Record<string, any>) => (
-          <Box key={item?.id}>
-            <Box mb={1}>
-              <Image
-                src={item?.cover_image?.url}
-                className="rounded-md"
-                alt="Gallery Photo"
-                height={400}
-                width={400}
-              />
-            </Box>
-          </Box>
-        ))}
+        <ImageList
+          // sx={{ width: 500, height: 450 }} cols={3}
+          variant="standard"
+          cols={3}
+          gap={8}
+        >
+          {contents?.map((item: Record<string, any>) => (
+            <ImageListItem key={item?.id}>
+              <Box>
+                <Box mb={1}>
+                  <Image
+                    src={item?.cover_image?.url}
+                    className="rounded-md"
+                    alt="Gallery Photo"
+                    height={400}
+                    width={400}
+                  />
+                </Box>
+                <Box mb={1}>
+                  <Typography>{item?.title}</Typography>
+                </Box>
+              </Box>
+            </ImageListItem>
+          ))}
+        </ImageList>
       </Stack>
     </Container>
   );

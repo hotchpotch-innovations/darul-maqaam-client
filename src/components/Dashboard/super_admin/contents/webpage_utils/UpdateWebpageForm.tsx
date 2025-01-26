@@ -25,6 +25,7 @@ type TProps = {
 
 const validationSchema = z.object({
   title: z.string().nonempty("Webpage Title is required"),
+  description: z.string().optional(),
   meta_title: z.string().nonempty("Meta Title is required"),
   og_author: z.string().nonempty("OG Author is required"),
   meta_description: z.string().optional(),
@@ -70,7 +71,7 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
 
   const default_values = {
     title: webpage_info?.title,
-    // slug: webpage_info?.slug,
+    description: webpage_info?.description,
     meta_title: webpage_info?.meta_title || default_meta_info?.meta_title,
     og_author: webpage_info?.og_author || default_meta_info?.og_author,
     meta_description:
@@ -95,6 +96,9 @@ const UpdateWebpageForm = ({ slug }: TProps) => {
                 size="medium"
                 fullWidth={true}
               />
+            </Grid>
+            <Grid size={12}>
+              <CMTextarea name="description" label="Description" />
             </Grid>
             <Grid size={12}>
               <CMInput

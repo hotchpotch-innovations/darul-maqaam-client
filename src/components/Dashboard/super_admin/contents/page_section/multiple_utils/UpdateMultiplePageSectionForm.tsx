@@ -26,7 +26,7 @@ type TProps = {
 
 const validationSchema = z.object({
   title: z.string().nonempty({ message: "Title is required." }),
-  summary: z.string().nonempty({ message: "Summary is required." }),
+  summary: z.string().optional(),
   yt_video_url: z.string().optional(),
 });
 

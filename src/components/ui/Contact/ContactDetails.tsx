@@ -1,6 +1,15 @@
 import { Box, Stack, Typography } from "@mui/material";
 
-const ContactDeatils = () => {
+const ContactDetails = async () => {
+  const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const res = await fetch(`${backend_api}/system/business/`, {
+    cache: "no-store",
+  });
+  const { data: business_info = {} } = await res.json();
+  const { business = {}, location = {} } = business_info;
+  const { email, primary_phone, secondary_phone } = business;
+  const { country = {}, state, city, address_line } = location;
+
   return (
     <Box
       sx={{
@@ -22,23 +31,30 @@ const ContactDeatils = () => {
               Address
             </Typography>
             <Typography color={"GrayText"}>
-              Tropical Alauddin Tower <br /> House No.- 32/C(7th Floor,
-              Flat:7E), <br />
-              Road - 02, Sector - 03, Uttara,
-              <br /> Dhaka-1230, Bangladesh
+              {address_line
+                ? address_line
+                : "Tropical Alauddin Tower, House No.- 32/C(11th Floor, Flat:11-B), Road - 02, Sector - 03"}{" "}
+              <br />
+              {city ? city : "Uttara"},{state ? state : "Dhaka"},
+              {country ? country?.name : "Bangladesh"}
             </Typography>
           </Box>
           <Box>
             <Typography color={"warning.main"} variant="h6" pb={1}>
               Mobile:
             </Typography>
-            <Typography color={"GrayText"}>+88 017XX XXX XXX, +88 017XX XXX XXX</Typography>
+            <Typography color={"GrayText"}>
+              {primary_phone ? primary_phone : "+88 017XX XXX XXX"},
+              {secondary_phone ? secondary_phone : "+88 017XX XXX XXX"}
+            </Typography>
           </Box>
           <Box>
             <Typography color={"warning.main"} variant="h6" pb={1}>
               Email:
             </Typography>
-            <Typography color={"GrayText"}>darul.maquaam@gmail.com</Typography>
+            <Typography color={"GrayText"}>
+              {email ? email : "darulmaqaamfoundation@gmail.com"}
+            </Typography>
           </Box>
         </Stack>
       </Box>
@@ -64,4 +80,4 @@ const ContactDeatils = () => {
   );
 };
 
-export default ContactDeatils;
+export default ContactDetails;

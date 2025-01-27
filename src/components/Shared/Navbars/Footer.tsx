@@ -2,10 +2,29 @@ import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import logo from "../../../../public/Darul Maqaam_Logo-01.png";
 import Image from "next/image";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import XIcon from "@mui/icons-material/X";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import Link from "next/link";
 
-const Footer = () => {
+const Footer = async () => {
+  const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const res = await fetch(`${backend_api}/system/business/`, {
+    cache: "no-store",
+  });
+  const { data: business_info = {} } = await res.json();
+  const { business = {}, location = {} } = business_info;
+  const {
+    email,
+    secondary_logo = {},
+    primary_phone,
+    footer_links = [],
+    footer_get_us = [],
+  } = business;
+  const { country = {}, state, city, address_line } = location;
   return (
     <Box bgcolor={"#2a261f"} color={"white"} pt={12}>
       <Container>
@@ -14,7 +33,7 @@ const Footer = () => {
         <Grid container spacing={2} justifyContent={"space-between"}>
           <Grid item xs={12} md={6} lg={2}>
             <Image
-              src={logo}
+              src={secondary_logo?.url || logo}
               alt="Website Logo Image"
               height={200}
               width={200}
@@ -32,17 +51,18 @@ const Footer = () => {
                 <span className="me-2 border-[#ff9f0d] border-2">
                   <LocalPhoneIcon />
                 </span>
-                +[88] 017XX XXX XXX
+                {primary_phone ? primary_phone : "+8801X XXXX XXXX"}
               </Typography>
               <Typography fontWeight={300}>
-                5617 Glassford Street <br />
-                New York, NY 10000, USA
+                {address_line ? address_line : "5617 Glassford Street"} <br />
+                {city ? city : "New York"}, {state ? state : "NY 10000"},{" "}
+                {country ? country?.name : "USA"}
               </Typography>
               <Typography
-                className="border-b-[1px] pb-[2px] border-[#ff9f0d] w-3/5"
+                className="border-b-[1px] pb-[2px] border-[#ff9f0d] w-9/12"
                 fontWeight={300}
               >
-                darul.maqaam@gmail.com
+                {email ? email : "darulmaqaamfoundation@gmail.com"}
               </Typography>
             </Stack>
           </Grid>
@@ -73,11 +93,12 @@ const Footer = () => {
           <Grid item xs={12} md={6} lg={2} className="md:text-end ">
             <Typography variant="h5">Connect With Us</Typography>
             <Stack direction={"column"} gap={2} mt={4}>
-              <Link href={"/"}> Work with Us</Link>
-              <Link href={"/"}> Who we are</Link>
-              <Link href={"/"}> Resource </Link>
-              <Link href={"/"}> Leatest Storise </Link>
-              <Link href={"/"}> Financials </Link>
+              {footer_links?.map((item: any) => (
+                <Link key={item?.url} href={item?.url}>
+                  {" "}
+                  {item?.label}
+                </Link>
+              ))}
             </Stack>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
@@ -85,18 +106,22 @@ const Footer = () => {
               <Stack direction={"column"} gap={1}>
                 <Typography variant="h5">Connect With Us</Typography>
                 <Stack direction={"row"} className="md:justify-end" gap={2}>
-                  <Typography>
-                    <FacebookIcon />
-                  </Typography>
-                  <Typography>
-                    <FacebookIcon />
-                  </Typography>
-                  <Typography>
-                    <FacebookIcon />
-                  </Typography>
-                  <Typography>
-                    <FacebookIcon />
-                  </Typography>
+                  {footer_get_us?.map((item: any) => (
+                    <Link key={item?.url} href={item?.url} target="_blank">
+                      {" "}
+                      {/* {item?.label} */}
+                      <Typography>
+                        {item.url.includes("facebook.com") && <FacebookIcon />}
+                        {item.url.includes("linkedin.com") && <LinkedInIcon />}
+                        {item.url.includes("x.com") && <XIcon />}
+                        {item.url.includes("instagram.com") && (
+                          <InstagramIcon />
+                        )}
+                        {item.url.includes("whatsapp.com") && <WhatsAppIcon />}
+                        {item.url.includes("youtube.com") && <YouTubeIcon />}
+                      </Typography>
+                    </Link>
+                  ))}
                 </Stack>
               </Stack>
             </div>
@@ -118,7 +143,16 @@ const Footer = () => {
               © {new Date().getFullYear()} – <span>Darul Maqaam</span>. All
               rights reserved.
             </Typography>
-            <Typography>Developed by Hotchpotch Innovations Ltd.</Typography>
+            <Typography>
+              Developed by{" "}
+              <Link
+                href={"https://www.hotchpotchinnovations.com.bd"}
+                target="_blank"
+                className="text-gray-300"
+              >
+                Hotchpotch Innovations Ltd.
+              </Link>
+            </Typography>
           </Stack>
         </Container>
       </Box>

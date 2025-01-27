@@ -1,4 +1,4 @@
-import ContactDeatils from "@/components/UI/Contact/ContactDeatils";
+import ContactDetails from "@/components/UI/Contact/ContactDetails";
 import ContactForm from "@/components/UI/Contact/ContactForm";
 import Title from "@/components/UI/Title";
 import { webpageSlugs } from "@/constants/webpageSlugs";
@@ -19,7 +19,7 @@ export async function generateMetadata() {
   return result;
 }
 
-const ContactPage = () => {
+const ContactPage = async () => {
   return (
     <Box>
       <Title title="contact" />
@@ -52,7 +52,7 @@ const ContactPage = () => {
           }}
         >
           <ContactForm />
-          <ContactDeatils />
+          <ContactDetails />
         </Container>
       </Box>
     </Box>

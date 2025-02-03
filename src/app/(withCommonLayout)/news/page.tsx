@@ -1,10 +1,9 @@
 import NewsCard from "@/components/UI/NewsCard";
-import Title from "@/components/UI/Title";
+import Title from "@/components/UI/titles/Title";
 import { Article_Types } from "@/constants/options";
 import { webpageSlugs } from "@/constants/webpageSlugs";
 import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";
-import { Box, Container, Grid, Typography } from "@mui/material";
-import Image from "next/image";
+import { Box, Container, Grid } from "@mui/material";
 
 // Dynamic metadata generation function
 export async function generateMetadata() {

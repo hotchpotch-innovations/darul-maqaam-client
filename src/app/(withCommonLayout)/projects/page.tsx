@@ -20,7 +20,7 @@ export async function generateMetadata() {
 }
 
 const ProjectsPage = async () => {
-  const Title = dynamic(() => import("@/components/UI/Title"));
+  const Title = dynamic(() => import("@/components/UI/titles/Title"));
   const Drawer = dynamic(() => import("@/components/UI/Drawer"));
   const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   const res = await fetch(

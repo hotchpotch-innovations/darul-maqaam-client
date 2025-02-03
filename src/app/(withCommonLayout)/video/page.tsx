@@ -1,4 +1,4 @@
-import Title from "@/components/UI/Title";
+import Title from "@/components/UI/titles/Title";
 import VideoCard from "@/components/UI/VideoCard";
 import { Article_Types } from "@/constants/options";
 import { webpageSlugs } from "@/constants/webpageSlugs";

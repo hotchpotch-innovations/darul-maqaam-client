@@ -1,4 +1,4 @@
-import Title from "@/components/UI/Title";
+import Title from "@/components/UI/titles/Title";
 import { webpageSlugs } from "@/constants/webpageSlugs";
 import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";
 

@@ -1,8 +1,9 @@
-import { getCookie } from "./getCookie";
 import { decodedToken } from "./jwt";
+import { getFromLocalStorage } from "./local-starage";
+import { authkey } from "@/constants/authkey";
 
-export const getUserInfoFromCookie = async () => {
-  const authToken = await getCookie();
+export const getUserInfoFromLocalStorage = () => {
+  const authToken = getFromLocalStorage(authkey);
 
   if (authToken) {
     const decodedData = decodedToken(authToken);

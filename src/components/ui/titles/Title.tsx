@@ -1,4 +1,4 @@
-import { Box, capitalize, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const Title = ({ title }: { title: string }) => {
   return (

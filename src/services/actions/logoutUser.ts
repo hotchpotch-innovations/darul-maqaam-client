@@ -2,8 +2,8 @@ import { authkey } from "@/constants/authkey";
 import { deleteCookie } from "./deleteCookie";
 import { removeFromLocalStorage } from "@/utils/local-starage";
 
-export const logOutUser = () => {
+export const logOutUser = async () => {
   removeFromLocalStorage(authkey);
-  deleteCookie([authkey, "refreshToken"]);
-  deleteCookie([authkey, "accessToken"]);
+  await deleteCookie([authkey, "refreshToken"]);
+  await deleteCookie([authkey, "accessToken"]);
 };

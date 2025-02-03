@@ -1,11 +1,12 @@
-import Banner from "@/components/UI/home/Banner";
-import DonateForm from "@/components/UI/home/DonateForm";
-import GallerySection from "@/components/UI/home/GallerySection";
-import MakeChange from "@/components/UI/home/MakeChange";
-import OnProject from "@/components/UI/home/OngoingProjectsSection";
+// import Banner from "@/components/UI/homes/Banner";
+import DonateForm from "@/components/UI/homes/DonateForm";
+import GallerySection from "@/components/UI/homes/GallerySection";
+import MakeChange from "@/components/UI/homes/MakeChange";
+import OnProject from "@/components/UI/homes/OngoingProjectsSection";
 import { webpageSlugs } from "@/constants/webpageSlugs";
 import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";
 import { Box } from "@mui/material";
+import dynamic from "next/dynamic";
 
 // Dynamic metadata generation function
 export async function generateMetadata() {
@@ -21,7 +22,10 @@ export async function generateMetadata() {
   return result;
 }
 
-const Home = () => {
+export default function Home() {
+  const Banner = dynamic(() => import("@/components/UI/homes/Banner"), {
+    ssr: false,
+  });
   return (
     <Box bgcolor={"secondary.main"}>
       <DonateForm />
@@ -31,6 +35,4 @@ const Home = () => {
       <GallerySection />
     </Box>
   );
-};
-
-export default Home;
+}

@@ -10,14 +10,14 @@ import Image from "next/image";
 import logo from "../../../../public/Darul Maqaam_Logo-01.png";
 import { usePathname } from "next/navigation";
 import AuthButton from "./AuthButton";
-import { getUserInfoFromCookie } from "@/utils/getUserInfoFromCookie";
 import DashboardButton from "./DashboardButton";
+import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const pathNameDM = usePathname();
-  const userInfo = getUserInfoFromCookie();
+  const userInfo = getUserInfoFromLocalStorage();
 
   const userRole = userInfo?.role;
 

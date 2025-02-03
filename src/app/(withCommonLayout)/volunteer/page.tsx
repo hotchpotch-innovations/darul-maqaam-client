@@ -1,4 +1,4 @@
-import Title from "@/components/UI/Title";
+import Title from "@/components/UI/titles/Title";
 import AddressInformation from "@/components/UI/VolunteerRegistation/AddressInformation";
 import PersonalInformation from "@/components/UI/VolunteerRegistation/PersonalInformation";
 import { webpageSlugs } from "@/constants/webpageSlugs";

@@ -1,4 +1,4 @@
-import Title from "@/components/UI/Title";
+import Title from "@/components/UI/titles/Title";
 import { Box } from "@mui/material";
 import { GallerytData } from "../../../../public/data/GalleryData";
 import GalleryDrawer from "@/components/UI/Gallery/GalleryDrawer";

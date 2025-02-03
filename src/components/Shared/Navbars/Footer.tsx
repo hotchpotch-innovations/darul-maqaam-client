@@ -1,3 +1,4 @@
+"use server";
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import logo from "../../../../public/Darul Maqaam_Logo-01.png";
 import Image from "next/image";
@@ -10,11 +11,16 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import Link from "next/link";
 
-const Footer = async () => {
+export default async function Footer() {
   const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   const res = await fetch(`${backend_api}/system/business/`, {
     cache: "no-store",
   });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
   const { data: business_info = {} } = await res.json();
   const { business = {}, location = {} } = business_info;
   const {
@@ -158,6 +164,4 @@ const Footer = async () => {
       </Box>
     </Box>
   );
-};
-
-export default Footer;
+}

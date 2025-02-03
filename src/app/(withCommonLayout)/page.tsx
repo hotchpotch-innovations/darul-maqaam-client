@@ -1,4 +1,3 @@
-// import Banner from "@/components/UI/homes/Banner";
 import DonateForm from "@/components/UI/homes/DonateForm";
 import GallerySection from "@/components/UI/homes/GallerySection";
 import MakeChange from "@/components/UI/homes/MakeChange";

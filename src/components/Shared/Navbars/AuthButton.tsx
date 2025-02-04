@@ -1,12 +1,12 @@
 "use client";
 import { logOutUser } from "@/services/actions/logoutUser";
-import { getUserInfoFromCookie } from "@/utils/getUserInfoFromCookie";
+import { getUserInfoFromLocalStorage } from "@/services/auth.Services.Loacl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const AuthButton = () => {
   const router = useRouter();
-  const userInfo = getUserInfoFromCookie();
+  const userInfo = getUserInfoFromLocalStorage();
 
   const handleLoutOut = () => {
     logOutUser();

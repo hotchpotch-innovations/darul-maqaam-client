@@ -15,6 +15,8 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import dynamic from "next/dynamic";
 import AccountMenu from "../shared/accountMenu/AccountMenu";
 import Sidebar from "../dashboard-sidebars/SideBar";
+import Loading from "@/components/UI/LoadingBar";
+import { useGetMyProfileQuery } from "@/redux/api/user/userApi";
 
 // 280
 const drawerWidth = 280;
@@ -22,6 +24,12 @@ const drawerWidth = 280;
 const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+
+  // Fetching user data from the API
+  const { data, isLoading } = useGetMyProfileQuery("");
+  const profile_image_url =
+    data?.data?.profile_image ||
+    "https://hotch-potch-2016.s3.us-east-2.amazonaws.com/default/user/Sample_User_Icon.png";
 
   const UserEmail = dynamic(() => import("../shared/UserEmail"), {
     ssr: false,
@@ -41,6 +49,10 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
       setMobileOpen(!mobileOpen);
     }
   };
+
+  if (!!isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -89,20 +101,17 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                 component="div"
                 sx={{ color: "primary.main" }}
               >
-                Welcome to Hotchpotch Innovations Ltd.!
+                Welcome to Darul Maqaam Foundation!
               </Typography>
               <UserEmail />
             </Box>
             <Stack direction="row" gap={3}>
-              <Badge badgeContent={1} color="primary">
+              {/* <Badge badgeContent={1} color="primary">
                 <IconButton sx={{ background: "#ffffff" }}>
                   <NotificationsNoneIcon color="action" />
                 </IconButton>
-              </Badge>
-              <Avatar
-                alt={"name"}
-                src={"https://avatars.githubusercontent.com/u/179119302?v=4"}
-              />
+              </Badge> */}
+              <Avatar alt={"name"} src={profile_image_url} />
               <AccountMenu />
             </Stack>
           </Box>

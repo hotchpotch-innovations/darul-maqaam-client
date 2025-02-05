@@ -1,7 +1,7 @@
 "use client";
 import { Box, Divider, List, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import logoImage from "../../../../public/images/mainLogo.png";
+import logoImage from "../../../../public/images/darul_p_logo.png";
 import Link from "next/link";
 import { TUserRole } from "@/types/common";
 import { useEffect, useState } from "react";
@@ -35,6 +35,7 @@ const Sidebar = () => {
       }}
     >
       <Stack
+        className="mt-6"
         justifyContent={"center"}
         alignItems={"center"}
         direction={"row"}
@@ -44,16 +45,7 @@ const Sidebar = () => {
         component={Link}
         href={"/"}
       >
-        <Image
-          src={logoImage}
-          alt="Logo Image"
-          height={40}
-          width={40}
-          className="size-16"
-        />
-        <Typography variant="h5" color="primary.main" fontWeight={700}>
-          C-Project
-        </Typography>
+        <Image src={logoImage} alt="Logo Image" className="w-4/5" />
       </Stack>
 
       <Box

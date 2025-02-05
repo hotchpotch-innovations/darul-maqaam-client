@@ -46,7 +46,7 @@ instance.interceptors.response.use(
       console.log({ response });
       if (response) {
         const accessToken = response?.data?.data?.accessToken;
-        // console.log({ accessToken });
+        console.log({ accessToken });
         config.headers["Authorization"] = accessToken;
         setToLocalStorage(authkey, accessToken);
         setAccessTokenCookie(accessToken);

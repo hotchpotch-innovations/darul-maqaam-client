@@ -19,8 +19,20 @@ export async function generateMetadata() {
   return result;
 }
 
-const DonationPage = () => {
-  const data = makeChange;
+const DonationPage = async () => {
+  // const data = makeChange;
+  const backend_api = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const donationMenubarId = process.env.NEXT_PUBLIC_DONATE_MENUBAR_ID || "";
+  const res = await fetch(
+    `${backend_api}/content/webpage/public?menubarId=${donationMenubarId}&isPublished=true`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  const donation_obj = await res.json();
+  const donations = donation_obj?.data?.data || [];
+
   return (
     <Box bgcolor={"secondary.main"}>
       <Container
@@ -32,8 +44,8 @@ const DonationPage = () => {
           Together Let’s make a change
         </Typography>
         <Grid className="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-          {data?.map((item: TMakeChange) => (
-            <MakeChangeCard key={item._id} data={item} />
+          {donations?.map((item: Record<string, any>) => (
+            <MakeChangeCard key={item?.id} data={item} />
           ))}
         </Grid>
       </Container>

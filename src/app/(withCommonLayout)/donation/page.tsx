@@ -1,6 +1,4 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { makeChange } from "../../../../public/HomePageData/makeChange";
-import { TMakeChange } from "../Types";
 import MakeChangeCard from "@/components/UI/MakeChangeCard";
 import { webpageSlugs } from "@/constants/webpageSlugs";
 import { generateDynamicMetadataHandler } from "@/helpers/metadata/generateDynamicMetadataHandler";

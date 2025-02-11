@@ -32,10 +32,10 @@ const RegisterPage = () => {
             }}
           >
             <Image
-              src={"/images/login-blue-logo.png"}
+              src={"/images/login_logo_1.png"}
               alt="Login Logo Image "
-              height={60}
-              width={60}
+              height={80}
+              width={80}
               className="h-auto w-auto"
             />
             <Typography variant="h5" pt={2} pb={1}>

@@ -1,3 +1,4 @@
+"use client";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import InputBox from "./InputBox";
 import Textaria from "./Textaria";
@@ -59,6 +60,7 @@ const AddressInformation = () => {
             sx={{
               width: "50%",
             }}
+            onClick={() => alert("This feature is coming soon...")}
           >
             Send My Application
           </Button>

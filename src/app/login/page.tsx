@@ -39,10 +39,10 @@ const LoginPage = () => {
           >
             <Image
               style={{ marginTop: "8px" }}
-              src={"/images/login-blue-logo.png"}
+              src={"/images/login_logo_1.png"}
               alt="Login Logo Image "
-              height={60}
-              width={60}
+              height={100}
+              width={100}
             />
             <Typography variant="h5" pt={2} pb={1}>
               Login

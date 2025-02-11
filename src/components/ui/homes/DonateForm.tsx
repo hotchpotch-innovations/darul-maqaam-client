@@ -1,3 +1,4 @@
+"use client";
 import { Box, Button, Container } from "@mui/material";
 import InputBox from "../VolunteerRegistation/InputBox";
 
@@ -16,7 +17,12 @@ const DonateForm = () => {
             <InputBox name="found" placeholder="Donation Found" type="text" />
             <InputBox name="found" placeholder="Phone / Email" type="text" />
             <InputBox name="found" placeholder="Donation Amount" type="text" />
-            <Button className="w-[300px]">Donate</Button>
+            <Button
+              onClick={() => alert("This feature is coming soon...")}
+              className="w-[300px]"
+            >
+              Donate
+            </Button>
           </form>
         </Box>
       </Container>

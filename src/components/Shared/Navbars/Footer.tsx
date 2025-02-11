@@ -1,6 +1,6 @@
 "use server";
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
-import logo from "../../../../public/Darul Maqaam_Logo-01.png";
+import logo from "../../../../public/primary_logo.png";
 import Image from "next/image";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";

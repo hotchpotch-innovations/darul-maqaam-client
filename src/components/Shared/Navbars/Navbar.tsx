@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
-import logo from "../../../../public/Darul Maqaam_Logo-01.png";
+import logo from "../../../../public/primary_logo.png";
 import { usePathname } from "next/navigation";
 import AuthButton from "./AuthButton";
 import DashboardButton from "./DashboardButton";
@@ -42,7 +42,7 @@ const Navbar = () => {
           alignItems={"center"}
         >
           <Link href={"/"}>
-            <Image src={logo} alt="Website Logo" height={200} width={200} />
+            <Image src={logo} alt="Website Logo" height={100} width={100} />
           </Link>
           <div>
             <ul className=" hidden gap-6 lg:gap-6 lg:inline-flex">
